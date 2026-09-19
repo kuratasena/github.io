@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS SAP 単語帳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0E2A43;
+    --bg-panel: #12385A;
+    --bg-panel-2: #0C2438;
+    --grid-line: rgba(255,255,255,0.07);
+    --grid-line-strong: rgba(255,255,255,0.14);
+    --paper: #EFE9DA;
+    --paper-2: #E4DCC6;
+    --ink: #17293A;
+    --ink-soft: #4A5C6E;
+    --white: #F4F6F8;
+    --white-dim: #B9C6D2;
+    --amber: #E3A53D;
+    --amber-deep: #C77F1E;
+    --cyan: #5FB3D9;
+    --known: #6FAE7A;
+    --retry: #D97A5C;
+    --radius-card: 14px;
+    --radius-sm: 8px;
+    --font-jp: 'Zen Kaku Gothic New', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #E7EEF3;
+      --bg-panel: #F4F1E6;
+      --bg-panel-2: #FFFFFF;
+      --grid-line: rgba(14,42,67,0.08);
+      --grid-line-strong: rgba(14,42,67,0.16);
+      --paper: #FFFFFF;
+      --paper-2: #F1ECDB;
+      --ink: #17293A;
+      --ink-soft: #4A5C6E;
+      --white: #0E2A43;
+      --white-dim: #3E5468;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #E7EEF3;
+    --bg-panel: #F4F1E6;
+    --bg-panel-2: #FFFFFF;
+    --grid-line: rgba(14,42,67,0.08);
+    --grid-line-strong: rgba(14,42,67,0.16);
+    --paper: #FFFFFF;
+    --paper-2: #F1ECDB;
+    --ink: #17293A;
+    --ink-soft: #4A5C6E;
+    --white: #0E2A43;
+    --white-dim: #3E5468;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-jp);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px);
+    background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 28px 18px 60px; }
+
+  header.top { margin-bottom: 18px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--cyan);
+    margin: 0 0 6px;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 900;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .sub { color: var(--white-dim); font-size: 14px; margin: 0 0 18px; line-height: 1.6; }
+
+  .factrow {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 18px;
+  }
+  .fact {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--grid-line-strong);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    color: var(--white-dim);
+  }
+  .fact b { color: var(--white); font-weight: 600; }
+
+  .domainbars { margin-bottom: 18px; }
+  .domainbars .label {
+    font-size: 12px; color: var(--white-dim); margin-bottom: 8px;
+    font-family: var(--font-mono);
+  }
+  .dbar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .dbar-name { font-size: 12.5px; width: 168px; flex-shrink: 0; color: var(--white-dim); line-height: 1.3; }
+  .dbar-track { flex: 1; height: 8px; background: var(--bg-panel-2); border-radius: 4px; overflow: hidden; border: 1px solid var(--grid-line-strong); }
+  .dbar-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--amber)); border-radius: 4px; }
+  .dbar-pct { font-family: var(--font-mono); font-size: 12px; width: 34px; text-align: right; color: var(--white); }
+
+  .tip {
+    background: var(--bg-panel);
+    border: 1px solid var(--grid-line-strong);
+    border-left: 3px solid var(--amber);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--white-dim);
+    margin-bottom: 22px;
+  }
+  .tip strong { color: var(--amber); font-weight: 700; }
+
+  nav.tabs {
+    display: flex; gap: 4px; margin-bottom: 20px;
+    border-bottom: 1px solid var(--grid-line-strong);
+  }
+  nav.tabs button {
+    font-family: var(--font-jp);
+    font-size: 14px; font-weight: 500;
+    background: none; border: none;
+    color: var(--white-dim);
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  nav.tabs button.active {
+    color: var(--white);
+    border-bottom: 2px solid var(--amber);
+  }
+  nav.tabs button:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible {
+    outline: 2px solid var(--cyan); outline-offset: 2px;
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* --- overview --- */
+  .domainblock {
+    background: var(--bg-panel);
+    border: 1px solid var(--grid-line-strong);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .domainblock h3 { margin: 0 0 6px; font-size: 15px; color: var(--amber); }
+  .domainblock p { margin: 0; font-size: 13.5px; color: var(--white-dim); line-height: 1.7; }
+
+  /* --- controls --- */
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; align-items: center;
+  }
+  select, input[type="text"] {
+    font-family: var(--font-jp);
+    font-size: 13.5px;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--grid-line-strong);
+    color: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+  }
+  select { flex: 1; min-width: 140px; }
+  input[type="text"] { flex: 1.4; min-width: 160px; }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--grid-line-strong);
+    color: var(--white-dim);
+    border-radius: 999px;
+    padding: 7px 13px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .chip.on { background: var(--amber); color: #1D1305; border-color: var(--amber); font-weight: 600; }
+
+  .progresswrap {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+    font-family: var(--font-mono); font-size: 12px; color: var(--white-dim);
+  }
+  .ptrack { flex: 1; height: 6px; background: var(--bg-panel-2); border-radius: 3px; overflow: hidden; border: 1px solid var(--grid-line-strong); }
+  .pfill { height: 100%; background: var(--known); }
+
+  .cardcount { text-align: center; font-family: var(--font-mono); font-size: 12px; color: var(--white-dim); margin-bottom: 10px; }
+
+  /* --- flashcard --- */
+  .stage { perspective: 1400px; margin-bottom: 16px; }
+  .card {
+    position: relative;
+    width: 100%;
+    min-height: 260px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+    cursor: pointer;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--radius-card);
+    padding: 26px 24px;
+    display: flex; flex-direction: column;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.4);
+  }
+  .face.back { transform: rotateY(180deg); background: var(--paper-2); justify-content: flex-start; }
+  .facetop { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: auto; }
+  .catlabel {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.03em;
+    color: var(--ink-soft);
+    background: rgba(23,41,58,0.08);
+    padding: 4px 8px; border-radius: 5px;
+  }
+  .weakbadge {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: #8A3C1E; background: rgba(211,122,74,0.18);
+    padding: 4px 8px; border-radius: 5px;
+  }
+  .termname {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(20px, 5vw, 27px);
+    line-height: 1.3;
+    margin: auto 0;
+    color: var(--ink);
+    word-break: break-word;
+  }
+  .fliphint { text-align: center; font-size: 11.5px; color: var(--ink-soft); margin-top: auto; font-family: var(--font-mono); }
+  .desc { font-size: 15px; line-height: 1.85; color: var(--ink); margin: 4px 0 0; }
+  .backterm { font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; font-weight: 600; }
+
+  .cardnav { display: flex; gap: 8px; margin-bottom: 12px; }
+  .navbtn {
+    flex: 1;
+    font-family: var(--font-jp); font-size: 14px; font-weight: 500;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--grid-line-strong);
+    color: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    cursor: pointer;
+  }
+  .navbtn:active { transform: translateY(1px); }
+  .navbtn.wide { flex: 1.6; }
+
+  .marks { display: flex; gap: 8px; margin-bottom: 8px; }
+  .markbtn {
+    flex: 1;
+    font-family: var(--font-jp); font-size: 13.5px; font-weight: 600;
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    cursor: pointer;
+    border: 1px solid var(--grid-line-strong);
+    background: var(--bg-panel-2);
+    color: var(--white-dim);
+  }
+  .markbtn.known.active { background: var(--known); border-color: var(--known); color: #0D2113; }
+  .markbtn.retry.active { background: var(--retry); border-color: var(--retry); color: #2B1006; }
+
+  .toolrow { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+  .textbtn {
+    background: none; border: none; color: var(--white-dim);
+    font-family: var(--font-mono); font-size: 12px;
+    cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+    padding: 4px;
+  }
+
+  /* --- review list --- */
+  .reviewlist { display: flex; flex-direction: column; gap: 8px; }
+  .reviewitem {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--bg-panel);
+    border: 1px solid var(--grid-line-strong);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    cursor: pointer;
+  }
+  .reviewitem .rterm { font-family: var(--font-mono); font-size: 14px; font-weight: 600; }
+  .reviewitem .rcat { font-size: 11.5px; color: var(--white-dim); margin-top: 2px; }
+  .reviewitem .rarrow { color: var(--amber); font-family: var(--font-mono); }
+  .emptynote { color: var(--white-dim); font-size: 13.5px; text-align: center; padding: 40px 10px; line-height: 1.8; }
+
+  footer.foot { text-align: center; margin-top: 30px; }
+  footer.foot button {
+    background: none; border: 1px solid var(--grid-line-strong); color: var(--white-dim);
+    font-family: var(--font-mono); font-size: 11.5px; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  }
+
+  @media (max-width: 420px) {
+    .dbar-name { width: 120px; font-size: 11.5px; }
+    h1 { font-size: 23px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <p class="eyebrow">AWS Certified Solutions Architect – Professional / SAP-C02</p>
+    <h1>AWS SAP 単語帳</h1>
+    <p class="sub">試験ガイドの出題範囲サービス・重要コンセプトを、専門用語だけで終わらせず平易な言葉で説明するフラッシュカード。</p>
+
+    <div class="factrow">
+      <span class="fact">出題数 <b>75問</b>(採点対象65 + 採点対象外10)</span>
+      <span class="fact">制限時間 <b>180分</b></span>
+      <span class="fact">合格スコア <b>750</b> / 1000</span>
+      <span class="fact">受験料 <b>$300</b></span>
+    </div>
+
+    <div class="domainbars">
+      <p class="label">コンテンツ分野の出題比率</p>
+      <div class="dbar-row"><span class="dbar-name">1. 複雑な組織への対応</span><div class="dbar-track"><div class="dbar-fill" style="width:26%"></div></div><span class="dbar-pct">26%</span></div>
+      <div class="dbar-row"><span class="dbar-name">2. 新しいソリューション設計</span><div class="dbar-track"><div class="dbar-fill" style="width:29%"></div></div><span class="dbar-pct">29%</span></div>
+      <div class="dbar-row"><span class="dbar-name">3. 既存ソリューションの改善</span><div class="dbar-track"><div class="dbar-fill" style="width:25%"></div></div><span class="dbar-pct">25%</span></div>
+      <div class="dbar-row"><span class="dbar-name">4. 移行とモダナイゼーション</span><div class="dbar-track"><div class="dbar-fill" style="width:20%"></div></div><span class="dbar-pct">20%</span></div>
+    </div>
+
+    <div class="tip">
+      <strong>苦手分野マーク:</strong> コスト最適化・DR/高可用性・マルチアカウント管理・イベント駆動アーキテクチャの用語には
+      <span class="weakbadge" style="vertical-align:middle;">苦手</span> バッジが付いています。カードは「技術的に正しいが最適ではない選択肢」を見抜く意識で読むのがおすすめです — 特に「運用オーバーヘッドが一番少ない選択肢」かどうかを毎回自問してみてください。
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="overview">概要</button>
+    <button class="tab-btn" data-tab="cards">単語カード</button>
+    <button class="tab-btn" data-tab="review">苦手リスト</button>
+  </nav>
+
+  <!-- OVERVIEW -->
+  <section class="panel active" id="panel-overview">
+    <div class="domainblock">
+      <h3>コンテンツ分野 1 — 複雑な組織に対応するソリューションの設計(26%)</h3>
+      <p>ネットワーク接続戦略、セキュリティ統制、信頼性・耐障害性、マルチアカウント環境、コスト可視化。既に存在する複雑な組織構造の中で設計する視点。</p>
+    </div>
+    <div class="domainblock">
+      <h3>コンテンツ分野 2 — 新しいソリューションのための設計(29%)</h3>
+      <p>デプロイ戦略、事業継続性、セキュリティ統制、信頼性、パフォーマンス、コスト最適化。ゼロから新しく作るときの視点で、出題比率が最も高い分野。</p>
+    </div>
+    <div class="domainblock">
+      <h3>コンテンツ分野 3 — 既存のソリューションの継続的な改善(25%)</h3>
+      <p>運用上の優秀性、セキュリティ、パフォーマンス、信頼性、コストの各観点から、すでに動いているシステムをどう改善するか。</p>
+    </div>
+    <div class="domainblock">
+      <h3>コンテンツ分野 4 — ワークロードの移行とモダナイゼーションの加速(20%)</h3>
+      <p>移行対象の選定、移行アプローチの決定、新しいアーキテクチャの決定、サーバーレス・コンテナ化によるモダナイゼーション。</p>
+    </div>
+    <div class="tip" style="margin-top:6px;">
+      このアプリの「単語カード」タブには、試験ガイド付録に載っている出題範囲内のAWSサービス(約100個)と、RTO/RPOや7Rなどの重要コンセプト(約20個)が入っています。カテゴリで絞り込んだり、検索したりしながら使ってください。
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="panel" id="panel-cards">
+    <div class="controls">
+      <select id="categorySelect"></select>
+      <input type="text" id="searchInput" placeholder="用語や説明で検索…">
+    </div>
+    <div class="controls">
+      <span class="chip" id="weakChip">苦手分野のみ</span>
+      <span class="chip" id="retryChip">要復習のみ</span>
+      <span class="chip" id="hideKnownChip">覚えた分を隠す</span>
+      <span class="chip" id="shuffleChip">シャッフル</span>
+    </div>
+
+    <div class="progresswrap">
+      <span id="progressLabel">0 / 0</span>
+      <div class="ptrack"><div class="pfill" id="progressFill" style="width:0%"></div></div>
+      <span id="progressPct">0%</span>
+    </div>
+
+    <div class="cardcount" id="cardIndexLabel"></div>
+
+    <div class="stage">
+      <div class="card" id="flashcard">
+        <div class="face front">
+          <div class="facetop">
+            <span class="catlabel" id="frontCat">—</span>
+            <span class="weakbadge" id="frontWeak" style="display:none;">苦手</span>
+          </div>
+          <div class="termname" id="frontTerm">—</div>
+          <div class="fliphint">タップして意味を見る ↻</div>
+        </div>
+        <div class="face back">
+          <div class="backterm" id="backTerm">—</div>
+          <p class="desc" id="backDesc">—</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="marks">
+      <button class="markbtn retry" id="markRetry">↺ もう一度</button>
+      <button class="markbtn known" id="markKnown">✓ 覚えた</button>
+    </div>
+
+    <div class="cardnav">
+      <button class="navbtn" id="prevBtn">← 前へ</button>
+      <button class="navbtn wide" id="flipBtn">裏返す</button>
+      <button class="navbtn" id="nextBtn">次へ →</button>
+    </div>
+
+    <div class="toolrow">
+      <button class="textbtn" id="resetFilterBtn">絞り込みを解除</button>
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--white-dim);" id="totalTermsLabel"></span>
+    </div>
+  </section>
+
+  <!-- REVIEW -->
+  <section class="panel" id="panel-review">
+    <div class="reviewlist" id="reviewList"></div>
+  </section>
+
+  <footer class="foot">
+    <button id="resetProgressBtn">学習の記録をリセット</button>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var CATS = [
+    ["concept","重要コンセプト"],
+    ["analytics","分析"],
+    ["integration","アプリケーション統合"],
+    ["blockchain","ブロックチェーン"],
+    ["bizapp","ビジネスアプリケーション"],
+    ["finops","クラウド財務管理"],
+    ["compute","コンピューティング"],
+    ["containers","コンテナ"],
+    ["database","データベース"],
+    ["devtools","デベロッパーツール"],
+    ["euc","エンドユーザーコンピューティング"],
+    ["frontend","フロントエンドのウェブとモバイル"],
+    ["iot","IoT"],
+    ["ml","機械学習"],
+    ["mgmt","マネジメントとガバナンス"],
+    ["media","メディアサービス"],
+    ["migration","移行と転送"],
+    ["network","ネットワークとコンテンツ配信"],
+    ["security","セキュリティ、アイデンティティ、コンプライアンス"],
+    ["storage","ストレージ"]
+  ];
+  var CATMAP = {}; CATS.forEach(function(c){ CATMAP[c[0]] = c[1]; });
+
+  function t(id, term, cat, desc, weak){
+    return { id: id, term: term, cat: cat, desc: desc, weak: !!weak };
+  }
+
+  var TERMS = [
+    // --- 重要コンセプト ---
+    t("c01","RTO(目標復旧時間)","concept","障害が起きてから、どれくらいの時間で復旧させるかという目標値。短くするほど早く復旧できるが、その分コストも高くなりやすい。",true),
+    t("c02","RPO(目標復旧時点)","concept","障害が起きたとき、どれくらい前の時点までのデータに戻せればよいかという目標値。短くするほど頻繁なバックアップ・複製が必要になる。",true),
+    t("c03","DR戦略の4段階(バックアップ&リストア/パイロットライト/ウォームスタンバイ/マルチサイト)","concept","災害復旧のやり方を、復旧の速さとコストのトレードオフで4段階に分けたもの。バックアップ&リストアが最も安く遅く、マルチサイトが最も高く速い。",true),
+    t("c04","マルチAZ構成","concept","同じリージョン内の複数のアベイラビリティーゾーン(独立した施設)にリソースを複製しておき、片方が止まってももう片方で動き続けられるようにする構成。",true),
+    t("c05","IaC(Infrastructure as Code)","concept","サーバーやネットワークの構成を、手作業ではなくコードやテンプレートとして書いて管理する考え方。同じ環境を何度でも間違いなく再現できる。"),
+    t("c06","CI/CD","concept","コードの変更をこまめに取り込んで検証する「継続的インテグレーション」と、それをすぐ本番へ反映する「継続的デリバリー/デプロイ」を合わせた開発の進め方。"),
+    t("c07","ブルー/グリーンデプロイ","concept","新旧2つの環境をまるごと用意しておき、通信の向き先を切り替えるだけで新バージョンに移行するデプロイ方式。問題が起きてもすぐ元に戻せる。"),
+    t("c08","ローリングデプロイ","concept","サーバーを一気に入れ替えず、少しずつ順番に新バージョンへ切り替えていくデプロイ方式。サービスを止めずに更新できる。"),
+    t("c09","7R(7つの移行戦略)","concept","Retire(廃止)・Retain(保持)・Rehost(そのまま移設)・Relocate(そのまま移設・別種)・Repurchase(買い替え)・Replatform(一部改良して移設)・Refactor/Re-architect(作り直し)という、移行のやり方7パターン。"),
+    t("c10","TCO(総保有コスト)","concept","購入費用だけでなく、運用・保守・電気代・人件費まで含めた「実際にかかる総コスト」のこと。オンプレミスとクラウドの比較でよく使われる。",true),
+    t("c11","SLA(サービスレベルアグリーメント)","concept","サービス提供者が利用者と約束する品質水準(稼働率など)の合意のこと。"),
+    t("c12","KPI(重要業績評価指標)","concept","目標にどれだけ近づいているかを測るための、具体的で数字にできる指標。"),
+    t("c13","Savings PlansとRI(リザーブドインスタンス)の違い","concept","どちらも「長期利用を約束する代わりに安くなる」仕組み。RIは特定のインスタンスタイプ・リージョンに縛られやすいのに対し、Savings Plansは1時間あたりの利用金額を約束するだけなので、インスタンスファミリーやリージョンをまたいでも柔軟に割引が適用される。",true),
+    t("c14","スポットインスタンス","concept","AWSの中で余っている計算リソースを大幅割引で使える購入方式。ただしAWS側の都合で急に処理を止められる可能性があるため、中断されても困らない処理(バッチ処理など)向き。",true),
+    t("c15","SCP(サービスコントロールポリシー)","concept","AWS Organizationsで、傘下のアカウントに対して「絶対にできないこと」の上限を設定するポリシー。IAMポリシーとは別レイヤーで動き、両方の許可が揃わないと操作は実行できない。",true),
+    t("c16","疎結合(そけつごう)","concept","システム同士を直接つなげず、キューやイベントバスなどを間に挟んで緩やかにつなぐ設計。片方が落ちても、もう片方にすぐには影響しないようにできる。",true),
+    t("c17","サービスクォータ","concept","各AWSサービスに設定されている「利用上限」のこと。設計するときは、想定する利用規模がこの上限に引っかからないか事前に確認する必要がある。"),
+    t("c18","Well-Architectedフレームワークの6つの柱","concept","運用上の優秀性・セキュリティ・信頼性・パフォーマンス効率・コスト最適化・持続可能性という、設計を評価するときの6つの観点。"),
+    t("c19","フェイルオーバー","concept","稼働中のシステムに障害が起きたとき、自動的に予備系(別のAZ・リージョンなど)へ切り替えて処理を継続する仕組み。",true),
+    t("c20","単一障害点(SPOF)","concept","そこが1つ壊れるだけでシステム全体が止まってしまう箇所のこと。可用性を高める設計では、まずこれを見つけて排除する。",true),
+
+    // --- 分析 ---
+    t("a01","Amazon Athena","analytics","S3に置いたデータに対して、事前にサーバーを用意せずSQLで直接問い合わせできる検索サービス。"),
+    t("a02","AWS Data Exchange","analytics","他社が提供する各種データセットを、購読してAWS上でそのまま使えるようにするマーケットプレイス。"),
+    t("a03","Amazon Data Firehose","analytics","流れ続けるストリーミングデータを、S3やRedshiftなど別のサービスへ自動で配送してくれる仕組み(旧称:Kinesis Data Firehose)。"),
+    t("a04","Amazon EMR","analytics","HadoopやSparkといったビッグデータ処理基盤を、クラウド上に素早く構築・運用できるサービス。"),
+    t("a05","AWS Glue","analytics","データの形式を変換したり、社内に散らばったデータの「目録(カタログ)」を自動で作ったりするデータ加工(ETL)サービス。"),
+    t("a06","Amazon Kinesis Data Streams","analytics","ログやクリック情報などリアルタイムで発生し続けるデータを、大量に受け取って処理するためのストリーミング基盤。"),
+    t("a07","AWS Lake Formation","analytics","S3上に「データレイク」を作るときの、アクセス権限の設定やセットアップ作業を簡単にしてくれるサービス。"),
+    t("a08","Amazon Managed Service for Apache Flink","analytics","流れ続けるデータをSQLやコードでリアルタイムに分析できるマネージドサービス(旧称:Kinesis Data Analytics)。"),
+    t("a09","Amazon MSK(Managed Streaming for Apache Kafka)","analytics","メッセージング基盤として広く使われるApache Kafkaを、AWSが代わりに運用してくれるサービス。"),
+    t("a10","Amazon OpenSearch Service","analytics","ログ検索やテキスト検索を高速に行うための検索・分析エンジン(旧称の一部はElasticsearch Service)。"),
+    t("a11","Amazon QuickSight","analytics","データをグラフやダッシュボードにして可視化する、BI(ビジネスインテリジェンス)ツール。"),
+
+    // --- アプリケーション統合 ---
+    t("i01","Amazon AppFlow","integration","SalesforceやSlackなどのSaaSアプリとAWSの間で、データを安全にやり取りする連携サービス。"),
+    t("i02","AWS AppSync","integration","GraphQL APIを使ったアプリのバックエンド開発を支援するマネージドサービス。"),
+    t("i03","Amazon EventBridge","integration","AWSサービスや外部アプリから発生する「イベント」を受け取り、ルールに応じて別のサービスへ振り分ける仲介役。イベント駆動アーキテクチャの中心になる。",true),
+    t("i04","Amazon MQ","integration","ActiveMQやRabbitMQといった従来型のメッセージブローカーを、そのままクラウド上で動かせるマネージドサービス。"),
+    t("i05","Amazon SNS(Simple Notification Service)","integration","1つのメッセージを、メール・SMS・Lambdaなど複数の宛先へ同時に配信する「通知の配達係」。Pub/Sub型の連携によく使われる。",true),
+    t("i06","Amazon SQS(Simple Queue Service)","integration","処理を待たせるための「順番待ちの列(キュー)」を作り、送信側と受信側の処理速度の差を吸収してシステムを疎結合にするサービス。",true),
+    t("i07","AWS Step Functions","integration","複数のLambdaやAWSサービスの実行順序を、フローチャートのように定義して自動で実行してくれる仕組み。",true),
+
+    // --- ブロックチェーン ---
+    t("bc01","Amazon Managed Blockchain","blockchain","HyperledgerやEthereumを使ったブロックチェーンネットワークを、簡単に構築・運用できるマネージドサービス。"),
+
+    // --- ビジネスアプリケーション ---
+    t("ba01","Amazon SES(Simple Email Service)","bizapp","大量のメールを送受信するための基盤となるメールサービス。"),
+
+    // --- クラウド財務管理 ---
+    t("f01","AWS Budgets","finops","あらかじめ予算額を決めておき、それを超えそうになったらアラートを飛ばしてくれる仕組み。",true),
+    t("f02","AWS Cost and Usage Report(CUR)","finops","AWSの利用料金・使用量について、最も詳細なレベルで内容を出力してくれるレポート。",true),
+    t("f03","AWS Cost Explorer","finops","過去のコストの内訳をグラフで可視化し、今後のコストを予測できるツール。",true),
+    t("f04","Savings Plans","finops","一定期間・一定額の利用を約束することで料金が安くなる購入プラン。インスタンスの種類やリージョンをまたいでも柔軟に割引が適用される。",true),
+
+    // --- コンピューティング ---
+    t("co01","AWS App Runner","compute","コンテナやソースコードをアップロードするだけで、インフラ管理なしにWebアプリを公開できるサービス。"),
+    t("co02","AWS Auto Scaling","compute","EC2やDynamoDBなど、複数のリソースの容量を負荷に応じてまとめて自動調整する仕組み。"),
+    t("co03","AWS Batch","compute","夜間の集計処理など、大量のバッチジョブを実行するために必要な計算リソースを自動で用意してくれるサービス。"),
+    t("co04","AWS Elastic Beanstalk","compute","コードをアップロードするだけで、EC2やロードバランサーなどをまとめて自動構築・管理してくれるPaaS。"),
+    t("co05","Amazon EC2","compute","自分で自由に設定できる仮想サーバー。クラウドの最も基本的な計算リソース。"),
+    t("co06","Amazon EC2 Auto Scaling","compute","EC2インスタンスの台数を、アクセス量や負荷に応じて自動的に増減させる機能。"),
+    t("co07","AWS Fargate","compute","サーバーを意識せずコンテナを動かせる、ECS/EKS向けのサーバーレス実行環境。"),
+    t("co08","AWS Lambda","compute","サーバーを用意せず、書いたコードがイベントをきっかけに実行される「サーバーレス」な実行環境。",true),
+    t("co09","Amazon Lightsail","compute","固定料金でシンプルに使える、小規模サイト向けの仮想サーバー・簡易クラウドサービス。"),
+    t("co10","AWS Outposts","compute","AWSのハードウェアを自社データセンターに設置し、オンプレミスの環境でもAWSサービスをそのまま使えるようにする仕組み。"),
+    t("co11","AWS Wavelength","compute","通信キャリアの5G網のすぐ近くにAWSインフラを置き、超低遅延なアプリを実現するための仕組み。"),
+
+    // --- コンテナ ---
+    t("ct01","Amazon ECR(Elastic Container Registry)","containers","Dockerコンテナのイメージを保存・管理するプライベートリポジトリ。"),
+    t("ct02","Amazon ECS(Elastic Container Service)","containers","Dockerコンテナの起動・管理を行う、AWS独自のコンテナオーケストレーションサービス。"),
+    t("ct03","Amazon ECS Anywhere","containers","ECSの管理機能を使いながら、オンプレミスのサーバー上でもコンテナを動かせる仕組み。"),
+    t("ct04","Amazon EKS(Elastic Kubernetes Service)","containers","業界標準のコンテナ管理ツールKubernetesを、マネージドで動かせるサービス。"),
+    t("ct05","Amazon EKS Anywhere","containers","AWSと同じ仕組みのKubernetesクラスターを、オンプレミス環境に構築するためのツール。"),
+    t("ct06","Amazon EKS Distro","containers","AWSが内部で使っているのと同じKubernetesの配布パッケージを、自分の環境でそのまま使えるようにしたもの。"),
+
+    // --- データベース ---
+    t("db01","Amazon Aurora","database","MySQL/PostgreSQL互換で、AWSが独自にパフォーマンスと可用性を強化したリレーショナルデータベース。"),
+    t("db02","Amazon Aurora Serverless","database","使った分だけ課金され、負荷に応じて自動でスケールするAuroraのサーバーレス版。"),
+    t("db03","Amazon DocumentDB","database","MongoDB互換のドキュメント指向データベース。"),
+    t("db04","Amazon DynamoDB","database","キーと値(または柔軟な項目)を、常に低いレイテンシーで読み書きできるフルマネージドのNoSQLデータベース。"),
+    t("db05","Amazon ElastiCache","database","RedisやMemcachedを使った、超高速なインメモリキャッシュサービス。データベースへの負荷を減らし応答を速くする。"),
+    t("db06","Amazon Keyspaces","database","Apache Cassandra互換のマネージドNoSQLデータベース。"),
+    t("db07","Amazon Neptune","database","「人と人のつながり」のような、モノ同士の関係を扱うのが得意なグラフデータベース。"),
+    t("db08","Amazon RDS(Relational Database Service)","database","MySQL、PostgreSQL、SQL Serverなど複数のDBエンジンに対応した、マネージドなリレーショナルデータベース。"),
+    t("db09","Amazon Redshift","database","大量データを高速に集計・分析するための、列指向型のデータウェアハウス。"),
+    t("db10","Amazon Timestream","database","センサーデータなど、時間とともに記録される「時系列データ」の保存・分析に特化したデータベース。"),
+
+    // --- デベロッパーツール ---
+    t("dv01","AWS CodeArtifact","devtools","npmやMavenなどのソフトウェアパッケージを、社内向けに安全に配布・管理するリポジトリサービス。"),
+    t("dv02","AWS CodeBuild","devtools","ソースコードをビルド・テストしてくれるマネージドサービス。"),
+    t("dv03","AWS CodeDeploy","devtools","EC2・Lambda・オンプレミスサーバーへアプリを自動でデプロイするサービス。"),
+    t("dv04","Amazon CodeGuru","devtools","コードレビューやパフォーマンス改善のヒントを、AIが自動で提案してくれるツール。"),
+    t("dv05","AWS CodePipeline","devtools","ビルド → テスト → デプロイという一連の流れを自動化する、CI/CDのパイプラインサービス。"),
+    t("dv06","AWS X-Ray","devtools","マイクロサービス間でリクエストがどう流れたかを追跡し、遅延や障害の発生箇所を可視化するツール。"),
+
+    // --- エンドユーザーコンピューティング ---
+    t("eu01","Amazon AppStream 2.0","euc","アプリケーションだけをストリーミング配信し、ブラウザ上で使わせる仕組み。"),
+    t("eu02","Amazon WorkSpaces","euc","クラウド上の仮想デスクトップ(Windows/Linux)を、従業員に提供するサービス。"),
+
+    // --- フロントエンドのウェブとモバイル ---
+    t("fr01","AWS Amplify","frontend","フロントエンド(Web/モバイル)アプリの開発からホスティング、バックエンド連携までを一気通貫で支援するツール群。"),
+    t("fr02","Amazon API Gateway","frontend","APIの作成・公開・アクセス制御・流量制限(スロットリング)をまとめて行えるサービス。"),
+    t("fr03","AWS Device Farm","frontend","実機の様々なスマホ・ブラウザでアプリを自動テストできるサービス。"),
+    t("fr04","Amazon Pinpoint","frontend","プッシュ通知やメール・SMSなどを使った、ユーザーとのやり取り(マーケティング施策含む)を管理するサービス。"),
+
+    // --- IoT ---
+    t("io01","AWS IoT Core","iot","大量のIoTデバイスをAWSに安全に接続し、データをやり取りするための基盤サービス。"),
+    t("io02","AWS IoT Device Defender","iot","IoTデバイス群のセキュリティ状態を継続的に監査・監視するサービス。"),
+    t("io03","AWS IoT Device Management","iot","大量のIoTデバイスの登録・グループ化・ソフトウェア更新などを一括管理するサービス。"),
+    t("io04","AWS IoT Events","iot","センサーデータのパターンから「異常」などのイベントを検知するサービス。"),
+    t("io05","AWS IoT Greengrass","iot","クラウドの機能の一部を、デバイス側(エッジ)で動かせるようにする仕組み。"),
+    t("io06","AWS IoT SiteWise","iot","工場などの産業機器から出るデータを収集・整理するための専用サービス。"),
+    t("io07","AWS IoT Things Graph","iot","複数のIoTデバイスやサービスをつなぎ合わせて連携させるビジュアルツール。"),
+    t("io08","AWS IoT 1-Click","iot","ボタン一つで、あらかじめ決めたLambda処理を呼び出すシンプルなIoT連携サービス。"),
+
+    // --- 機械学習 ---
+    t("ml01","Amazon Comprehend","ml","文章から感情分析やキーワード抽出を行う、自然言語処理サービス。"),
+    t("ml02","Amazon Fraud Detector","ml","なりすまし決済などの不正利用を、機械学習で検知するサービス。"),
+    t("ml03","Amazon Kendra","ml","社内文書などを対象に、自然な質問文で検索できるAI検索エンジン。"),
+    t("ml04","Amazon Lex","ml","音声・テキストでの会話型インターフェース(チャットボット)を作るサービス。"),
+    t("ml05","Amazon Personalize","ml","ユーザーごとのおすすめ表示(レコメンデーション)を、機械学習で実現するサービス。"),
+    t("ml06","Amazon Polly","ml","テキストを自然な音声に変換して読み上げるサービス。"),
+    t("ml07","Amazon Rekognition","ml","画像・動画から物体や顔、テキストなどを認識するサービス。"),
+    t("ml08","Amazon SageMaker AI","ml","機械学習モデルの構築・学習・デプロイをまとめて行えるプラットフォーム(旧称:Amazon SageMaker)。"),
+    t("ml09","Amazon Textract","ml","画像やPDFの中の文字・表を自動で読み取るサービス(高度なOCR)。"),
+    t("ml10","Amazon Transcribe","ml","音声データをテキストに変換する(文字起こしする)サービス。"),
+    t("ml11","Amazon Translate","ml","テキストを別の言語に自動翻訳するサービス。"),
+
+    // --- マネジメントとガバナンス ---
+    t("mg01","AWS CloudFormation","mgmt","インフラの構成をコード(テンプレート)として定義し、同じ環境を何度でも再現できるようにするIaCサービス。"),
+    t("mg02","AWS CloudTrail","mgmt","「誰が・いつ・何をしたか」というAPI呼び出しの操作履歴を記録する、監査ログサービス。"),
+    t("mg03","Amazon CloudWatch","mgmt","CPU使用率など、リソースの稼働状況を監視しアラームを上げる基盤サービス。"),
+    t("mg04","Amazon CloudWatch Logs","mgmt","アプリやシステムのログを集約・保存・検索する仕組み。"),
+    t("mg05","AWS CLI(コマンドラインインターフェイス)","mgmt","コマンドラインからAWSを操作するためのツール。"),
+    t("mg06","AWS Compute Optimizer","mgmt","実際の使用状況をもとに、最適なインスタンスタイプ・サイズを機械学習で提案してくれるツール。",true),
+    t("mg07","AWS Config","mgmt","リソースの設定変更を継続的に記録し、あるべきルールから外れていないかをチェックするサービス。"),
+    t("mg08","AWS Control Tower","mgmt","複数のAWSアカウントを、ベストプラクティスに沿ってまとめてセットアップ・統制するサービス。Organizationsの上に乗るガードレール機能。",true),
+    t("mg09","AWS Health Dashboard","mgmt","AWS側の障害やメンテナンス情報のうち、自分のアカウントに関係する内容だけを個別に通知してくれる画面。"),
+    t("mg10","AWS License Manager","mgmt","自社が持つソフトウェアライセンスの利用状況を一元管理する仕組み。"),
+    t("mg11","Amazon Managed Grafana","mgmt","可視化ツールGrafanaを使ったダッシュボード表示を、マネージドで提供するサービス。"),
+    t("mg12","Amazon Managed Service for Prometheus","mgmt","監視用メトリクスの収集・保存に使われるPrometheusを、マネージドで利用できるサービス。"),
+    t("mg13","AWSマネジメントコンソール","mgmt","ブラウザからAWSを操作するためのWeb画面。"),
+    t("mg14","AWS Organizations","mgmt","複数のAWSアカウントをまとめて1つの組織として管理し、請求も一本化できる仕組み。SCPによる権限制御の土台にもなる。",true),
+    t("mg15","AWS Proton","mgmt","マイクロサービスなどのインフラテンプレートを整備し、開発者がセルフサービスでデプロイできるようにする管理サービス。"),
+    t("mg16","AWS Service Catalog","mgmt","承認済みのIT製品(テンプレート)だけを社内で使わせるための、カタログ管理機能。"),
+    t("mg17","Service Quotas","mgmt","各サービスに設定されている利用上限(クォータ)を確認したり、引き上げを申請したりできる仕組み。"),
+    t("mg18","AWS Systems Manager","mgmt","EC2やオンプレミスサーバーへのパッチ適用・コマンド実行・パラメータ管理などをまとめて行う運用ツール群。"),
+    t("mg19","AWS Trusted Advisor","mgmt","コスト・セキュリティ・パフォーマンスなどの観点からAWS環境をチェックし、改善点を提案してくれるサービス。",true),
+    t("mg20","AWS Well-Architected Tool","mgmt","自分の設計をAWSの設計原則(Well-Architectedフレームワーク)に照らして、セルフチェックできるツール。"),
+
+    // --- メディアサービス ---
+    t("md01","Amazon Elastic Transcoder","media","動画ファイルを、様々な再生機器向けの形式に変換するサービス。"),
+    t("md02","Amazon Kinesis Video Streams","media","カメラなどからの映像ストリームを、安全に取り込んで保存・分析するサービス。"),
+
+    // --- 移行と転送 ---
+    t("mi01","AWS Application Discovery Service","migration","オンプレミスのサーバー構成や依存関係を自動で洗い出す、移行前調査ツール。"),
+    t("mi02","AWS Application Migration Service(MGN)","migration","サーバーをOSごとそのままAWSへ移す「リフト&シフト」型の移行サービス。"),
+    t("mi03","AWS Database Migration Service(DMS)","migration","稼働中のデータベースを、ほぼ無停止でAWSへ移行するサービス。"),
+    t("mi04","AWS DataSync","migration","オンプレミスとAWSの間で、大量のファイルデータを高速かつ自動で同期・転送するサービス。"),
+    t("mi05","AWS Migration Hub","migration","複数の移行ツールの進捗状況を、1か所でまとめて追跡できるダッシュボード。"),
+    t("mi06","AWS Schema Conversion Tool(SCT)","migration","異なる種類のデータベース間(例: Oracle → Aurora)で、スキーマを変換するツール。"),
+    t("mi07","AWS Snow Family","migration","ネットワーク経由だと時間がかかる大容量データを、物理デバイスに詰めて輸送する仕組み。"),
+    t("mi08","AWS Transfer Family","migration","SFTP/FTPS/FTPといった従来型のファイル転送プロトコルを、そのままS3やEFSに使えるようにするサービス。"),
+
+    // --- ネットワークとコンテンツ配信 ---
+    t("nw01","Amazon CloudFront","network","世界中のエッジロケーションを使ってコンテンツを高速に配信するCDN(コンテンツ配信ネットワーク)。"),
+    t("nw02","AWS Direct Connect","network","インターネットを経由せず、専用線で自社拠点とAWSを直接つなぐ接続サービス。"),
+    t("nw03","Elastic Load Balancing(ELB)","network","複数のサーバーにアクセスを振り分ける、負荷分散サービス。"),
+    t("nw04","AWS Global Accelerator","network","AWSのグローバルネットワークを使い、ユーザーからの通信を最適な経路へ誘導してレイテンシーを下げる仕組み。"),
+    t("nw05","AWS PrivateLink","network","インターネットを経由せず、AWSのプライベートネットワーク内だけでサービス同士を安全に接続する仕組み。"),
+    t("nw06","Amazon Route 53","network","ドメイン名の管理とDNS(名前解決)、ヘルスチェックに基づくルーティングを行うサービス。",true),
+    t("nw07","AWS Transit Gateway","network","複数のVPCやオンプレミス拠点を、1つのハブに集約して接続をシンプルにするサービス。"),
+    t("nw08","Amazon VPC(Virtual Private Cloud)","network","自分専用の仮想的なネットワーク空間を、AWS上に作る仕組み。"),
+    t("nw09","AWS VPN","network","インターネット経由で暗号化されたトンネルを使い、オンプレミスとAWSを安全につなぐ接続サービス。"),
+
+    // --- セキュリティ、アイデンティティ、コンプライアンス ---
+    t("sc01","AWS Artifact","security","AWSのコンプライアンス関連レポートや契約書類を、オンデマンドで入手できるポータル。"),
+    t("sc02","AWS Audit Manager","security","PCI DSSなど各種規格への準拠状況の証跡を、継続的に収集・整理してくれるサービス。"),
+    t("sc03","AWS Certificate Manager(ACM)","security","SSL/TLS証明書を発行し、自動で更新してくれるサービス。"),
+    t("sc04","AWS CloudHSM","security","専用の物理ハードウェアで暗号鍵を管理する、より厳格な鍵管理サービス。"),
+    t("sc05","Amazon Cognito","security","モバイル/Webアプリのユーザー認証(サインアップ・サインイン)機能を提供するサービス。"),
+    t("sc06","Amazon Detective","security","セキュリティ調査のために、複数のログを横断して関連性を可視化・分析するサービス。"),
+    t("sc07","AWS Directory Service","security","Microsoft Active Directoryを、クラウド上でマネージドに使えるサービス。"),
+    t("sc08","AWS Firewall Manager","security","複数アカウント・複数VPCにまたがるファイアウォールルール(WAFやセキュリティグループなど)を一元管理するサービス。"),
+    t("sc09","Amazon GuardDuty","security","ログを継続的に分析し、不審なアクセスや攻撃の兆候を自動で検知する脅威検出サービス。"),
+    t("sc10","AWS IAM アイデンティティセンター","security","複数のAWSアカウントやアプリへのシングルサインオンを、まとめて管理する仕組み(旧称:AWS SSO)。",true),
+    t("sc11","AWS IAM(Identity and Access Management)","security","「誰が」「何に対して」「何をしてよいか」を細かく制御する、AWSの権限管理の中核サービス。"),
+    t("sc12","Amazon Inspector","security","EC2やコンテナイメージに含まれる既知の脆弱性を、自動でスキャンするサービス。"),
+    t("sc13","AWS KMS(Key Management Service)","security","データの暗号化に使う鍵を、作成・管理するマネージドサービス。"),
+    t("sc14","Amazon Macie","security","S3に保存された個人情報などの機密データを、機械学習で自動的に見つけ出すサービス。"),
+    t("sc15","AWS Network Firewall","security","VPCの出入り口に設置する、通信の状態を見て判断するステートフルなネットワークファイアウォール。"),
+    t("sc16","AWS RAM(Resource Access Manager)","security","自分の作ったリソース(サブネットなど)を、他のAWSアカウントと安全に共有する仕組み。",true),
+    t("sc17","AWS Secrets Manager","security","DBのパスワードやAPIキーなどの秘密情報を安全に保存し、自動でローテーション(更新)できるサービス。"),
+    t("sc18","AWS Security Hub","security","複数のセキュリティサービスの検出結果を1か所に集約し、全体のセキュリティ状態をまとめて見せてくれるサービス。"),
+    t("sc19","AWS STS(Security Token Service)","security","短時間だけ使える一時的な認証情報を発行する仕組み。"),
+    t("sc20","AWS Shield","security","DDoS攻撃からリソースを守る保護サービス。標準は無料で自動適用、Advancedは有料でより手厚い保護を受けられる。"),
+    t("sc21","AWS WAF(Web Application Firewall)","security","SQLインジェクションなど、Webアプリケーションへの攻撃をブロックするファイアウォール。"),
+
+    // --- ストレージ ---
+    t("st01","AWS Backup","storage","複数のAWSサービスのバックアップを、1つのポリシーでまとめて自動化・一元管理するサービス。",true),
+    t("st02","Amazon EBS(Elastic Block Store)","storage","EC2にアタッチして使う、ブロック単位の永続的なディスク(ハードディスクに相当)。"),
+    t("st03","AWS Elastic Disaster Recovery(DRS)","storage","オンプレミスやクラウドのサーバーを常時レプリケーションしておき、障害発生時に数分でAWS上に復旧させるサービス。",true),
+    t("st04","Amazon EFS(Elastic File System)","storage","複数のEC2から同時にマウントして使える、伸縮自在な共有ファイルストレージ(NFS)。"),
+    t("st05","Amazon FSx","storage","Windows File Server・Lustre・NetApp ONTAPなど、特定用途に特化したマネージド型ファイルシステム。"),
+    t("st06","Amazon S3(Simple Storage Service)","storage","事実上無制限に使える、オブジェクト単位のストレージ。静的サイトからバックアップまで幅広く使われる。"),
+    t("st07","Amazon S3 Glacier","storage","長期保存・低頻度アクセス向けの、超低コストなアーカイブストレージ。"),
+    t("st08","AWS Storage Gateway","storage","オンプレミスとS3などのクラウドストレージを、シームレスにつなぐハイブリッドストレージ機器。")
+  ];
+
+  var TOTAL = TERMS.length;
+
+  // ---- state ----
+  var progress = {};
+  try {
+    var raw = localStorage.getItem("awsSapFlashcardProgress");
+    if (raw) progress = JSON.parse(raw);
+  } catch(e) { progress = {}; }
+
+  function saveProgress(){
+    try { localStorage.setItem("awsSapFlashcardProgress", JSON.stringify(progress)); } catch(e){}
+  }
+
+  var filterCat = "all";
+  var filterWeakOnly = false;
+  var filterRetryOnly = false;
+  var hideKnown = false;
+  var searchText = "";
+  var shuffled = false;
+  var order = TERMS.map(function(x){ return x.id; });
+  var currentPos = 0;
+  var flipped = false;
+
+  // ---- build category select ----
+  var catSelect = document.getElementById("categorySelect");
+  var optAll = document.createElement("option");
+  optAll.value = "all"; optAll.textContent = "すべてのカテゴリ";
+  catSelect.appendChild(optAll);
+  CATS.forEach(function(c){
+    var opt = document.createElement("option");
+    opt.value = c[0]; opt.textContent = c[1];
+    catSelect.appendChild(opt);
+  });
+
+  function getFiltered(){
+    return order
+      .map(function(id){ return TERMS.filter(function(x){ return x.id === id; })[0]; })
+      .filter(function(x){
+        if (!x) return false;
+        if (filterCat !== "all" && x.cat !== filterCat) return false;
+        if (filterWeakOnly && !x.weak) return false;
+        if (filterRetryOnly && progress[x.id] !== "retry") return false;
+        if (hideKnown && progress[x.id] === "known") return false;
+        if (searchText) {
+          var hay = (x.term + " " + x.desc).toLowerCase();
+          if (hay.indexOf(searchText.toLowerCase()) === -1) return false;
+        }
+        return true;
+      });
+  }
+
+  function shuffleOrder(){
+    var arr = TERMS.map(function(x){ return x.id; });
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    order = arr;
+  }
+
+  function updateProgressBar(list){
+    var known = list.filter(function(x){ return progress[x.id] === "known"; }).length;
+    var pct = list.length ? Math.round(known / list.length * 100) : 0;
+    document.getElementById("progressLabel").textContent = known + " / " + list.length + " 覚えた";
+    document.getElementById("progressFill").style.width = pct + "%";
+    document.getElementById("progressPct").textContent = pct + "%";
+  }
+
+  function renderCard(){
+    var list = getFiltered();
+    document.getElementById("totalTermsLabel").textContent = "全" + TOTAL + "語";
+    updateProgressBar(list);
+
+    var cardEl = document.getElementById("flashcard");
+    if (list.length === 0){
+      document.getElementById("cardIndexLabel").textContent = "該当なし";
+      document.getElementById("frontTerm").textContent = "条件に合うカードがありません";
+      document.getElementById("frontCat").textContent = "—";
+      document.getElementById("frontWeak").style.display = "none";
+      document.getElementById("backTerm").textContent = "—";
+      document.getElementById("backDesc").textContent = "カテゴリや検索条件を変えてみてください。";
+      cardEl.classList.remove("flipped");
+      flipped = false;
+      return;
+    }
+    if (currentPos >= list.length) currentPos = 0;
+    if (currentPos < 0) currentPos = list.length - 1;
+    var item = list[currentPos];
+
+    document.getElementById("cardIndexLabel").textContent = (currentPos + 1) + " / " + list.length;
+    document.getElementById("frontCat").textContent = CATMAP[item.cat];
+    document.getElementById("frontWeak").style.display = item.weak ? "inline-block" : "none";
+    document.getElementById("frontTerm").textContent = item.term;
+    document.getElementById("backTerm").textContent = item.term;
+    document.getElementById("backDesc").textContent = item.desc;
+
+    cardEl.classList.remove("flipped");
+    flipped = false;
+
+    var mk = progress[item.id];
+    document.getElementById("markKnown").classList.toggle("active", mk === "known");
+    document.getElementById("markRetry").classList.toggle("active", mk === "retry");
+  }
+
+  function currentItem(){
+    var list = getFiltered();
+    if (list.length === 0) return null;
+    if (currentPos >= list.length) currentPos = 0;
+    return list[currentPos];
+  }
+
+  // ---- events ----
+  catSelect.addEventListener("change", function(){
+    filterCat = catSelect.value; currentPos = 0; renderCard();
+  });
+  document.getElementById("searchInput").addEventListener("input", function(e){
+    searchText = e.target.value; currentPos = 0; renderCard();
+  });
+  document.getElementById("weakChip").addEventListener("click", function(){
+    filterWeakOnly = !filterWeakOnly;
+    this.classList.toggle("on", filterWeakOnly);
+    currentPos = 0; renderCard();
+  });
+  document.getElementById("retryChip").addEventListener("click", function(){
+    filterRetryOnly = !filterRetryOnly;
+    this.classList.toggle("on", filterRetryOnly);
+    currentPos = 0; renderCard();
+  });
+  document.getElementById("hideKnownChip").addEventListener("click", function(){
+    hideKnown = !hideKnown;
+    this.classList.toggle("on", hideKnown);
+    currentPos = 0; renderCard();
+  });
+  document.getElementById("shuffleChip").addEventListener("click", function(){
+    shuffled = !shuffled;
+    this.classList.toggle("on", shuffled);
+    if (shuffled) shuffleOrder(); else order = TERMS.map(function(x){ return x.id; });
+    currentPos = 0; renderCard();
+  });
+  document.getElementById("resetFilterBtn").addEventListener("click", function(){
+    filterCat = "all"; filterWeakOnly = false; filterRetryOnly = false; hideKnown = false; searchText = "";
+    catSelect.value = "all";
+    document.getElementById("searchInput").value = "";
+    document.getElementById("weakChip").classList.remove("on");
+    document.getElementById("retryChip").classList.remove("on");
+    document.getElementById("hideKnownChip").classList.remove("on");
+    currentPos = 0; renderCard();
+  });
+
+  var flashcardEl = document.getElementById("flashcard");
+  function doFlip(){
+    flipped = !flipped;
+    flashcardEl.classList.toggle("flipped", flipped);
+  }
+  flashcardEl.addEventListener("click", doFlip);
+  document.getElementById("flipBtn").addEventListener("click", doFlip);
+
+  document.getElementById("prevBtn").addEventListener("click", function(){
+    var list = getFiltered();
+    if (list.length === 0) return;
+    currentPos = (currentPos - 1 + list.length) % list.length;
+    renderCard();
+  });
+  document.getElementById("nextBtn").addEventListener("click", function(){
+    var list = getFiltered();
+    if (list.length === 0) return;
+    currentPos = (currentPos + 1) % list.length;
+    renderCard();
+  });
+
+  document.getElementById("markKnown").addEventListener("click", function(){
+    var item = currentItem();
+    if (!item) return;
+    progress[item.id] = (progress[item.id] === "known") ? undefined : "known";
+    if (progress[item.id] === undefined) delete progress[item.id];
+    saveProgress();
+    renderCard();
+  });
+  document.getElementById("markRetry").addEventListener("click", function(){
+    var item = currentItem();
+    if (!item) return;
+    progress[item.id] = (progress[item.id] === "retry") ? undefined : "retry";
+    if (progress[item.id] === undefined) delete progress[item.id];
+    saveProgress();
+    renderCard();
+    renderReview();
+  });
+
+  document.getElementById("resetProgressBtn").addEventListener("click", function(){
+    if (!confirm("学習の記録をすべて削除します。よろしいですか？")) return;
+    progress = {};
+    saveProgress();
+    renderCard();
+    renderReview();
+  });
+
+  // ---- review list ----
+  function renderReview(){
+    var listEl = document.getElementById("reviewList");
+    listEl.innerHTML = "";
+    var retryTerms = TERMS.filter(function(x){ return progress[x.id] === "retry"; });
+    if (retryTerms.length === 0){
+      var empty = document.createElement("div");
+      empty.className = "emptynote";
+      empty.textContent = "「もう一度」に印をつけたカードがここに並びます。単語カードタブでカードを裏返し、↺ もう一度 ボタンを押してみてください。";
+      listEl.appendChild(empty);
+      return;
+    }
+    retryTerms.forEach(function(item){
+      var row = document.createElement("div");
+      row.className = "reviewitem";
+      row.innerHTML =
+        '<div><div class="rterm">' + item.term + '</div><div class="rcat">' + CATMAP[item.cat] + (item.weak ? " ・ 苦手分野" : "") + '</div></div>' +
+        '<span class="rarrow">開く →</span>';
+      row.addEventListener("click", function(){
+        switchTab("cards");
+        filterCat = "all"; catSelect.value = "all";
+        filterWeakOnly = false; document.getElementById("weakChip").classList.remove("on");
+        filterRetryOnly = false; document.getElementById("retryChip").classList.remove("on");
+        hideKnown = false; document.getElementById("hideKnownChip").classList.remove("on");
+        searchText = ""; document.getElementById("searchInput").value = "";
+        var list = getFiltered();
+        var idx = list.findIndex(function(x){ return x.id === item.id; });
+        currentPos = idx >= 0 ? idx : 0;
+        renderCard();
+      });
+      listEl.appendChild(row);
+    });
+  }
+
+  // ---- tabs ----
+  function switchTab(name){
+    document.querySelectorAll(".tab-btn").forEach(function(b){
+      b.classList.toggle("active", b.getAttribute("data-tab") === name);
+    });
+    document.querySelectorAll(".panel").forEach(function(p){
+      p.classList.toggle("active", p.id === "panel-" + name);
+    });
+    if (name === "review") renderReview();
+  }
+  document.querySelectorAll(".tab-btn").forEach(function(b){
+    b.addEventListener("click", function(){ switchTab(b.getAttribute("data-tab")); });
+  });
+
+  // ---- init ----
+  renderCard();
+  renderReview();
+})();
+</script>
+</body>
+</html>
