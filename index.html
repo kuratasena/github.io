@@ -161,16 +161,55 @@
   .panel { display: none; }
   .panel.active { display: block; }
 
-  /* --- overview --- */
-  .domainblock {
+  /* --- overview stats --- */
+  .statoverall {
     background: var(--bg-panel);
     border: 1px solid var(--grid-line-strong);
     border-radius: var(--radius-card);
     padding: 16px 18px;
     margin-bottom: 12px;
   }
-  .domainblock h3 { margin: 0 0 6px; font-size: 15px; color: var(--amber); }
-  .domainblock p { margin: 0; font-size: 13.5px; color: var(--white-dim); line-height: 1.7; }
+  .statoverall .stitle { font-family: var(--font-mono); font-size: 12px; color: var(--white-dim); margin: 0 0 12px; }
+  .statnums { display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 12px; }
+  .statnum b { display: block; font-size: 22px; font-family: var(--font-mono); line-height: 1.1; }
+  .statnum span { font-size: 11.5px; color: var(--white-dim); }
+  .statnum.known b { color: var(--known); }
+  .statnum.retry b { color: var(--retry); }
+  .statcatlist { display: flex; flex-direction: column; gap: 7px; }
+  .statcat-row { display: flex; align-items: center; gap: 10px; }
+  .statcat-name { font-size: 12.5px; width: 168px; flex-shrink: 0; color: var(--white-dim); line-height: 1.3; }
+  .statcat-track { flex: 1; height: 8px; background: var(--bg-panel-2); border-radius: 4px; overflow: hidden; border: 1px solid var(--grid-line-strong); }
+  .statcat-fill { height: 100%; background: var(--known); border-radius: 4px; }
+  .statcat-pct { font-family: var(--font-mono); font-size: 11.5px; width: 46px; text-align: right; color: var(--white-dim); }
+
+  /* --- add card form --- */
+  .addform { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+  .addlabel { font-size: 12.5px; color: var(--white-dim); margin-top: 8px; }
+  .addlabel .req { color: var(--retry); }
+  textarea {
+    font-family: var(--font-jp);
+    font-size: 13.5px;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--grid-line-strong);
+    color: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    resize: vertical;
+  }
+  .addcheck { font-size: 13px; color: var(--white-dim); display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .addsubmit {
+    margin-top: 12px;
+    font-family: var(--font-jp); font-size: 14px; font-weight: 600;
+    background: var(--amber); color: #1D1305;
+    border: none; border-radius: var(--radius-sm);
+    padding: 12px; cursor: pointer;
+  }
+  .addlisthead { font-family: var(--font-mono); font-size: 12px; color: var(--white-dim); margin-bottom: 8px; }
+  .delbtn {
+    background: none; border: 1px solid var(--grid-line-strong); color: var(--retry);
+    font-family: var(--font-mono); font-size: 11px; padding: 6px 10px; border-radius: 6px; cursor: pointer;
+    flex-shrink: 0;
+  }
 
   /* --- controls --- */
   .controls {
@@ -215,7 +254,7 @@
   .card {
     position: relative;
     width: 100%;
-    min-height: 260px;
+    min-height: 300px;
     transform-style: preserve-3d;
     transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
     cursor: pointer;
@@ -231,6 +270,8 @@
     color: var(--ink);
     border: 1px solid rgba(0,0,0,0.08);
     box-shadow: 0 8px 24px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.4);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .face.back { transform: rotateY(180deg); background: var(--paper-2); justify-content: flex-start; }
   .facetop { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: auto; }
@@ -257,6 +298,21 @@
   .fliphint { text-align: center; font-size: 11.5px; color: var(--ink-soft); margin-top: auto; font-family: var(--font-mono); }
   .desc { font-size: 15px; line-height: 1.85; color: var(--ink); margin: 4px 0 0; }
   .backterm { font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; font-weight: 600; }
+
+  .tipbadge { font-size: 13px; }
+
+  .tipsheader { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em; color: var(--amber-deep); margin: 16px 0 8px; padding-top: 14px; border-top: 1px dashed rgba(23,41,58,0.18); }
+  .tipaddtoggle { flex-shrink: 0; background: none; border: 1px solid rgba(199,127,30,0.45); color: var(--amber-deep); font-family: var(--font-mono); font-size: 11px; padding: 4px 10px; border-radius: 999px; cursor: pointer; }
+  .tiplist { display: flex; flex-direction: column; gap: 8px; }
+  .tipitem { display: flex; gap: 8px; align-items: flex-start; background: rgba(227,165,61,0.16); border-left: 3px solid var(--amber); border-radius: 0 8px 8px 0; padding: 9px 10px; }
+  .tiptext { flex: 1; font-size: 12.5px; line-height: 1.65; color: var(--ink); white-space: pre-wrap; }
+  .tipdel { flex-shrink: 0; background: none; border: none; color: var(--ink-soft); font-size: 16px; line-height: 1; cursor: pointer; padding: 0 3px; }
+  .tipempty { font-size: 12px; color: var(--ink-soft); }
+  .tipcomposer { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .tipcomposer textarea { font-family: var(--font-jp); font-size: 12.5px; padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(23,41,58,0.22); background: rgba(255,255,255,0.55); color: var(--ink); resize: vertical; }
+  .tipcomposerbtns { display: flex; gap: 8px; }
+  .tipcomposerbtns button { flex: 1; font-family: var(--font-jp); font-size: 12.5px; padding: 8px; border-radius: 8px; cursor: pointer; border: 1px solid rgba(23,41,58,0.22); background: rgba(255,255,255,0.55); color: var(--ink); }
+  .tipcomposerbtns button.save { background: var(--amber); border-color: var(--amber); color: #1D1305; font-weight: 600; }
 
   .cardnav { display: flex; gap: 8px; margin-bottom: 12px; }
   .navbtn {
@@ -354,28 +410,14 @@
     <button class="tab-btn active" data-tab="overview">概要</button>
     <button class="tab-btn" data-tab="cards">単語カード</button>
     <button class="tab-btn" data-tab="review">苦手リスト</button>
+    <button class="tab-btn" data-tab="add">カード追加</button>
   </nav>
 
   <!-- OVERVIEW -->
   <section class="panel active" id="panel-overview">
-    <div class="domainblock">
-      <h3>コンテンツ分野 1 — 複雑な組織に対応するソリューションの設計(26%)</h3>
-      <p>ネットワーク接続戦略、セキュリティ統制、信頼性・耐障害性、マルチアカウント環境、コスト可視化。既に存在する複雑な組織構造の中で設計する視点。</p>
-    </div>
-    <div class="domainblock">
-      <h3>コンテンツ分野 2 — 新しいソリューションのための設計(29%)</h3>
-      <p>デプロイ戦略、事業継続性、セキュリティ統制、信頼性、パフォーマンス、コスト最適化。ゼロから新しく作るときの視点で、出題比率が最も高い分野。</p>
-    </div>
-    <div class="domainblock">
-      <h3>コンテンツ分野 3 — 既存のソリューションの継続的な改善(25%)</h3>
-      <p>運用上の優秀性、セキュリティ、パフォーマンス、信頼性、コストの各観点から、すでに動いているシステムをどう改善するか。</p>
-    </div>
-    <div class="domainblock">
-      <h3>コンテンツ分野 4 — ワークロードの移行とモダナイゼーションの加速(20%)</h3>
-      <p>移行対象の選定、移行アプローチの決定、新しいアーキテクチャの決定、サーバーレス・コンテナ化によるモダナイゼーション。</p>
-    </div>
+    <div id="overviewStats"></div>
     <div class="tip" style="margin-top:6px;">
-      このアプリの「単語カード」タブには、試験ガイド付録に載っている出題範囲内のAWSサービス(約100個)と、RTO/RPOや7Rなどの重要コンセプト(約20個)が入っています。カテゴリで絞り込んだり、検索したりしながら使ってください。
+      「単語カード」タブには、試験ガイド付録に載っている出題範囲内のAWSサービスと、RTO/RPOや7Rなどの重要コンセプトが入っています。「カード追加」タブから自分だけの単語も足せます。コンテンツ分野の出題比率は上部を参照してください。
     </div>
   </section>
 
@@ -405,7 +447,10 @@
         <div class="face front">
           <div class="facetop">
             <span class="catlabel" id="frontCat">—</span>
-            <span class="weakbadge" id="frontWeak" style="display:none;">苦手</span>
+            <span>
+              <span class="tipbadge" id="frontTipBadge" style="display:none;">🎯</span>
+              <span class="weakbadge" id="frontWeak" style="display:none;">苦手</span>
+            </span>
           </div>
           <div class="termname" id="frontTerm">—</div>
           <div class="fliphint">タップして意味を見る ↻</div>
@@ -413,6 +458,7 @@
         <div class="face back">
           <div class="backterm" id="backTerm">—</div>
           <p class="desc" id="backDesc">—</p>
+          <div id="backTips"></div>
         </div>
       </div>
     </div>
@@ -437,6 +483,38 @@
   <!-- REVIEW -->
   <section class="panel" id="panel-review">
     <div class="reviewlist" id="reviewList"></div>
+  </section>
+
+  <!-- ADD -->
+  <section class="panel" id="panel-add">
+    <form class="addform" id="addForm">
+      <label class="addlabel" for="addTermInput">用語 <span class="req">*</span></label>
+      <input type="text" id="addTermInput" placeholder="例: Amazon Verified Permissions" autocomplete="off" required>
+
+      <label class="addlabel" for="addCatSelect">カテゴリ</label>
+      <select id="addCatSelect"></select>
+      <input type="text" id="addCatNewInput" placeholder="新しいカテゴリ名を入力" autocomplete="off" style="display:none; margin-top:6px;">
+
+      <label class="addlabel" for="addDescInput">説明 <span class="req">*</span></label>
+      <textarea id="addDescInput" rows="3" placeholder="自分がわかる言葉で、平易に説明を書いてください。" required></textarea>
+
+      <label class="addcheck"><input type="checkbox" id="addWeakInput"> 苦手分野としてマークする</label>
+
+      <button type="submit" class="addsubmit" id="addSubmitBtn">＋ カードを追加</button>
+      <button type="button" class="textbtn" id="cancelEditBtn" style="display:none;">編集をキャンセル</button>
+    </form>
+
+    <div class="addlisthead">自分で追加したカード(タップして編集) <span id="addCountLabel"></span></div>
+    <div class="reviewlist" id="customList"></div>
+
+    <div class="addlisthead" style="margin-top:22px;">バックアップ(自分のカード + 学習記録)</div>
+    <div class="controls">
+      <button type="button" class="chip" id="exportBtn">書き出し(JSON)</button>
+      <button type="button" class="chip" id="importBtn">読み込み</button>
+    </div>
+    <input type="file" id="importFileInput" accept="application/json,.json" style="display:none">
+    <textarea id="exportFallback" rows="6" readonly style="display:none; margin-top:8px; font-family:var(--font-mono); font-size:11px;"></textarea>
+    <p id="exportFallbackNote" style="display:none; font-size:12px; color:var(--white-dim); margin-top:6px; line-height:1.6;">この内容を全選択してコピーし、テキストファイルとして保存してください。</p>
   </section>
 
   <footer class="foot">
@@ -468,7 +546,8 @@
     ["migration","移行と転送"],
     ["network","ネットワークとコンテンツ配信"],
     ["security","セキュリティ、アイデンティティ、コンプライアンス"],
-    ["storage","ストレージ"]
+    ["storage","ストレージ"],
+    ["custom","マイ単語"]
   ];
   var CATMAP = {}; CATS.forEach(function(c){ CATMAP[c[0]] = c[1]; });
 
@@ -690,6 +769,49 @@
 
   var TOTAL = TERMS.length;
 
+  // ---- custom (user-added) terms ----
+  var customTerms = [];
+  try {
+    var rawCustom = localStorage.getItem("awsSapCustomTerms");
+    if (rawCustom) customTerms = JSON.parse(rawCustom);
+  } catch(e) { customTerms = []; }
+
+  function saveCustomTerms(){
+    try { localStorage.setItem("awsSapCustomTerms", JSON.stringify(customTerms)); } catch(e){}
+  }
+
+  function getAllTerms(){ return TERMS.concat(customTerms); }
+
+  // ---- exam tips (per-term notes the user adds) ----
+  var examTips = {};
+  try {
+    var rawTips = localStorage.getItem("awsSapExamTips");
+    if (rawTips) examTips = JSON.parse(rawTips);
+  } catch(e) { examTips = {}; }
+
+  function saveExamTips(){
+    try { localStorage.setItem("awsSapExamTips", JSON.stringify(examTips)); } catch(e){}
+  }
+  function getTipsFor(id){ return examTips[id] || []; }
+  function addTip(id, text){
+    text = (text || "").trim();
+    if (!text) return;
+    if (!examTips[id]) examTips[id] = [];
+    examTips[id].push(text);
+    saveExamTips();
+  }
+  function deleteTip(id, idx){
+    if (!examTips[id]) return;
+    examTips[id].splice(idx, 1);
+    if (examTips[id].length === 0) delete examTips[id];
+    saveExamTips();
+  }
+  function totalTipCount(){
+    var n = 0;
+    Object.keys(examTips).forEach(function(id){ n += examTips[id].length; });
+    return n;
+  }
+
   // ---- state ----
   var progress = {};
   try {
@@ -707,24 +829,77 @@
   var hideKnown = false;
   var searchText = "";
   var shuffled = false;
-  var order = TERMS.map(function(x){ return x.id; });
+  var order = getAllTerms().map(function(x){ return x.id; });
   var currentPos = 0;
   var flipped = false;
+  var tipComposerOpen = false;
 
-  // ---- build category select ----
+  // ---- dynamic categories (created through the add-card form) ----
+  var dynamicCats = [];
+  function registerCategory(key){
+    if (CATMAP[key]) return key;
+    CATMAP[key] = key;
+    dynamicCats.push([key, key]);
+    return key;
+  }
+  customTerms.forEach(function(ct){ registerCategory(ct.cat); });
+
+  function resolveCategoryKey(inputText){
+    var txt = (inputText || "").trim();
+    if (!txt) txt = "マイ単語";
+    var found = null;
+    CATS.forEach(function(c){ if (c[1] === txt || c[0] === txt) found = c[0]; });
+    if (found) return found;
+    dynamicCats.forEach(function(c){ if (c[1] === txt) found = c[0]; });
+    if (found) return found;
+    return registerCategory(txt);
+  }
+
+  // ---- build/rebuild category choosers (filter select + add-form select) ----
   var catSelect = document.getElementById("categorySelect");
-  var optAll = document.createElement("option");
-  optAll.value = "all"; optAll.textContent = "すべてのカテゴリ";
-  catSelect.appendChild(optAll);
-  CATS.forEach(function(c){
-    var opt = document.createElement("option");
-    opt.value = c[0]; opt.textContent = c[1];
-    catSelect.appendChild(opt);
+  var addCatSelect = document.getElementById("addCatSelect");
+  var addCatNewInput = document.getElementById("addCatNewInput");
+
+  function rebuildCategoryChoosers(){
+    var keep = catSelect.value || "all";
+    catSelect.innerHTML = "";
+    var optAll = document.createElement("option");
+    optAll.value = "all"; optAll.textContent = "すべてのカテゴリ";
+    catSelect.appendChild(optAll);
+    CATS.concat(dynamicCats).forEach(function(c){
+      var opt = document.createElement("option");
+      opt.value = c[0]; opt.textContent = c[1];
+      catSelect.appendChild(opt);
+    });
+    var stillThere = Array.prototype.some.call(catSelect.options, function(o){ return o.value === keep; });
+    catSelect.value = stillThere ? keep : "all";
+    filterCat = catSelect.value;
+
+    var keepAdd = addCatSelect.value || "custom";
+    addCatSelect.innerHTML = "";
+    CATS.concat(dynamicCats).forEach(function(c){
+      var opt = document.createElement("option");
+      opt.value = c[0]; opt.textContent = c[1];
+      addCatSelect.appendChild(opt);
+    });
+    var optNew = document.createElement("option");
+    optNew.value = "__new__"; optNew.textContent = "＋ 新しいカテゴリを作る";
+    addCatSelect.appendChild(optNew);
+    var addStillThere = Array.prototype.some.call(addCatSelect.options, function(o){ return o.value === keepAdd; });
+    addCatSelect.value = addStillThere ? keepAdd : "custom";
+    addCatNewInput.style.display = (addCatSelect.value === "__new__") ? "block" : "none";
+  }
+  rebuildCategoryChoosers();
+
+  addCatSelect.addEventListener("change", function(){
+    addCatNewInput.style.display = (addCatSelect.value === "__new__") ? "block" : "none";
+    if (addCatSelect.value === "__new__") addCatNewInput.focus();
   });
 
   function getFiltered(){
+    var all = getAllTerms();
     return order
-      .map(function(id){ return TERMS.filter(function(x){ return x.id === id; })[0]; })
+      .map(function(id){ return all.filter(function(x){ return x.id === id; })[0]; })
       .filter(function(x){
         if (!x) return false;
         if (filterCat !== "all" && x.cat !== filterCat) return false;
@@ -740,7 +915,7 @@
   }
 
   function shuffleOrder(){
-    var arr = TERMS.map(function(x){ return x.id; });
+    var arr = getAllTerms().map(function(x){ return x.id; });
     for (var i = arr.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
       var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
@@ -758,7 +933,7 @@
 
   function renderCard(){
     var list = getFiltered();
-    document.getElementById("totalTermsLabel").textContent = "全" + TOTAL + "語";
+    document.getElementById("totalTermsLabel").textContent = "全" + getAllTerms().length + "語";
     updateProgressBar(list);
 
     var cardEl = document.getElementById("flashcard");
@@ -767,10 +942,13 @@
       document.getElementById("frontTerm").textContent = "条件に合うカードがありません";
       document.getElementById("frontCat").textContent = "—";
       document.getElementById("frontWeak").style.display = "none";
+      document.getElementById("frontTipBadge").style.display = "none";
       document.getElementById("backTerm").textContent = "—";
       document.getElementById("backDesc").textContent = "カテゴリや検索条件を変えてみてください。";
+      document.getElementById("backTips").innerHTML = "";
       cardEl.classList.remove("flipped");
       flipped = false;
+      tipComposerOpen = false;
       return;
     }
     if (currentPos >= list.length) currentPos = 0;
@@ -786,10 +964,71 @@
 
     cardEl.classList.remove("flipped");
     flipped = false;
+    tipComposerOpen = false;
+    renderTipsSection(item);
 
     var mk = progress[item.id];
     document.getElementById("markKnown").classList.toggle("active", mk === "known");
     document.getElementById("markRetry").classList.toggle("active", mk === "retry");
+  }
+
+  function renderTipsSection(item){
+    var container = document.getElementById("backTips");
+    var tips = getTipsFor(item.id);
+    document.getElementById("frontTipBadge").style.display = tips.length ? "inline" : "none";
+
+    var html = '<div class="tipsheader">🎯 試験のポイント<button type="button" class="tipaddtoggle" id="tipAddToggle">' + (tipComposerOpen ? "閉じる" : "+ 追加") + '</button></div>';
+
+    if (tips.length === 0 && !tipComposerOpen) {
+      html += '<p class="tipempty">まだありません。「+ 追加」から、この用語の引っかけポイントや注意点を書き留められます。</p>';
+    } else if (tips.length > 0) {
+      html += '<div class="tiplist">';
+      tips.forEach(function(tipText, idx){
+        html += '<div class="tipitem"><span class="tiptext">' + escapeHtml(tipText) + '</span><button type="button" class="tipdel" data-idx="' + idx + '">×</button></div>';
+      });
+      html += '</div>';
+    }
+
+    if (tipComposerOpen) {
+      html += '<div class="tipcomposer"><textarea id="tipComposerInput" rows="3" placeholder="例: ElastiCache for Redisは、転送中の暗号化やAUTHトークンを後から既存クラスターに追加できない、など"></textarea>';
+      html += '<div class="tipcomposerbtns"><button type="button" class="save" id="tipSaveBtn">保存</button><button type="button" id="tipCancelBtn">キャンセル</button></div></div>';
+    }
+
+    container.innerHTML = html;
+
+    document.getElementById("tipAddToggle").addEventListener("click", function(){
+      tipComposerOpen = !tipComposerOpen;
+      renderTipsSection(item);
+      if (tipComposerOpen) {
+        var ta = document.getElementById("tipComposerInput");
+        if (ta) ta.focus();
+      }
+    });
+
+    container.querySelectorAll(".tipdel").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var idx = parseInt(this.getAttribute("data-idx"), 10);
+        deleteTip(item.id, idx);
+        renderTipsSection(item);
+      });
+    });
+
+    if (tipComposerOpen) {
+      var saveBtn = document.getElementById("tipSaveBtn");
+      var cancelBtn = document.getElementById("tipCancelBtn");
+      if (saveBtn) saveBtn.addEventListener("click", function(){
+        var ta = document.getElementById("tipComposerInput");
+        var val = ta.value.trim();
+        if (!val) return;
+        addTip(item.id, val);
+        tipComposerOpen = false;
+        renderTipsSection(item);
+      });
+      if (cancelBtn) cancelBtn.addEventListener("click", function(){
+        tipComposerOpen = false;
+        renderTipsSection(item);
+      });
+    }
   }
 
   function currentItem(){
@@ -824,7 +1063,7 @@
   document.getElementById("shuffleChip").addEventListener("click", function(){
     shuffled = !shuffled;
     this.classList.toggle("on", shuffled);
-    if (shuffled) shuffleOrder(); else order = TERMS.map(function(x){ return x.id; });
+    if (shuffled) shuffleOrder(); else order = getAllTerms().map(function(x){ return x.id; });
     currentPos = 0; renderCard();
   });
   document.getElementById("resetFilterBtn").addEventListener("click", function(){
@@ -882,13 +1121,270 @@
     saveProgress();
     renderCard();
     renderReview();
+    renderOverviewStats();
+  });
+
+  // ---- overview stats ----
+  function renderOverviewStats(){
+    var all = getAllTerms();
+    var known = 0, retry = 0;
+    all.forEach(function(x){
+      if (progress[x.id] === "known") known++;
+      else if (progress[x.id] === "retry") retry++;
+    });
+    var unseen = all.length - known - retry;
+
+    var catOrder = CATS.concat(dynamicCats);
+    var seenKey = {};
+    var rows = [];
+    catOrder.forEach(function(c){
+      var key = c[0];
+      if (seenKey[key]) return;
+      seenKey[key] = true;
+      var items = all.filter(function(x){ return x.cat === key; });
+      if (items.length === 0) return;
+      var k = items.filter(function(x){ return progress[x.id] === "known"; }).length;
+      rows.push({ label: c[1], total: items.length, known: k });
+    });
+
+    var overallPct = all.length ? Math.round(known / all.length * 100) : 0;
+    var html = "";
+    html += '<div class="statoverall">';
+    html += '<p class="stitle">学習の進み具合(全' + all.length + '語' + (customTerms.length ? " ・ 自分で追加した" + customTerms.length + "語を含む" : "") + (totalTipCount() ? " ・ 🎯試験のポイント" + totalTipCount() + "件" : "") + ')</p>';
+    html += '<div class="statnums">';
+    html += '<div class="statnum known"><b>' + known + '</b><span>覚えた</span></div>';
+    html += '<div class="statnum retry"><b>' + retry + '</b><span>もう一度</span></div>';
+    html += '<div class="statnum"><b>' + unseen + '</b><span>未着手</span></div>';
+    html += '</div>';
+    html += '<div class="ptrack"><div class="pfill" style="width:' + overallPct + '%"></div></div>';
+    html += '</div>';
+
+    html += '<div class="statoverall">';
+    html += '<p class="stitle">カテゴリ別の習熟度</p>';
+    html += '<div class="statcatlist">';
+    rows.forEach(function(r){
+      var pct = r.total ? Math.round(r.known / r.total * 100) : 0;
+      html += '<div class="statcat-row"><span class="statcat-name">' + r.label + '</span><div class="statcat-track"><div class="statcat-fill" style="width:' + pct + '%"></div></div><span class="statcat-pct">' + r.known + '/' + r.total + '</span></div>';
+    });
+    html += '</div></div>';
+
+    document.getElementById("overviewStats").innerHTML = html;
+  }
+
+  // ---- add-card form ----
+  function escapeHtml(s){
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  function renderAddList(){
+    var listEl = document.getElementById("customList");
+    document.getElementById("addCountLabel").textContent = "(" + customTerms.length + "件)";
+    listEl.innerHTML = "";
+    if (customTerms.length === 0){
+      var empty = document.createElement("div");
+      empty.className = "emptynote";
+      empty.textContent = "まだ自分で追加したカードはありません。上のフォームから追加すると、ここと「単語カード」タブに表示されます。";
+      listEl.appendChild(empty);
+      return;
+    }
+    customTerms.slice().reverse().forEach(function(item){
+      var row = document.createElement("div");
+      row.className = "reviewitem";
+      row.innerHTML =
+        '<div><div class="rterm">' + escapeHtml(item.term) + '</div><div class="rcat">' + escapeHtml(CATMAP[item.cat] || item.cat) + (item.weak ? " ・ 苦手分野" : "") + '</div></div>' +
+        '<button type="button" class="delbtn">削除</button>';
+      row.addEventListener("click", function(){ startEdit(item); });
+      row.querySelector(".delbtn").addEventListener("click", function(ev){
+        ev.stopPropagation();
+        deleteCustomTerm(item.id);
+      });
+      listEl.appendChild(row);
+    });
+  }
+
+  function deleteCustomTerm(id){
+    if (!confirm("このカードを削除します。よろしいですか？")) return;
+    customTerms = customTerms.filter(function(x){ return x.id !== id; });
+    saveCustomTerms();
+    order = order.filter(function(x){ return x !== id; });
+    if (progress[id]) { delete progress[id]; saveProgress(); }
+    if (editingId === id) resetAddForm();
+    renderAddList();
+    renderCard();
+    renderReview();
+    renderOverviewStats();
+  }
+
+  var addForm = document.getElementById("addForm");
+  var addSubmitBtn = document.getElementById("addSubmitBtn");
+  var cancelEditBtn = document.getElementById("cancelEditBtn");
+  var editingId = null;
+
+  function resetAddForm(){
+    editingId = null;
+    addForm.reset();
+    addCatSelect.value = "custom";
+    addCatNewInput.style.display = "none";
+    addCatNewInput.value = "";
+    addSubmitBtn.textContent = "＋ カードを追加";
+    cancelEditBtn.style.display = "none";
+  }
+
+  function startEdit(item){
+    editingId = item.id;
+    document.getElementById("addTermInput").value = item.term;
+    document.getElementById("addDescInput").value = item.desc;
+    document.getElementById("addWeakInput").checked = !!item.weak;
+    var hasOption = Array.prototype.some.call(addCatSelect.options, function(o){ return o.value === item.cat; });
+    addCatSelect.value = hasOption ? item.cat : "custom";
+    addCatNewInput.style.display = "none";
+    addSubmitBtn.textContent = "更新する";
+    cancelEditBtn.style.display = "inline-block";
+    addForm.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  cancelEditBtn.addEventListener("click", function(){ resetAddForm(); });
+
+  addForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var termVal = document.getElementById("addTermInput").value.trim();
+    var descVal = document.getElementById("addDescInput").value.trim();
+    var weakVal = document.getElementById("addWeakInput").checked;
+    if (!termVal || !descVal) return;
+
+    var catKey;
+    if (addCatSelect.value === "__new__") {
+      catKey = resolveCategoryKey(addCatNewInput.value);
+      rebuildCategoryChoosers();
+    } else {
+      catKey = addCatSelect.value;
+    }
+
+    if (editingId) {
+      var idx = -1;
+      for (var i = 0; i < customTerms.length; i++) { if (customTerms[i].id === editingId) { idx = i; break; } }
+      if (idx >= 0) customTerms[idx] = t(editingId, termVal, catKey, descVal, weakVal);
+      saveCustomTerms();
+    } else {
+      var newId = "u" + Date.now().toString(36) + Math.floor(Math.random() * 1000);
+      customTerms.push(t(newId, termVal, catKey, descVal, weakVal));
+      saveCustomTerms();
+      order.push(newId);
+    }
+
+    resetAddForm();
+    renderAddList();
+    renderCard();
+    renderOverviewStats();
+  });
+
+  // ---- backup: export / import ----
+  async function getDownloadsCap(){
+    try {
+      if (!window.claude || typeof window.claude.use !== "function") return null;
+      var cap = await window.claude.use("downloads");
+      return cap || null;
+    } catch(e) { return null; }
+  }
+
+  function showExportFallback(payload){
+    var ta = document.getElementById("exportFallback");
+    var note = document.getElementById("exportFallbackNote");
+    ta.value = payload;
+    ta.style.display = "block";
+    note.style.display = "block";
+    ta.focus();
+    ta.select();
+  }
+
+  document.getElementById("exportBtn").addEventListener("click", async function(){
+    var payload = JSON.stringify({
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      customTerms: customTerms,
+      progress: progress,
+      examTips: examTips
+    }, null, 2);
+
+    var downloads = await getDownloadsCap();
+    if (!downloads) { showExportFallback(payload); return; }
+    try {
+      await downloads.save({ filename: "aws-sap-flashcards-backup.json", data: payload });
+    } catch(err) {
+      if (!err || err.code !== "declined") showExportFallback(payload);
+    }
+  });
+
+  document.getElementById("importBtn").addEventListener("click", function(){
+    document.getElementById("importFileInput").click();
+  });
+
+  document.getElementById("importFileInput").addEventListener("change", function(e){
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      var added = 0;
+      try {
+        var data = JSON.parse(reader.result);
+        var importedCustom = Array.isArray(data.customTerms) ? data.customTerms : [];
+        var importedProgress = (data.progress && typeof data.progress === "object") ? data.progress : {};
+        var importedTips = (data.examTips && typeof data.examTips === "object") ? data.examTips : {};
+
+        var existingIds = {};
+        customTerms.forEach(function(x){ existingIds[x.id] = true; });
+        var idRemap = {};
+
+        importedCustom.forEach(function(item){
+          if (!item || !item.term || !item.desc) return;
+          var originalId = item.id;
+          var id = item.id;
+          if (!id || existingIds[id]) {
+            id = "u" + Date.now().toString(36) + Math.floor(Math.random() * 100000);
+          }
+          existingIds[id] = true;
+          if (originalId) idRemap[originalId] = id;
+          var cat = item.cat || "custom";
+          registerCategory(cat);
+          customTerms.push(t(id, item.term, cat, item.desc, !!item.weak));
+          added++;
+        });
+
+        Object.keys(importedProgress).forEach(function(k){ progress[k] = importedProgress[k]; });
+
+        Object.keys(importedTips).forEach(function(oldId){
+          var newId = idRemap.hasOwnProperty(oldId) ? idRemap[oldId] : oldId;
+          var arr = examTips[newId] || [];
+          importedTips[oldId].forEach(function(txt){
+            if (arr.indexOf(txt) === -1) arr.push(txt);
+          });
+          if (arr.length) examTips[newId] = arr;
+        });
+
+        saveCustomTerms();
+        saveProgress();
+        saveExamTips();
+        order = getAllTerms().map(function(x){ return x.id; });
+        if (shuffled) shuffleOrder();
+        rebuildCategoryChoosers();
+        renderAddList();
+        renderCard();
+        renderReview();
+        renderOverviewStats();
+        alert(added + "件のカードを読み込みました。");
+      } catch(err) {
+        alert("読み込みに失敗しました。ファイルの内容を確認してください。");
+      }
+      document.getElementById("importFileInput").value = "";
+    };
+    reader.readAsText(file);
   });
 
   // ---- review list ----
   function renderReview(){
     var listEl = document.getElementById("reviewList");
     listEl.innerHTML = "";
-    var retryTerms = TERMS.filter(function(x){ return progress[x.id] === "retry"; });
+    var retryTerms = getAllTerms().filter(function(x){ return progress[x.id] === "retry"; });
     if (retryTerms.length === 0){
       var empty = document.createElement("div");
       empty.className = "emptynote";
@@ -927,6 +1423,8 @@
       p.classList.toggle("active", p.id === "panel-" + name);
     });
     if (name === "review") renderReview();
+    if (name === "overview") renderOverviewStats();
+    if (name === "add") renderAddList();
   }
   document.querySelectorAll(".tab-btn").forEach(function(b){
     b.addEventListener("click", function(){ switchTab(b.getAttribute("data-tab")); });
@@ -935,6 +1433,8 @@
   // ---- init ----
   renderCard();
   renderReview();
+  renderOverviewStats();
+  renderAddList();
 })();
 </script>
 </body>
