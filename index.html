@@ -1083,6 +1083,7 @@
   }
   flashcardEl.addEventListener("click", doFlip);
   document.getElementById("flipBtn").addEventListener("click", doFlip);
+  document.getElementById("backTips").addEventListener("click", function(e){ e.stopPropagation(); });
 
   document.getElementById("prevBtn").addEventListener("click", function(){
     var list = getFiltered();
