@@ -95,47 +95,6 @@
     margin: 0 0 4px;
     letter-spacing: -0.01em;
   }
-  .sub { color: var(--white-dim); font-size: 14px; margin: 0 0 18px; line-height: 1.6; }
-
-  .factrow {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-bottom: 18px;
-  }
-  .fact {
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    background: var(--bg-panel-2);
-    border: 1px solid var(--grid-line-strong);
-    border-radius: var(--radius-sm);
-    padding: 6px 10px;
-    color: var(--white-dim);
-  }
-  .fact b { color: var(--white); font-weight: 600; }
-
-  .domainbars { margin-bottom: 18px; }
-  .domainbars .label {
-    font-size: 12px; color: var(--white-dim); margin-bottom: 8px;
-    font-family: var(--font-mono);
-  }
-  .dbar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-  .dbar-name { font-size: 12.5px; width: 168px; flex-shrink: 0; color: var(--white-dim); line-height: 1.3; }
-  .dbar-track { flex: 1; height: 8px; background: var(--bg-panel-2); border-radius: 4px; overflow: hidden; border: 1px solid var(--grid-line-strong); }
-  .dbar-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--amber)); border-radius: 4px; }
-  .dbar-pct { font-family: var(--font-mono); font-size: 12px; width: 34px; text-align: right; color: var(--white); }
-
-  .tip {
-    background: var(--bg-panel);
-    border: 1px solid var(--grid-line-strong);
-    border-left: 3px solid var(--amber);
-    border-radius: var(--radius-sm);
-    padding: 12px 14px;
-    font-size: 13.5px;
-    line-height: 1.7;
-    color: var(--white-dim);
-    margin-bottom: 22px;
-  }
-  .tip strong { color: var(--amber); font-weight: 700; }
-
   nav.tabs {
     display: flex; gap: 4px; margin-bottom: 20px;
     border-bottom: 1px solid var(--grid-line-strong);
@@ -205,6 +164,24 @@
     padding: 12px; cursor: pointer;
   }
   .addlisthead { font-family: var(--font-mono); font-size: 12px; color: var(--white-dim); margin-bottom: 8px; }
+
+  /* --- 4-choice quiz --- */
+  .qzcard { background: var(--paper); color: var(--ink); border-radius: var(--radius-card); padding: 20px 18px; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 8px 24px rgba(0,0,0,0.22), inset 0 0 0 1px rgba(255,255,255,0.4); margin-bottom: 14px; }
+  .qzmeta { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-soft); background: rgba(23,41,58,0.08); padding: 4px 8px; border-radius: 5px; display: inline-block; margin-bottom: 12px; }
+  .qzprompt { font-size: 14.5px; line-height: 1.85; color: var(--ink); margin: 0 0 16px; }
+  .qzresultbanner { padding: 11px 14px; border-radius: 10px; margin-bottom: 14px; font-weight: 700; font-size: 14px; }
+  .qzresultbanner.correct { background: rgba(111,174,122,0.85); color: #0D2113; }
+  .qzresultbanner.incorrect { background: rgba(217,122,92,0.85); color: #2B1006; }
+  .qzoptlist { display: flex; flex-direction: column; gap: 10px; }
+  .qzoption { display: flex; gap: 10px; align-items: center; text-align: left; width: 100%; background: rgba(23,41,58,0.04); border: 1px solid rgba(23,41,58,0.16); border-radius: 10px; padding: 12px 14px; font-family: var(--font-mono); font-size: 13.5px; font-weight: 600; color: var(--ink); cursor: pointer; }
+  .qzoption .qzletter { font-family: var(--font-mono); font-weight: 700; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: rgba(23,41,58,0.09); display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  .qzoption.selected { border-color: var(--cyan); background: rgba(95,179,217,0.14); }
+  .qzoption.correct { border-color: var(--known); background: rgba(111,174,122,0.18); }
+  .qzoption.incorrect { border-color: var(--retry); background: rgba(217,122,92,0.18); }
+  .qzcaret { margin-left: auto; flex-shrink: 0; font-size: 11px; color: var(--ink-soft); }
+  .qzexplain { margin: -4px 0 4px; padding: 8px 10px; font-size: 12px; line-height: 1.65; border-radius: 0 8px 8px 0; border-left: 3px solid var(--ink-soft); background: rgba(23,41,58,0.05); color: var(--ink-soft); }
+  .qzexplain.correct { border-left-color: var(--known); color: var(--ink); }
+  .qzexplain.incorrect { border-left-color: var(--retry); color: var(--ink); }
   .delbtn {
     background: none; border: 1px solid var(--grid-line-strong); color: var(--retry);
     font-family: var(--font-mono); font-size: 11px; padding: 6px 10px; border-radius: 6px; cursor: pointer;
@@ -238,14 +215,6 @@
     white-space: nowrap;
   }
   .chip.on { background: var(--amber); color: #1D1305; border-color: var(--amber); font-weight: 600; }
-
-  .progresswrap {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 14px;
-    font-family: var(--font-mono); font-size: 12px; color: var(--white-dim);
-  }
-  .ptrack { flex: 1; height: 6px; background: var(--bg-panel-2); border-radius: 3px; overflow: hidden; border: 1px solid var(--grid-line-strong); }
-  .pfill { height: 100%; background: var(--known); }
 
   .cardcount { text-align: center; font-family: var(--font-mono); font-size: 12px; color: var(--white-dim); margin-bottom: 10px; }
 
@@ -365,6 +334,23 @@
   .reviewitem .rarrow { color: var(--amber); font-family: var(--font-mono); }
   .emptynote { color: var(--white-dim); font-size: 13.5px; text-align: center; padding: 40px 10px; line-height: 1.8; }
 
+  /* --- term list view --- */
+  .termlist { display: flex; flex-direction: column; gap: 10px; }
+  .termlistitem { background: var(--bg-panel); border: 1px solid var(--grid-line-strong); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .tlihead { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .tliterm { font-family: var(--font-mono); font-weight: 700; font-size: 14.5px; color: var(--white); }
+  .tlibadges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .tlicat { font-family: var(--font-mono); font-size: 10.5px; color: var(--white-dim); background: rgba(255,255,255,0.08); padding: 3px 7px; border-radius: 5px; }
+  .tliweak { font-family: var(--font-mono); font-size: 10.5px; color: #F0B98A; background: rgba(217,122,92,0.22); padding: 3px 7px; border-radius: 5px; }
+  .tlitipbadge { font-size: 12px; }
+  .tlidesc { font-size: 13px; line-height: 1.75; color: var(--white-dim); margin: 0 0 10px; }
+  .tlitips { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+  .tlitip { background: rgba(227,165,61,0.14); border-left: 3px solid var(--amber); border-radius: 0 6px 6px 0; padding: 7px 9px; font-size: 12px; line-height: 1.6; color: var(--white); }
+  .tlimarks { display: flex; gap: 8px; }
+  .tlimarkbtn { flex: 1; font-family: var(--font-jp); font-size: 12px; font-weight: 600; border-radius: 6px; padding: 8px; cursor: pointer; border: 1px solid var(--grid-line-strong); background: var(--bg-panel-2); color: var(--white-dim); }
+  .tlimarkbtn.known.active { background: var(--known); border-color: var(--known); color: #0D2113; }
+  .tlimarkbtn.retry.active { background: var(--retry); border-color: var(--retry); color: #2B1006; }
+
   footer.foot { text-align: center; margin-top: 30px; }
   footer.foot button {
     background: none; border: 1px solid var(--grid-line-strong); color: var(--white-dim);
@@ -372,7 +358,6 @@
   }
 
   @media (max-width: 420px) {
-    .dbar-name { width: 120px; font-size: 11.5px; }
     h1 { font-size: 23px; }
   }
 </style>
@@ -383,95 +368,68 @@
   <header class="top">
     <p class="eyebrow">AWS Certified Solutions Architect – Professional / SAP-C02</p>
     <h1>AWS SAP 単語帳</h1>
-    <p class="sub">試験ガイドの出題範囲サービス・重要コンセプトを、専門用語だけで終わらせず平易な言葉で説明するフラッシュカード。</p>
-
-    <div class="factrow">
-      <span class="fact">出題数 <b>75問</b>(採点対象65 + 採点対象外10)</span>
-      <span class="fact">制限時間 <b>180分</b></span>
-      <span class="fact">合格スコア <b>750</b> / 1000</span>
-      <span class="fact">受験料 <b>$300</b></span>
-    </div>
-
-    <div class="domainbars">
-      <p class="label">コンテンツ分野の出題比率</p>
-      <div class="dbar-row"><span class="dbar-name">1. 複雑な組織への対応</span><div class="dbar-track"><div class="dbar-fill" style="width:26%"></div></div><span class="dbar-pct">26%</span></div>
-      <div class="dbar-row"><span class="dbar-name">2. 新しいソリューション設計</span><div class="dbar-track"><div class="dbar-fill" style="width:29%"></div></div><span class="dbar-pct">29%</span></div>
-      <div class="dbar-row"><span class="dbar-name">3. 既存ソリューションの改善</span><div class="dbar-track"><div class="dbar-fill" style="width:25%"></div></div><span class="dbar-pct">25%</span></div>
-      <div class="dbar-row"><span class="dbar-name">4. 移行とモダナイゼーション</span><div class="dbar-track"><div class="dbar-fill" style="width:20%"></div></div><span class="dbar-pct">20%</span></div>
-    </div>
-
-    <div class="tip">
-      <strong>苦手分野マーク:</strong> コスト最適化・DR/高可用性・マルチアカウント管理・イベント駆動アーキテクチャの用語には
-      <span class="weakbadge" style="vertical-align:middle;">苦手</span> バッジが付いています。カードは「技術的に正しいが最適ではない選択肢」を見抜く意識で読むのがおすすめです — 特に「運用オーバーヘッドが一番少ない選択肢」かどうかを毎回自問してみてください。
-    </div>
   </header>
 
   <nav class="tabs">
-    <button class="tab-btn active" data-tab="overview">概要</button>
-    <button class="tab-btn" data-tab="cards">単語カード</button>
+    <button class="tab-btn active" data-tab="cards">単語カード</button>
     <button class="tab-btn" data-tab="review">苦手リスト</button>
     <button class="tab-btn" data-tab="add">カード追加</button>
+    <button class="tab-btn" data-tab="quiz">4択クイズ</button>
   </nav>
 
-  <!-- OVERVIEW -->
-  <section class="panel active" id="panel-overview">
-    <div id="overviewStats"></div>
-    <div class="tip" style="margin-top:6px;">
-      「単語カード」タブには、試験ガイド付録に載っている出題範囲内のAWSサービスと、RTO/RPOや7Rなどの重要コンセプトが入っています。「カード追加」タブから自分だけの単語も足せます。コンテンツ分野の出題比率は上部を参照してください。
-    </div>
-  </section>
-
   <!-- CARDS -->
-  <section class="panel" id="panel-cards">
+  <section class="panel active" id="panel-cards">
     <div class="controls">
       <select id="categorySelect"></select>
       <input type="text" id="searchInput" placeholder="用語や説明で検索…">
     </div>
     <div class="controls">
-      <span class="chip" id="weakChip">苦手分野のみ</span>
-      <span class="chip" id="retryChip">要復習のみ</span>
-      <span class="chip" id="hideKnownChip">覚えた分を隠す</span>
+      <span class="chip" id="weakChip">苦手のみ</span>
       <span class="chip" id="shuffleChip">シャッフル</span>
     </div>
-
-    <div class="progresswrap">
-      <span id="progressLabel">0 / 0</span>
-      <div class="ptrack"><div class="pfill" id="progressFill" style="width:0%"></div></div>
-      <span id="progressPct">0%</span>
+    <div class="controls">
+      <span class="chip viewchip on" id="viewCardChip">🗂 カード表示</span>
+      <span class="chip viewchip" id="viewListChip">📋 一覧表示</span>
     </div>
 
     <div class="cardcount" id="cardIndexLabel"></div>
 
-    <div class="stage">
-      <div class="card" id="flashcard">
-        <div class="face front">
-          <div class="facetop">
-            <span class="catlabel" id="frontCat">—</span>
-            <span>
-              <span class="tipbadge" id="frontTipBadge" style="display:none;">🎯</span>
-              <span class="weakbadge" id="frontWeak" style="display:none;">苦手</span>
-            </span>
+    <div id="cardViewWrap">
+      <div class="stage">
+        <div class="card" id="flashcard">
+          <div class="face front">
+            <div class="facetop">
+              <span class="catlabel" id="frontCat">—</span>
+              <span>
+                <span class="tipbadge" id="frontTipBadge" style="display:none;">🎯</span>
+                <span class="weakbadge" id="frontWeak" style="display:none;">苦手</span>
+              </span>
+            </div>
+            <div class="termname" id="frontTerm">—</div>
+            <div class="fliphint">タップして意味を見る ↻</div>
           </div>
-          <div class="termname" id="frontTerm">—</div>
-          <div class="fliphint">タップして意味を見る ↻</div>
+          <div class="face back">
+            <div class="backterm" id="backTerm">—</div>
+            <p class="desc" id="backDesc">—</p>
+            <div id="backTips"></div>
+          </div>
         </div>
-        <div class="face back">
-          <div class="backterm" id="backTerm">—</div>
-          <p class="desc" id="backDesc">—</p>
-          <div id="backTips"></div>
-        </div>
+      </div>
+
+      <div class="marks">
+        <button class="markbtn retry" id="markRetry">↺ 苦手</button>
+        <button class="markbtn known" id="markKnown">✓ 覚えた</button>
+      </div>
+
+      <div class="cardnav">
+        <button class="navbtn" id="prevBtn">← 前へ</button>
+        <button class="navbtn wide" id="flipBtn">裏返す</button>
+        <button class="navbtn" id="nextBtn">次へ →</button>
       </div>
     </div>
 
-    <div class="marks">
-      <button class="markbtn retry" id="markRetry">↺ もう一度</button>
-      <button class="markbtn known" id="markKnown">✓ 覚えた</button>
-    </div>
-
-    <div class="cardnav">
-      <button class="navbtn" id="prevBtn">← 前へ</button>
-      <button class="navbtn wide" id="flipBtn">裏返す</button>
-      <button class="navbtn" id="nextBtn">次へ →</button>
+    <div id="listViewWrap" style="display:none;">
+      <div class="termlist" id="termListArea"></div>
     </div>
 
     <div class="toolrow">
@@ -498,7 +456,7 @@
       <label class="addlabel" for="addDescInput">説明 <span class="req">*</span></label>
       <textarea id="addDescInput" rows="3" placeholder="自分がわかる言葉で、平易に説明を書いてください。" required></textarea>
 
-      <label class="addcheck"><input type="checkbox" id="addWeakInput"> 苦手分野としてマークする</label>
+      <label class="addcheck"><input type="checkbox" id="addWeakInput"> 苦手としてマークする</label>
 
       <button type="submit" class="addsubmit" id="addSubmitBtn">＋ カードを追加</button>
       <button type="button" class="textbtn" id="cancelEditBtn" style="display:none;">編集をキャンセル</button>
@@ -515,6 +473,25 @@
     <input type="file" id="importFileInput" accept="application/json,.json" style="display:none">
     <textarea id="exportFallback" rows="6" readonly style="display:none; margin-top:8px; font-family:var(--font-mono); font-size:11px;"></textarea>
     <p id="exportFallbackNote" style="display:none; font-size:12px; color:var(--white-dim); margin-top:6px; line-height:1.6;">この内容を全選択してコピーし、テキストファイルとして保存してください。</p>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="panel" id="panel-quiz">
+    <div class="controls">
+      <select id="qzCategorySelect"></select>
+      <select id="qzCountSelect">
+        <option value="0">エンドレス</option>
+        <option value="5">5問</option>
+        <option value="10">10問</option>
+        <option value="20">20問</option>
+        <option value="30">30問</option>
+      </select>
+    </div>
+    <div class="controls">
+      <span class="chip" id="qzWeakChip">苦手のみ</span>
+    </div>
+    <div class="cardcount" id="qzStatusLabel"></div>
+    <div id="qzArea"></div>
   </section>
 
   <footer class="foot">
@@ -825,14 +802,25 @@
 
   var filterCat = "all";
   var filterWeakOnly = false;
-  var filterRetryOnly = false;
-  var hideKnown = false;
   var searchText = "";
   var shuffled = false;
   var order = getAllTerms().map(function(x){ return x.id; });
   var currentPos = 0;
   var flipped = false;
   var tipComposerOpen = false;
+  var viewMode = "card";
+
+  // ---- 4-choice quiz state ----
+  var qzFilterCat = "all";
+  var qzWeakOnly = false;
+  var qzPool = [];
+  var qzOrder = [];
+  var qzOrderPos = 0;
+  var qzCurrent = null;
+  var qzSessionCorrect = 0;
+  var qzSessionTotal = 0;
+  var qzModeCount = 0;
+  var qzRoundDone = false;
 
   // ---- dynamic categories (created through the add-card form) ----
   var dynamicCats = [];
@@ -855,10 +843,11 @@
     return registerCategory(txt);
   }
 
-  // ---- build/rebuild category choosers (filter select + add-form select) ----
+  // ---- build/rebuild category choosers (filter select + add-form select + quiz select) ----
   var catSelect = document.getElementById("categorySelect");
   var addCatSelect = document.getElementById("addCatSelect");
   var addCatNewInput = document.getElementById("addCatNewInput");
+  var qzCategorySelect = document.getElementById("qzCategorySelect");
 
   function rebuildCategoryChoosers(){
     var keep = catSelect.value || "all";
@@ -888,12 +877,217 @@
     var addStillThere = Array.prototype.some.call(addCatSelect.options, function(o){ return o.value === keepAdd; });
     addCatSelect.value = addStillThere ? keepAdd : "custom";
     addCatNewInput.style.display = (addCatSelect.value === "__new__") ? "block" : "none";
+
+    var keepQz = qzCategorySelect.value || "all";
+    qzCategorySelect.innerHTML = "";
+    var optAllQz = document.createElement("option");
+    optAllQz.value = "all"; optAllQz.textContent = "すべてのカテゴリ";
+    qzCategorySelect.appendChild(optAllQz);
+    CATS.concat(dynamicCats).forEach(function(c){
+      var opt = document.createElement("option");
+      opt.value = c[0]; opt.textContent = c[1];
+      qzCategorySelect.appendChild(opt);
+    });
+    var qzStillThere = Array.prototype.some.call(qzCategorySelect.options, function(o){ return o.value === keepQz; });
+    qzCategorySelect.value = qzStillThere ? keepQz : "all";
+    qzFilterCat = qzCategorySelect.value;
   }
   rebuildCategoryChoosers();
 
   addCatSelect.addEventListener("change", function(){
     addCatNewInput.style.display = (addCatSelect.value === "__new__") ? "block" : "none";
     if (addCatSelect.value === "__new__") addCatNewInput.focus();
+  });
+
+  // ---- 4-choice quiz ----
+  function shuffleArrQz(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function getQzPool(){
+    return getAllTerms().filter(function(x){
+      if (qzFilterCat !== "all" && x.cat !== qzFilterCat) return false;
+      if (qzWeakOnly && progress[x.id] !== "retry") return false;
+      return true;
+    });
+  }
+
+  // Distractors are drawn from the whole term set (not the filtered pool), preferring the
+  // same category as the correct answer so the 4 choices are as functionally similar as possible.
+  function pickDistractors(correctItem, count){
+    var all = getAllTerms();
+    var sameCat = shuffleArrQz(all.filter(function(x){ return x.id !== correctItem.id && x.cat === correctItem.cat; }));
+    var otherCat = shuffleArrQz(all.filter(function(x){ return x.id !== correctItem.id && x.cat !== correctItem.cat; }));
+    var chosen = sameCat.slice(0, count);
+    if (chosen.length < count) chosen = chosen.concat(otherCat.slice(0, count - chosen.length));
+    return chosen;
+  }
+
+  function buildQuizQuestion(correctItem){
+    var distractors = pickDistractors(correctItem, 3);
+    var options = shuffleArrQz([correctItem].concat(distractors));
+    var correctIdx = -1;
+    for (var i = 0; i < options.length; i++) { if (options[i].id === correctItem.id) { correctIdx = i; break; } }
+    return { correctItem: correctItem, options: options, correctIdx: correctIdx, answered: false, selectedIdx: null, expanded: {} };
+  }
+
+  function nextQuizQuestion(){
+    if (qzModeCount > 0 && qzSessionTotal >= qzModeCount) {
+      qzRoundDone = true;
+      qzCurrent = null;
+      renderQuiz();
+      return;
+    }
+    qzRoundDone = false;
+    qzPool = getQzPool();
+    if (qzPool.length === 0) { qzCurrent = null; renderQuiz(); return; }
+    if (!qzOrder.length || qzOrderPos >= qzOrder.length) {
+      qzOrder = shuffleArrQz(qzPool.map(function(x){ return x.id; }));
+      qzOrderPos = 0;
+    }
+    var id = qzOrder[qzOrderPos];
+    qzOrderPos++;
+    var item = null;
+    for (var i = 0; i < qzPool.length; i++) { if (qzPool[i].id === id) { item = qzPool[i]; break; } }
+    if (!item) { nextQuizQuestion(); return; }
+    qzCurrent = buildQuizQuestion(item);
+    renderQuiz();
+  }
+
+  function resetQuizSession(){
+    qzOrder = [];
+    qzOrderPos = 0;
+    qzSessionCorrect = 0;
+    qzSessionTotal = 0;
+    qzRoundDone = false;
+    nextQuizQuestion();
+  }
+
+  var QZ_LETTERS = ["A", "B", "C", "D"];
+
+  function renderQuiz(){
+    var poolSize = getQzPool().length;
+    var area = document.getElementById("qzArea");
+
+    if (qzModeCount > 0) {
+      var curNum = Math.min(qzSessionTotal + ((qzCurrent && !qzCurrent.answered) ? 1 : 0), qzModeCount);
+      document.getElementById("qzStatusLabel").textContent =
+        "問題 " + curNum + " / " + qzModeCount + (qzSessionTotal > 0 ? " ・ " + qzSessionCorrect + "問正解" : "");
+    } else {
+      document.getElementById("qzStatusLabel").textContent =
+        "出題プール " + poolSize + "語" + (qzSessionTotal > 0 ? " ・ セッション " + qzSessionCorrect + "/" + qzSessionTotal + " 正解" : "");
+    }
+
+    if (qzRoundDone) { renderQuizResults(area); return; }
+
+    if (!qzCurrent) {
+      area.innerHTML = '<div class="emptynote">条件に合う単語がありません。絞り込みを変えてみてください。</div>';
+      return;
+    }
+
+    var qz = qzCurrent;
+    var html = '<div class="qzcard">';
+    if (qz.answered) {
+      html += '<span class="qzmeta">' + escapeHtml(CATMAP[qz.correctItem.cat] || qz.correctItem.cat) + '</span>';
+    }
+    html += '<p class="qzprompt">' + escapeHtml(qz.correctItem.desc) + '</p>';
+    if (qz.answered) {
+      var ok = (qz.selectedIdx === qz.correctIdx);
+      html += '<div class="qzresultbanner ' + (ok ? "correct" : "incorrect") + '">' + (ok ? "正解です" : "不正解です") + '</div>';
+    }
+    html += '<div class="qzoptlist">';
+    qz.options.forEach(function(opt, i){
+      var cls = "qzoption";
+      if (qz.answered) {
+        cls += " locked";
+        if (i === qz.correctIdx) cls += " correct";
+        else if (i === qz.selectedIdx) cls += " incorrect";
+      } else if (i === qz.selectedIdx) {
+        cls += " selected";
+      }
+      html += '<button type="button" class="' + cls + '" data-i="' + i + '"><span class="qzletter">' + QZ_LETTERS[i] + '</span><span>' + escapeHtml(opt.term) + '</span>';
+      if (qz.answered) html += '<span class="qzcaret">' + (qz.expanded[i] ? "▾" : "▸") + '</span>';
+      html += '</button>';
+      if (qz.answered && qz.expanded[i]) {
+        var eCls = (i === qz.correctIdx) ? "correct" : (i === qz.selectedIdx ? "incorrect" : "");
+        var optTips = getTipsFor(opt.id);
+        html += '<div class="qzexplain ' + eCls + '"><p style="margin:0;">' + escapeHtml(opt.desc) + '</p>';
+        if (optTips.length) {
+          html += '<div class="tiplist" style="margin-top:8px;">';
+          optTips.forEach(function(tp){
+            html += '<div class="tipitem"><span class="tiptext">' + escapeHtml(tp) + '</span></div>';
+          });
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+    });
+    html += '</div></div>';
+
+    if (qz.answered) {
+      var isLast = (qzModeCount > 0 && qzSessionTotal >= qzModeCount);
+      html += '<div class="cardnav"><button type="button" class="navbtn primary" id="qzNextBtn">' + (isLast ? "結果を見る →" : "次の問題へ →") + '</button></div>';
+    }
+
+    area.innerHTML = html;
+
+    if (!qz.answered) {
+      area.querySelectorAll(".qzoption").forEach(function(b){
+        b.addEventListener("click", function(){
+          var i = parseInt(this.getAttribute("data-i"), 10);
+          qz.answered = true;
+          qz.selectedIdx = i;
+          var correct = (i === qz.correctIdx);
+          qzSessionTotal++;
+          if (correct) qzSessionCorrect++;
+          progress[qz.correctItem.id] = correct ? "known" : "retry";
+          saveProgress();
+          renderQuiz();
+        });
+      });
+    } else {
+      area.querySelectorAll(".qzoption").forEach(function(b){
+        b.addEventListener("click", function(){
+          var i = parseInt(this.getAttribute("data-i"), 10);
+          qz.expanded[i] = !qz.expanded[i];
+          renderQuiz();
+        });
+      });
+      var nextBtn = document.getElementById("qzNextBtn");
+      if (nextBtn) nextBtn.addEventListener("click", function(){ nextQuizQuestion(); });
+    }
+  }
+
+  function renderQuizResults(area){
+    var pct = qzSessionTotal ? Math.round(qzSessionCorrect / qzSessionTotal * 100) : 0;
+    var html = '<div class="qzcard" style="text-align:center;">';
+    html += '<span class="qzmeta">結果</span>';
+    html += '<p class="qzprompt" style="font-family:var(--font-mono); font-size:30px; font-weight:700; margin:6px 0 4px;">' + qzSessionCorrect + ' / ' + qzSessionTotal + '</p>';
+    html += '<p class="qzprompt" style="margin:0; color:var(--ink-soft);">正解率 ' + pct + '%</p>';
+    html += '</div>';
+    html += '<div class="cardnav"><button type="button" class="navbtn primary" id="qzRestartBtn">もう一度挑戦する →</button></div>';
+    area.innerHTML = html;
+    document.getElementById("qzRestartBtn").addEventListener("click", function(){ resetQuizSession(); });
+  }
+
+  qzCategorySelect.addEventListener("change", function(){
+    qzFilterCat = qzCategorySelect.value;
+    resetQuizSession();
+  });
+  var qzCountSelect = document.getElementById("qzCountSelect");
+  qzCountSelect.addEventListener("change", function(){
+    qzModeCount = parseInt(qzCountSelect.value, 10) || 0;
+    resetQuizSession();
+  });
+  document.getElementById("qzWeakChip").addEventListener("click", function(){
+    qzWeakOnly = !qzWeakOnly;
+    this.classList.toggle("on", qzWeakOnly);
+    resetQuizSession();
   });
 
   function getFiltered(){
@@ -903,9 +1097,7 @@
       .filter(function(x){
         if (!x) return false;
         if (filterCat !== "all" && x.cat !== filterCat) return false;
-        if (filterWeakOnly && !x.weak) return false;
-        if (filterRetryOnly && progress[x.id] !== "retry") return false;
-        if (hideKnown && progress[x.id] === "known") return false;
+        if (filterWeakOnly && progress[x.id] !== "retry") return false;
         if (searchText) {
           var hay = (x.term + " " + x.desc).toLowerCase();
           if (hay.indexOf(searchText.toLowerCase()) === -1) return false;
@@ -923,18 +1115,9 @@
     order = arr;
   }
 
-  function updateProgressBar(list){
-    var known = list.filter(function(x){ return progress[x.id] === "known"; }).length;
-    var pct = list.length ? Math.round(known / list.length * 100) : 0;
-    document.getElementById("progressLabel").textContent = known + " / " + list.length + " 覚えた";
-    document.getElementById("progressFill").style.width = pct + "%";
-    document.getElementById("progressPct").textContent = pct + "%";
-  }
-
   function renderCard(){
     var list = getFiltered();
     document.getElementById("totalTermsLabel").textContent = "全" + getAllTerms().length + "語";
-    updateProgressBar(list);
 
     var cardEl = document.getElementById("flashcard");
     if (list.length === 0){
@@ -949,6 +1132,7 @@
       cardEl.classList.remove("flipped");
       flipped = false;
       tipComposerOpen = false;
+      if (viewMode === "list") renderTermList();
       return;
     }
     if (currentPos >= list.length) currentPos = 0;
@@ -957,7 +1141,7 @@
 
     document.getElementById("cardIndexLabel").textContent = (currentPos + 1) + " / " + list.length;
     document.getElementById("frontCat").textContent = CATMAP[item.cat];
-    document.getElementById("frontWeak").style.display = item.weak ? "inline-block" : "none";
+    document.getElementById("frontWeak").style.display = (progress[item.id] === "retry") ? "inline-block" : "none";
     document.getElementById("frontTerm").textContent = item.term;
     document.getElementById("backTerm").textContent = item.term;
     document.getElementById("backDesc").textContent = item.desc;
@@ -970,7 +1154,70 @@
     var mk = progress[item.id];
     document.getElementById("markKnown").classList.toggle("active", mk === "known");
     document.getElementById("markRetry").classList.toggle("active", mk === "retry");
+
+    if (viewMode === "list") renderTermList();
   }
+
+  function renderTermList(){
+    var list = getFiltered();
+    var area = document.getElementById("termListArea");
+    if (list.length === 0) {
+      area.innerHTML = '<div class="emptynote">条件に合うカードがありません。絞り込みを変えてみてください。</div>';
+      return;
+    }
+    var html = "";
+    list.forEach(function(item){
+      var tips = getTipsFor(item.id);
+      var mk = progress[item.id];
+      html += '<div class="termlistitem">';
+      html += '<div class="tlihead"><span class="tliterm">' + escapeHtml(item.term) + '</span>';
+      html += '<span class="tlibadges"><span class="tlicat">' + escapeHtml(CATMAP[item.cat] || item.cat) + '</span>';
+      if (mk === "retry") html += '<span class="tliweak">苦手</span>';
+      if (tips.length) html += '<span class="tlitipbadge">🎯</span>';
+      html += '</span></div>';
+      html += '<p class="tlidesc">' + escapeHtml(item.desc) + '</p>';
+      if (tips.length) {
+        html += '<div class="tlitips">';
+        tips.forEach(function(tp){ html += '<div class="tlitip">' + escapeHtml(tp) + '</div>'; });
+        html += '</div>';
+      }
+      html += '<div class="tlimarks">';
+      html += '<button type="button" class="tlimarkbtn retry' + (mk === "retry" ? " active" : "") + '" data-id="' + item.id + '" data-mk="retry">↺ 苦手</button>';
+      html += '<button type="button" class="tlimarkbtn known' + (mk === "known" ? " active" : "") + '" data-id="' + item.id + '" data-mk="known">✓ 覚えた</button>';
+      html += '</div>';
+      html += '</div>';
+    });
+    area.innerHTML = html;
+
+    area.querySelectorAll(".tlimarkbtn").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var id = this.getAttribute("data-id");
+        var mkType = this.getAttribute("data-mk");
+        progress[id] = (progress[id] === mkType) ? undefined : mkType;
+        if (progress[id] === undefined) delete progress[id];
+        saveProgress();
+        renderCard();
+      });
+    });
+  }
+
+  document.getElementById("viewCardChip").addEventListener("click", function(){
+    viewMode = "card";
+    document.getElementById("viewCardChip").classList.add("on");
+    document.getElementById("viewListChip").classList.remove("on");
+    document.getElementById("cardViewWrap").style.display = "";
+    document.getElementById("listViewWrap").style.display = "none";
+    document.getElementById("cardIndexLabel").style.display = "";
+  });
+  document.getElementById("viewListChip").addEventListener("click", function(){
+    viewMode = "list";
+    document.getElementById("viewListChip").classList.add("on");
+    document.getElementById("viewCardChip").classList.remove("on");
+    document.getElementById("listViewWrap").style.display = "";
+    document.getElementById("cardViewWrap").style.display = "none";
+    document.getElementById("cardIndexLabel").style.display = "none";
+    renderTermList();
+  });
 
   function renderTipsSection(item){
     var container = document.getElementById("backTips");
@@ -1050,16 +1297,6 @@
     this.classList.toggle("on", filterWeakOnly);
     currentPos = 0; renderCard();
   });
-  document.getElementById("retryChip").addEventListener("click", function(){
-    filterRetryOnly = !filterRetryOnly;
-    this.classList.toggle("on", filterRetryOnly);
-    currentPos = 0; renderCard();
-  });
-  document.getElementById("hideKnownChip").addEventListener("click", function(){
-    hideKnown = !hideKnown;
-    this.classList.toggle("on", hideKnown);
-    currentPos = 0; renderCard();
-  });
   document.getElementById("shuffleChip").addEventListener("click", function(){
     shuffled = !shuffled;
     this.classList.toggle("on", shuffled);
@@ -1067,12 +1304,10 @@
     currentPos = 0; renderCard();
   });
   document.getElementById("resetFilterBtn").addEventListener("click", function(){
-    filterCat = "all"; filterWeakOnly = false; filterRetryOnly = false; hideKnown = false; searchText = "";
+    filterCat = "all"; filterWeakOnly = false; searchText = "";
     catSelect.value = "all";
     document.getElementById("searchInput").value = "";
     document.getElementById("weakChip").classList.remove("on");
-    document.getElementById("retryChip").classList.remove("on");
-    document.getElementById("hideKnownChip").classList.remove("on");
     currentPos = 0; renderCard();
   });
 
@@ -1122,55 +1357,7 @@
     saveProgress();
     renderCard();
     renderReview();
-    renderOverviewStats();
   });
-
-  // ---- overview stats ----
-  function renderOverviewStats(){
-    var all = getAllTerms();
-    var known = 0, retry = 0;
-    all.forEach(function(x){
-      if (progress[x.id] === "known") known++;
-      else if (progress[x.id] === "retry") retry++;
-    });
-    var unseen = all.length - known - retry;
-
-    var catOrder = CATS.concat(dynamicCats);
-    var seenKey = {};
-    var rows = [];
-    catOrder.forEach(function(c){
-      var key = c[0];
-      if (seenKey[key]) return;
-      seenKey[key] = true;
-      var items = all.filter(function(x){ return x.cat === key; });
-      if (items.length === 0) return;
-      var k = items.filter(function(x){ return progress[x.id] === "known"; }).length;
-      rows.push({ label: c[1], total: items.length, known: k });
-    });
-
-    var overallPct = all.length ? Math.round(known / all.length * 100) : 0;
-    var html = "";
-    html += '<div class="statoverall">';
-    html += '<p class="stitle">学習の進み具合(全' + all.length + '語' + (customTerms.length ? " ・ 自分で追加した" + customTerms.length + "語を含む" : "") + (totalTipCount() ? " ・ 🎯試験のポイント" + totalTipCount() + "件" : "") + ')</p>';
-    html += '<div class="statnums">';
-    html += '<div class="statnum known"><b>' + known + '</b><span>覚えた</span></div>';
-    html += '<div class="statnum retry"><b>' + retry + '</b><span>もう一度</span></div>';
-    html += '<div class="statnum"><b>' + unseen + '</b><span>未着手</span></div>';
-    html += '</div>';
-    html += '<div class="ptrack"><div class="pfill" style="width:' + overallPct + '%"></div></div>';
-    html += '</div>';
-
-    html += '<div class="statoverall">';
-    html += '<p class="stitle">カテゴリ別の習熟度</p>';
-    html += '<div class="statcatlist">';
-    rows.forEach(function(r){
-      var pct = r.total ? Math.round(r.known / r.total * 100) : 0;
-      html += '<div class="statcat-row"><span class="statcat-name">' + r.label + '</span><div class="statcat-track"><div class="statcat-fill" style="width:' + pct + '%"></div></div><span class="statcat-pct">' + r.known + '/' + r.total + '</span></div>';
-    });
-    html += '</div></div>';
-
-    document.getElementById("overviewStats").innerHTML = html;
-  }
 
   // ---- add-card form ----
   function escapeHtml(s){
@@ -1192,7 +1379,7 @@
       var row = document.createElement("div");
       row.className = "reviewitem";
       row.innerHTML =
-        '<div><div class="rterm">' + escapeHtml(item.term) + '</div><div class="rcat">' + escapeHtml(CATMAP[item.cat] || item.cat) + (item.weak ? " ・ 苦手分野" : "") + '</div></div>' +
+        '<div><div class="rterm">' + escapeHtml(item.term) + '</div><div class="rcat">' + escapeHtml(CATMAP[item.cat] || item.cat) + (progress[item.id] === "retry" ? " ・ 苦手" : "") + '</div></div>' +
         '<button type="button" class="delbtn">削除</button>';
       row.addEventListener("click", function(){ startEdit(item); });
       row.querySelector(".delbtn").addEventListener("click", function(ev){
@@ -1213,7 +1400,6 @@
     renderAddList();
     renderCard();
     renderReview();
-    renderOverviewStats();
   }
 
   var addForm = document.getElementById("addForm");
@@ -1235,7 +1421,7 @@
     editingId = item.id;
     document.getElementById("addTermInput").value = item.term;
     document.getElementById("addDescInput").value = item.desc;
-    document.getElementById("addWeakInput").checked = !!item.weak;
+    document.getElementById("addWeakInput").checked = (progress[item.id] === "retry");
     var hasOption = Array.prototype.some.call(addCatSelect.options, function(o){ return o.value === item.cat; });
     addCatSelect.value = hasOption ? item.cat : "custom";
     addCatNewInput.style.display = "none";
@@ -1261,22 +1447,30 @@
       catKey = addCatSelect.value;
     }
 
+    var finalId;
     if (editingId) {
+      finalId = editingId;
       var idx = -1;
       for (var i = 0; i < customTerms.length; i++) { if (customTerms[i].id === editingId) { idx = i; break; } }
-      if (idx >= 0) customTerms[idx] = t(editingId, termVal, catKey, descVal, weakVal);
+      if (idx >= 0) customTerms[idx] = t(editingId, termVal, catKey, descVal, false);
       saveCustomTerms();
     } else {
-      var newId = "u" + Date.now().toString(36) + Math.floor(Math.random() * 1000);
-      customTerms.push(t(newId, termVal, catKey, descVal, weakVal));
+      finalId = "u" + Date.now().toString(36) + Math.floor(Math.random() * 1000);
+      customTerms.push(t(finalId, termVal, catKey, descVal, false));
       saveCustomTerms();
-      order.push(newId);
+      order.push(finalId);
     }
+
+    if (weakVal) {
+      progress[finalId] = "retry";
+    } else if (progress[finalId] === "retry") {
+      delete progress[finalId];
+    }
+    saveProgress();
 
     resetAddForm();
     renderAddList();
     renderCard();
-    renderOverviewStats();
   });
 
   // ---- backup: export / import ----
@@ -1371,7 +1565,6 @@
         renderAddList();
         renderCard();
         renderReview();
-        renderOverviewStats();
         alert(added + "件のカードを読み込みました。");
       } catch(err) {
         alert("読み込みに失敗しました。ファイルの内容を確認してください。");
@@ -1389,7 +1582,7 @@
     if (retryTerms.length === 0){
       var empty = document.createElement("div");
       empty.className = "emptynote";
-      empty.textContent = "「もう一度」に印をつけたカードがここに並びます。単語カードタブでカードを裏返し、↺ もう一度 ボタンを押してみてください。";
+      empty.textContent = "「苦手」に印をつけたカードがここに並びます。単語カードタブでカードを裏返し、↺ 苦手 ボタンを押してみてください。";
       listEl.appendChild(empty);
       return;
     }
@@ -1397,14 +1590,12 @@
       var row = document.createElement("div");
       row.className = "reviewitem";
       row.innerHTML =
-        '<div><div class="rterm">' + item.term + '</div><div class="rcat">' + CATMAP[item.cat] + (item.weak ? " ・ 苦手分野" : "") + '</div></div>' +
+        '<div><div class="rterm">' + item.term + '</div><div class="rcat">' + CATMAP[item.cat] + '</div></div>' +
         '<span class="rarrow">開く →</span>';
       row.addEventListener("click", function(){
         switchTab("cards");
         filterCat = "all"; catSelect.value = "all";
         filterWeakOnly = false; document.getElementById("weakChip").classList.remove("on");
-        filterRetryOnly = false; document.getElementById("retryChip").classList.remove("on");
-        hideKnown = false; document.getElementById("hideKnownChip").classList.remove("on");
         searchText = ""; document.getElementById("searchInput").value = "";
         var list = getFiltered();
         var idx = list.findIndex(function(x){ return x.id === item.id; });
@@ -1424,8 +1615,8 @@
       p.classList.toggle("active", p.id === "panel-" + name);
     });
     if (name === "review") renderReview();
-    if (name === "overview") renderOverviewStats();
     if (name === "add") renderAddList();
+    if (name === "quiz") renderQuiz();
   }
   document.querySelectorAll(".tab-btn").forEach(function(b){
     b.addEventListener("click", function(){ switchTab(b.getAttribute("data-tab")); });
@@ -1434,8 +1625,8 @@
   // ---- init ----
   renderCard();
   renderReview();
-  renderOverviewStats();
   renderAddList();
+  resetQuizSession();
 })();
 </script>
 </body>
