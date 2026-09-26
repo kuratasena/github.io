@@ -1492,7 +1492,15 @@
     ta.select();
   }
 
+  function hideExportFallback(){
+    document.getElementById("exportFallback").style.display = "none";
+    document.getElementById("exportFallbackNote").style.display = "none";
+  }
+
   document.getElementById("exportBtn").addEventListener("click", async function(){
+    var ta = document.getElementById("exportFallback");
+    if (ta.style.display === "block") { hideExportFallback(); return; }
+
     var payload = JSON.stringify({
       version: 1,
       exportedAt: new Date().toISOString(),
