@@ -7,6 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <style>
   :root {
     --bg: #0E2A43;
@@ -95,6 +98,21 @@
     margin: 0 0 4px;
     letter-spacing: -0.01em;
   }
+  .syncbar { margin-top: 12px; }
+  .syncbtn {
+    font-family: var(--font-jp); font-size: 13px; font-weight: 600;
+    background: var(--bg-panel-2); border: 1px solid var(--grid-line-strong);
+    color: var(--white); border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  }
+  .syncstatus {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 12px; color: var(--white-dim);
+  }
+  .syncdot { width: 8px; height: 8px; border-radius: 50%; background: var(--white-dim); flex-shrink: 0; }
+  .syncdot.ok { background: var(--known); }
+  .syncdot.busy { background: var(--amber); }
+  .syncdot.err { background: var(--retry); }
+
   nav.tabs {
     display: flex; gap: 4px; margin-bottom: 20px;
     border-bottom: 1px solid var(--grid-line-strong);
@@ -368,6 +386,14 @@
   <header class="top">
     <p class="eyebrow">AWS Certified Solutions Architect – Professional / SAP-C02</p>
     <h1>AWS SAP 単語帳</h1>
+    <div class="syncbar" id="syncBar" style="display:none;">
+      <button type="button" class="syncbtn" id="signInBtn">🔗 Googleでログインして同期</button>
+      <div class="syncstatus" id="signedInBar" style="display:none;">
+        <span id="signedInEmail"></span>
+        <span class="syncdot" id="syncStatusDot"></span>
+        <button type="button" class="textbtn" id="signOutBtn">ログアウト</button>
+      </div>
+    </div>
   </header>
 
   <nav class="tabs">
@@ -755,6 +781,7 @@
 
   function saveCustomTerms(){
     try { localStorage.setItem("awsSapCustomTerms", JSON.stringify(customTerms)); } catch(e){}
+    pushToCloud();
   }
 
   function getAllTerms(){ return TERMS.concat(customTerms); }
@@ -768,6 +795,7 @@
 
   function saveExamTips(){
     try { localStorage.setItem("awsSapExamTips", JSON.stringify(examTips)); } catch(e){}
+    pushToCloud();
   }
   function getTipsFor(id){ return examTips[id] || []; }
   function addTip(id, text){
@@ -798,6 +826,7 @@
 
   function saveProgress(){
     try { localStorage.setItem("awsSapFlashcardProgress", JSON.stringify(progress)); } catch(e){}
+    pushToCloud();
   }
 
   var filterCat = "all";
@@ -831,6 +860,152 @@
     return key;
   }
   customTerms.forEach(function(ct){ registerCategory(ct.cat); });
+
+  // ---- cloud sync (Google sign-in + Firestore) ----
+  // Only works where the Firebase SDK can actually load (e.g. GitHub Pages);
+  // everything here is defensive so the rest of the app keeps working if it can't.
+  var firebaseConfig = {
+    apiKey: "AIzaSyA0OUyLUIBXMVEP1I5TidLpHl1qz-P1yzE",
+    authDomain: "aws-sap-965eb.firebaseapp.com",
+    projectId: "aws-sap-965eb",
+    storageBucket: "aws-sap-965eb.firebasestorage.app",
+    messagingSenderId: "1007273819301",
+    appId: "1:1007273819301:web:45d3c2adef49095458e14c"
+  };
+
+  var firebaseReady = false;
+  var auth = null;
+  var db = null;
+  var currentUser = null;
+  var googleProvider = null;
+  var pushTimer = null;
+
+  try {
+    if (typeof firebase !== "undefined") {
+      firebase.initializeApp(firebaseConfig);
+      auth = firebase.auth();
+      db = firebase.firestore();
+      googleProvider = new firebase.auth.GoogleAuthProvider();
+      firebaseReady = true;
+    }
+  } catch (e) {
+    firebaseReady = false;
+  }
+
+  function setSyncStatus(kind){
+    var dot = document.getElementById("syncStatusDot");
+    if (dot) dot.className = "syncdot" + (kind ? " " + kind : "");
+  }
+
+  function updateSyncUI(){
+    if (!firebaseReady) return;
+    document.getElementById("syncBar").style.display = "block";
+    var signInBtn = document.getElementById("signInBtn");
+    var signedInBar = document.getElementById("signedInBar");
+    if (currentUser) {
+      signInBtn.style.display = "none";
+      signedInBar.style.display = "flex";
+      document.getElementById("signedInEmail").textContent = currentUser.email || currentUser.displayName || "同期中";
+    } else {
+      signInBtn.style.display = "inline-block";
+      signedInBar.style.display = "none";
+    }
+  }
+
+  // Additive merges: the combined set only ever grows, so a sync can never
+  // silently erase progress or cards that already exist on either side.
+  function mergeProgressData(localP, cloudP){
+    var merged = {};
+    Object.keys(cloudP || {}).forEach(function(k){ merged[k] = cloudP[k]; });
+    Object.keys(localP || {}).forEach(function(k){ merged[k] = localP[k]; });
+    return merged;
+  }
+  function mergeCustomTermsData(localC, cloudC){
+    var byId = {};
+    (cloudC || []).forEach(function(t2){ if (t2 && t2.id) byId[t2.id] = t2; });
+    (localC || []).forEach(function(t2){ if (t2 && t2.id) byId[t2.id] = t2; });
+    var out = [];
+    Object.keys(byId).forEach(function(k){ out.push(byId[k]); });
+    return out;
+  }
+  function mergeTipsData(localT, cloudT){
+    var merged = {};
+    Object.keys(cloudT || {}).forEach(function(k){ merged[k] = (cloudT[k] || []).slice(); });
+    Object.keys(localT || {}).forEach(function(k){
+      var arr = merged[k] || [];
+      (localT[k] || []).forEach(function(txt){ if (arr.indexOf(txt) === -1) arr.push(txt); });
+      merged[k] = arr;
+    });
+    return merged;
+  }
+
+  function pushToCloud(){
+    if (!firebaseReady || !currentUser || !db) return;
+    if (pushTimer) clearTimeout(pushTimer);
+    pushTimer = setTimeout(function(){
+      setSyncStatus("busy");
+      db.collection("users").doc(currentUser.uid).set({
+        customTerms: customTerms,
+        progress: progress,
+        examTips: examTips,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(function(){
+        setSyncStatus("ok");
+      }).catch(function(){
+        setSyncStatus("err");
+      });
+    }, 800);
+  }
+
+  function performInitialSync(uid){
+    setSyncStatus("busy");
+    db.collection("users").doc(uid).get().then(function(docSnap){
+      var cloud = docSnap.exists ? docSnap.data() : null;
+      if (cloud) {
+        customTerms = mergeCustomTermsData(customTerms, cloud.customTerms);
+        progress = mergeProgressData(progress, cloud.progress);
+        examTips = mergeTipsData(examTips, cloud.examTips);
+        customTerms.forEach(function(ct){ registerCategory(ct.cat); });
+        saveCustomTerms();
+        saveProgress();
+        saveExamTips();
+        order = getAllTerms().map(function(x){ return x.id; });
+        if (shuffled) shuffleOrder();
+        rebuildCategoryChoosers();
+        renderCard();
+        renderReview();
+        renderAddList();
+      } else {
+        pushToCloud();
+      }
+      setSyncStatus("ok");
+    }).catch(function(){
+      setSyncStatus("err");
+    });
+  }
+
+  if (firebaseReady) {
+    auth.onAuthStateChanged(function(user){
+      currentUser = user;
+      updateSyncUI();
+      if (user) performInitialSync(user.uid);
+    });
+
+    document.getElementById("signInBtn").addEventListener("click", function(){
+      auth.signInWithPopup(googleProvider).catch(function(err){
+        if (err && err.code === "auth/popup-blocked") {
+          auth.signInWithRedirect(googleProvider);
+        } else if (err && err.code !== "auth/popup-closed-by-user" && err.code !== "auth/cancelled-popup-request") {
+          alert("ログインに失敗しました: " + (err.message || err.code));
+        }
+      });
+    });
+    document.getElementById("signOutBtn").addEventListener("click", function(){
+      auth.signOut();
+    });
+    auth.getRedirectResult().catch(function(){});
+    updateSyncUI();
+  }
 
   function resolveCategoryKey(inputText){
     var txt = (inputText || "").trim();
