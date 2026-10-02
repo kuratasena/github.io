@@ -378,6 +378,199 @@
   @media (max-width: 420px) {
     h1 { font-size: 23px; }
   }
+
+  /* ===== motion layer (the Motion Reel language, in this app's palette) ===== */
+  .card { transition: none; }
+  .stage { position: relative; }
+  nav.tabs.has-ind { position: relative; }
+  nav.tabs.has-ind button.active { border-bottom-color: transparent; }
+  .tabind {
+    position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; border-radius: 2px;
+    background: var(--amber); pointer-events: none;
+    transition: transform .46s cubic-bezier(.3,1.45,.45,1), width .46s cubic-bezier(.3,1.45,.45,1);
+  }
+  .mstamp {
+    position: absolute; left: 74%; top: 20%; z-index: 5; pointer-events: none; white-space: nowrap;
+    font-family: var(--font-jp); font-weight: 900; font-size: 22px; letter-spacing: .08em;
+    padding: 7px 14px; border: 3px solid currentColor; border-radius: 10px;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.7), inset 0 0 0 4px currentColor;
+    background: rgba(255,255,255,.6);
+  }
+  .mstamp.known { color: #2F7A43; }
+  .mstamp.retry { color: #B4512F; }
+  .mburst { position: fixed; width: 0; height: 0; z-index: 60; pointer-events: none; }
+  .mburst i { position: absolute; left: 0; top: 0; display: block; }
+  .mburst .ring { width: 58px; height: 58px; border-radius: 50%; border: 2px solid; }
+  .mburst .dot { width: 7px; height: 7px; border-radius: 2px; }
+  .mintro {
+    position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; cursor: pointer;
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px);
+    background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+  }
+  .mi-box { width: min(560px, 84vw); }
+  .mi-top { overflow: hidden; padding-bottom: 16px; }
+  .mi-title { display: block; font-size: clamp(30px, 7.4vw, 44px); font-weight: 900; color: var(--white); letter-spacing: -0.01em; }
+  .mi-line { position: relative; height: 3px; }
+  .mi-bar { position: absolute; inset: 0; background: var(--white); border-radius: 2px; }
+  .mi-dot { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--amber); }
+  .mi-tick { position: absolute; bottom: 3px; width: 2px; height: 10px; margin-left: -1px; background: var(--white); transform-origin: 50% 100%; }
+  .mi-tick.major { height: 18px; background: var(--amber); }
+  .mi-bot { overflow: hidden; padding-top: 14px; }
+  .mi-sub { display: block; font-family: var(--font-mono); font-size: 13px; color: var(--cyan); }
+  .stage { isolation: isolate; touch-action: pan-y; }
+  .mghost {
+    position: absolute; inset: 0; z-index: -1; border-radius: var(--radius-card);
+    background: var(--paper-2); border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+  }
+  .mhint {
+    position: absolute; top: 50%; z-index: 6; pointer-events: none; opacity: 0;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 600; white-space: nowrap;
+    padding: 6px 11px; border-radius: 999px; transform: translateY(-50%);
+    background: var(--bg-panel-2); color: var(--white); border: 1px solid var(--grid-line-strong);
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .mhint.l { left: 6px; } .mhint.r { right: 6px; }
+  .mhint.armed { background: var(--amber); color: #1D1305; border-color: var(--amber); }
+  .mmeter { display: flex; align-items: center; gap: 10px; max-width: 380px; margin: -2px auto 14px; }
+  .mm-track { position: relative; flex: 1; height: 6px; border-radius: 999px; background: var(--grid-line-strong); overflow: hidden; transform-origin: 50% 50%; }
+  .mm-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: inherit; background: var(--known); transition: width .62s cubic-bezier(.3,1.35,.45,1); }
+  .mm-num { flex: none; min-width: 9em; text-align: right; font-family: var(--font-mono); font-size: 11.5px; color: var(--white-dim); font-variant-numeric: tabular-nums; }
+  .mfly { position: fixed; left: 0; top: 0; z-index: 70; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: var(--known); box-shadow: 0 0 0 3px rgba(111,174,122,0.28); pointer-events: none; }
+  .mtoast {
+    position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 80; pointer-events: none;
+    font-size: 13.5px; font-weight: 700; color: #1D1305; background: var(--amber);
+    padding: 11px 18px; border-radius: 999px; box-shadow: 0 10px 28px rgba(0,0,0,0.3); white-space: nowrap;
+  }
+  .mstreak {
+    display: none; width: max-content; margin: -4px auto 12px; font-size: 12.5px; font-weight: 700;
+    color: #1D1305; background: var(--amber); border-radius: 999px; padding: 5px 13px;
+  }
+  .mstreak.show { display: block; }
+  .mstreak b { font-family: var(--font-mono); font-size: 14px; margin-right: 2px; }
+  .mflycard {
+    position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none; max-width: 220px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font-family: var(--font-mono); font-weight: 700; font-size: 13px; color: var(--ink);
+    background: var(--paper); border-radius: 10px; padding: 14px 16px; box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+  }
+  .mplus { position: fixed; left: 0; top: 0; z-index: 71; pointer-events: none; font-family: var(--font-mono); font-weight: 700; font-size: 14px; color: var(--amber); }
+  .mkeys { text-align: center; font-size: 11.5px; color: var(--white-dim); margin: 2px 0 0; font-family: var(--font-mono); }
+  .mkeys .fine { display: none; }
+  @media (hover: hover) and (pointer: fine) { .mkeys .fine { display: inline; } .mkeys .touch { display: none; } }
+  /* v3 */
+  .mmeter { cursor: pointer; border-radius: 8px; padding: 4px 6px; margin-top: -6px; }
+  .mmeter:hover .mm-num, .mmeter:focus-visible .mm-num { color: var(--white); }
+  .mmeter:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  .mm-go { flex: none; font-family: var(--font-mono); font-size: 11px; color: var(--amber); }
+  .msheet-bg { position: fixed; inset: 0; z-index: 90; background: rgba(6,16,28,0.55); }
+  .msheet {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 91; margin: 0 auto; max-width: 760px; max-height: 86vh;
+    display: flex; flex-direction: column; background: var(--bg-panel); color: var(--white);
+    border-radius: 18px 18px 0 0; box-shadow: 0 -12px 40px rgba(0,0,0,0.35);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .ms-drag { flex: none; touch-action: none; cursor: grab; }
+  .ms-grab { padding: 10px 0 4px; display: grid; place-items: center; }
+  .ms-grab i { display: block; width: 42px; height: 5px; border-radius: 3px; background: var(--grid-line-strong); }
+  .ms-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 18px 8px; }
+  .ms-title { font-size: 18px; font-weight: 900; margin: 0; }
+  .ms-stat { font-family: var(--font-mono); font-size: 12px; color: var(--white-dim); margin: 2px 0 0; }
+  .ms-stat b { color: var(--known); }
+  .ms-close { flex: none; background: none; border: 1px solid var(--grid-line-strong); color: var(--white-dim); border-radius: 999px; width: 36px; height: 36px; cursor: pointer; font-size: 15px; }
+  .ms-legend { display: flex; gap: 14px; flex-wrap: wrap; padding: 0 18px 4px; font-family: var(--font-mono); font-size: 11.5px; color: var(--white-dim); }
+  .ms-legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+  .ms-peek { min-height: 1.6em; padding: 4px 18px 8px; font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ms-body { overflow-y: auto; padding: 0 18px 24px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .ms-cat { margin-top: 12px; }
+  .ms-cathead { display: flex; justify-content: space-between; gap: 10px; font-size: 12.5px; color: var(--white-dim); margin-bottom: 7px; }
+  .ms-cathead b { color: var(--white); font-weight: 700; }
+  .ms-cathead .n { font-family: var(--font-mono); font-size: 11.5px; }
+  .ms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(22px, 1fr)); gap: 4px; perspective: 600px; }
+  .ms-tile { aspect-ratio: 1; border: 0; padding: 0; border-radius: 4px; cursor: pointer; background: var(--grid-line-strong); }
+  .ms-tile.known { background: var(--known); }
+  .ms-tile.retry { background: var(--retry); }
+  .ms-tile.cur { box-shadow: 0 0 0 2px var(--bg-panel), 0 0 0 4px var(--amber); }
+  .ms-tile:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  .mshared { position: fixed; left: 0; top: 0; z-index: 95; pointer-events: none; border-radius: 4px; }
+  .mtrail { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; max-width: 440px; margin: -4px auto 12px; }
+  .mtrail:empty { display: none; }
+  .mtrail i { display: block; width: 9px; height: 9px; border-radius: 50%; background: var(--known); }
+  .mtrail i.ng { background: var(--retry); }
+  .mtrail i.slot { background: transparent; box-shadow: inset 0 0 0 1.5px var(--grid-line-strong); }
+  .mtrail i.slot.next { box-shadow: inset 0 0 0 2px var(--amber); }
+  .qzletter { position: relative; }
+  .mmark { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .qzoption.locked:not(.correct):not(.incorrect) { opacity: .6; }
+  .mring { display: block; width: 92px; height: 92px; margin: 2px auto 4px; }
+  .mring circle { fill: none; stroke-width: 7; }
+  .mring .bgc { stroke: rgba(23,41,58,0.1); }
+  .mring .fgc { stroke: var(--known); stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; }
+  .mconf { position: fixed; inset: 0; z-index: 85; pointer-events: none; overflow: hidden; }
+  .mconf i { position: absolute; left: 0; top: 0; width: 8px; height: 12px; border-radius: 2px; }
+  .mtilt { transform-style: preserve-3d; transition: transform .35s cubic-bezier(.3,1.4,.5,1); }
+  .msheen {
+    position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.6), rgba(255,255,255,0) 55%);
+    mix-blend-mode: soft-light;
+  }
+  .stage.hovering .msheen { opacity: 1; }
+  .stage.mempty .face.front { background: transparent; border: 2px dashed var(--grid-line-strong); box-shadow: none; }
+  .stage.mempty .termname { color: var(--white-dim); font-family: var(--font-jp); font-size: 16px; text-align: center; font-weight: 500; }
+  .stage.mempty .fliphint, .stage.mempty .catlabel { visibility: hidden; }
+  .syncdot.busy { animation: msync 1.1s ease-out infinite; }
+  @keyframes msync { from { box-shadow: 0 0 0 0 rgba(227,165,61,0.7); } to { box-shadow: 0 0 0 9px rgba(227,165,61,0); } }
+  footer.foot #sfxBtn { margin-right: 8px; }
+  footer.foot #sfxBtn[aria-pressed="true"] { color: var(--white); border-color: var(--amber); }
+  /* v4 */
+  .mw { display: inline-block; white-space: nowrap; }
+  .mch { display: inline-block; white-space: pre; }
+  .mo { display: inline-block; height: 1.25em; line-height: 1.25em; overflow: hidden; vertical-align: bottom; }
+  .mo > span { display: block; }
+  #resetProgressBtn { background-image: linear-gradient(90deg, rgba(217,122,92,0.4) var(--p, 0%), transparent var(--p, 0%)); touch-action: none; user-select: none; -webkit-user-select: none; }
+  #resetProgressBtn.holding { color: var(--white); border-color: var(--retry); }
+  .mseg { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding: 4px; margin: 6px 0 8px; border-radius: 12px; background: var(--grid-line); border: 1px solid var(--grid-line-strong); }
+  .mseg button { position: relative; z-index: 1; font-family: var(--font-jp); font-size: 13.5px; font-weight: 600; color: var(--white-dim); background: none; border: 0; border-radius: 9px; padding: 10px 4px; cursor: pointer; transition: color .2s; }
+  .mseg button[aria-checked="true"] { color: #1D1305; }
+  .mseg-pill { position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 0; width: 0; border-radius: 9px; background: var(--amber); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .mseg-note { font-size: 12.5px; line-height: 1.7; color: var(--white-dim); margin: 0 0 14px; min-height: 3.4em; }
+  .mrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--grid-line-strong); border-bottom: 1px solid var(--grid-line-strong); font-size: 14px; }
+  .mswitch { position: relative; width: 50px; height: 30px; flex: none; border-radius: 999px; border: 0; cursor: pointer; background: var(--grid-line-strong); transition: background .2s; }
+  .mswitch i { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--white); box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
+  .mswitch[aria-checked="true"] { background: var(--known); }
+  .mspec-h { font-size: 15px; font-weight: 900; margin: 20px 0 4px; }
+  .mspec { padding: 14px 0; border-bottom: 1px solid var(--grid-line-strong); }
+  .mspec b { display: block; font-size: 14px; margin-bottom: 4px; }
+  .mspec p { margin: 0 0 10px; font-size: 12.5px; line-height: 1.75; color: var(--white-dim); }
+  .mspec canvas { display: block; width: 100%; height: 104px; border-radius: 10px; background: var(--grid-line); touch-action: none; }
+  .mspec canvas[data-demo="spring"] { cursor: grab; height: 132px; }
+  .mreel { display: inline-block; margin-top: 16px; font-size: 13px; font-weight: 600; color: var(--cyan); text-underline-offset: 3px; }
+  footer.foot #motionBtn { margin-right: 8px; }
+  /* v5 */
+  .mdeck { position: relative; }
+  .mdeck > .stage { z-index: 1; }
+  .mpeek {
+    position: absolute; inset: 0; z-index: 0; opacity: 0; pointer-events: none; transform-origin: 50% 100%;
+    border-radius: var(--radius-card); padding: 26px 24px; display: flex; flex-direction: column;
+    background: var(--paper); color: var(--ink); border: 1px solid rgba(0,0,0,0.08);
+  }
+  .mpk-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: auto; min-height: 22px; }
+  .mpk-cat { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.03em; color: var(--ink-soft); background: rgba(23,41,58,0.08); padding: 4px 8px; border-radius: 5px; }
+  .mpk-cat:empty { display: none; }
+  .mpk-term { font-family: var(--font-mono); font-weight: 700; font-size: clamp(20px, 5vw, 27px); line-height: 1.3; margin: auto 0; word-break: break-word; }
+  .mpk-hint { text-align: center; font-size: 11.5px; color: var(--ink-soft); margin-top: auto; font-family: var(--font-mono); }
+  .mshrink { position: fixed; left: 0; top: 0; z-index: 95; pointer-events: none; overflow: hidden; display: grid; place-items: center;
+    font-family: var(--font-mono); font-weight: 700; color: var(--ink); padding: 12px; text-align: center; }
+  .mm-track .mm-tk { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--bg); opacity: .9; z-index: 1; }
+  .mmeter { position: relative; }
+  .mm-flag { position: absolute; z-index: 3; top: -2px; pointer-events: none; font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #1D1305; background: var(--amber); padding: 3px 7px; border-radius: 999px; white-space: nowrap; }
+  #flipBtn { overflow: hidden; }
+  #flipBtn .mlab { display: inline-block; }
+  @media (prefers-reduced-motion: reduce) { .tabind, .mm-fill, .mtilt { transition: none; } .syncdot.busy { animation: none; } }
 </style>
 </head>
 <body>
@@ -419,6 +612,7 @@
     </div>
 
     <div class="cardcount" id="cardIndexLabel"></div>
+    <div class="mmeter" id="knownMeter" aria-live="polite"><div class="mm-track"><i class="mm-fill"></i></div><span class="mm-num"></span></div>
 
     <div id="cardViewWrap">
       <div class="stage">
@@ -452,6 +646,7 @@
         <button class="navbtn wide" id="flipBtn">裏返す</button>
         <button class="navbtn" id="nextBtn">次へ →</button>
       </div>
+      <p class="mkeys"><span class="fine">← → で移動、Space で裏返す。カードはドラッグしても送れます</span><span class="touch">カードを左右にスワイプして送れます</span></p>
     </div>
 
     <div id="listViewWrap" style="display:none;">
@@ -525,6 +720,1494 @@
   </footer>
 </div>
 
+<script>
+/* Motion layer: one set of easing rules shared by every interaction in the app. */
+(function(){
+  "use strict";
+  var reduce = false;
+  try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  var on = !!Element.prototype.animate && !reduce;
+  var OUT = "cubic-bezier(.2,.8,.25,1)";
+  var M = window.M = { enabled: on };
+  function stage(){ return document.querySelector("#cardViewWrap .stage"); }
+
+  // Card change: anticipation out (ease-in), overshoot in (ease-out with a 2% past-the-mark settle).
+  var pending = null;
+  M.deal = function(dir, swap){
+    var st = stage(), card = document.getElementById("flashcard");
+    function doSwap(){
+      if (card && card.getAnimations) card.getAnimations().forEach(function(a){ a.cancel(); });
+      swap();
+    }
+    if (!on || !st) { doSwap(); return; }
+    if (pending) { pending.onfinish = null; pending.cancel(); pending = null; }
+    var out = st.animate([
+      { transform: "translateX(0) rotate(0deg)", opacity: 1 },
+      { transform: "translateX(" + (-dir * 42) + "%) rotate(" + (-dir * 8) + "deg)", opacity: 0 }
+    ], { duration: 150, easing: "cubic-bezier(.55,0,.9,.45)", fill: "forwards" });
+    pending = out;
+    out.onfinish = function(){
+      pending = null;
+      var labPrev = (document.getElementById("cardIndexLabel") || {}).textContent;
+      doSwap();
+      out.cancel();
+      st.animate([
+        { transform: "translateX(" + (dir * 34) + "%) rotate(" + (dir * 6) + "deg)", opacity: 0 },
+        { transform: "translateX(" + (-dir * 2.2) + "%) rotate(" + (-dir * 0.8) + "deg)", opacity: 1, offset: 0.62 },
+        { transform: "translateX(0) rotate(0deg)", opacity: 1 }
+      ], { duration: 420, easing: OUT });
+      var lab = document.getElementById("cardIndexLabel");
+      if (lab) M.roll(lab, labPrev, dir);
+      if (M.typeIn) M.typeIn(document.getElementById("frontTerm"));
+    };
+  };
+  M.dealIn = function(el, dir){
+    if (!on || !el) return;
+    el.animate([
+      { transform: "translateX(" + (dir * 30) + "%) rotate(" + (dir * 5) + "deg)", opacity: 0 },
+      { transform: "translateX(" + (-dir * 2) + "%) rotate(" + (-dir * 0.6) + "deg)", opacity: 1, offset: 0.62 },
+      { transform: "none", opacity: 1 }
+    ], { duration: 420, easing: OUT });
+  };
+
+  // Flip: squash at the edge-on moment, swing 10 degrees past, settle.
+  M.flip = function(card, flipped){
+    if (!on || !card) return;
+    var a0 = flipped ? 0 : 180, a1 = flipped ? 180 : 0, d = flipped ? 1 : -1;
+    card.animate([
+      { transform: "rotateY(" + a0 + "deg) scale(1)" },
+      { transform: "rotateY(" + (a0 + (a1 - a0) * 0.5) + "deg) scale(.94)", offset: 0.38 },
+      { transform: "rotateY(" + (a1 + d * 10) + "deg) scale(1.01)", offset: 0.72 },
+      { transform: "rotateY(" + (a1 - d * 3) + "deg) scale(1)", offset: 0.88 },
+      { transform: "rotateY(" + a1 + "deg) scale(1)" }
+    ], { duration: 620, easing: "cubic-bezier(.3,.1,.3,1)" });
+  };
+
+  // Marking: a rubber stamp lands on the card.
+  M.stamp = function(kind){
+    var st = stage();
+    if (!on || !st) return;
+    var el = document.createElement("div");
+    el.className = "mstamp " + kind;
+    el.textContent = kind === "known" ? "覚えた" : "苦手";
+    st.appendChild(el);
+    var a = el.animate([
+      { transform: "translate(-50%,-50%) scale(1.9) rotate(-24deg)", opacity: 0 },
+      { transform: "translate(-50%,-50%) scale(.92) rotate(-11deg)", opacity: 1, offset: 0.3 },
+      { transform: "translate(-50%,-50%) scale(1.03) rotate(-12deg)", opacity: 1, offset: 0.42 },
+      { transform: "translate(-50%,-50%) scale(1) rotate(-12deg)", opacity: 1, offset: 0.8 },
+      { transform: "translate(-50%,-50%) scale(1) rotate(-12deg)", opacity: 0 }
+    ], { duration: 950 });
+    a.onfinish = function(){ el.remove(); };
+    if (kind === "known") {
+      st.animate([{ transform: "scale(1)" }, { transform: "scale(.97)", offset: 0.28 }, { transform: "scale(1.012)", offset: 0.6 }, { transform: "scale(1)" }], { duration: 380, easing: "ease-out" });
+    } else {
+      st.animate([0, -2.4, 2, -1.2, 0.6, 0].map(function(r){ return { transform: "rotate(" + r + "deg)" }; }), { duration: 440, easing: "ease-out" });
+    }
+  };
+
+  // Burst: ring + 12 sparks from where you tapped.
+  M.burst = function(target, color){
+    if (!on || !target) return;
+    var r = target.getBoundingClientRect(), host = document.createElement("div");
+    host.className = "mburst";
+    host.style.left = (r.left + r.width / 2) + "px";
+    host.style.top = (r.top + r.height / 2) + "px";
+    document.body.appendChild(host);
+    var ring = document.createElement("i");
+    ring.className = "ring"; ring.style.borderColor = color; host.appendChild(ring);
+    ring.animate([{ transform: "translate(-50%,-50%) scale(.2)", opacity: 0.9 }, { transform: "translate(-50%,-50%) scale(1.7)", opacity: 0 }], { duration: 540, easing: OUT, fill: "forwards" });
+    for (var i = 0; i < 12; i++) {
+      var dot = document.createElement("i"), ang = i / 12 * Math.PI * 2 + Math.random() * 0.3, dist = 44 + Math.random() * 30;
+      dot.className = "dot"; dot.style.background = i % 3 === 0 ? "var(--amber)" : color; host.appendChild(dot);
+      dot.animate([
+        { transform: "translate(-50%,-50%) translate(0,0) rotate(0deg) scale(1)" },
+        { transform: "translate(-50%,-50%) translate(" + (Math.cos(ang) * dist) + "px," + (Math.sin(ang) * dist) + "px) rotate(" + (180 + Math.random() * 180) + "deg) scale(0)" }
+      ], { duration: 560 + Math.random() * 220, easing: "cubic-bezier(.1,.8,.2,1)", fill: "forwards" });
+    }
+    setTimeout(function(){ host.remove(); }, 900);
+  };
+
+  // Tabs: one indicator that travels, overshoots, settles.
+  M.tabs = function(){
+    var nav = document.querySelector("nav.tabs");
+    if (!nav) return;
+    var ind = document.createElement("span");
+    ind.className = "tabind"; nav.appendChild(ind); nav.classList.add("has-ind");
+    function place(btn, animate){
+      var nr = nav.getBoundingClientRect(), br = btn.getBoundingClientRect();
+      if (!animate) ind.style.transition = "none";
+      ind.style.transform = "translateX(" + (br.left - nr.left + nav.scrollLeft) + "px)";
+      ind.style.width = br.width + "px";
+      if (!animate) { void ind.offsetWidth; ind.style.transition = ""; }
+    }
+    function active(){ return nav.querySelector(".tab-btn.active"); }
+    M.moveTab = function(name){ var b = nav.querySelector('[data-tab="' + name + '"]'); if (b) place(b, on); if (M.sfx) M.sfx("tick"); };
+    if (active()) place(active(), false);
+    window.addEventListener("resize", function(){ if (active()) place(active(), false); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if (active()) place(active(), false); });
+  };
+  M.panelIn = function(el){
+    if (!on || !el) return;
+    el.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 280, easing: OUT });
+  };
+
+  // Quiz feedback.
+  M.quiz = function(correct, sel, cor){
+    if (M.streak) M.streak(correct);
+    if (!on) return;
+    var area = document.getElementById("qzArea");
+    var cb = area.querySelector('.qzoption[data-i="' + cor + '"]'), sb = area.querySelector('.qzoption[data-i="' + sel + '"]');
+    var ban = area.querySelector(".qzresultbanner");
+    if (ban) ban.animate([{ transform: "scale(.85)", opacity: 0 }, { transform: "scale(1.03)", opacity: 1, offset: 0.6 }, { transform: "scale(1)", opacity: 1 }], { duration: 380, easing: OUT });
+    if (cb) {
+      cb.animate([
+        { boxShadow: "0 0 0 0 rgba(111,174,122,.6)", transform: "scale(1)" },
+        { boxShadow: "0 0 0 10px rgba(111,174,122,0)", transform: "scale(1.025)", offset: 0.5 },
+        { boxShadow: "0 0 0 14px rgba(111,174,122,0)", transform: "scale(1)" }
+      ], { duration: 560, easing: "ease-out" });
+      if (correct) M.burst(cb.querySelector(".qzletter") || cb, "var(--known)");
+    }
+    if (!correct && sb) sb.animate([0, -9, 8, -5, 3, 0].map(function(x){ return { transform: "translateX(" + x + "px)" }; }), { duration: 420, easing: "ease-out" });
+  };
+  M.results = function(area, c, total, pct){
+    var ps = area.querySelectorAll(".qzprompt"), card = area.querySelector(".qzcard");
+    if (!on || ps.length < 2) return;
+    if (card) card.animate([{ transform: "scale(.9)", opacity: 0 }, { transform: "scale(1.02)", opacity: 1, offset: 0.6 }, { transform: "none", opacity: 1 }], { duration: 460, easing: OUT });
+    var t0 = performance.now(), D = 900;
+    (function step(now){
+      var p = Math.min(1, (now - t0) / D), e = p >= 1 ? 1 : 1 - Math.pow(2, -10 * p);
+      ps[0].textContent = Math.round(c * e) + " / " + total;
+      ps[1].textContent = "正解率 " + Math.round(pct * e) + "%";
+      if (p < 1) requestAnimationFrame(step);
+    })(t0);
+  };
+
+  // Opening: dot, squash, line, 12 ticks, title rises from behind the line. Once per session; tap to skip.
+  M.intro = function(){
+    if (!on) return;
+    try { if (sessionStorage.getItem("sapIntroSeen")) return; sessionStorage.setItem("sapIntroSeen", "1"); } catch (e) {}
+    var ticks = "";
+    for (var i = 0; i < 12; i++) ticks += '<i class="mi-tick' + (i % 4 === 3 ? " major" : "") + '" style="left:' + (i / 11 * 100) + '%"></i>';
+    var ov = document.createElement("div");
+    ov.className = "mintro"; ov.setAttribute("aria-hidden", "true");
+    ov.innerHTML = '<div class="mi-box"><div class="mi-top"><span class="mi-title">AWS SAP 単語帳</span></div>' +
+      '<div class="mi-line"><i class="mi-bar"></i>' + ticks + '<i class="mi-dot"></i></div>' +
+      '<div class="mi-bot"><span class="mi-sub">Solutions Architect – Professional</span></div></div>';
+    document.body.appendChild(ov);
+    var q = function(s){ return ov.querySelector(s); }, wrap = document.querySelector(".wrap");
+    var A = [];
+    function an(el, k, o){ if (el) A.push(el.animate(k, Object.assign({ fill: "both" }, o))); }
+    an(q(".mi-dot"), [
+      { transform: "scale(0)" }, { transform: "scale(1.15)", offset: 0.45 }, { transform: "scale(1,1)", offset: 0.6 },
+      { transform: "scale(1.7,.55)", offset: 0.85 }, { transform: "scale(.2)", opacity: 0 }
+    ], { duration: 420 });
+    an(q(".mi-bar"), [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { delay: 330, duration: 520, easing: "cubic-bezier(.16,1,.3,1)" });
+    ov.querySelectorAll(".mi-tick").forEach(function(t, i){
+      an(t, [{ transform: "scaleY(0)" }, { transform: "scaleY(1.35)", offset: 0.6 }, { transform: "scaleY(1)" }], { delay: 560 + i * 26, duration: 200, easing: "ease-out" });
+    });
+    an(q(".mi-title"), [{ transform: "translateY(110%)" }, { transform: "translateY(0)" }], { delay: 640, duration: 460, easing: "cubic-bezier(.16,1,.3,1)" });
+    an(q(".mi-sub"), [{ transform: "translateY(-120%)" }, { transform: "translateY(0)" }], { delay: 780, duration: 460, easing: "cubic-bezier(.16,1,.3,1)" });
+    var done = false;
+    function exit(delay){
+      if (done) return; done = true;
+      var o = ov.animate([{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(0 0 100% 0)" }], { delay: delay, duration: 540, easing: "cubic-bezier(.75,0,.2,1)", fill: "forwards" });
+      if (wrap) wrap.animate([{ transform: "translateY(22px)", opacity: 0.4 }, { transform: "none", opacity: 1 }], { delay: delay + 120, duration: 560, easing: OUT, fill: "backwards" });
+      o.onfinish = function(){ ov.remove(); };
+    }
+    exit(1380);
+    function skip(){ if (!done) { A.forEach(function(a){ a.finish(); }); exit(0); } }
+    ov.addEventListener("pointerdown", skip);
+    document.addEventListener("keydown", skip, { once: true });
+  };
+
+  // ===== v2 additions =====
+
+  // Swipe / drag: the card follows your finger, arms past 25%, and flies off with the velocity you gave it.
+  M._from = null;
+  var _deal = M.deal;
+  M.deal = function(dir, swap){
+    var st = stage(), from = M._from;
+    M._from = null;
+    if (!on || !st || !from) { if (st) st.style.transform = ""; _deal(dir, swap); return; }
+    var card = document.getElementById("flashcard");
+    var out = st.animate([
+      { transform: "translateX(" + from.x + "px) rotate(" + from.r + "deg)", opacity: 1 },
+      { transform: "translateX(" + (-dir * 115) + "%) rotate(" + (-dir * 16) + "deg)", opacity: 0 }
+    ], { duration: 190, easing: "cubic-bezier(.3,.6,.6,1)", fill: "forwards" });
+    out.onfinish = function(){
+      st.style.transform = "";
+      if (card && card.getAnimations) card.getAnimations().forEach(function(a){ a.cancel(); });
+      var labPrev = (document.getElementById("cardIndexLabel") || {}).textContent;
+      swap(); out.cancel();
+      st.animate([
+        { transform: "translateY(26px) scale(.94)", opacity: 0 },
+        { transform: "translateY(-3px) scale(1.01)", opacity: 1, offset: 0.62 },
+        { transform: "none", opacity: 1 }
+      ], { duration: 420, easing: OUT });
+      var lab = document.getElementById("cardIndexLabel");
+      if (lab) M.roll(lab, labPrev, dir);
+      if (M.typeIn) M.typeIn(document.getElementById("frontTerm"));
+    };
+  };
+  M.swipe = function(){
+    var st = stage();
+    if (!st) return;
+    var hl = document.createElement("span"), hr = document.createElement("span");
+    hl.className = "mhint l"; hl.textContent = "← 前へ"; hr.className = "mhint r"; hr.textContent = "次へ →";
+    st.appendChild(hl); st.appendChild(hr);
+    var sx = 0, sy = 0, dx = 0, t0 = 0, pid = null, active = false, dragging = false, moved = false;
+    function hints(p, armed){
+      var h = dx < 0 ? hr : hl, o = dx < 0 ? hl : hr;
+      h.style.opacity = String(Math.min(1, p)); o.style.opacity = "0";
+      h.classList.toggle("armed", armed); o.classList.remove("armed");
+    }
+    st.addEventListener("pointerdown", function(e){
+      if (e.button > 0 || e.target.closest("button, textarea, input, a, select")) return;
+      active = true; dragging = false; moved = false; sx = e.clientX; sy = e.clientY; dx = 0; t0 = performance.now(); pid = e.pointerId;
+    });
+    st.addEventListener("pointermove", function(e){
+      if (M._pinching) { active = false; return; }
+      if (!active || e.pointerId !== pid) return;
+      var mx = e.clientX - sx, my = e.clientY - sy;
+      if (!dragging) {
+        if (Math.abs(mx) > 8 && Math.abs(mx) > Math.abs(my) * 1.2) {
+          dragging = true; moved = true;
+          st.getAnimations().forEach(function(a){ a.cancel(); });
+          try { st.setPointerCapture(pid); } catch (err) {}
+        } else if (Math.abs(my) > 10) { active = false; return; }
+        else return;
+      }
+      dx = mx;
+      var w = st.offsetWidth, p = Math.abs(dx) / (w * 0.25);
+      if (on) st.style.transform = "translateX(" + dx + "px) rotate(" + (dx / w * 14) + "deg)";
+      hints(p, p >= 1);
+      e.preventDefault();
+    });
+    function end(){
+      if (!active) return;
+      active = false;
+      if (!dragging) return;
+      dragging = false;
+      var w = st.offsetWidth, v = dx / Math.max(performance.now() - t0, 1);
+      hl.style.opacity = "0"; hr.style.opacity = "0"; hl.classList.remove("armed"); hr.classList.remove("armed");
+      if (Math.abs(dx) > w * 0.25 || (Math.abs(v) > 0.55 && Math.abs(dx) > 30)) {
+        var dir = dx < 0 ? 1 : -1;
+        M._from = { x: dx, r: dx / w * 14 };
+        document.getElementById(dir > 0 ? "nextBtn" : "prevBtn").click();
+      } else if (on) {
+        var cur = st.style.transform; st.style.transform = "";
+        st.animate([
+          { transform: cur },
+          { transform: "translateX(" + (-dx * 0.08) + "px) rotate(" + (-dx / w * 1.2) + "deg)", offset: 0.6 },
+          { transform: "none" }
+        ], { duration: 440, easing: OUT });
+      }
+    }
+    st.addEventListener("pointerup", end);
+    st.addEventListener("pointercancel", end);
+    st.addEventListener("click", function(e){ if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+  };
+
+  // Progress meter: the stamp sends a spark up to the meter, the meter fills when it lands.
+  var meter = { k: 0, n: 0, num: 0, init: false }, holdNext = false;
+  M.holdMeter = function(v){ holdNext = !!v && on; };
+  function rollNum(el, a, b, n){
+    if (!on || a === b) { el.textContent = "覚えた " + b + " / " + n; return; }
+    var t0 = performance.now(), D = 520;
+    (function step(now){
+      var p = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = "覚えた " + Math.round(a + (b - a) * e) + " / " + n;
+      if (p < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+  function applyMeter(k, n, bump){
+    var box = document.getElementById("knownMeter");
+    if (!box) return;
+    var fill = box.querySelector(".mm-fill"), num = box.querySelector(".mm-num"), track = box.querySelector(".mm-track");
+    fill.style.width = (n ? k / n * 100 : 0) + "%";
+    rollNum(num, n === meter.n ? meter.k : k, k, n);
+    if (bump && on) track.animate([{ transform: "scaleY(1)" }, { transform: "scaleY(2.2)", offset: 0.35 }, { transform: "scaleY(1)" }], { duration: 420, easing: OUT });
+    if (meter.init && n === meter.n && n > 0 && k < n && M._milestone) [0.25, 0.5, 0.75].forEach(function(m){ if (meter.k / n < m && k / n >= m) M._milestone(m); });
+    var complete = meter.init && n === meter.n && n > 0 && meter.k < n && k === n;
+    meter.k = k; meter.n = n; meter.init = true;
+    if (complete) {
+      M.burst(track, "var(--known)");
+      setTimeout(function(){ M.burst(track, "var(--amber)"); }, 140);
+      M.toast("この絞り込みの単語を、すべて覚えました");
+    }
+  }
+  M.meter = function(k, n){
+    if (!holdNext) { applyMeter(k, n, false); return; }
+    holdNext = false;
+    var st = stage(), box = document.getElementById("knownMeter");
+    if (!st || !box) { applyMeter(k, n, true); return; }
+    var a = st.getBoundingClientRect(), tr = box.querySelector(".mm-track").getBoundingClientRect();
+    var x0 = a.left + a.width * 0.74, y0 = a.top + a.height * 0.2;
+    var x1 = tr.left + tr.width * (n ? k / n : 0), y1 = tr.top + tr.height / 2;
+    var cx = (x0 + x1) / 2, cy = Math.min(y0, y1) - 70, frames = [];
+    for (var i = 0; i <= 10; i++) {
+      var t = i / 10, x = (1-t)*(1-t)*x0 + 2*(1-t)*t*cx + t*t*x1, y = (1-t)*(1-t)*y0 + 2*(1-t)*t*cy + t*t*y1;
+      frames.push({ transform: "translate(" + x + "px," + y + "px) scale(" + (1 - t * 0.35) + ")" });
+    }
+    var dot = document.createElement("i");
+    dot.className = "mfly"; document.body.appendChild(dot);
+    var f = dot.animate(frames, { delay: 260, duration: 520, easing: "cubic-bezier(.45,0,.25,1)", fill: "both" });
+    f.onfinish = function(){ dot.remove(); applyMeter(k, n, true); };
+  };
+  M.toast = function(text){
+    var el = document.createElement("div");
+    el.className = "mtoast"; el.setAttribute("role", "status"); el.textContent = text;
+    document.body.appendChild(el);
+    if (!on) { el.style.transform = "translateX(-50%)"; setTimeout(function(){ el.remove(); }, 2400); return; }
+    el.animate([
+      { transform: "translate(-50%, 40px) scale(.9)", opacity: 0 },
+      { transform: "translate(-50%, -4px) scale(1.02)", opacity: 1, offset: 0.1 },
+      { transform: "translate(-50%, 0) scale(1)", opacity: 1, offset: 0.16 },
+      { transform: "translate(-50%, 0) scale(1)", opacity: 1, offset: 0.86 },
+      { transform: "translate(-50%, 16px) scale(.96)", opacity: 0 }
+    ], { duration: 2600, fill: "forwards" }).onfinish = function(){ el.remove(); };
+  };
+
+  // Shuffle: two cards fan out from behind and riffle back in.
+  M.riffle = function(){
+    var st = stage();
+    if (!on || !st) return;
+    [-1, 1].forEach(function(s){
+      var g = document.createElement("div");
+      g.className = "mghost"; st.insertBefore(g, st.firstChild);
+      g.animate([
+        { transform: "none" },
+        { transform: "translate(" + (s * 26) + "%, -2%) rotate(" + (s * 9) + "deg)", offset: 0.4 },
+        { transform: "translate(" + (-s * 6) + "%, 1%) rotate(" + (-s * 2) + "deg)", offset: 0.75 },
+        { transform: "none" }
+      ], { duration: 660, easing: "cubic-bezier(.3,.1,.3,1)" }).onfinish = function(){ g.remove(); };
+    });
+    st.animate([{ transform: "none" }, { transform: "translateY(-6px) scale(1.02)", offset: 0.35 }, { transform: "translateY(2px) scale(.99)", offset: 0.75 }, { transform: "none" }], { duration: 660 });
+  };
+
+  // Lists: one cascade when a list opens.
+  M.cascade = function(container, max){
+    if (!on || !container) return;
+    Array.prototype.slice.call(container.children, 0, max || 14).forEach(function(el, i){
+      el.animate([{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }], { duration: 340, delay: i * 32, easing: OUT, fill: "backwards" });
+    });
+  };
+
+  // Quiz streak badge.
+  var streak = 0, badge = null;
+  function streakBadge(){
+    if (badge) return badge;
+    var lab = document.getElementById("qzStatusLabel");
+    badge = document.createElement("div"); badge.className = "mstreak"; badge.setAttribute("aria-live", "polite");
+    lab.parentNode.insertBefore(badge, lab.nextSibling);
+    return badge;
+  }
+  M.streak = function(correct){
+    var b = streakBadge();
+    if (correct) {
+      streak++;
+      if (streak < 2) return;
+      b.getAnimations().forEach(function(a){ a.cancel(); });
+      b.innerHTML = "<b>" + streak + "</b>問連続正解";
+      b.classList.add("show");
+      if (on) {
+        b.animate([{ transform: "scale(.6)" }, { transform: "scale(1.18)", offset: 0.5 }, { transform: "scale(1)" }], { duration: 420, easing: OUT });
+        M.sfx(streak % 5 === 0 ? "sparkle" : "pop");
+        if (streak % 5 === 0) { M.burst(b, "var(--amber)"); setTimeout(function(){ M.burst(b, "var(--known)"); }, 120); }
+      }
+    } else {
+      if (streak >= 2 && on) {
+        var a = b.animate([{ transform: "none", opacity: 1 }, { transform: "translateY(14px) rotate(-6deg)", opacity: 0 }], { duration: 420, easing: "cubic-bezier(.5,0,.9,.5)", fill: "forwards" });
+        a.onfinish = function(){ a.cancel(); b.classList.remove("show"); };
+      } else b.classList.remove("show");
+      streak = 0;
+    }
+  };
+  M.streakReset = function(){ streak = 0; if (badge) badge.classList.remove("show"); };
+
+  // New card: it flies from the form into the 単語カード tab.
+  M.addFly = function(term, wasEdit){
+    var btn = document.getElementById("addSubmitBtn"), tab = document.querySelector('.tab-btn[data-tab="cards"]');
+    if (M.sfx) M.sfx(wasEdit ? "pop" : "whoosh");
+    if (!on || !btn || !tab) return;
+    if (wasEdit) { btn.animate([{ transform: "scale(1)" }, { transform: "scale(.96)", offset: 0.3 }, { transform: "scale(1.02)", offset: 0.65 }, { transform: "scale(1)" }], { duration: 380 }); M.toast("カードを更新しました"); return; }
+    var g = document.createElement("div");
+    g.className = "mflycard"; g.textContent = term; document.body.appendChild(g);
+    var a = btn.getBoundingClientRect(), b = tab.getBoundingClientRect(), w = g.offsetWidth, h = g.offsetHeight;
+    var x0 = a.left + a.width / 2 - w / 2, y0 = a.top - h - 6, x1 = b.left + b.width / 2 - w / 2, y1 = b.top + b.height / 2 - h / 2;
+    var cx = (x0 + x1) / 2 + 60, cy = Math.min(y0, y1) - 110, frames = [];
+    for (var i = 0; i <= 12; i++) {
+      var t = i / 12, x = (1-t)*(1-t)*x0 + 2*(1-t)*t*cx + t*t*x1, y = (1-t)*(1-t)*y0 + 2*(1-t)*t*cy + t*t*y1;
+      var sc = i === 0 ? 0.6 : i === 2 ? 1.06 : 1 - t * 0.78;
+      frames.push({ transform: "translate(" + x + "px," + y + "px) rotate(" + (Math.sin(t * Math.PI) * -10) + "deg) scale(" + sc + ")", opacity: t > 0.92 ? 0 : 1 });
+    }
+    g.animate(frames, { duration: 760, easing: "cubic-bezier(.4,0,.3,1)", fill: "forwards" }).onfinish = function(){
+      g.remove();
+      tab.animate([{ transform: "scale(1)" }, { transform: "scale(1.14)", offset: 0.4 }, { transform: "scale(1)" }], { duration: 380, easing: OUT });
+      var pl = document.createElement("span");
+      pl.className = "mplus"; pl.textContent = "+1"; document.body.appendChild(pl);
+      var px = b.left + b.width - 8, py = b.top - 2;
+      pl.animate([{ transform: "translate(" + px + "px," + (py + 8) + "px)", opacity: 0 }, { transform: "translate(" + px + "px," + py + "px)", opacity: 1, offset: 0.25 }, { transform: "translate(" + px + "px," + (py - 22) + "px)", opacity: 0 }], { duration: 900, easing: OUT }).onfinish = function(){ pl.remove(); };
+    };
+  };
+
+  // Chips answer a tap.
+  M.chips = function(){
+    if (!on) return;
+    document.addEventListener("click", function(e){
+      var c = e.target.closest && e.target.closest(".chip");
+      if (c) c.animate([{ transform: "scale(1)" }, { transform: "scale(.9)", offset: 0.3 }, { transform: "scale(1.06)", offset: 0.65 }, { transform: "scale(1)" }], { duration: 320, easing: "ease-out" });
+    });
+  };
+
+  // Keyboard on desktop.
+  M.keys = function(){
+    document.addEventListener("keydown", function(e){
+      if (e.metaKey || e.ctrlKey || e.altKey || document.querySelector(".mintro") || document.querySelector(".msheet")) return;
+      var tg = e.target;
+      if (tg && (tg.tagName === "INPUT" || tg.tagName === "TEXTAREA" || tg.tagName === "SELECT" || tg.isContentEditable)) return;
+      if (tg && tg.tagName === "BUTTON" && (e.key === " " || e.key === "Enter")) return;
+      var panel = document.getElementById("panel-cards"), wrap = document.getElementById("cardViewWrap");
+      if (!panel || !panel.classList.contains("active") || !wrap || wrap.style.display === "none") return;
+      var id = e.key === "ArrowRight" ? "nextBtn" : e.key === "ArrowLeft" ? "prevBtn" : (e.key === " " || e.key === "Enter") ? "flipBtn" : null;
+      if (id) { e.preventDefault(); document.getElementById(id).click(); }
+    });
+  };
+
+  // ===== v3 additions =====
+  function esc(x){ return String(x).replace(/[&<>"']/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+  // ---- Sound: off by default, synthesized on the spot like the reel's soundtrack ----
+  var sfxOn = false, ac = null, nbuf = null;
+  try { sfxOn = localStorage.getItem("sapSfx") === "1"; } catch (e) {}
+  function actx(){
+    if (!ac) { try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; } }
+    if (ac.state === "suspended") ac.resume();
+    return ac;
+  }
+  function tn(c, t, type, f, f2, peak, dur){
+    var o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t); if (f2 !== f) o.frequency.exponentialRampToValueAtTime(f2, t + dur * 0.7);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + 0.006); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t + dur + 0.05);
+  }
+  function nz(c, t, dur, freq, peak){
+    if (!nbuf) { nbuf = c.createBuffer(1, c.sampleRate, c.sampleRate); var d = nbuf.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+    var s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
+    s.buffer = nbuf; f.type = "bandpass"; f.frequency.setValueAtTime(freq, t); f.frequency.exponentialRampToValueAtTime(freq * 2.2, t + dur); f.Q.value = 0.9;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f); f.connect(g); g.connect(c.destination); s.start(t); s.stop(t + dur + 0.05);
+  }
+  M.sfx = function(name){
+    if (!sfxOn) return;
+    var c = actx(); if (!c) return;
+    var t = c.currentTime + 0.005;
+    switch (name) {
+      case "flip": nz(c, t, 0.12, 2200, 0.05); tn(c, t + 0.05, "sine", 420, 260, 0.05, 0.08); break;
+      case "deal": nz(c, t, 0.09, 3800, 0.035); break;
+      case "known": tn(c, t, "sine", 880, 880, 0.07, 0.16); tn(c, t + 0.08, "sine", 1318.5, 1318.5, 0.07, 0.3); break;
+      case "retry": tn(c, t, "triangle", 240, 150, 0.09, 0.2); break;
+      case "correct": [659.25, 830.6, 987.8].forEach(function(f, i){ tn(c, t + i * 0.06, "triangle", f, f, 0.06, 0.24); }); break;
+      case "wrong": tn(c, t, "square", 150, 120, 0.03, 0.16); tn(c, t + 0.09, "square", 130, 100, 0.026, 0.2); break;
+      case "tick": tn(c, t, "sine", 1600, 1600, 0.022, 0.03); break;
+      case "pop": tn(c, t, "sine", 600, 1100, 0.05, 0.09); break;
+      case "sparkle": [1318.5, 1568, 2093].forEach(function(f, i){ tn(c, t + i * 0.05, "sine", f, f, 0.035, 0.26); }); break;
+      case "fanfare": [523.25, 659.25, 783.99, 1046.5].forEach(function(f, i){ tn(c, t + i * 0.09, "triangle", f, f, 0.06, i === 3 ? 0.7 : 0.22); }); break;
+      case "sheet": tn(c, t, "sine", 300, 720, 0.04, 0.2); nz(c, t, 0.2, 900, 0.03); break;
+      case "whoosh": nz(c, t, 0.2, 1400, 0.05); break;
+    }
+  };
+  M.sfxInit = function(){
+    var reset = document.getElementById("resetProgressBtn");
+    if (!reset) return;
+    var b = document.createElement("button");
+    b.id = "sfxBtn"; b.type = "button";
+    function lab(){ b.textContent = sfxOn ? "効果音 オン" : "効果音 オフ"; b.setAttribute("aria-pressed", String(sfxOn)); }
+    lab();
+    b.addEventListener("click", function(){
+      sfxOn = !sfxOn; lab();
+      try { localStorage.setItem("sapSfx", sfxOn ? "1" : "0"); } catch (e) {}
+      if (sfxOn) M.sfx("known");
+    });
+    reset.parentNode.insertBefore(b, reset);
+  };
+
+  // Wire sounds into the earlier motions without changing them.
+  (function(){
+    var wrap = function(name, fn){ var orig = M[name]; M[name] = function(){ fn.apply(null, arguments); return orig.apply(this, arguments); }; };
+    wrap("deal", function(){ M.sfx("deal"); });
+    wrap("flip", function(card, flipped){ M.sfx("flip"); if (flipped && on) revealBack(); });
+    wrap("stamp", function(kind){ M.sfx(kind === "known" ? "known" : "retry"); });
+    wrap("riffle", function(){ M.sfx("whoosh"); });
+    wrap("toast", function(text){ if (/すべて覚えました/.test(text)) { M.sfx("fanfare"); M.confetti(); } });
+  })();
+
+  // Back of the card: the explanation wipes in just after the card turns edge-on.
+  function revealBack(){
+    ["backTerm", "backDesc", "backTips"].forEach(function(id, i){
+      var el = document.getElementById(id);
+      if (el) el.animate([{ clipPath: "inset(0 0 100% 0)", transform: "translateY(8px)" }, { clipPath: "inset(0 0 0 0)", transform: "none" }], { delay: 230 + i * 70, duration: 420, easing: OUT, fill: "backwards" });
+    });
+  }
+
+  // Pointer tilt + light sheen (mouse only).
+  M.tilt = function(){
+    var st = stage(), card = document.getElementById("flashcard");
+    if (!on || !st || !card || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var tw = document.createElement("div");
+    tw.className = "mtilt"; card.parentNode.insertBefore(tw, card); tw.appendChild(card);
+    var front = card.querySelector(".face.front"), sheen = document.createElement("div");
+    sheen.className = "msheen"; if (front) front.appendChild(sheen);
+    st.addEventListener("pointermove", function(e){
+      if (e.pointerType !== "mouse") return;
+      if (e.buttons) { tw.style.transform = ""; st.classList.remove("hovering"); return; }
+      var r = st.getBoundingClientRect(), nx = (e.clientX - r.left) / r.width * 2 - 1, ny = (e.clientY - r.top) / r.height * 2 - 1;
+      tw.style.transform = "rotateX(" + (-ny * 5) + "deg) rotateY(" + (nx * 7) + "deg)";
+      sheen.style.setProperty("--mx", ((nx + 1) * 50) + "%"); sheen.style.setProperty("--my", ((ny + 1) * 50) + "%");
+      st.classList.add("hovering");
+    });
+    st.addEventListener("pointerleave", function(){ tw.style.transform = ""; st.classList.remove("hovering"); });
+  };
+
+  // Filter changes: the deck drops back in from above.
+  M.drop = function(){
+    var wrap = document.getElementById("cardViewWrap");
+    if (!on) return;
+    if (wrap && wrap.style.display === "none") { M.cascade(document.getElementById("termListArea"), 8); return; }
+    var st = stage(); if (!st) return;
+    M.sfx("deal");
+    st.animate([{ transform: "translateY(-18px) scale(.97)", opacity: 0 }, { transform: "translateY(3px) scale(1.005)", opacity: 1, offset: 0.65 }, { transform: "none", opacity: 1 }], { duration: 380, easing: OUT });
+  };
+  M.empty = function(isEmpty){ var st = stage(); if (st) st.classList.toggle("mempty", !!isEmpty); };
+
+  // Tips: expand, sweep in, collapse out.
+  M.expand = function(el){
+    if (!on || !el) return;
+    var h = el.offsetHeight; el.style.overflow = "hidden";
+    el.animate([{ height: "0px", opacity: 0 }, { height: h + "px", opacity: 1 }], { duration: 300, easing: OUT }).onfinish = function(){ el.style.overflow = ""; };
+  };
+  M.tipAdded = function(el){
+    M.sfx("pop");
+    if (!on || !el) return;
+    el.animate([{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 460, easing: "cubic-bezier(.65,0,.35,1)" });
+    M.burst(el.querySelector(".tiptext") || el, "var(--amber)");
+  };
+  M.collapse = function(el, done){
+    if (!on || !el) { done(); return; }
+    var h = el.offsetHeight; el.style.overflow = "hidden";
+    el.animate([{ height: h + "px", opacity: 1, transform: "none" }, { height: "0px", opacity: 0, transform: "translateX(30px)", paddingTop: "0px", paddingBottom: "0px" }], { duration: 260, easing: "cubic-bezier(.5,0,.8,.5)", fill: "forwards" }).onfinish = done;
+  };
+
+  // Confetti for real milestones only.
+  M.confetti = function(){
+    if (!on) return;
+    var host = document.createElement("div"), cols = ["var(--amber)", "var(--known)", "var(--cyan)", "var(--retry)"], Wd = innerWidth, Hd = innerHeight;
+    host.className = "mconf"; document.body.appendChild(host);
+    for (var i = 0; i < 72; i++) {
+      var p = document.createElement("i"); p.style.background = cols[i % 4]; host.appendChild(p);
+      var x0 = Wd / 2 + (Math.random() - 0.5) * 80, y0 = Hd * 0.4, x1 = x0 + (Math.random() - 0.5) * Wd * 0.95, yp = y0 - 120 - Math.random() * 240, r = Math.random() * 900 - 450;
+      p.animate([
+        { transform: "translate(" + x0 + "px," + y0 + "px) rotate(0deg) scale(.4)", easing: "cubic-bezier(.2,.7,.4,1)" },
+        { transform: "translate(" + ((x0 + x1) / 2) + "px," + yp + "px) rotate(" + (r / 2) + "deg) scale(1)", offset: 0.3, easing: "cubic-bezier(.5,0,.8,.6)" },
+        { transform: "translate(" + x1 + "px," + (Hd + 40) + "px) rotate(" + r + "deg) scale(1)" }
+      ], { duration: 1500 + Math.random() * 900, fill: "forwards" });
+    }
+    setTimeout(function(){ host.remove(); }, 2600);
+  };
+
+  // ---- Quiz: drawn marks, answer trail, result ring ----
+  function drawMark(btn, ok){
+    var lt = btn && btn.querySelector(".qzletter");
+    if (!lt) return;
+    lt.style.color = "transparent";
+    var col = ok ? "#2F7A43" : "#B4512F";
+    lt.insertAdjacentHTML("beforeend", '<svg class="mmark" viewBox="0 0 22 22" style="stroke:' + col + '">' + (ok ? '<path d="M6 11.5l3.4 3.4L16.5 7.5"/>' : '<path d="M7.5 7.5l7 7"/><path d="M14.5 7.5l-7 7"/>') + "</svg>");
+    if (!on) return;
+    lt.querySelectorAll("path").forEach(function(pth, i){
+      var L = pth.getTotalLength(); pth.style.strokeDasharray = L;
+      pth.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { delay: 120 + i * 110, duration: 260, easing: "cubic-bezier(.65,0,.35,1)", fill: "backwards" });
+    });
+  }
+  var trailEl = null, trailMode = 0;
+  function trailBox(){
+    if (trailEl) return trailEl;
+    var lab = document.getElementById("qzStatusLabel");
+    trailEl = document.createElement("div"); trailEl.className = "mtrail"; trailEl.setAttribute("aria-hidden", "true");
+    lab.parentNode.insertBefore(trailEl, lab.nextSibling);
+    return trailEl;
+  }
+  M.trailReset = function(mode){
+    var b = trailBox(); trailMode = mode || 0; b.innerHTML = "";
+    for (var i = 0; i < trailMode; i++) b.insertAdjacentHTML("beforeend", '<i class="slot' + (i === 0 ? " next" : "") + '"></i>');
+  };
+  M.trail = function(ok){
+    var b = trailBox(), dot;
+    if (trailMode > 0) {
+      dot = b.querySelector("i.slot"); if (!dot) return;
+      dot.className = ok ? "" : "ng";
+      var nx = b.querySelector("i.slot"); if (nx) nx.classList.add("next");
+    } else {
+      dot = document.createElement("i"); if (!ok) dot.className = "ng"; b.appendChild(dot);
+      if (b.children.length > 30) { var first = b.firstElementChild; if (on) first.animate([{ transform: "scale(1)" }, { transform: "scale(0)" }], { duration: 200 }).onfinish = function(){ first.remove(); }; else first.remove(); }
+    }
+    if (on) dot.animate([{ transform: "scale(0)" }, { transform: "scale(1.6)", offset: 0.5 }, { transform: "scale(1)" }], { duration: 380, easing: OUT });
+  };
+  var _quiz = M.quiz;
+  M.quiz = function(correct, sel, cor){
+    M.sfx(correct ? "correct" : "wrong");
+    M.trail(correct);
+    var area = document.getElementById("qzArea");
+    drawMark(area.querySelector('.qzoption[data-i="' + cor + '"]'), true);
+    if (!correct) drawMark(area.querySelector('.qzoption[data-i="' + sel + '"]'), false);
+    if (on) area.querySelectorAll(".qzoption.locked:not(.correct):not(.incorrect)").forEach(function(o, i){
+      o.animate([{ opacity: 1, transform: "none" }, { opacity: 0.6, transform: "translateX(4px)", offset: 0.5 }, { opacity: 0.6, transform: "none" }], { delay: i * 40, duration: 380, easing: OUT });
+    });
+    _quiz(correct, sel, cor);
+  };
+  var _streak = M.streak;
+  M.streak = function(correct){ _streak(correct); };
+  M.results = function(area, c, total, pct){
+    var ps = area.querySelectorAll(".qzprompt"), card = area.querySelector(".qzcard");
+    if (ps.length < 2) return;
+    var C = 2 * Math.PI * 34;
+    ps[0].insertAdjacentHTML("beforebegin", '<svg class="mring" viewBox="0 0 80 80" aria-hidden="true"><circle class="bgc" cx="40" cy="40" r="34"/><circle class="fgc" cx="40" cy="40" r="34" stroke-dasharray="' + C + '" stroke-dashoffset="' + (C * (1 - pct / 100)) + '"/></svg>');
+    var perfect = total > 0 && c === total;
+    if (perfect) { M.sfx("fanfare"); setTimeout(function(){ M.confetti(); }, 300); }
+    if (!on) return;
+    if (card) card.animate([{ transform: "scale(.9)", opacity: 0 }, { transform: "scale(1.02)", opacity: 1, offset: 0.6 }, { transform: "none", opacity: 1 }], { duration: 460, easing: OUT });
+    area.querySelector(".fgc").animate([{ strokeDashoffset: C }, { strokeDashoffset: C * (1 - pct / 100) }], { delay: 120, duration: 900, easing: "cubic-bezier(.16,1,.3,1)", fill: "backwards" });
+    var t0 = performance.now() + 120, D = 900;
+    (function step(now){
+      var p = Math.max(0, Math.min(1, (now - t0) / D)), e = p >= 1 ? 1 : 1 - Math.pow(2, -10 * p);
+      ps[0].textContent = Math.round(c * e) + " / " + total;
+      ps[1].textContent = "正解率 " + Math.round(pct * e) + "%";
+      if (p < 1) requestAnimationFrame(step);
+    })(performance.now());
+  };
+
+  // ---- 学習マップ: every card as a tile; the tile you tap grows into the card ----
+  var sheet = null, sheetBg = null, opener = null;
+  function loadSeen(){ try { return JSON.parse(localStorage.getItem("sapMapSeen") || "null"); } catch (e) { return null; } }
+  function saveSeen(m){ try { localStorage.setItem("sapMapSeen", JSON.stringify(m)); } catch (e) {} }
+  M.openMap = function(){
+    if (sheet || !window.__app || document.querySelector(".msheet")) return;
+    var snap = window.__app.snapshot(), prog = snap.progress, seen = loadSeen();
+    var groups = {}, keys = [];
+    snap.cats.forEach(function(c){ if (!groups[c[0]]) { groups[c[0]] = []; keys.push(c[0]); } });
+    snap.terms.forEach(function(t){ if (!groups[t.cat]) { groups[t.cat] = []; keys.push(t.cat); } groups[t.cat].push(t); });
+    var st = function(id){ return prog[id] === "known" ? "known" : prog[id] === "retry" ? "retry" : ""; };
+    var nowMap = {}, changed = [], gained = 0, kn = 0, rt = 0;
+    snap.terms.forEach(function(t){
+      var v = st(t.id); nowMap[t.id] = v; if (v === "known") kn++; if (v === "retry") rt++;
+      if (seen && (seen[t.id] || "") !== v) { changed.push(t.id); if (v === "known") gained++; }
+    });
+    saveSeen(nowMap);
+    var html = '<div class="ms-drag"><div class="ms-grab"><i></i></div><div class="ms-head"><div><p class="ms-title">学習マップ</p>' +
+      '<p class="ms-stat">覚えた ' + kn + ' / ' + snap.terms.length + (gained > 0 ? '　前回から <b>+' + gained + '</b>' : '') + '</p></div>' +
+      '<button type="button" class="ms-close" aria-label="閉じる">✕</button></div></div>' +
+      '<div class="ms-legend"><span style="--c:var(--known)">覚えた ' + kn + '</span><span style="--c:var(--retry)">苦手 ' + rt + '</span><span style="--c:var(--grid-line-strong)">まだ ' + (snap.terms.length - kn - rt) + '</span></div>' +
+      '<div class="ms-peek" aria-live="polite">タイルを押すと、そのカードを開きます</div><div class="ms-body">';
+    keys.forEach(function(k){
+      var list = groups[k]; if (!list.length) return;
+      var ck = list.filter(function(t){ return nowMap[t.id] === "known"; }).length;
+      html += '<section class="ms-cat"><div class="ms-cathead"><b>' + esc(snap.catmap[k] || k) + '</b><span class="n">' + ck + ' / ' + list.length + '</span></div><div class="ms-grid">';
+      list.forEach(function(t){
+        var shown = changed.indexOf(t.id) >= 0 ? (seen[t.id] || "") : nowMap[t.id];
+        html += '<button type="button" class="ms-tile ' + shown + (t.id === snap.currentId ? " cur" : "") + '" data-id="' + esc(t.id) + '" data-now="' + nowMap[t.id] + '" aria-label="' + esc(t.term) + '"></button>';
+      });
+      html += '</div></section>';
+    });
+    html += '</div>';
+    opener = document.activeElement;
+    sheetBg = document.createElement("div"); sheetBg.className = "msheet-bg";
+    sheet = document.createElement("div"); sheet.className = "msheet"; sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-modal", "true"); sheet.setAttribute("aria-label", "学習マップ");
+    sheet.innerHTML = html;
+    document.body.appendChild(sheetBg); document.body.appendChild(sheet);
+    document.body.style.overflow = "hidden";
+    sheet.querySelector(".ms-close").focus({ preventScroll: true });
+    M.sfx("sheet");
+    var tiles = sheet.querySelectorAll(".ms-tile"), peek = sheet.querySelector(".ms-peek");
+    var cur = sheet.querySelector(".ms-tile.cur");
+    if (cur) { var body = sheet.querySelector(".ms-body"); body.scrollTop = Math.max(0, cur.closest(".ms-cat").offsetTop - body.offsetTop - 8); }
+    if (on) {
+      sheet.animate([{ transform: "translateY(100%)" }, { transform: "translateY(-1.5%)", offset: 0.7 }, { transform: "none" }], { duration: 520, easing: OUT });
+      sheetBg.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260 });
+      tiles.forEach(function(tl, i){
+        tl.animate([{ transform: "rotateY(-100deg) scale(.6)", opacity: 0 }, { transform: "rotateY(12deg) scale(1.05)", opacity: 1, offset: 0.7 }, { transform: "none", opacity: 1 }], { delay: 140 + Math.min(i * 3.2, 560), duration: 420, easing: "ease-out", fill: "backwards" });
+      });
+    }
+    // what changed since you last opened the map turns over, one by one
+    changed.slice(0, 40).forEach(function(id, j){
+      var tl = sheet.querySelector('.ms-tile[data-id="' + id.replace(/"/g, '\\"') + '"]'); if (!tl) return;
+      var swap = function(){ tl.className = "ms-tile " + tl.getAttribute("data-now") + (tl.classList.contains("cur") ? " cur" : ""); };
+      if (!on) { swap(); return; }
+      setTimeout(function(){
+        if (!sheet) return;
+        var a = tl.animate([{ transform: "none" }, { transform: "rotateY(90deg) scale(1.15)" }], { duration: 140, easing: "ease-in" });
+        a.onfinish = function(){
+          swap(); M.sfx("tick");
+          tl.animate([{ transform: "rotateY(-90deg) scale(1.15)" }, { transform: "rotateY(10deg) scale(1.1)", offset: 0.7 }, { transform: "none" }], { duration: 300, easing: "ease-out" });
+          if (tl.getAttribute("data-now") === "known") M.burst(tl, "var(--known)");
+        };
+      }, 820 + j * 110);
+    });
+    function peekOf(tl){ var v = tl.getAttribute("data-now"); peek.textContent = tl.getAttribute("aria-label") + (v === "known" ? "　覚えた" : v === "retry" ? "　苦手" : ""); }
+    sheet.addEventListener("mouseover", function(e){ var tl = e.target.closest(".ms-tile"); if (tl) peekOf(tl); });
+    sheet.addEventListener("focusin", function(e){ var tl = e.target.closest(".ms-tile"); if (tl) peekOf(tl); });
+    sheet.addEventListener("click", function(e){
+      if (e.target.closest(".ms-close")) { M.closeMap(); return; }
+      var tl = e.target.closest(".ms-tile"); if (tl) openTile(tl);
+    });
+    sheetBg.addEventListener("click", function(){ M.closeMap(); });
+    // drag the top of the sheet down to dismiss
+    var drag = sheet.querySelector(".ms-drag"), y0 = 0, dy = 0, t0 = 0, dragging = false;
+    drag.addEventListener("pointerdown", function(e){ if (e.target.closest("button")) return; dragging = true; y0 = e.clientY; dy = 0; t0 = performance.now(); try { drag.setPointerCapture(e.pointerId); } catch (er) {} sheet.getAnimations().forEach(function(a){ a.finish(); }); });
+    drag.addEventListener("pointermove", function(e){
+      if (!dragging) return;
+      dy = e.clientY - y0; var d = dy > 0 ? dy : dy * 0.15;
+      sheet.style.transform = "translateY(" + d + "px)";
+      sheetBg.style.opacity = String(Math.max(0, 1 - Math.max(0, dy) / (sheet.offsetHeight * 0.9)));
+    });
+    var up = function(){
+      if (!dragging) return; dragging = false;
+      var v = dy / Math.max(1, performance.now() - t0);
+      if (dy > 120 || (v > 0.6 && dy > 30)) M.closeMap();
+      else {
+        var cur = sheet.style.transform; sheet.style.transform = ""; sheetBg.style.opacity = "";
+        if (on) sheet.animate([{ transform: cur }, { transform: "translateY(-1%)", offset: 0.6 }, { transform: "none" }], { duration: 380, easing: OUT });
+      }
+    };
+    drag.addEventListener("pointerup", up); drag.addEventListener("pointercancel", up);
+  };
+  M.closeMap = function(opts){
+    if (!sheet) return;
+    opts = opts || {};
+    var s = sheet, b = sheetBg; sheet = null; sheetBg = null;
+    document.body.style.overflow = "";
+    var from = s.style.transform || "none", done = function(){ s.remove(); b.remove(); };
+    if (!on) done();
+    else {
+      s.animate([{ transform: from }, { transform: "translateY(105%)" }], { duration: opts.fast ? 220 : 260, easing: "cubic-bezier(.5,0,.85,.4)", fill: "forwards" }).onfinish = done;
+      b.animate([{ opacity: parseFloat(b.style.opacity || "1") }, { opacity: 0 }], { duration: 240, fill: "forwards" });
+    }
+    if (!opts.keepFocus && opener && opener.focus) opener.focus({ preventScroll: true });
+  };
+  function openTile(tl){
+    var id = tl.getAttribute("data-id"), r = tl.getBoundingClientRect(), col = getComputedStyle(tl).backgroundColor;
+    M.sfx("whoosh");
+    M.closeMap({ fast: true, keepFocus: true });
+    window.__app.jumpTo(id);
+    var stg = stage();
+    if (!stg) return;
+    stg.scrollIntoView({ block: "center" });
+    if (!on) return;
+    var s = stg.getBoundingClientRect(), g = document.createElement("div");
+    g.className = "mshared"; g.style.background = col; document.body.appendChild(g);
+    var paper = getComputedStyle(document.documentElement).getPropertyValue("--paper").trim() || "#fff";
+    g.animate([
+      { left: r.left + "px", top: r.top + "px", width: r.width + "px", height: r.height + "px", borderRadius: "4px", opacity: 1, backgroundColor: col },
+      { left: s.left + "px", top: s.top + "px", width: s.width + "px", height: s.height + "px", borderRadius: "14px", opacity: 1, backgroundColor: paper, offset: 0.78 },
+      { left: s.left + "px", top: s.top + "px", width: s.width + "px", height: s.height + "px", borderRadius: "14px", opacity: 0, backgroundColor: paper }
+    ], { duration: 560, easing: "cubic-bezier(.2,.8,.2,1)" }).onfinish = function(){ g.remove(); };
+    stg.animate([{ opacity: 0 }, { opacity: 1 }], { delay: 380, duration: 200, fill: "backwards" });
+  }
+  M.mapInit = function(){
+    var lc = document.getElementById("viewListChip");
+    if (lc) {
+      var chip = document.createElement("span");
+      chip.className = "chip"; chip.id = "mapChip"; chip.setAttribute("role", "button"); chip.tabIndex = 0; chip.textContent = "▦ 学習マップ";
+      lc.parentNode.appendChild(chip);
+      chip.addEventListener("click", function(){ M.openMap(); });
+      chip.addEventListener("keydown", function(e){ if (e.key === "Enter" || e.key === " ") { e.preventDefault(); M.openMap(); } });
+    }
+    var mt = document.getElementById("knownMeter");
+    if (mt) {
+      mt.setAttribute("role", "button"); mt.tabIndex = 0; mt.setAttribute("aria-label", "学習マップを開く");
+      mt.insertAdjacentHTML("beforeend", '<span class="mm-go" aria-hidden="true">マップ ▸</span>');
+      mt.addEventListener("click", function(){ M.openMap(); });
+      mt.addEventListener("keydown", function(e){ if (e.key === "Enter" || e.key === " ") { e.preventDefault(); M.openMap(); } });
+    }
+    document.addEventListener("keydown", function(e){
+      if (e.key === "Escape" && sheet) { e.preventDefault(); M.closeMap(); return; }
+      if ((e.key === "m" || e.key === "M") && !sheet && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        var tg = e.target; if (tg && (tg.tagName === "INPUT" || tg.tagName === "TEXTAREA" || tg.tagName === "SELECT")) return;
+        M.openMap();
+      }
+    });
+  };
+
+  // ===== v4: physics, choreography, and a motion system you can tune =====
+
+  // Motion level: オフ / 控えめ / 標準 / たっぷり
+  var level = "std", lite = false, rich = false;
+  try { level = localStorage.getItem("sapMotion") || (reduce ? "off" : "std"); } catch (e) { level = reduce ? "off" : "std"; }
+  function applyLevel(){
+    on = level !== "off" && !!Element.prototype.animate;
+    lite = level === "lite"; rich = level === "rich"; M.enabled = on;
+  }
+  applyLevel();
+  function guard(name){ var f = M[name]; M[name] = function(){ if (lite) return; return f.apply(this, arguments); }; }
+  ["burst", "confetti", "intro"].forEach(guard);
+  var _riffle = M.riffle;
+  M.riffle = function(){ if (lite) { M.sfx("whoosh"); M.drop(); return; } return _riffle.apply(this, arguments); };
+  M.buzz = function(ms){ if (on && navigator.vibrate) try { navigator.vibrate(ms); } catch (e) {} };
+
+  // A real damped spring. Interrupt it any time: it keeps its velocity.
+  function Spring(o){
+    this.k = o.k || 300; this.c = o.c || 24; this.x = o.x || 0; this.v = 0; this.target = this.x;
+    this.onUpdate = o.onUpdate; this.onRest = null; this.raf = 0; this.restX = o.restX || 0.05; this.restV = o.restV || 0.5;
+  }
+  Spring.prototype.to = function(target, v, onRest){
+    this.target = target; if (v !== undefined && v !== null) this.v = v; this.onRest = onRest || null;
+    if (this.raf) return;
+    var self = this, last = performance.now();
+    function step(now){
+      var dt = Math.min(0.034, (now - last) / 1000), h = dt / 6; last = now;
+      for (var i = 0; i < 6; i++) { var a = -self.k * (self.x - self.target) - self.c * self.v; self.v += a * h; self.x += self.v * h; }
+      if (Math.abs(self.v) < self.restV && Math.abs(self.x - self.target) < self.restX) {
+        self.x = self.target; self.v = 0; self.raf = 0; if (self.onUpdate) self.onUpdate(self.x, 0);
+        var cb = self.onRest; self.onRest = null; if (cb) cb(); return;
+      }
+      if (self.onUpdate) self.onUpdate(self.x, self.v);
+      if (self.exit && self.exit(self.x)) { self.raf = 0; var cb2 = self.onRest; self.onRest = null; if (cb2) cb2(); return; }
+      self.raf = requestAnimationFrame(step);
+    }
+    this.raf = requestAnimationFrame(step);
+  };
+  Spring.prototype.set = function(x){ cancelAnimationFrame(this.raf); this.raf = 0; this.x = x; this.target = x; this.v = 0; if (this.onUpdate) this.onUpdate(x, 0); };
+  Spring.prototype.stop = function(){ cancelAnimationFrame(this.raf); this.raf = 0; };
+  M.Spring = Spring;
+
+  // Flip on a spring: tap twice fast and it turns back from wherever it is.
+  var flipCard = null, flipSpring = null;
+  function flipRender(a, v){
+    if (!flipCard) return;
+    var sq = 1 - 0.06 * Math.abs(Math.sin(a * Math.PI / 180)) - Math.min(0.025, Math.abs(v) / 40000);
+    flipCard.style.transform = "rotateY(" + a + "deg) scale(" + sq + ")";
+  }
+  M.flip = function(card, flipped){
+    M.sfx("flip");
+    flipCard = card;
+    if (!flipSpring) flipSpring = new Spring({ k: 210, c: 19, x: flipped ? 0 : 180, restX: 0.2, restV: 2, onUpdate: flipRender });
+    if (!on) { flipSpring.set(flipped ? 180 : 0); card.style.transform = ""; return; }
+    if (flipped) revealBack();
+    flipSpring.to(flipped ? 180 : 0, null, function(){ card.style.transform = ""; });
+    if (rich) document.body.animate([{ backgroundPosition: "0 0" }, { backgroundPosition: (flipped ? -6 : 6) + "px 0", offset: 0.4 }, { backgroundPosition: "0 0" }], { duration: 600, easing: OUT });
+  };
+  M.flipSync = function(){
+    var card = document.getElementById("flashcard");
+    if (!card || !flipSpring) return;
+    if (!card.classList.contains("flipped") && flipSpring.target !== 0) { flipSpring.set(0); card.style.transform = ""; }
+  };
+
+  // Swipe with velocity handoff: throw it and it keeps going; let go early and a spring catches it.
+  M.swipe = function(){
+    var st = stage();
+    if (!st) return;
+    var hl = document.createElement("span"), hr = document.createElement("span");
+    hl.className = "mhint l"; hl.textContent = "← 前へ"; hr.className = "mhint r"; hr.textContent = "次へ →";
+    st.appendChild(hl); st.appendChild(hr);
+    var x = 0, sx = 0, sy = 0, pid = null, active = false, dragging = false, moved = false, throwing = false, samples = [];
+    // the next card is already waiting underneath; dragging reveals it
+    var pk = document.createElement("div"), pkDir = 0, pkQ = 0, nb = null;
+    pk.className = "mpeek"; pk.setAttribute("aria-hidden", "true");
+    pk.innerHTML = '<div class="mpk-top"><span class="mpk-cat"></span><span class="mpk-badge"></span></div><div class="mpk-term"></div><div class="mpk-hint">タップして意味を見る ↻</div>';
+    var deck = document.createElement("div");
+    deck.className = "mdeck"; st.parentNode.insertBefore(deck, st); deck.appendChild(pk); deck.appendChild(st);
+    function peekFill(d){
+      var it = d || {};
+      pk.querySelector(".mpk-cat").textContent = it.cat || "";
+      pk.querySelector(".mpk-term").textContent = it.term || "";
+      pk.querySelector(".mpk-badge").innerHTML = (it.tip ? '<span class="tipbadge">🎯</span> ' : "") + (it.weak ? '<span class="weakbadge">苦手</span>' : "");
+    }
+    function peekPaint(px){
+      var w = st.offsetWidth || 1;
+      if (!px || !on) { pk.style.opacity = "0"; return; }
+      var d = px < 0 ? 1 : -1;
+      if (!nb && window.__app) nb = { "1": window.__app.peek(1), "-1": window.__app.peek(-1) };
+      if (pkDir !== d) { pkDir = d; peekFill(nb && nb[String(d)]); }
+      pkQ = Math.min(1, Math.abs(px) / (w * 0.9));
+      var e = 1 - Math.pow(1 - pkQ, 2);
+      pk.style.opacity = String(Math.min(1, pkQ * 4));
+      pk.style.transform = "translateY(" + ((1 - e) * 14) + "px) scale(" + (0.92 + 0.08 * e) + ")";
+      pk.style.boxShadow = "0 " + (4 + e * 6) + "px " + (12 + e * 14) + "px rgba(0,0,0," + (0.12 + e * 0.12) + ")";
+    }
+    M._peekFull = function(){ return pkQ >= 0.97; };
+    M._peekHide = function(){ pk.style.opacity = "0"; pkQ = 0; pkDir = 0; nb = null; };
+    function paint(px, v){
+      var w = st.offsetWidth || 1;
+      st.style.transform = px ? "translate(" + px + "px," + (Math.abs(px) * -0.03) + "px) rotate(" + (px / w * 14) + "deg)" : "";
+      if (rich) document.body.style.backgroundPosition = px ? (px * -0.08) + "px " + (Math.abs(px) * 0.02) + "px" : "";
+      var p = Math.abs(px) / (w * 0.25), h = px < 0 ? hr : hl, o = px < 0 ? hl : hr;
+      h.style.opacity = String(Math.min(1, p)); o.style.opacity = "0";
+      h.classList.toggle("armed", p >= 1 && dragging); o.classList.remove("armed");
+      peekPaint(px);
+    }
+    var spring = new Spring({ k: 320, c: 25, restX: 0.4, restV: 6, onUpdate: function(px, v){ x = px; paint(px, v); } });
+    function velocity(){
+      var n = samples.length; if (n < 2) return 0;
+      var a = samples[0], b = samples[n - 1], dt = (b.t - a.t) / 1000;
+      return dt > 0 ? (b.x - a.x) / dt : 0;
+    }
+    st.addEventListener("pointerdown", function(e){
+      if (e.button > 0 || throwing || e.target.closest("button, textarea, input, a, select")) return;
+      spring.stop(); st.getAnimations().forEach(function(a){ a.cancel(); });
+      active = true; dragging = false; moved = false; pid = e.pointerId; if (!x) nb = null;
+      sx = e.clientX - x; sy = e.clientY; samples = [{ x: x, t: performance.now() }];
+      if (x !== 0) { dragging = true; moved = true; try { st.setPointerCapture(pid); } catch (er) {} }
+    });
+    st.addEventListener("pointermove", function(e){
+      if (M._pinching) { if (x && !throwing) { x = 0; spring.set(0); } active = false; dragging = false; return; }
+      if (!active || e.pointerId !== pid) return;
+      var mx = e.clientX - sx, my = e.clientY - sy;
+      if (!dragging) {
+        if (Math.abs(mx) > 8 && Math.abs(mx) > Math.abs(my) * 1.2) { dragging = true; moved = true; try { st.setPointerCapture(pid); } catch (er) {} }
+        else if (Math.abs(my) > 10) { active = false; return; }
+        else return;
+      }
+      x = mx;
+      var now = performance.now(); samples.push({ x: x, t: now });
+      while (samples.length > 2 && now - samples[0].t > 90) samples.shift();
+      if (on) paint(x, 0); else { hl.style.opacity = hr.style.opacity = "0"; }
+      e.preventDefault();
+    });
+    function end(){
+      if (!active) return;
+      active = false;
+      if (!dragging) return;
+      dragging = false;
+      var w = st.offsetWidth, v = velocity();
+      var go = Math.abs(x) > w * 0.25 || (Math.abs(v) > 500 && Math.abs(x) > 24 && (v < 0) === (x < 0));
+      if (!go) { if (on) spring.to(0, v); else { x = 0; paint(0, 0); } return; }
+      var dir = x < 0 ? 1 : -1;
+      M.buzz(8);
+      if (!on) { x = 0; paint(0, 0); document.getElementById(dir > 0 ? "nextBtn" : "prevBtn").click(); return; }
+      throwing = true;
+      var vt = Math.abs(v) < 1400 ? -dir * 1400 : v;
+      spring.exit = function(px){ return Math.abs(px) > w * 1.15; };
+      spring.to(-dir * w * 2, vt, function(){
+        spring.exit = null; spring.set(0); throwing = false;
+        M._thrown = true;
+        document.getElementById(dir > 0 ? "nextBtn" : "prevBtn").click();
+        M._thrown = false;
+      });
+    }
+    st.addEventListener("pointerup", end);
+    st.addEventListener("pointercancel", end);
+    st.addEventListener("click", function(e){ if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+    var pend = null;
+    function finishThrow(){
+      spring.stop(); spring.exit = null; spring.set(0); throwing = false;
+      var pd = pend; pend = null;
+      if (pd) { M._thrown = true; M.deal(pd.dir, pd.swap); M._thrown = false; }
+    }
+    M._throw = function(dir, swap){
+      if (!on || dragging) return false;
+      if (throwing && pend) finishThrow();
+      if (throwing) return false;
+      var w = st.offsetWidth || 1;
+      nb = {}; nb[String(dir)] = window.__app ? window.__app.peek(0) : null; pkDir = 0;
+      throwing = true; pend = { dir: dir, swap: swap };
+      spring.exit = function(px){ return Math.abs(px) > w * 1.15; };
+      spring.to(-dir * w * 2, -dir * 2300, finishThrow);
+      return true;
+    };
+  };
+  var _deal4 = M.deal;
+  M.deal = function(dir, swap){
+    if (!M._thrown) return _deal4.apply(this, arguments);
+    M._thrown = false; M._from = null;
+    var st = stage(), lab = document.getElementById("cardIndexLabel"), labPrev = lab ? lab.textContent : "";
+    var card = document.getElementById("flashcard");
+    M.sfx("deal");
+    if (card && card.getAnimations) card.getAnimations().forEach(function(a){ a.cancel(); });
+    if (st) st.style.transform = "";
+    if (rich) document.body.style.backgroundPosition = "";
+    var seamless = M._peekFull && M._peekFull();
+    swap();
+    if (M._peekHide) M._peekHide();
+    if (!st) return;
+    if (seamless) {
+      st.animate([{ transform: "scale(1.012)" }, { transform: "none" }], { duration: 260, easing: OUT });
+      if (lab) M.roll(lab, labPrev, dir);
+      return;
+    }
+    st.animate([
+      { transform: "translateY(30px) scale(.92)", opacity: 0 },
+      { transform: "translateY(-4px) scale(1.012)", opacity: 1, offset: 0.6 },
+      { transform: "none", opacity: 1 }
+    ], { duration: 440, easing: OUT });
+    if (lab) M.roll(lab, labPrev, dir);
+    M.typeIn(document.getElementById("frontTerm"));
+  };
+
+  // Odometer: only the digits that changed roll, like the reel's frame counter.
+  M.roll = function(el, prev, dir){
+    var next = el.textContent;
+    if (el._rollingUntil && performance.now() < el._rollingUntil && el._lastFinal) prev = el._lastFinal;
+    el._lastFinal = next;
+    if (!on || !prev || prev === next || prev.length !== next.length) {
+      if (on && prev !== next) el.animate([{ transform: "translateY(" + (dir * 8) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: OUT });
+      return;
+    }
+    el.textContent = "";
+    var k = 0;
+    for (var i = 0; i < next.length; i++) {
+      if (prev[i] === next[i]) { el.appendChild(document.createTextNode(next[i])); continue; }
+      var slot = document.createElement("span"), inner = document.createElement("span");
+      slot.className = "mo";
+      var a = document.createElement("span"), b = document.createElement("span");
+      a.textContent = dir > 0 ? prev[i] : next[i]; b.textContent = dir > 0 ? next[i] : prev[i];
+      inner.appendChild(a); inner.appendChild(b); slot.appendChild(inner); el.appendChild(slot);
+      inner.animate(dir > 0 ? [{ transform: "translateY(0)" }, { transform: "translateY(-50%)" }] : [{ transform: "translateY(-50%)" }, { transform: "translateY(0)" }],
+        { delay: k * 40, duration: 360, easing: "cubic-bezier(.3,1.35,.5,1)", fill: "both" });
+      k++;
+    }
+    clearTimeout(el._rollT);
+    el._rollingUntil = performance.now() + 520 + k * 40;
+    el._rollT = setTimeout(function(){ if (el.querySelector(".mo")) el.textContent = next; }, 520 + k * 40);
+  };
+
+  // Kinetic term: the card's word rises letter by letter (words never break mid-word).
+  M.typeIn = function(el){
+    if (!on || lite || !el) return;
+    var text = el.textContent;
+    if (!text || text.length > 64) return;
+    el.textContent = "";
+    var tokens = text.match(/[A-Za-z0-9.\-\/&+_'’]+|\s+|[\s\S]/g) || [], chars = [];
+    tokens.forEach(function(tk){
+      if (/^\s+$/.test(tk)) { el.appendChild(document.createTextNode(tk)); return; }
+      var w = document.createElement("span"); w.className = "mw";
+      Array.from(tk).forEach(function(ch){ var c = document.createElement("span"); c.className = "mch"; c.textContent = ch; w.appendChild(c); chars.push(c); });
+      el.appendChild(w);
+    });
+    var step = Math.min(14, 280 / Math.max(1, chars.length));
+    chars.forEach(function(c, i){
+      c.animate([
+        { transform: "translateY(60%) rotate(6deg)", opacity: 0 },
+        { transform: "translateY(-6%) rotate(0deg)", opacity: 1, offset: 0.7 },
+        { transform: "none", opacity: 1 }
+      ], { delay: 90 + i * step, duration: 360, easing: OUT, fill: "backwards" });
+    });
+  };
+  var _drop = M.drop;
+  M.drop = function(){ _drop.apply(this, arguments); M.typeIn(document.getElementById("frontTerm")); };
+  var _dealIn = M.dealIn;
+  M.dealIn = function(el){ _dealIn.apply(this, arguments); if (el && el.classList && el.classList.contains("stage")) M.typeIn(document.getElementById("frontTerm")); };
+
+  // Quiz: card arrives, the question wipes in, options follow one by one.
+  M.quizIn = function(){
+    var area = document.getElementById("qzArea"), card = area && area.querySelector(".qzcard");
+    if (!on || !card) return;
+    M.dealIn(card, 1);
+    var pr = card.querySelector(".qzprompt");
+    if (pr) pr.animate([{ clipPath: "inset(0 0 100% 0)", transform: "translateY(6px)" }, { clipPath: "inset(0 0 0 0)", transform: "none" }], { delay: 140, duration: 460, easing: OUT, fill: "backwards" });
+    card.querySelectorAll(".qzoption").forEach(function(o, i){
+      o.animate([{ transform: "translateY(12px)", opacity: 0 }, { transform: "translateY(-2px)", opacity: 1, offset: 0.7 }, { transform: "none", opacity: 1 }], { delay: 230 + i * 55, duration: 360, easing: OUT, fill: "backwards" });
+    });
+  };
+
+  // Tilt: decided per event so the motion level can change live.
+  M.tilt = function(){
+    var st = stage(), card = document.getElementById("flashcard");
+    if (!st || !card || !Element.prototype.animate || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var tw = document.createElement("div");
+    tw.className = "mtilt"; card.parentNode.insertBefore(tw, card); tw.appendChild(card);
+    var front = card.querySelector(".face.front"), sheen = document.createElement("div");
+    sheen.className = "msheen"; if (front) front.appendChild(sheen);
+    function reset(){ tw.style.transform = ""; st.classList.remove("hovering"); }
+    st.addEventListener("pointermove", function(e){
+      if (e.pointerType !== "mouse" || !on || lite || e.buttons) { reset(); return; }
+      var r = st.getBoundingClientRect(), nx = (e.clientX - r.left) / r.width * 2 - 1, ny = (e.clientY - r.top) / r.height * 2 - 1;
+      var amp = rich ? 1.5 : 1;
+      tw.style.transform = "rotateX(" + (-ny * 5 * amp) + "deg) rotateY(" + (nx * 7 * amp) + "deg)";
+      sheen.style.setProperty("--mx", ((nx + 1) * 50) + "%"); sheen.style.setProperty("--my", ((ny + 1) * 50) + "%");
+      st.classList.add("hovering");
+    });
+    st.addEventListener("pointerleave", reset);
+  };
+
+  // Hold to reset: a destructive action asks for a deliberate gesture, not a stray tap.
+  M.holdReset = function(){
+    var b = document.getElementById("resetProgressBtn");
+    if (!b) return;
+    var label = b.textContent, raf = 0, t0 = 0, p = 0, holding = false, D = 1200, hintT = 0, doneT = 0;
+    var sp = new Spring({ k: 260, c: 22, restX: 0.2, restV: 1, onUpdate: function(x){ p = x; b.style.setProperty("--p", Math.max(0, x) + "%"); } });
+    function stopHold(){
+      holding = false; cancelAnimationFrame(raf); b.classList.remove("holding"); b.textContent = label;
+      if (on) sp.to(0, -120); else sp.set(0);
+    }
+    b.addEventListener("pointerdown", function(e){
+      if (e.button > 0) return;
+      e.preventDefault(); holding = true; t0 = performance.now() - p / 100 * D; sp.stop();
+      b.classList.add("holding"); b.textContent = "押し続けるとリセット";
+      (function tick(now){
+        if (!holding) return;
+        var q = Math.min(1, (now - t0) / D), e2 = q * q * (3 - 2 * q);
+        p = e2 * 100; b.style.setProperty("--p", p + "%");
+        if (on && q > 0.6) b.style.transform = "translateX(" + (Math.sin(now / 18) * (q - 0.6) * 4) + "px)";
+        if (q >= 1) {
+          holding = false; b.style.transform = ""; b.classList.remove("holding"); b.textContent = label;
+          M.buzz(30); M.sfx("retry");
+          doneT = performance.now();
+          M.holdConfirmed = true; b.click(); M.holdConfirmed = false;
+          sp.x = 100; sp.to(0, 0);
+          M.toast("学習の記録をリセットしました");
+          return;
+        }
+        raf = requestAnimationFrame(tick);
+      })(performance.now());
+    });
+    ["pointerup", "pointerleave", "pointercancel"].forEach(function(ev){ b.addEventListener(ev, function(){ if (holding) { b.style.transform = ""; stopHold(); } }); });
+    document.addEventListener("click", function(e){
+      if (!e.target.closest || !e.target.closest("#resetProgressBtn") || M.holdConfirmed || e.detail === 0) return;
+      e.stopImmediatePropagation(); e.preventDefault();
+      if (p < 30 && performance.now() - hintT > 1500 && performance.now() - doneT > 1500) {
+        hintT = performance.now(); M.toast("長押しでリセットできます");
+        if (on) b.animate([0, -6, 5, -3, 2, 0].map(function(v){ return { transform: "translateX(" + v + "px)" }; }), { duration: 380 });
+      }
+    }, true);
+  };
+
+  // ---- Motion settings sheet with live specs ----
+  var LEVELS = [["off", "オフ"], ["lite", "控えめ"], ["std", "標準"], ["rich", "たっぷり"]];
+  var NOTES = {
+    off: "動きを止めます。マップ、✓ や × の印、正解率のリングはそのまま使えます。",
+    lite: "画面の切り替えだけを動かし、火花、紙吹雪、文字の立ち上がり、カードの傾きを省きます。",
+    std: "おすすめ。操作に応える動きをすべて使います。",
+    rich: "標準に加えて、ドラッグやめくりに合わせて背景の方眼が奥行きをもって動き、傾きも深くなります。"
+  };
+  var setSheet = null, setBg = null, demoRaf = 0;
+  function cssVar(n, fb){ var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim(); return v || fb; }
+  function bez(x1, y1, x2, y2){
+    function cb(a, b, t){ return 3 * a * t * (1 - t) * (1 - t) + 3 * b * t * t * (1 - t) + t * t * t; }
+    return function(x){ var lo = 0, hi = 1; for (var i = 0; i < 24; i++) { var m = (lo + hi) / 2; if (cb(x1, x2, m) < x) lo = m; else hi = m; } return cb(y1, y2, (lo + hi) / 2); };
+  }
+  var EIN = bez(.55, 0, .9, .45), EOUT = bez(.2, .8, .25, 1);
+  function setupCanvas(cv){ var d = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight; cv.width = w * d; cv.height = h * d; var c = cv.getContext("2d"); c.setTransform(d, 0, 0, d, 0, 0); return { c: c, w: w, h: h }; }
+  function rr(c, x, y, w, h, r){ c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  function runDemos(root){
+    var cvs = {}; root.querySelectorAll("canvas[data-demo]").forEach(function(cv){ cvs[cv.getAttribute("data-demo")] = { el: cv, g: setupCanvas(cv) }; });
+    var col = { w: cssVar("--white", "#F4F6F8"), d: cssVar("--white-dim", "#B9C6D2"), a: cssVar("--amber", "#E3A53D"), k: cssVar("--known", "#6FAE7A"), p: cssVar("--paper", "#EFE9DA"), c: cssVar("--cyan", "#5FB3D9"), line: cssVar("--grid-line-strong", "rgba(255,255,255,.14)") };
+    var sp = cvs.spring, sprX = new Spring({ k: 320, c: 25, restX: 0.3, restV: 4 }), trace = [], drag = null, lastTouch = 0, autoT = performance.now();
+    if (sp) {
+      var cv = sp.el;
+      cv.addEventListener("pointerdown", function(e){ sprX.stop(); var r = cv.getBoundingClientRect(); drag = { ox: e.clientX - sprX.x, s: [{ x: sprX.x, t: performance.now() }] }; lastTouch = performance.now(); try { cv.setPointerCapture(e.pointerId); } catch (er) {} });
+      cv.addEventListener("pointermove", function(e){ if (!drag) return; sprX.x = Math.max(-140, Math.min(140, e.clientX - drag.ox)); var n = performance.now(); drag.s.push({ x: sprX.x, t: n }); while (drag.s.length > 2 && n - drag.s[0].t > 90) drag.s.shift(); });
+      var rel = function(){ if (!drag) return; var s = drag.s, a = s[0], b = s[s.length - 1], dt = (b.t - a.t) / 1000; var v = dt > 0 ? (b.x - a.x) / dt : 0; drag = null; sprX.to(0, v); lastTouch = performance.now(); };
+      cv.addEventListener("pointerup", rel); cv.addEventListener("pointercancel", rel);
+    }
+    var t0 = performance.now(), playing = !reduce;
+    function frame(now){
+      var t = (now - t0) / 1000;
+      // 1) speed: out 150ms ease-in, in 420ms ease-out with overshoot
+      var s1 = cvs.speed;
+      if (s1) {
+        var c = s1.g.c, W = s1.g.w, H = s1.g.h, cyc = t % 1.6, cw = 46, ch = 60, cx = W / 2 - cw / 2, cy = H / 2 - ch / 2 - 6;
+        c.clearRect(0, 0, W, H);
+        var pOut = Math.min(1, Math.max(0, (cyc - 0.25) / 0.15)), pIn = Math.min(1, Math.max(0, (cyc - 0.4) / 0.42));
+        var outX = cx - EIN(pOut) * (W * 0.42), inEase = pIn < 1 ? (1 - Math.exp(-6 * pIn) * Math.cos(8 * pIn)) : 1, inX = cx + (1 - inEase) * (W * 0.42);
+        c.globalAlpha = 1 - pOut; c.fillStyle = col.d; rr(c, outX, cy, cw, ch, 6); c.fill();
+        if (cyc > 0.4) { c.globalAlpha = Math.min(1, pIn * 3); c.fillStyle = col.p; rr(c, inX, cy, cw, ch, 6); c.fill(); }
+        else if (cyc <= 0.25) { c.globalAlpha = 1; c.fillStyle = col.p; rr(c, cx, cy, cw, ch, 6); c.fill(); }
+        c.globalAlpha = 1; c.font = "600 11px 'IBM Plex Mono', monospace"; c.fillStyle = col.d; c.textAlign = "left";
+        c.fillText("出る 150ms", 12, H - 10); c.textAlign = "right"; c.fillText("入る 420ms", W - 12, H - 10);
+      }
+      // 2) curves: ease-in vs ease-out, a dot rides each
+      var s2 = cvs.curve;
+      if (s2) {
+        var c2 = s2.g.c, W2 = s2.g.w, H2 = s2.g.h, q = (t % 1.4) / 1.0, qq = Math.min(1, q);
+        c2.clearRect(0, 0, W2, H2);
+        [[EIN, col.d, "ease-in(去る)"], [EOUT, col.a, "ease-out(来る)"]].forEach(function(cfg, j){
+          var gx = 14 + j * (W2 / 2), gw = W2 / 2 - 28, gy = 12, gh = H2 - 40;
+          c2.strokeStyle = col.line; c2.lineWidth = 1; c2.strokeRect(gx, gy, gw, gh);
+          c2.strokeStyle = cfg[1]; c2.lineWidth = 2; c2.beginPath();
+          for (var i = 0; i <= 40; i++) { var xx = i / 40, yy = cfg[0](xx); var px = gx + xx * gw, py = gy + gh - yy * gh; if (i) c2.lineTo(px, py); else c2.moveTo(px, py); }
+          c2.stroke();
+          var y = cfg[0](qq); c2.fillStyle = cfg[1]; c2.beginPath(); c2.arc(gx + qq * gw, gy + gh - y * gh, 4.5, 0, Math.PI * 2); c2.fill();
+          c2.globalAlpha = 0.5; c2.beginPath(); c2.arc(gx + gw + 8, gy + gh - y * gh, 3, 0, Math.PI * 2); c2.fill(); c2.globalAlpha = 1;
+          c2.font = "600 11px 'IBM Plex Mono', monospace"; c2.fillStyle = col.d; c2.textAlign = "left"; c2.fillText(cfg[2], gx, H2 - 8);
+        });
+      }
+      // 3) spring: flick the card; the trace shows the overshoot and settle
+      if (sp) {
+        var c3 = sp.g.c, W3 = sp.g.w, H3 = sp.g.h;
+        if (!drag && !sprX.raf && now - lastTouch > 2600 && now - autoT > 2600 && playing) { autoT = now; sprX.x = 0; sprX.to(0, Math.random() < 0.5 ? -1600 : 1600); }
+        trace.push(sprX.x); if (trace.length > 150) trace.shift();
+        c3.clearRect(0, 0, W3, H3);
+        c3.strokeStyle = col.line; c3.lineWidth = 1; c3.beginPath(); c3.moveTo(0, H3 / 2); c3.lineTo(W3, H3 / 2); c3.stroke();
+        c3.strokeStyle = col.c; c3.lineWidth = 1.5; c3.beginPath();
+        trace.forEach(function(v, i){ var px = W3 - (trace.length - 1 - i) * (W3 / 150), py = H3 / 2 + v * 0.22; if (i) c3.lineTo(px, py); else c3.moveTo(px, py); });
+        c3.stroke();
+        var cw3 = 40, ch3 = 54, cx3 = W3 / 2 + sprX.x - cw3 / 2, cy3 = H3 / 2 - ch3 / 2 - 8;
+        c3.save(); c3.translate(cx3 + cw3 / 2, cy3 + ch3 / 2); c3.rotate(sprX.x / 140 * 0.25); c3.fillStyle = col.p; rr(c3, -cw3 / 2, -ch3 / 2, cw3, ch3, 6); c3.fill(); c3.restore();
+        c3.font = "600 11px 'IBM Plex Mono', monospace"; c3.fillStyle = col.d; c3.textAlign = "left";
+        c3.fillText("ばね定数 320、減衰 25", 12, H3 - 10); c3.textAlign = "right"; c3.fillText("弾いてみてください", W3 - 12, H3 - 10);
+      }
+      if (playing || drag || sprX.raf) demoRaf = requestAnimationFrame(frame);
+      else demoRaf = requestAnimationFrame(frame);
+    }
+    if (!playing) { frame(t0 + 600); cancelAnimationFrame(demoRaf); demoRaf = 0; root.addEventListener("pointerdown", function once(){ root.removeEventListener("pointerdown", once); playing = true; t0 = performance.now(); demoRaf = requestAnimationFrame(frame); }); }
+    else demoRaf = requestAnimationFrame(frame);
+  }
+  M.openSettings = function(){
+    if (setSheet || document.querySelector(".msheet")) return;
+    var op = document.activeElement;
+    setBg = document.createElement("div"); setBg.className = "msheet-bg";
+    setSheet = document.createElement("div"); setSheet.className = "msheet"; setSheet.setAttribute("role", "dialog"); setSheet.setAttribute("aria-modal", "true"); setSheet.setAttribute("aria-label", "モーション設定");
+    var segs = LEVELS.map(function(l){ return '<button type="button" role="radio" data-lv="' + l[0] + '" aria-checked="' + (l[0] === level) + '">' + l[1] + '</button>'; }).join("");
+    setSheet.innerHTML = '<div class="ms-drag"><div class="ms-grab"><i></i></div><div class="ms-head"><div><p class="ms-title">モーション</p><p class="ms-stat">動きの量と、この単語帳の動きのルール</p></div><button type="button" class="ms-close" aria-label="閉じる">✕</button></div></div>' +
+      '<div class="ms-body"><div class="mseg" role="radiogroup" aria-label="動きの量"><i class="mseg-pill"></i>' + segs + '</div><p class="mseg-note"></p>' +
+      '<div class="mrow"><span>効果音</span><button type="button" class="mswitch" role="switch" aria-checked="' + sfxOn + '" aria-label="効果音"><i></i></button></div>' +
+      '<p class="mspec-h">動きのルール</p>' +
+      '<div class="mspec"><b>出ていくものは速く、入ってくるものはゆっくり</b><p>去るカードは150ms、来るカードは420ms。目が追いかけたいのは新しいほうなので、そちらに時間を使います。</p><canvas data-demo="speed" aria-hidden="true"></canvas></div>' +
+      '<div class="mspec"><b>去るときは加速、来るときは減速</b><p>ease-in で離れ、ease-out で着地します。着地の直前に少しだけ行き過ぎて戻ることで、カードが「置かれた」感じになります。</p><canvas data-demo="curve" aria-hidden="true"></canvas></div>' +
+      '<div class="mspec"><b>指を離した勢いは、そのまま残す</b><p>スワイプ、めくり、シートは決まった時間ではなく、ばねの計算で動かしています。途中で触っても速さが途切れません。</p><canvas data-demo="spring" aria-label="弾いて試せるばねのデモ"></canvas></div>' +
+      '<a class="mreel" href="https://claude.ai/artifact/9ypUUoJNo3RMq3tUiTfrSP" target="_blank" rel="noopener">この動きの元になった Motion Reel を見る</a></div>';
+    document.body.appendChild(setBg); document.body.appendChild(setSheet);
+    document.body.style.overflow = "hidden";
+    M.sfx("sheet");
+    var seg = setSheet.querySelector(".mseg"), pill = seg.querySelector(".mseg-pill"), note = setSheet.querySelector(".mseg-note");
+    var px = new Spring({ k: 380, c: 28, restX: 0.2, restV: 2, onUpdate: function(v){ pill.style.transform = "translateX(" + v + "px)"; } });
+    var pw = new Spring({ k: 380, c: 22, restX: 0.2, restV: 2, onUpdate: function(v){ pill.style.width = v + "px"; } });
+    function placePill(animate){
+      var b = seg.querySelector('[data-lv="' + level + '"]'), sr = seg.getBoundingClientRect(), br = b.getBoundingClientRect();
+      var tx = br.left - sr.left, tw = br.width;
+      if (animate && on) { px.to(tx); pw.x = Math.max(pw.x, tw); pw.to(tw, 900); } else { px.set(tx); pw.set(tw); }
+      note.textContent = NOTES[level];
+    }
+    requestAnimationFrame(function(){ placePill(false); });
+    seg.addEventListener("click", function(e){
+      var b = e.target.closest("button[data-lv]"); if (!b) return;
+      level = b.getAttribute("data-lv");
+      try { localStorage.setItem("sapMotion", level); } catch (er) {}
+      applyLevel();
+      seg.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-checked", String(x === b)); });
+      placePill(true); M.sfx("tick");
+      if (on) note.animate([{ opacity: 0, transform: "translateY(4px)" }, { opacity: 1, transform: "none" }], { duration: 240, easing: OUT });
+    });
+    var sw = setSheet.querySelector(".mswitch"), knob = sw.querySelector("i");
+    var kx = new Spring({ k: 420, c: 26, x: sfxOn ? 20 : 0, restX: 0.1, restV: 1, onUpdate: function(v){ knob.style.transform = "translateX(" + v + "px) scaleX(" + (1 + Math.min(0.25, Math.abs(kx ? kx.v : 0) / 1600)) + ")"; } });
+    knob.style.transform = "translateX(" + (sfxOn ? 20 : 0) + "px)";
+    sw.addEventListener("click", function(){
+      sfxOn = !sfxOn; sw.setAttribute("aria-checked", String(sfxOn));
+      try { localStorage.setItem("sapSfx", sfxOn ? "1" : "0"); } catch (er) {}
+      var fb = document.getElementById("sfxBtn"); if (fb) { fb.textContent = sfxOn ? "効果音 オン" : "効果音 オフ"; fb.setAttribute("aria-pressed", String(sfxOn)); }
+      if (on) kx.to(sfxOn ? 20 : 0); else kx.set(sfxOn ? 20 : 0);
+      if (sfxOn) M.sfx("known");
+    });
+    var sheetY = new Spring({ k: 260, c: 26, x: on ? setSheet.offsetHeight || 600 : 0, restX: 0.5, restV: 5, onUpdate: function(v){ if (setSheet) setSheet.style.transform = v ? "translateY(" + v + "px)" : ""; } });
+    if (on) { setSheet.style.transform = "translateY(" + sheetY.x + "px)"; sheetY.to(0, -1800); setBg.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260 }); }
+    setSheet.querySelector(".ms-close").focus({ preventScroll: true });
+    runDemos(setSheet);
+    function close(vel){
+      if (!setSheet) return;
+      var s = setSheet, bg = setBg; setSheet = null; setBg = null;
+      cancelAnimationFrame(demoRaf); demoRaf = 0;
+      document.body.style.overflow = "";
+      var done = function(){ s.remove(); bg.remove(); };
+      if (!on) done();
+      else {
+        var y = new Spring({ k: 260, c: 26, x: sheetY.x, onUpdate: function(v){ s.style.transform = "translateY(" + v + "px)"; } });
+        sheetY.stop(); y.exit = function(v){ return v > s.offsetHeight + 10; };
+        y.to(s.offsetHeight * 2, Math.max(vel || 0, 1200), done);
+        bg.animate([{ opacity: parseFloat(bg.style.opacity || "1") }, { opacity: 0 }], { duration: 240, fill: "forwards" });
+      }
+      if (op && op.focus) op.focus({ preventScroll: true });
+      document.removeEventListener("keydown", onKey);
+    }
+    function onKey(e){ if (e.key === "Escape") { e.preventDefault(); close(0); } }
+    document.addEventListener("keydown", onKey);
+    setSheet.querySelector(".ms-close").addEventListener("click", function(){ close(0); });
+    setBg.addEventListener("click", function(){ close(0); });
+    var drag = setSheet.querySelector(".ms-drag"), y0 = 0, samples = [], dragging = false;
+    drag.addEventListener("pointerdown", function(e){ if (e.target.closest("button")) return; dragging = true; sheetY.stop(); y0 = e.clientY - sheetY.x; samples = [{ y: sheetY.x, t: performance.now() }]; try { drag.setPointerCapture(e.pointerId); } catch (er) {} });
+    drag.addEventListener("pointermove", function(e){
+      if (!dragging || !setSheet) return;
+      var d = e.clientY - y0; d = d > 0 ? d : d * 0.15; sheetY.x = d; setSheet.style.transform = "translateY(" + d + "px)";
+      setBg.style.opacity = String(Math.max(0, 1 - Math.max(0, d) / (setSheet.offsetHeight * 0.9)));
+      var n = performance.now(); samples.push({ y: d, t: n }); while (samples.length > 2 && n - samples[0].t > 90) samples.shift();
+    });
+    var up = function(){
+      if (!dragging || !setSheet) return; dragging = false;
+      var a = samples[0], b = samples[samples.length - 1], dt = (b.t - a.t) / 1000, v = dt > 0 ? (b.y - a.y) / dt : 0;
+      if (sheetY.x > 120 || v > 700) close(v);
+      else { setBg.style.opacity = ""; if (on) sheetY.to(0, v); else sheetY.set(0); }
+    };
+    drag.addEventListener("pointerup", up); drag.addEventListener("pointercancel", up);
+  };
+  M.settingsInit = function(){
+    var sfxBtn = document.getElementById("sfxBtn"), reset = document.getElementById("resetProgressBtn");
+    var b = document.createElement("button"); b.type = "button"; b.id = "motionBtn"; b.textContent = "モーション設定";
+    (sfxBtn || reset).parentNode.insertBefore(b, sfxBtn || reset);
+    b.addEventListener("click", function(){ M.openSettings(); });
+  };
+
+  // ===== v5: one physical world =====
+
+  // Every card change is the same throw: buttons, keys and fingers share the physics.
+  var _deal5 = M.deal;
+  M.deal = function(dir, swap){
+    if (!M._thrown && on && M._throw && document.getElementById("cardViewWrap").style.display !== "none") {
+      if (M._throw(dir, swap)) { M.sfx("deal"); return; }
+    }
+    return _deal5.apply(this, arguments);
+  };
+
+  // FLIP layout animation: items glide to their new place, new ones arrive, removed ones dissolve where they were.
+  M.flipList = function(box, mutate){
+    if (!on) { mutate(); return; }
+    var vh = innerHeight, old = {}, ghosts = [];
+    box.querySelectorAll("[data-fid]").forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.bottom < -100 || r.top > vh + 100) return;
+      old[el.getAttribute("data-fid")] = { r: r, el: el };
+    });
+    mutate();
+    var seen = {}, n = 0;
+    box.querySelectorAll("[data-fid]").forEach(function(el){
+      var id = el.getAttribute("data-fid"), r = el.getBoundingClientRect(); seen[id] = 1;
+      if (r.bottom < -60 || r.top > vh + 60) return;
+      var o = old[id];
+      if (o) {
+        var dx = o.r.left - r.left, dy = o.r.top - r.top, sy = o.r.height / Math.max(1, r.height);
+        if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) el.animate([{ transform: "translate(" + dx + "px," + dy + "px)" }, { transform: "none" }], { duration: 460, easing: "cubic-bezier(.2,.8,.25,1)" });
+      } else if (Object.keys(old).length) {
+        el.animate([{ opacity: 0, transform: "scale(.96)" }, { opacity: 1, transform: "none" }], { delay: 120 + Math.min(n++ * 24, 240), duration: 320, easing: OUT, fill: "backwards" });
+      }
+    });
+    Object.keys(old).forEach(function(id){
+      if (seen[id] || ghosts.length > 10) return;
+      var o = old[id], g = o.el.cloneNode(true);
+      g.removeAttribute("data-fid");
+      g.style.cssText = "position:fixed;margin:0;z-index:40;pointer-events:none;left:" + o.r.left + "px;top:" + o.r.top + "px;width:" + o.r.width + "px;";
+      document.body.appendChild(g); ghosts.push(g);
+      g.animate([{ opacity: 1, transform: "none", filter: "blur(0)" }, { opacity: 0, transform: "scale(.94) translateX(24px)", filter: "blur(2px)" }], { duration: 300, easing: "cubic-bezier(.5,0,.8,.5)", fill: "forwards" }).onfinish = function(){ g.remove(); };
+    });
+  };
+
+  // The card shrinks into its own tile when the map opens (the reverse of tapping a tile).
+  var _openMap = M.openMap, _closeMap = M.closeMap;
+  M.openMap = function(fromRect){
+    var st = stage(), panel = document.getElementById("panel-cards"), wrap = document.getElementById("cardViewWrap");
+    var r0 = fromRect || (st ? st.getBoundingClientRect() : null);
+    var visible = on && st && panel && panel.classList.contains("active") && wrap.style.display !== "none" && r0 && r0.bottom > 0 && r0.top < innerHeight;
+    var term = (document.getElementById("frontTerm") || {}).textContent || "";
+    _openMap();
+    if (!sheet || !visible) return;
+    var cur = sheet.querySelector(".ms-tile.cur");
+    if (!cur) return;
+    var sr = sheet.getBoundingClientRect(), delta = sr.top - (innerHeight - sheet.offsetHeight), tr = cur.getBoundingClientRect();
+    var tx = tr.left, ty = tr.top - delta, tcol = getComputedStyle(cur).backgroundColor, paper = cssVar("--paper", "#fff");
+    st.style.visibility = "hidden";
+    cur.style.opacity = "0";
+    var g = document.createElement("div");
+    g.className = "mshrink"; g.textContent = term; g.style.fontSize = "18px"; document.body.appendChild(g);
+    g.animate([
+      { left: r0.left + "px", top: r0.top + "px", width: r0.width + "px", height: r0.height + "px", borderRadius: "14px", backgroundColor: paper, color: cssVar("--ink", "#17293A"), boxShadow: "0 8px 24px rgba(0,0,0,.28)" },
+      { color: "rgba(0,0,0,0)", offset: 0.35 },
+      { left: tx + "px", top: ty + "px", width: tr.width + "px", height: tr.height + "px", borderRadius: "4px", backgroundColor: tcol, color: "rgba(0,0,0,0)", boxShadow: "0 0 0 rgba(0,0,0,0)" }
+    ], { duration: 580, easing: "cubic-bezier(.5,0,.15,1)", fill: "forwards" }).onfinish = function(){
+      g.remove(); cur.style.opacity = "";
+      cur.animate([{ transform: "scale(1.6)" }, { transform: "scale(.9)", offset: 0.6 }, { transform: "none" }], { duration: 360, easing: OUT });
+    };
+  };
+  M.closeMap = function(opts){
+    var st = stage(); if (st) st.style.visibility = "";
+    return _closeMap.apply(this, arguments);
+  };
+
+  // Pinch the card (or pinch on a trackpad) to zoom out to the map.
+  M.pinch = function(){
+    var st = stage();
+    if (!st) return;
+    var pts = {}, d0 = 0, scale = 1;
+    var sp = new Spring({ k: 300, c: 24, x: 1, restX: 0.002, restV: 0.02, onUpdate: function(v){ scale = v; st.style.transform = v === 1 ? "" : "scale(" + v + ")"; } });
+    function dist(){ var k = Object.keys(pts); if (k.length < 2) return 0; var a = pts[k[0]], b = pts[k[1]]; return Math.hypot(a.x - b.x, a.y - b.y); }
+    function release(){
+      M._pinching = false;
+      if (scale < 0.8) {
+        var r = st.getBoundingClientRect();
+        sp.set(1); M.buzz(10); M.openMap(r);
+      } else if (on) sp.to(1); else sp.set(1);
+    }
+    st.addEventListener("pointerdown", function(e){
+      if (e.pointerType !== "touch") return;
+      pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+      if (Object.keys(pts).length === 2) { M._pinching = true; d0 = dist(); sp.stop(); st.style.transform = ""; }
+    });
+    st.addEventListener("pointermove", function(e){
+      if (!pts[e.pointerId]) return;
+      pts[e.pointerId] = { x: e.clientX, y: e.clientY };
+      if (!M._pinching || !d0) return;
+      var r = dist() / d0, v = r < 1 ? 1 - (1 - r) * 0.9 : 1 + (r - 1) * 0.15;
+      sp.x = v; scale = v; st.style.transform = "scale(" + v + ")";
+    });
+    var up = function(e){ if (!pts[e.pointerId]) return; delete pts[e.pointerId]; if (M._pinching && Object.keys(pts).length < 2) release(); };
+    st.addEventListener("pointerup", up); st.addEventListener("pointercancel", up);
+    var wheelT = 0;
+    st.addEventListener("wheel", function(e){
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      sp.stop();
+      var v = Math.max(0.55, Math.min(1.08, scale * Math.exp(-e.deltaY * 0.01)));
+      sp.x = v; scale = v; st.style.transform = "scale(" + v + ")";
+      clearTimeout(wheelT); wheelT = setTimeout(release, 140);
+    }, { passive: false });
+  };
+
+  // Ruler ticks on the meter at 25 / 50 / 75%, the same ticks as the reel's timeline.
+  M.milestones = function(){
+    var tr = document.querySelector("#knownMeter .mm-track");
+    if (!tr) return;
+    [25, 50, 75].forEach(function(p){ var t = document.createElement("i"); t.className = "mm-tk"; t.style.left = p + "%"; tr.appendChild(t); });
+  };
+  M._milestone = function(m){
+    var box = document.getElementById("knownMeter"), tr = box && box.querySelector(".mm-track");
+    if (!tr) return;
+    var msg = m === 0.25 ? "4分の1まで来ました" : m === 0.5 ? "半分まで来ました" : "残り4分の1です";
+    M.sfx("sparkle"); M.toast(msg);
+    if (!on) return;
+    var br = box.getBoundingClientRect(), trr = tr.getBoundingClientRect();
+    var f = document.createElement("span");
+    f.className = "mm-flag"; f.textContent = Math.round(m * 100) + "%"; box.appendChild(f);
+    f.style.left = (trr.left - br.left + trr.width * m) + "px";
+    f.animate([
+      { transform: "translate(-50%, 6px) scale(.4)", opacity: 0 },
+      { transform: "translate(-50%, -22px) scale(1.1)", opacity: 1, offset: 0.3 },
+      { transform: "translate(-50%, -18px) scale(1)", opacity: 1, offset: 0.75 },
+      { transform: "translate(-50%, -26px) scale(1)", opacity: 0 }
+    ], { duration: 1500, easing: OUT, fill: "forwards" }).onfinish = function(){ f.remove(); };
+    var tk = tr.querySelectorAll(".mm-tk")[m === 0.25 ? 0 : m === 0.5 ? 1 : 2];
+    if (tk) tk.animate([{ background: "var(--amber)", transform: "scaleY(1)" }, { background: "var(--amber)", transform: "scaleY(1)", offset: 0.7 }, { background: "var(--bg)" }], { duration: 1200 });
+    M.burst(f, "var(--amber)");
+  };
+
+  // The flip button says what it will do next, and the words turn over with the card.
+  M.flipLabel = function(flipped, instant){
+    var b = document.getElementById("flipBtn");
+    if (!b) return;
+    var text = flipped ? "表に戻す" : "裏返す";
+    if (b._lab === text) return;
+    var dir = flipped ? 1 : -1, prev = b.querySelector(".mlab");
+    b._lab = text;
+    if (instant || !on || !prev) { b.innerHTML = '<span class="mlab">' + text + "</span>"; return; }
+    prev.animate([{ transform: "none", opacity: 1 }, { transform: "translateY(" + (-dir * 110) + "%)", opacity: 0 }], { duration: 160, easing: "cubic-bezier(.55,0,.9,.45)", fill: "forwards" }).onfinish = function(){
+      if (b._lab !== text) return;
+      b.innerHTML = '<span class="mlab">' + text + "</span>";
+      b.firstChild.animate([{ transform: "translateY(" + (dir * 110) + "%)", opacity: 0 }, { transform: "translateY(" + (-dir * 8) + "%)", opacity: 1, offset: 0.7 }, { transform: "none", opacity: 1 }], { duration: 300, easing: OUT });
+    };
+  };
+  var _flip5 = M.flip, _flipSync5 = M.flipSync;
+  M.flip = function(card, flipped){ _flip5.apply(this, arguments); M.flipLabel(flipped); };
+  M.flipSync = function(){
+    _flipSync5.apply(this, arguments);
+    var card = document.getElementById("flashcard");
+    if (card) M.flipLabel(card.classList.contains("flipped"));
+  };
+})();
+</script>
 <script>
 (function(){
   "use strict";
@@ -1138,6 +2821,8 @@
     qzOrder = [];
     qzOrderPos = 0;
     qzSessionCorrect = 0;
+    if (window.M && M.streakReset) M.streakReset();
+    if (window.M && M.trailReset) M.trailReset(qzModeCount);
     qzSessionTotal = 0;
     qzRoundDone = false;
     nextQuizQuestion();
@@ -1223,6 +2908,7 @@
           progress[qz.correctItem.id] = correct ? "known" : "retry";
           saveProgress();
           renderQuiz();
+          if (window.M) M.quiz(correct, i, qz.correctIdx);
         });
       });
     } else {
@@ -1234,7 +2920,7 @@
         });
       });
       var nextBtn = document.getElementById("qzNextBtn");
-      if (nextBtn) nextBtn.addEventListener("click", function(){ nextQuizQuestion(); });
+      if (nextBtn) nextBtn.addEventListener("click", function(){ nextQuizQuestion(); if (window.M) M.quizIn(); });
     }
   }
 
@@ -1248,6 +2934,7 @@
     html += '<div class="cardnav"><button type="button" class="navbtn primary" id="qzRestartBtn">もう一度挑戦する →</button></div>';
     area.innerHTML = html;
     document.getElementById("qzRestartBtn").addEventListener("click", function(){ resetQuizSession(); });
+    if (window.M) M.results(area, qzSessionCorrect, qzSessionTotal, pct);
   }
 
   qzCategorySelect.addEventListener("change", function(){
@@ -1344,7 +3031,7 @@
     list.forEach(function(item){
       var tips = getTipsFor(item.id);
       var mk = progress[item.id];
-      html += '<div class="termlistitem">';
+      html += '<div class="termlistitem" data-fid="' + escapeHtml(item.id) + '">';
       html += '<div class="tlihead"><span class="tliterm">' + escapeHtml(item.term) + '</span>';
       html += '<span class="tlibadges"><span class="tlicat">' + escapeHtml(CATMAP[item.cat] || item.cat) + '</span>';
       if (mk === "retry") html += '<span class="tliweak">苦手</span>';
@@ -1383,6 +3070,7 @@
     document.getElementById("cardViewWrap").style.display = "";
     document.getElementById("listViewWrap").style.display = "none";
     document.getElementById("cardIndexLabel").style.display = "";
+    if (window.M) M.dealIn(document.querySelector("#cardViewWrap .stage"), 1);
   });
   document.getElementById("viewListChip").addEventListener("click", function(){
     viewMode = "list";
@@ -1391,7 +3079,9 @@
     document.getElementById("listViewWrap").style.display = "";
     document.getElementById("cardViewWrap").style.display = "none";
     document.getElementById("cardIndexLabel").style.display = "none";
+    if (window.M) M._noFlip = true;
     renderTermList();
+    if (window.M) M.cascade(document.getElementById("termListArea"));
   });
 
   function renderTipsSection(item){
@@ -1421,6 +3111,7 @@
     document.getElementById("tipAddToggle").addEventListener("click", function(){
       tipComposerOpen = !tipComposerOpen;
       renderTipsSection(item);
+      if (tipComposerOpen && window.M && M.expand) M.expand(document.querySelector("#backTips .tipcomposer"));
       if (tipComposerOpen) {
         var ta = document.getElementById("tipComposerInput");
         if (ta) ta.focus();
@@ -1430,8 +3121,9 @@
     container.querySelectorAll(".tipdel").forEach(function(btn){
       btn.addEventListener("click", function(){
         var idx = parseInt(this.getAttribute("data-idx"), 10);
-        deleteTip(item.id, idx);
-        renderTipsSection(item);
+        var mRow = this.closest(".tipitem");
+        var mGo = function(){ deleteTip(item.id, idx); renderTipsSection(item); };
+        if (window.M && M.collapse) M.collapse(mRow, mGo); else mGo();
       });
     });
 
@@ -1445,6 +3137,7 @@
         addTip(item.id, val);
         tipComposerOpen = false;
         renderTipsSection(item);
+        if (window.M && M.tipAdded) M.tipAdded(document.querySelector("#backTips .tipitem:last-child"));
       });
       if (cancelBtn) cancelBtn.addEventListener("click", function(){
         tipComposerOpen = false;
@@ -1463,6 +3156,7 @@
   // ---- events ----
   catSelect.addEventListener("change", function(){
     filterCat = catSelect.value; currentPos = 0; renderCard();
+    if (window.M && M.drop) M.drop();
   });
   document.getElementById("searchInput").addEventListener("input", function(e){
     searchText = e.target.value; currentPos = 0; renderCard();
@@ -1471,12 +3165,14 @@
     filterWeakOnly = !filterWeakOnly;
     this.classList.toggle("on", filterWeakOnly);
     currentPos = 0; renderCard();
+    if (window.M && M.drop) M.drop();
   });
   document.getElementById("shuffleChip").addEventListener("click", function(){
     shuffled = !shuffled;
     this.classList.toggle("on", shuffled);
     if (shuffled) shuffleOrder(); else order = getAllTerms().map(function(x){ return x.id; });
     currentPos = 0; renderCard();
+    if (window.M && shuffled) M.riffle();
   });
   document.getElementById("resetFilterBtn").addEventListener("click", function(){
     filterCat = "all"; filterWeakOnly = false; searchText = "";
@@ -1490,6 +3186,7 @@
   function doFlip(){
     flipped = !flipped;
     flashcardEl.classList.toggle("flipped", flipped);
+    if (window.M) M.flip(flashcardEl, flipped);
   }
   flashcardEl.addEventListener("click", doFlip);
   document.getElementById("flipBtn").addEventListener("click", doFlip);
@@ -1499,13 +3196,13 @@
     var list = getFiltered();
     if (list.length === 0) return;
     currentPos = (currentPos - 1 + list.length) % list.length;
-    renderCard();
+    if (window.M) M.deal(-1, renderCard); else renderCard();
   });
   document.getElementById("nextBtn").addEventListener("click", function(){
     var list = getFiltered();
     if (list.length === 0) return;
     currentPos = (currentPos + 1) % list.length;
-    renderCard();
+    if (window.M) M.deal(1, renderCard); else renderCard();
   });
 
   document.getElementById("markKnown").addEventListener("click", function(){
@@ -1514,7 +3211,9 @@
     progress[item.id] = (progress[item.id] === "known") ? undefined : "known";
     if (progress[item.id] === undefined) delete progress[item.id];
     saveProgress();
+    if (window.M && M.holdMeter) M.holdMeter(progress[item.id] === "known");
     renderCard();
+    if (window.M && progress[item.id] === "known") { M.stamp("known"); M.burst(this, "var(--known)"); }
   });
   document.getElementById("markRetry").addEventListener("click", function(){
     var item = currentItem();
@@ -1523,11 +3222,12 @@
     if (progress[item.id] === undefined) delete progress[item.id];
     saveProgress();
     renderCard();
+    if (window.M && progress[item.id] === "retry") { M.stamp("retry"); M.burst(this, "var(--retry)"); }
     renderReview();
   });
 
   document.getElementById("resetProgressBtn").addEventListener("click", function(){
-    if (!confirm("学習の記録をすべて削除します。よろしいですか？")) return;
+    if (!(window.M && M.holdConfirmed) && !confirm("学習の記録をすべて削除します。よろしいですか？")) return;
     progress = {};
     saveProgress();
     renderCard();
@@ -1613,6 +3313,7 @@
     var descVal = document.getElementById("addDescInput").value.trim();
     var weakVal = document.getElementById("addWeakInput").checked;
     if (!termVal || !descVal) return;
+    var mWasEdit = !!editingId;
 
     var catKey;
     if (addCatSelect.value === "__new__") {
@@ -1646,6 +3347,7 @@
     resetAddForm();
     renderAddList();
     renderCard();
+    if (window.M && M.addFly) M.addFly(termVal, mWasEdit);
   });
 
   // ---- backup: export / import ----
@@ -1784,6 +3486,7 @@
         var idx = list.findIndex(function(x){ return x.id === item.id; });
         currentPos = idx >= 0 ? idx : 0;
         renderCard();
+        if (window.M) M.dealIn(document.querySelector("#cardViewWrap .stage"), 1);
       });
       listEl.appendChild(row);
     });
@@ -1800,16 +3503,68 @@
     if (name === "review") renderReview();
     if (name === "add") renderAddList();
     if (name === "quiz") renderQuiz();
+    if (window.M) {
+      if (M.moveTab) M.moveTab(name);
+      if (name === "review" && M.cascade) M.cascade(document.getElementById("reviewList"));
+      else M.panelIn(document.getElementById("panel-" + name));
+    }
   }
   document.querySelectorAll(".tab-btn").forEach(function(b){
     b.addEventListener("click", function(){ switchTab(b.getAttribute("data-tab")); });
   });
+
+  // meter follows every card render
+  var _renderCard = renderCard;
+  renderCard = function(){
+    _renderCard();
+    if (window.M && M.meter) {
+      var ml = getFiltered();
+      M.meter(ml.filter(function(x){ return progress[x.id] === "known"; }).length, ml.length);
+      if (M.empty) M.empty(ml.length === 0);
+      if (M.flipSync) M.flipSync();
+    }
+  };
+
+  // list view: layout animation (FLIP) whenever the list re-renders in place
+  var _renderTermList = renderTermList;
+  renderTermList = function(){
+    var a = document.getElementById("termListArea");
+    if (window.M && M.flipList && !M._noFlip && a && a.offsetParent !== null && a.children.length) M.flipList(a, _renderTermList);
+    else _renderTermList();
+    if (window.M) M._noFlip = false;
+  };
+
+  // small bridge for the 学習マップ
+  window.__app = {
+    snapshot: function(){
+      var cur = currentItem();
+      return { cats: CATS.concat(dynamicCats), catmap: CATMAP, terms: getAllTerms(), progress: progress, currentId: cur ? cur.id : null };
+    },
+    peek: function(off){
+      var list = getFiltered();
+      if (!list.length) return null;
+      var it = list[((currentPos + off) % list.length + list.length) % list.length];
+      return { term: it.term, cat: CATMAP[it.cat] || it.cat, weak: progress[it.id] === "retry", tip: getTipsFor(it.id).length > 0 };
+    },
+    jumpTo: function(id){
+      switchTab("cards");
+      if (viewMode === "list") document.getElementById("viewCardChip").click();
+      filterCat = "all"; catSelect.value = "all";
+      filterWeakOnly = false; document.getElementById("weakChip").classList.remove("on");
+      searchText = ""; document.getElementById("searchInput").value = "";
+      var list = getFiltered();
+      var idx = list.findIndex(function(x){ return x.id === id; });
+      currentPos = idx >= 0 ? idx : 0;
+      renderCard();
+    }
+  };
 
   // ---- init ----
   renderCard();
   renderReview();
   renderAddList();
   resetQuizSession();
+  if (window.M) { M.tabs(); M.swipe(); M.keys(); M.chips(); M.tilt(); M.mapInit(); M.sfxInit(); M.settingsInit(); M.holdReset(); M.pinch(); M.milestones(); M.flipLabel(false, true); if (M.trailReset) M.trailReset(qzModeCount); M.intro(); }
 })();
 </script>
 </body>
