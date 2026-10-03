@@ -484,7 +484,18 @@
   .ms-close { flex: none; background: none; border: 1px solid var(--grid-line-strong); color: var(--white-dim); border-radius: 999px; width: 36px; height: 36px; cursor: pointer; font-size: 15px; }
   .ms-legend { display: flex; gap: 14px; flex-wrap: wrap; padding: 0 18px 4px; font-family: var(--font-mono); font-size: 11.5px; color: var(--white-dim); }
   .ms-legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
-  .ms-peek { min-height: 1.6em; padding: 4px 18px 8px; font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ms-peek { flex: none; height: 80px; padding: 8px 18px 10px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--grid-line-strong); overflow: hidden; }
+  .mp-hint { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--white-dim); }
+  .mp-main { flex: 1; min-width: 0; }
+  .mp-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .mp-term { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mp-st { flex: none; font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--grid-line-strong); color: var(--white-dim); }
+  .mp-st.known { background: var(--known); color: #0D2113; }
+  .mp-st.retry { background: var(--retry); color: #2A0F07; }
+  .mp-desc { margin: 4px 0 0; font-size: 12px; line-height: 1.55; color: var(--white-dim); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .mp-open { flex: none; font: inherit; font-size: 13px; font-weight: 700; color: #1D1305; background: var(--amber); border: 0; border-radius: 999px; padding: 11px 16px; cursor: pointer; }
+  .ms-tile.sel { box-shadow: 0 0 0 2px var(--bg-panel), 0 0 0 4px var(--cyan); }
+  .ms-body { padding-top: 6px; }
   .ms-body { overflow-y: auto; padding: 0 18px 24px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
   .ms-cat { margin-top: 12px; }
   .ms-cathead { display: flex; justify-content: space-between; gap: 10px; font-size: 12.5px; color: var(--white-dim); margin-bottom: 7px; }
@@ -551,6 +562,9 @@
   .mreel { display: inline-block; margin-top: 16px; font-size: 13px; font-weight: 600; color: var(--cyan); text-underline-offset: 3px; }
   footer.foot #motionBtn { margin-right: 8px; }
   /* v5 */
+  /* Cards thrown off-screen must never widen the page (iOS Safari would zoom out and back). */
+  html, body { overflow-x: clip; }
+  @supports not (overflow-x: clip) { html, body { overflow-x: hidden; } }
   .mdeck { position: relative; }
   .mdeck > .stage { z-index: 1; }
   .mpeek {
@@ -570,6 +584,35 @@
   .mm-flag { position: absolute; z-index: 3; top: -2px; pointer-events: none; font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #1D1305; background: var(--amber); padding: 3px 7px; border-radius: 999px; white-space: nowrap; }
   #flipBtn { overflow: hidden; }
   #flipBtn .mlab { display: inline-block; }
+  /* v6 */
+  .mrow + .mrow { border-top: 0; }
+  .mrow-sub { display: block; font-size: 11.5px; color: var(--white-dim); margin-top: 2px; }
+  .mm-fill { overflow: hidden; }
+  .mm-shine { position: absolute; top: 0; bottom: 0; left: 0; width: 40%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent); transform: translateX(-120%); pointer-events: none; }
+  .mcombo { position: absolute; right: 4px; top: -20px; z-index: 3; pointer-events: none; font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: #0D2113; background: var(--known); padding: 2px 8px; border-radius: 999px; opacity: 0; }
+  .msplat { position: absolute; z-index: 5; pointer-events: none; border-radius: 50%; }
+  .mshine-sweep { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; overflow: hidden; }
+  .mshine-sweep::after { content: ""; position: absolute; top: 0; bottom: 0; width: 45%; left: -50%; background: linear-gradient(100deg, transparent, rgba(255,255,255,0.7), transparent); animation: msweep .7s cubic-bezier(.3,.1,.3,1) forwards; }
+  @keyframes msweep { to { left: 120%; } }
+  .mhap { position: fixed; left: -9999px; top: 0; opacity: 0; pointer-events: none; }
+  /* v7: shot & shatter */
+  .mcrack { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; border-radius: var(--radius-card); }
+  .mcrack svg { position: absolute; left: 0; top: 0; overflow: visible; }
+  .mflash { position: absolute; z-index: 6; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,236,170,0.9) 18%, rgba(255,190,90,0.35) 42%, rgba(255,190,90,0) 70%); }
+  .mspark { position: absolute; z-index: 6; width: 14px; height: 2px; margin: -1px 0 0 0; border-radius: 2px; pointer-events: none; transform-origin: 0 50%;
+    background: linear-gradient(90deg, #fff, #FFC861); }
+  .mshards { position: fixed; z-index: 75; pointer-events: none; perspective: 900px; }
+  .mshard { position: absolute; inset: 0; will-change: transform, opacity; }
+  .mshard > .face { transform: none !important; backface-visibility: visible !important; overflow: hidden !important; }
+  /* v8: 苦手 = the round bounces off and the card is locked as a target */
+  .mdent { position: absolute; z-index: 4; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle at 42% 40%, #1a2230 0 22%, #5b6675 34%, #c9ced6 52%, rgba(255,255,255,0.9) 60%, rgba(23,30,40,0.18) 72%, rgba(23,30,40,0) 74%); }
+  .mscuff { position: absolute; z-index: 4; height: 3px; margin-top: -1.5px; border-radius: 2px; pointer-events: none; transform-origin: 0 50%;
+    background: linear-gradient(90deg, rgba(40,48,60,0.65), rgba(140,150,160,0.35) 60%, rgba(140,150,160,0)); }
+  .mreticle { position: absolute; z-index: 6; width: 96px; height: 96px; margin: -48px 0 0 -48px; pointer-events: none; overflow: visible; }
+  .mtracer { position: fixed; z-index: 76; left: 0; top: 0; height: 3px; width: 70px; margin-top: -1.5px; border-radius: 3px; pointer-events: none; transform-origin: 0 50%;
+    background: linear-gradient(90deg, rgba(255,200,97,0), #FFE6A8 70%, #fff); box-shadow: 0 0 8px rgba(255,210,120,0.9); }
   @media (prefers-reduced-motion: reduce) { .tabind, .mm-fill, .mtilt { transition: none; } .syncdot.busy { animation: none; } }
 </style>
 </head>
@@ -842,7 +885,7 @@
       if (!animate) { void ind.offsetWidth; ind.style.transition = ""; }
     }
     function active(){ return nav.querySelector(".tab-btn.active"); }
-    M.moveTab = function(name){ var b = nav.querySelector('[data-tab="' + name + '"]'); if (b) place(b, on); if (M.sfx) M.sfx("tick"); };
+    M.moveTab = function(name){ var b = nav.querySelector('[data-tab="' + name + '"]'); if (b) place(b, on); if (M.sfx) M.sfx("tick", { el: b }); };
     if (active()) place(active(), false);
     window.addEventListener("resize", function(){ if (active()) place(active(), false); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if (active()) place(active(), false); });
@@ -1027,6 +1070,7 @@
     var fill = box.querySelector(".mm-fill"), num = box.querySelector(".mm-num"), track = box.querySelector(".mm-track");
     fill.style.width = (n ? k / n * 100 : 0) + "%";
     rollNum(num, n === meter.n ? meter.k : k, k, n);
+    if (bump && n === meter.n && k > meter.k) { M.sfx("fill"); if (M.shine) M.shine(); }
     if (bump && on) track.animate([{ transform: "scaleY(1)" }, { transform: "scaleY(2.2)", offset: 0.35 }, { transform: "scaleY(1)" }], { duration: 420, easing: OUT });
     if (meter.init && n === meter.n && n > 0 && k < n && M._milestone) [0.25, 0.5, 0.75].forEach(function(m){ if (meter.k / n < m && k / n >= m) M._milestone(m); });
     var complete = meter.init && n === meter.n && n > 0 && meter.k < n && k === n;
@@ -1043,7 +1087,8 @@
     var st = stage(), box = document.getElementById("knownMeter");
     if (!st || !box) { applyMeter(k, n, true); return; }
     var a = st.getBoundingClientRect(), tr = box.querySelector(".mm-track").getBoundingClientRect();
-    var x0 = a.left + a.width * 0.74, y0 = a.top + a.height * 0.2;
+    var ip = M.impactPoint ? M.impactPoint() : null;
+    var x0 = a.left + a.width * (ip ? ip.x : 0.74), y0 = a.top + a.height * (ip ? ip.y : 0.2);
     var x1 = tr.left + tr.width * (n ? k / n : 0), y1 = tr.top + tr.height / 2;
     var cx = (x0 + x1) / 2, cy = Math.min(y0, y1) - 70, frames = [];
     for (var i = 0; i <= 10; i++) {
@@ -1407,7 +1452,7 @@
       '<p class="ms-stat">覚えた ' + kn + ' / ' + snap.terms.length + (gained > 0 ? '　前回から <b>+' + gained + '</b>' : '') + '</p></div>' +
       '<button type="button" class="ms-close" aria-label="閉じる">✕</button></div></div>' +
       '<div class="ms-legend"><span style="--c:var(--known)">覚えた ' + kn + '</span><span style="--c:var(--retry)">苦手 ' + rt + '</span><span style="--c:var(--grid-line-strong)">まだ ' + (snap.terms.length - kn - rt) + '</span></div>' +
-      '<div class="ms-peek" aria-live="polite">タイルを押すと、そのカードを開きます</div><div class="ms-body">';
+      '<div class="ms-peek" aria-live="polite"><p class="mp-hint">' + (window.matchMedia("(hover: none)").matches ? "タイルをタップすると単語が出ます。もう一度タップするか「開く」でカードへ移動します" : "タイルにカーソルを合わせると単語が出ます。クリックでカードを開きます") + '</p></div><div class="ms-body">';
     keys.forEach(function(k){
       var list = groups[k]; if (!list.length) return;
       var ck = list.filter(function(t){ return nowMap[t.id] === "known"; }).length;
@@ -1446,18 +1491,41 @@
         if (!sheet) return;
         var a = tl.animate([{ transform: "none" }, { transform: "rotateY(90deg) scale(1.15)" }], { duration: 140, easing: "ease-in" });
         a.onfinish = function(){
-          swap(); M.sfx("tick");
+          swap(); M.sfx("tile", { el: tl, i: j }); M.haptic("light");
           tl.animate([{ transform: "rotateY(-90deg) scale(1.15)" }, { transform: "rotateY(10deg) scale(1.1)", offset: 0.7 }, { transform: "none" }], { duration: 300, easing: "ease-out" });
           if (tl.getAttribute("data-now") === "known") M.burst(tl, "var(--known)");
         };
       }, 820 + j * 110);
     });
-    function peekOf(tl){ var v = tl.getAttribute("data-now"); peek.textContent = tl.getAttribute("aria-label") + (v === "known" ? "　覚えた" : v === "retry" ? "　苦手" : ""); }
-    sheet.addEventListener("mouseover", function(e){ var tl = e.target.closest(".ms-tile"); if (tl) peekOf(tl); });
-    sheet.addEventListener("focusin", function(e){ var tl = e.target.closest(".ms-tile"); if (tl) peekOf(tl); });
+    var byId = {}, selTile = null, lastPT = "mouse";
+    snap.terms.forEach(function(t){ byId[t.id] = t; });
+    function peekOf(tl, selected){
+      var id = tl.getAttribute("data-id"), t = byId[id] || {}, v = tl.getAttribute("data-now");
+      var st = v === "known" ? "覚えた" : v === "retry" ? "苦手" : "まだ";
+      peek.innerHTML = '<div class="mp-main"><div class="mp-row"><span class="mp-st ' + v + '">' + st + '</span><b class="mp-term">' + esc(t.term || "") + '</b></div>' +
+        '<p class="mp-desc">' + esc(t.desc || "") + '</p></div>' + (selected ? '<button type="button" class="mp-open">開く</button>' : "");
+      if (selected && on) {
+        peek.querySelector(".mp-main").animate([{ transform: "translateY(8px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 220, easing: OUT });
+        peek.querySelector(".mp-open").animate([{ transform: "scale(.6)", opacity: 0 }, { transform: "scale(1.08)", opacity: 1, offset: 0.6 }, { transform: "none", opacity: 1 }], { duration: 300, easing: OUT });
+      }
+    }
+    function select(tl){
+      if (selTile) selTile.classList.remove("sel");
+      selTile = tl; tl.classList.add("sel");
+      peekOf(tl, true); M.sfx("tick");
+      if (on) tl.animate([{ transform: "scale(1)" }, { transform: "scale(1.3)", offset: 0.4 }, { transform: "none" }], { duration: 300, easing: OUT });
+    }
+    sheet.addEventListener("pointerdown", function(e){ lastPT = e.pointerType || "mouse"; });
+    sheet.addEventListener("mouseover", function(e){ if (lastPT !== "mouse") return; var tl = e.target.closest(".ms-tile"); if (tl) peekOf(tl, false); });
+    sheet.addEventListener("focusin", function(e){ if (lastPT !== "mouse") return; var tl = e.target.closest(".ms-tile"); if (tl) peekOf(tl, false); });
     sheet.addEventListener("click", function(e){
       if (e.target.closest(".ms-close")) { M.closeMap(); return; }
-      var tl = e.target.closest(".ms-tile"); if (tl) openTile(tl);
+      if (e.target.closest(".mp-open")) { if (selTile) openTile(selTile); return; }
+      var tl = e.target.closest(".ms-tile");
+      if (!tl) return;
+      // touch: first tap shows the word, second tap (or 開く) opens it. mouse/keyboard: open right away.
+      if (e.detail !== 0 && lastPT !== "mouse") { if (selTile === tl) openTile(tl); else select(tl); return; }
+      openTile(tl);
     });
     sheetBg.addEventListener("click", function(){ M.closeMap(); });
     // drag the top of the sheet down to dismiss
@@ -1641,7 +1709,10 @@
       if (rich) document.body.style.backgroundPosition = px ? (px * -0.08) + "px " + (Math.abs(px) * 0.02) + "px" : "";
       var p = Math.abs(px) / (w * 0.25), h = px < 0 ? hr : hl, o = px < 0 ? hl : hr;
       h.style.opacity = String(Math.min(1, p)); o.style.opacity = "0";
-      h.classList.toggle("armed", p >= 1 && dragging); o.classList.remove("armed");
+      var armedNow = p >= 1 && dragging;
+      if (armedNow && !h.classList.contains("armed") && M.detent) M.detent(h, px < 0 ? 1 : -1);
+      h.classList.toggle("armed", armedNow); o.classList.remove("armed");
+      if (M.dragSound) M.dragSound(dragging ? px / w : 0);
       peekPaint(px);
     }
     var spring = new Spring({ k: 320, c: 25, restX: 0.4, restV: 6, onUpdate: function(px, v){ x = px; paint(px, v); } });
@@ -1681,7 +1752,7 @@
       var go = Math.abs(x) > w * 0.25 || (Math.abs(v) > 500 && Math.abs(x) > 24 && (v < 0) === (x < 0));
       if (!go) { if (on) spring.to(0, v); else { x = 0; paint(0, 0); } return; }
       var dir = x < 0 ? 1 : -1;
-      M.buzz(8);
+      M.buzz(8); M.sfx("deal", { pan: -dir * 0.7, v: Math.abs(v) });
       if (!on) { x = 0; paint(0, 0); document.getElementById(dir > 0 ? "nextBtn" : "prevBtn").click(); return; }
       throwing = true;
       var vt = Math.abs(v) < 1400 ? -dir * 1400 : v;
@@ -1720,7 +1791,7 @@
     M._thrown = false; M._from = null;
     var st = stage(), lab = document.getElementById("cardIndexLabel"), labPrev = lab ? lab.textContent : "";
     var card = document.getElementById("flashcard");
-    M.sfx("deal");
+    M.sfx("land");
     if (card && card.getAnimations) card.getAnimations().forEach(function(a){ a.cancel(); });
     if (st) st.style.transform = "";
     if (rich) document.body.style.backgroundPosition = "";
@@ -1835,6 +1906,7 @@
     var label = b.textContent, raf = 0, t0 = 0, p = 0, holding = false, D = 1200, hintT = 0, doneT = 0;
     var sp = new Spring({ k: 260, c: 22, restX: 0.2, restV: 1, onUpdate: function(x){ p = x; b.style.setProperty("--p", Math.max(0, x) + "%"); } });
     function stopHold(){
+      b._qs = 0; if (M.riser) M.riser(0);
       holding = false; cancelAnimationFrame(raf); b.classList.remove("holding"); b.textContent = label;
       if (on) sp.to(0, -120); else sp.set(0);
     }
@@ -1845,11 +1917,13 @@
       (function tick(now){
         if (!holding) return;
         var q = Math.min(1, (now - t0) / D), e2 = q * q * (3 - 2 * q);
+        if (M.riser) M.riser(q);
+        var qs = Math.floor(q * 4); if (qs > (b._qs || 0) && qs < 4) { b._qs = qs; M.haptic("light"); }
         p = e2 * 100; b.style.setProperty("--p", p + "%");
         if (on && q > 0.6) b.style.transform = "translateX(" + (Math.sin(now / 18) * (q - 0.6) * 4) + "px)";
         if (q >= 1) {
           holding = false; b.style.transform = ""; b.classList.remove("holding"); b.textContent = label;
-          M.buzz(30); M.sfx("retry");
+          b._qs = 0; if (M.riser) M.riser(0); M.haptic("heavy"); M.sfx("rewind");
           doneT = performance.now();
           M.holdConfirmed = true; b.click(); M.holdConfirmed = false;
           sp.x = 100; sp.to(0, 0);
@@ -1960,6 +2034,7 @@
     setSheet.innerHTML = '<div class="ms-drag"><div class="ms-grab"><i></i></div><div class="ms-head"><div><p class="ms-title">モーション</p><p class="ms-stat">動きの量と、この単語帳の動きのルール</p></div><button type="button" class="ms-close" aria-label="閉じる">✕</button></div></div>' +
       '<div class="ms-body"><div class="mseg" role="radiogroup" aria-label="動きの量"><i class="mseg-pill"></i>' + segs + '</div><p class="mseg-note"></p>' +
       '<div class="mrow"><span>効果音</span><button type="button" class="mswitch" role="switch" aria-checked="' + sfxOn + '" aria-label="効果音"><i></i></button></div>' +
+      '<div class="mrow"><span>触覚フィードバック<small class="mrow-sub">iPhone は iOS 18 以降で振動します</small></span><button type="button" class="mswitch" id="hapSw" role="switch" aria-checked="' + hapOn + '" aria-label="触覚フィードバック"><i></i></button></div>' +
       '<p class="mspec-h">動きのルール</p>' +
       '<div class="mspec"><b>出ていくものは速く、入ってくるものはゆっくり</b><p>去るカードは150ms、来るカードは420ms。目が追いかけたいのは新しいほうなので、そちらに時間を使います。</p><canvas data-demo="speed" aria-hidden="true"></canvas></div>' +
       '<div class="mspec"><b>去るときは加速、来るときは減速</b><p>ease-in で離れ、ease-out で着地します。着地の直前に少しだけ行き過ぎて戻ることで、カードが「置かれた」感じになります。</p><canvas data-demo="curve" aria-hidden="true"></canvas></div>' +
@@ -2050,7 +2125,7 @@
   var _deal5 = M.deal;
   M.deal = function(dir, swap){
     if (!M._thrown && on && M._throw && document.getElementById("cardViewWrap").style.display !== "none") {
-      if (M._throw(dir, swap)) { M.sfx("deal"); return; }
+      if (M._throw(dir, swap)) { M.sfx("deal", { pan: -dir * 0.7 }); return; }
     }
     return _deal5.apply(this, arguments);
   };
@@ -2206,6 +2281,707 @@
     var card = document.getElementById("flashcard");
     if (card) M.flipLabel(card.classList.contains("flipped"));
   };
+
+  // ===== v6: feel. one tuned sound palette, touch you can feel, and buttons with weight =====
+
+  // ---- Sound engine: everything in D major pentatonic, so any two sounds agree with each other ----
+  var AE = null;
+  function engine(){
+    if (AE) { if (AE.c.state === "suspended") AE.c.resume(); return AE; }
+    var c; try { c = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; }
+    var comp = c.createDynamicsCompressor(); comp.threshold.value = -18; comp.ratio.value = 3; comp.attack.value = 0.003; comp.release.value = 0.15;
+    var master = c.createGain(); master.gain.value = 0.9; comp.connect(master); master.connect(c.destination);
+    var verb = c.createConvolver(), len = Math.floor(c.sampleRate * 1.6), ir = c.createBuffer(2, len, c.sampleRate);
+    for (var ch = 0; ch < 2; ch++) { var d = ir.getChannelData(ch); for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2); }
+    verb.buffer = ir; var vret = c.createGain(); vret.gain.value = 0.22; verb.connect(vret); vret.connect(comp);
+    var nb = c.createBuffer(1, c.sampleRate, c.sampleRate), nd = nb.getChannelData(0);
+    for (i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+    AE = { c: c, comp: comp, verb: verb, nb: nb };
+    return AE;
+  }
+  function bus(e, pan, wet){
+    var g = e.c.createGain(), node = g;
+    if (e.c.createStereoPanner) { var p = e.c.createStereoPanner(); p.pan.value = Math.max(-1, Math.min(1, pan || 0)); g.connect(p); node = p; }
+    node.connect(e.comp);
+    if (wet) { var s = e.c.createGain(); s.gain.value = wet; node.connect(s); s.connect(e.verb); }
+    return g;
+  }
+  function env(g, t, a, peak, d){ g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(Math.max(0.0002, peak), t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + d); }
+  function osc(e, t, o){
+    var x = e.c.createOscillator(), g = e.c.createGain(), a = o.a || 0.004;
+    x.type = o.type || "sine"; x.frequency.setValueAtTime(o.f, t);
+    if (o.f2) x.frequency.exponentialRampToValueAtTime(o.f2, t + (o.glide || o.d * 0.6));
+    env(g, t, a, o.g, o.d); x.connect(g); g.connect(bus(e, o.pan, o.wet)); x.start(t); x.stop(t + a + o.d + 0.05);
+  }
+  function bell(e, t, f, gain, d, pan, wet){
+    var car = e.c.createOscillator(), mod = e.c.createOscillator(), mg = e.c.createGain(), amp = e.c.createGain();
+    car.frequency.value = f; mod.frequency.value = f * 3.5;
+    mg.gain.setValueAtTime(f * 2.2, t); mg.gain.exponentialRampToValueAtTime(f * 0.04, t + d * 0.7);
+    mod.connect(mg); mg.connect(car.frequency); env(amp, t, 0.003, gain, d);
+    car.connect(amp); amp.connect(bus(e, pan, wet == null ? 0.35 : wet));
+    car.start(t); mod.start(t); car.stop(t + d + 0.05); mod.stop(t + d + 0.05);
+  }
+  function nz(e, t, o){
+    var s = e.c.createBufferSource(), fl = e.c.createBiquadFilter(), g = e.c.createGain(), a = o.a || 0.006;
+    s.buffer = e.nb; fl.type = o.type || "bandpass"; fl.frequency.setValueAtTime(o.f, t);
+    if (o.f2) fl.frequency.exponentialRampToValueAtTime(o.f2, t + a + o.d); fl.Q.value = o.q || 0.8;
+    env(g, t, a, o.g, o.d); s.connect(fl); fl.connect(g); g.connect(bus(e, o.pan, o.wet)); s.start(t, Math.random() * 0.5); s.stop(t + a + o.d + 0.05);
+  }
+  function nf(semi){ return 293.66 * Math.pow(2, semi / 12); }
+  var PENT = [0, 2, 4, 7, 9];
+  function pent(i){ var o = Math.floor(i / 5), k = ((i % 5) + 5) % 5; return nf(PENT[k] + 12 * o); }
+  function panOf(el){ if (!el || !el.getBoundingClientRect) return 0; var r = el.getBoundingClientRect(); return ((r.left + r.width / 2) / innerWidth) * 2 - 1; }
+
+  var combo = 0, comboT = -1e9;
+  M.sfx = function(name, o){
+    if (!sfxOn) return;
+    var e = engine(); if (!e) return;
+    o = o || {};
+    var t = e.c.currentTime + 0.004, pan = o.pan != null ? o.pan : o.el ? panOf(o.el) * 0.8 : 0, s, i;
+    switch (name) {
+      case "flip": nz(e, t, { f: 1100, f2: 3400, q: 1.1, d: 0.16, g: 0.07 }); break;
+      case "tock": osc(e, t, { f: 1150, d: 0.035, g: 0.08 }); osc(e, t, { type: "triangle", f: 2300, d: 0.02, g: 0.025 }); break;
+      case "deal": nz(e, t, { f: 800, f2: 3600, q: 1.2, d: Math.max(0.12, 0.26 - (o.v || 1500) / 20000), g: 0.09, pan: pan }); break;
+      case "land": osc(e, t, { f: 170, f2: 95, d: 0.09, g: 0.16 }); nz(e, t, { type: "lowpass", f: 600, d: 0.05, g: 0.05 }); break;
+      case "detent": osc(e, t, { type: "square", f: 2600, d: 0.012, g: 0.02, pan: pan }); osc(e, t, { f: 1320, d: 0.03, g: 0.03, pan: pan }); break;
+      case "known":
+        var nn = pent(5 + Math.min(combo, 12));
+        bell(e, t, nn, 0.09, 0.9, 0.15); bell(e, t + 0.07, nn * 1.5, 0.05, 0.8, 0.25);
+        break;
+      case "thunk": osc(e, t, { f: 125, f2: 70, d: 0.12, g: 0.2 }); nz(e, t, { type: "lowpass", f: 700, d: 0.06, g: 0.08 }); break;
+      case "retry": osc(e, t, { f: 220, f2: 165, d: 0.22, g: 0.11 }); osc(e, t + 0.01, { type: "triangle", f: 330, f2: 247, d: 0.18, g: 0.035 }); break;
+      case "correct":
+        s = Math.min(6, (typeof streak === "number" ? streak : 0) + 1);
+        [5, 7, 9].forEach(function(k, j){ bell(e, t + j * 0.05, pent(k + s), 0.07, 0.7, 0, 0.3); });
+        break;
+      case "wrong": osc(e, t, { f: 196, f2: 150, d: 0.26, g: 0.11 }); osc(e, t, { f: 185, f2: 142, d: 0.26, g: 0.06 }); break;
+      case "tick": osc(e, t, { f: 1800, d: 0.02, g: 0.022, pan: pan }); break;
+      case "chipOn": osc(e, t, { f: 880, f2: 1320, d: 0.05, g: 0.04, pan: pan }); break;
+      case "chipOff": osc(e, t, { f: 1320, f2: 880, d: 0.05, g: 0.035, pan: pan }); break;
+      case "pop": osc(e, t, { f: 500, f2: 1000, d: 0.08, g: 0.06, pan: pan }); break;
+      case "fill": osc(e, t, { f: pent(5), f2: pent(10), glide: 0.35, d: 0.42, g: 0.03, wet: 0.3 }); break;
+      case "sparkle": [10, 12, 14].forEach(function(k, j){ bell(e, t + j * 0.05, pent(k), 0.05, 0.6, (j - 1) * 0.5); }); break;
+      case "fanfare":
+        [5, 6, 7, 8, 9, 10].forEach(function(k, j){ bell(e, t + j * 0.075, pent(k), 0.07, j === 5 ? 1.6 : 0.6, (j - 2.5) * 0.25, 0.45); });
+        [0, 4, 7].forEach(function(semi){ osc(e, t + 0.45, { type: "triangle", f: nf(semi), d: 1.2, a: 0.08, g: 0.025, wet: 0.5 }); });
+        break;
+      case "sheet": nz(e, t, { f: 400, f2: 2400, q: 0.9, d: 0.3, g: 0.05 }); osc(e, t, { f: 300, f2: 600, d: 0.25, g: 0.02 }); break;
+      case "sprinkle":
+        for (i = 0; i < 18; i++) bell(e, t + 0.14 + i * 0.03, pent(10 + Math.floor(Math.random() * 6)), 0.016, 0.35, -0.8 + i / 17 * 1.6, 0.3);
+        break;
+      case "tile": bell(e, t, pent(8 + (o.i || 0) % 8), 0.04, 0.5, pan); break;
+      case "whoosh": nz(e, t, { f: 600, f2: 2200, q: 1, d: 0.25, g: 0.06, pan: pan }); break;
+      case "rewind": nz(e, t, { f: 4000, f2: 300, q: 1, d: 0.5, g: 0.06 }); osc(e, t, { type: "triangle", f: 900, f2: 110, d: 0.45, g: 0.045 }); break;
+    }
+  };
+
+  // Continuous sounds: drag tension follows the card, the hold-to-reset riser follows your thumb.
+  var dragN = null;
+  M.dragSound = function(r){
+    if (!sfxOn) return;
+    var e = engine(); if (!e) return;
+    var a = Math.abs(r);
+    if (a > 0.01 && !dragN) {
+      var s = e.c.createBufferSource(), f = e.c.createBiquadFilter(), g = e.c.createGain(), pn = e.c.createStereoPanner ? e.c.createStereoPanner() : null;
+      s.buffer = e.nb; s.loop = true; f.type = "lowpass"; f.Q.value = 2; g.gain.value = 0.0001;
+      s.connect(f); f.connect(g);
+      if (pn) { g.connect(pn); pn.connect(e.comp); } else g.connect(e.comp);
+      s.start();
+      dragN = { s: s, f: f, g: g, p: pn };
+    }
+    if (!dragN) return;
+    var t = e.c.currentTime;
+    if (a <= 0.01) {
+      var dn = dragN; dragN = null;
+      dn.g.gain.setTargetAtTime(0.0001, t, 0.03); setTimeout(function(){ try { dn.s.stop(); } catch (er) {} }, 200);
+      return;
+    }
+    dragN.f.frequency.setTargetAtTime(300 + Math.min(1, a) * 2400, t, 0.02);
+    dragN.g.gain.setTargetAtTime(Math.min(0.045, a * 0.06), t, 0.02);
+    if (dragN.p) dragN.p.pan.setTargetAtTime(Math.max(-1, Math.min(1, r * 1.4)), t, 0.03);
+  };
+  var riserN = null;
+  M.riser = function(q){
+    if (!sfxOn) return;
+    var e = engine(); if (!e) return;
+    var t = e.c.currentTime;
+    if (q > 0 && !riserN) {
+      var x = e.c.createOscillator(), f = e.c.createBiquadFilter(), g = e.c.createGain();
+      x.type = "sawtooth"; x.frequency.value = 110; f.type = "lowpass"; f.Q.value = 6; g.gain.value = 0.0001;
+      x.connect(f); f.connect(g); g.connect(bus(e, 0, 0.2)); x.start();
+      riserN = { x: x, f: f, g: g };
+    }
+    if (!riserN) return;
+    if (q <= 0) { var rn = riserN; riserN = null; rn.g.gain.setTargetAtTime(0.0001, t, 0.04); setTimeout(function(){ try { rn.x.stop(); } catch (er) {} }, 300); return; }
+    riserN.x.frequency.setTargetAtTime(110 * (1 + q * 3), t, 0.03);
+    riserN.f.frequency.setTargetAtTime(300 + q * 3200, t, 0.03);
+    riserN.g.gain.setTargetAtTime(0.012 + q * 0.04, t, 0.03);
+  };
+
+  // ---- Haptics: vibrate on Android; on iPhone (iOS 18+) a hidden system switch gives a real tap ----
+  var hapOn = true, hapLabel = null;
+  try { hapOn = localStorage.getItem("sapHaptic") !== "0"; } catch (e) {}
+  var isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  M.haptic = function(kind){
+    if (!hapOn || level === "off") return;
+    if (navigator.vibrate) { try { navigator.vibrate(kind === "heavy" ? 24 : kind === "double" ? [10, 50, 12] : 8); } catch (e) {} return; }
+    if (!isIOS) return;
+    if (!hapLabel) {
+      var inp = document.createElement("input"); inp.type = "checkbox"; inp.setAttribute("switch", ""); inp.id = "mhapSwitch"; inp.className = "mhap"; inp.tabIndex = -1; inp.setAttribute("aria-hidden", "true");
+      hapLabel = document.createElement("label"); hapLabel.htmlFor = "mhapSwitch"; hapLabel.className = "mhap"; hapLabel.setAttribute("aria-hidden", "true");
+      document.body.appendChild(inp); document.body.appendChild(hapLabel);
+    }
+    try { hapLabel.click(); if (kind === "double" || kind === "heavy") setTimeout(function(){ hapLabel.click(); }, kind === "heavy" ? 40 : 90); } catch (e) {}
+  };
+  M.buzz = function(ms){ M.haptic(ms >= 20 ? "heavy" : "light"); };
+
+  // ---- Weight: buttons sink under your finger and spring back ----
+  M.chips = function(){};
+  M.press = function(){
+    var held = null;
+    function skip(el){ return !el || el.closest(".stage, .mdeck, .tab-btn, #resetProgressBtn, .ms-tile, .mseg, .mswitch, .mintro"); }
+    document.addEventListener("pointerdown", function(e){
+      if (!on) return;
+      var el = e.target.closest && e.target.closest("button, .chip, [role=button]");
+      if (!el || skip(el)) return;
+      if (el._pr) el._pr.cancel();
+      el._pr = el.animate([{ transform: "scale(1)" }, { transform: "scale(.95)" }], { duration: 90, easing: "ease-out", fill: "forwards" });
+      held = el;
+    }, true);
+    function release(){
+      var el = held; held = null;
+      if (!el || !el._pr) return;
+      el._pr.cancel(); el._pr = null;
+      if (on) el.animate([{ transform: "scale(.95)" }, { transform: "scale(1.035)", offset: 0.45 }, { transform: "scale(1)" }], { duration: 320, easing: "cubic-bezier(.3,.7,.4,1)" });
+    }
+    document.addEventListener("pointerup", release, true);
+    document.addEventListener("pointercancel", release, true);
+    document.addEventListener("click", function(e){
+      var c = e.target.closest && e.target.closest(".chip");
+      if (!c) return;
+      setTimeout(function(){
+        if (c.id === "mapChip") return;
+        M.sfx(c.classList.contains("on") ? "chipOn" : "chipOff", { el: c });
+        M.haptic("light");
+      }, 0);
+    });
+  };
+
+  // ---- The swipe's notch: crossing the commit point clicks, like a physical detent ----
+  M.detent = function(hint, dir){
+    M.sfx("detent", { pan: -dir * 0.6 }); M.haptic("light");
+    if (on) hint.animate([{ transform: "translateY(-50%) scale(1)" }, { transform: "translateY(-50%) scale(1.22)", offset: 0.4 }, { transform: "translateY(-50%) scale(1)" }], { duration: 260, easing: OUT });
+  };
+
+  // ---- Stamp: the rubber hits paper. Thunk, a little ink, a tiny jolt ----
+  var _stamp6 = M.stamp;
+  M.stamp = function(kind){
+    if (kind === "known") {
+      var now = performance.now();
+      combo = now - comboT < 7000 ? combo + 1 : 0; comboT = now;
+      M.combo(combo + 1);
+    }
+    _stamp6.apply(this, arguments);
+    M.haptic(kind === "known" ? "light" : "double");
+    setTimeout(function(){
+      M.sfx("thunk");
+      var st = stage(), wrap = document.querySelector(".wrap");
+      if (!on || lite || !st) return;
+      if (wrap) wrap.animate([{ transform: "none" }, { transform: "translate(0, 2px)" }, { transform: "translate(0, -1px)" }, { transform: "none" }], { duration: 140 });
+      var col = kind === "known" ? "#2F7A43" : "#B4512F", W = st.offsetWidth, H = st.offsetHeight, cx = W * 0.74, cy = H * 0.2;
+      for (var i = 0; i < 7; i++) {
+        var d = document.createElement("i"), r = 2 + Math.random() * 4, a = Math.random() * Math.PI * 2, dist = 42 + Math.random() * 34;
+        d.className = "msplat"; d.style.width = d.style.height = (r * 2) + "px"; d.style.background = col;
+        d.style.left = (cx + Math.cos(a) * dist * 1.4 - r) + "px"; d.style.top = (cy + Math.sin(a) * dist * 0.7 - r) + "px";
+        st.appendChild(d);
+        d.animate([{ transform: "scale(0)", opacity: 0.9 }, { transform: "scale(1.3)", opacity: 0.85, offset: 0.12 }, { transform: "scale(1)", opacity: 0.8, offset: 0.6 }, { transform: "scale(1)", opacity: 0 }], { duration: 900, easing: "ease-out", fill: "forwards" }).onfinish = (function(n){ return function(){ n.remove(); }; })(d);
+      }
+    }, 280);
+  };
+
+  // ---- Flip lands with a wooden "tock" when the spring settles ----
+  var _flip6 = M.flip;
+  M.flip = function(card, flipped){
+    _flip6.apply(this, arguments);
+    if (on && flipSpring && flipSpring.raf) {
+      var prev = flipSpring.onRest;
+      flipSpring.onRest = function(){ if (prev) prev(); M.sfx("tock"); M.haptic("light"); };
+    }
+  };
+
+  // ---- Meter: a highlight runs along the bar when it grows; a combo counter when you keep going ----
+  M.shine = function(){
+    if (!on || lite) return;
+    var fill = document.querySelector("#knownMeter .mm-fill");
+    if (!fill) return;
+    var sh = fill.querySelector(".mm-shine");
+    if (!sh) { sh = document.createElement("i"); sh.className = "mm-shine"; fill.appendChild(sh); }
+    sh.animate([{ transform: "translateX(-120%)" }, { transform: "translateX(300%)" }], { duration: 760, easing: "cubic-bezier(.3,.1,.3,1)" });
+  };
+  var comboEl = null, comboHide = 0;
+  M.combo = function(n){
+    var box = document.getElementById("knownMeter");
+    if (!box || n < 2) return;
+    if (!comboEl) { comboEl = document.createElement("span"); comboEl.className = "mcombo"; box.appendChild(comboEl); }
+    comboEl.textContent = "×" + n;
+    if (on) comboEl.animate([{ transform: "translateY(6px) scale(.5)", opacity: 0 }, { transform: "translateY(-2px) scale(" + Math.min(1.5, 1.1 + n * 0.04) + ")", opacity: 1, offset: 0.5 }, { transform: "none", opacity: 1 }], { duration: 380, easing: OUT, fill: "forwards" });
+    else comboEl.style.opacity = "1";
+    clearTimeout(comboHide);
+    comboHide = setTimeout(function(){ if (on) comboEl.animate([{ opacity: 1 }, { opacity: 0, transform: "translateY(-6px)" }], { duration: 300, fill: "forwards" }); else comboEl.style.opacity = "0"; }, 2400);
+  };
+
+  // ---- Quiz: a light sweep across the right answer, a felt tap ----
+  var _quiz6 = M.quiz;
+  M.quiz = function(correct, sel, cor){
+    _quiz6.apply(this, arguments);
+    M.haptic(correct ? "light" : "double");
+    if (!on || lite || !correct) return;
+    var b = document.querySelector('#qzArea .qzoption[data-i="' + cor + '"]');
+    if (!b) return;
+    if (getComputedStyle(b).position === "static") b.style.position = "relative";
+    var sw = document.createElement("span"); sw.className = "mshine-sweep"; b.appendChild(sw);
+    setTimeout(function(){ sw.remove(); }, 800);
+  };
+  var _streak6 = M.streak;
+  M.streak = function(correct){ _streak6.apply(this, arguments); if (correct && streak > 0 && streak % 5 === 0) M.haptic("double"); };
+
+  // ---- Map: tiles shimmer in from left to right in the stereo field ----
+  var _openMap6 = M.openMap;
+  M.openMap = function(){
+    var had = !!document.querySelector(".msheet");
+    _openMap6.apply(this, arguments);
+    if (!had && document.querySelector(".msheet")) { M.sfx("sprinkle"); M.haptic("light"); }
+  };
+  var _toast6 = M.toast;
+  M.toast = function(text){
+    if (/すべて覚えました|全問正解/.test(text)) M.haptic("heavy");
+    else if (/まで来ました|残り4分の1/.test(text)) M.haptic("double");
+    return _toast6.apply(this, arguments);
+  };
+
+  // ---- Settings: haptics switch ----
+  var _openSettings6 = M.openSettings;
+  M.openSettings = function(){
+    _openSettings6.apply(this, arguments);
+    var sw = document.getElementById("hapSw");
+    if (!sw) return;
+    var knob = sw.querySelector("i");
+    var kx = new Spring({ k: 420, c: 26, x: hapOn ? 20 : 0, restX: 0.1, restV: 1, onUpdate: function(v){ knob.style.transform = "translateX(" + v + "px)"; } });
+    knob.style.transform = "translateX(" + (hapOn ? 20 : 0) + "px)";
+    sw.addEventListener("click", function(){
+      hapOn = !hapOn; sw.setAttribute("aria-checked", String(hapOn));
+      try { localStorage.setItem("sapHaptic", hapOn ? "1" : "0"); } catch (er) {}
+      if (on) kx.to(hapOn ? 20 : 0); else kx.set(hapOn ? 20 : 0);
+      if (hapOn) M.haptic("light");
+      M.sfx("tick", { el: sw });
+    });
+  };
+
+  // ---- One gentle nudge: sound is off by default ----
+  var nudged = false;
+  try { nudged = localStorage.getItem("sapSfxNudge") === "1"; } catch (e) {}
+  document.addEventListener("click", function(e){
+    if (nudged || sfxOn || !e.target.closest || !e.target.closest("#markKnown")) return;
+    nudged = true;
+    try { localStorage.setItem("sapSfxNudge", "1"); } catch (er) {}
+    setTimeout(function(){ M.toast("「モーション設定」で効果音をオンにすると、音でも楽しめます"); }, 1400);
+  });
+
+  // ===== v7: 覚えた = one clean shot. bullet hole, cracks, then the card bursts into shards =====
+  var impactPt = null, shatterBusy = false;
+  M.impactPoint = function(){
+    if (!impactPt) impactPt = { x: 0.36 + Math.random() * 0.28, y: 0.34 + Math.random() * 0.28 };
+    return impactPt;
+  };
+  function canShatter(){
+    var w = document.getElementById("cardViewWrap");
+    return on && !lite && w && w.style.display !== "none" && stage() && document.getElementById("panel-cards").classList.contains("active");
+  }
+  // nothing else may touch the card in the third of a second between the shot and the burst
+  ["click", "pointerdown"].forEach(function(ev){
+    document.addEventListener(ev, function(e){
+      if (!shatterBusy || !e.target.closest) return;
+      if (e.target.closest("#markKnown, #markRetry, #nextBtn, #prevBtn, #flipBtn, #cardViewWrap .mdeck")) { e.stopImmediatePropagation(); e.preventDefault(); }
+    }, true);
+  });
+
+  // ---- sounds: the shot, the glass, the rain of shards (in key with everything else) ----
+  var _sfx7 = M.sfx;
+  M.sfx = function(name, o){
+    if (name !== "gunshot" && name !== "crack" && name !== "shatter") return _sfx7.apply(this, arguments);
+    if (!sfxOn) return;
+    var e = engine(); if (!e) return;
+    o = o || {};
+    var t = e.c.currentTime + 0.003, p = o.pan || 0, i, R = Math.random;
+    if (name === "gunshot") {
+      nz(e, t, { type: "highpass", f: 2400, d: 0.07, g: 0.55, a: 0.0008, pan: p, wet: 0.25 });
+      nz(e, t, { type: "bandpass", f: 900, q: 0.7, d: 0.14, g: 0.42, a: 0.001, pan: p, wet: 0.35 });
+      osc(e, t, { f: 150, f2: 42, d: 0.3, g: 0.6, a: 0.001, pan: p });
+      nz(e, t + 0.012, { type: "lowpass", f: 1600, f2: 260, d: 0.65, g: 0.12, a: 0.01, pan: p, wet: 0.75 });
+    } else if (name === "crack") {
+      for (i = 0; i < 4; i++) nz(e, t + i * 0.018 + R() * 0.01, { type: "highpass", f: 4000 + R() * 3500, d: 0.012, g: 0.16, a: 0.0005, pan: p + (R() - 0.5) * 0.3 });
+      osc(e, t, { type: "triangle", f: 2700, f2: 1900, d: 0.08, g: 0.03, pan: p });
+    } else {
+      var sh = Math.min(combo, 8);
+      nz(e, t, { type: "highpass", f: 2800, f2: 6500, d: 0.34, g: 0.3, a: 0.002, pan: p, wet: 0.4 });
+      nz(e, t, { type: "bandpass", f: 1200, q: 0.6, d: 0.12, g: 0.22, a: 0.001, pan: p });
+      bell(e, t + 0.01, pent(12 + sh), 0.08, 1.5, p, 0.55);
+      for (i = 0; i < 26; i++) {
+        var tt = t + 0.02 + Math.pow(R(), 1.6) * 0.7;
+        bell(e, tt, pent(13 + sh + Math.floor(R() * 7)), 0.006 + 0.026 * Math.max(0, 1 - (tt - t) / 0.9), 0.18 + R() * 0.22, R() * 1.6 - 0.8, 0.25);
+      }
+      for (i = 0; i < 10; i++) nz(e, t + 0.45 + R() * 0.6, { type: "highpass", f: 5000, d: 0.01, g: 0.04 + R() * 0.05, a: 0.0005, pan: R() * 1.6 - 0.8 });
+    }
+  };
+
+  // ---- geometry helpers ----
+  function clipRect(poly, W, H){
+    function clip(pts, inside, inter){
+      var out = [];
+      for (var i = 0; i < pts.length; i++) {
+        var a = pts[i], b = pts[(i + 1) % pts.length], ia = inside(a), ib = inside(b);
+        if (ia) out.push(a);
+        if (ia !== ib) out.push(inter(a, b));
+      }
+      return out;
+    }
+    function ix(a, b, x){ var t = (x - a[0]) / (b[0] - a[0]); return [x, a[1] + (b[1] - a[1]) * t]; }
+    function iy(a, b, y){ var t = (y - a[1]) / (b[1] - a[1]); return [a[0] + (b[0] - a[0]) * t, y]; }
+    var p = poly;
+    p = clip(p, function(q){ return q[0] >= 0; }, function(a, b){ return ix(a, b, 0); }); if (!p.length) return p;
+    p = clip(p, function(q){ return q[0] <= W; }, function(a, b){ return ix(a, b, W); }); if (!p.length) return p;
+    p = clip(p, function(q){ return q[1] >= 0; }, function(a, b){ return iy(a, b, 0); }); if (!p.length) return p;
+    return clip(p, function(q){ return q[1] <= H; }, function(a, b){ return iy(a, b, H); });
+  }
+  function centroid(p){
+    var A = 0, cx = 0, cy = 0;
+    for (var i = 0; i < p.length; i++) { var a = p[i], b = p[(i + 1) % p.length], c = a[0] * b[1] - b[0] * a[1]; A += c; cx += (a[0] + b[0]) * c; cy += (a[1] + b[1]) * c; }
+    A /= 2; if (Math.abs(A) < 1e-6) return null;
+    return { x: cx / (6 * A), y: cy / (6 * A), area: Math.abs(A) };
+  }
+
+  // ---- the shot ----
+  var _stamp7 = M.stamp;
+  M.stamp = function(kind){
+    if (kind !== "known" || !canShatter()) { impactPt = null; return _stamp7.apply(this, arguments); }
+    var now = performance.now();
+    combo = now - comboT < 7000 ? combo + 1 : 0; comboT = now;
+    M.combo(combo + 1);
+    shoot();
+  };
+  function shoot(){
+    var st = stage(), card = document.getElementById("flashcard");
+    var W = st.offsetWidth, H = st.offsetHeight, ip = M.impactPoint(), ix = ip.x * W, iy = ip.y * H, R = Math.random;
+    impactPt = null; shatterBusy = true;
+    var pan = panOf(st) * 0.4 + (ip.x - 0.5) * 0.8;
+
+    // fracture pattern: jagged rays out of the hole, two rings of cross-cracks
+    var N = 9, BIG = Math.hypot(W, H) * 1.3, r1 = 30 + R() * 16, r2 = 92 + R() * 40;
+    var radii = [0, r1 * 0.5, r1, r1 + (r2 - r1) * 0.5, r2, r2 + (BIG - r2) * 0.3, BIG];
+    var base = R() * Math.PI * 2, rays = [];
+    for (var i = 0; i < N; i++) {
+      var ang = base + i * (Math.PI * 2 / N) + (R() - 0.5) * (Math.PI * 2 / N) * 0.55, pts = [];
+      radii.forEach(function(r, k){
+        var a = k === 0 ? ang : ang + (R() - 0.5) * (k === radii.length - 1 ? 0.04 : 0.16);
+        pts.push([ix + Math.cos(a) * r, iy + Math.sin(a) * r]);
+      });
+      rays.push(pts);
+    }
+    var RINGS = [[0, 2], [2, 4], [4, 6]], cells = [];
+    for (i = 0; i < N; i++) {
+      var A = rays[i], B = rays[(i + 1) % N];
+      RINGS.forEach(function(rg){
+        var poly = A.slice(rg[0], rg[1] + 1).concat(B.slice(rg[0], rg[1] + 1).reverse());
+        cells.push({ poly: poly, ring: rg[0] });
+      });
+    }
+
+    // crack drawing
+    function pathOf(pts){ return "M" + pts.map(function(q){ return q[0].toFixed(1) + " " + q[1].toFixed(1); }).join(" L"); }
+    var svgNS = "http://www.w3.org/2000/svg", layer = document.createElement("div");
+    layer.className = "mcrack";
+    var svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", W); svg.setAttribute("height", H); svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    layer.appendChild(svg); st.appendChild(layer);
+    var paths = [];
+    function addPath(d, delay, dur, w, col){
+      var pth = document.createElementNS(svgNS, "path");
+      pth.setAttribute("d", d); pth.setAttribute("fill", "none"); pth.setAttribute("stroke", col); pth.setAttribute("stroke-width", w);
+      pth.setAttribute("stroke-linecap", "round"); pth.setAttribute("stroke-linejoin", "round");
+      svg.appendChild(pth); paths.push({ el: pth, delay: delay, dur: dur });
+    }
+    rays.forEach(function(r, k){
+      var d = pathOf(r.slice(0, 6)), dl = k * 8 + R() * 20;
+      addPath(d, dl, 120 + R() * 70, 2.6, "rgba(255,255,255,0.85)");
+      addPath(d, dl, 120 + R() * 70, 1.4, "rgba(16,24,34,0.82)");
+    });
+    for (i = 0; i < N; i++) {
+      var ra = rays[i], rb = rays[(i + 1) % N];
+      addPath(pathOf([ra[2], rb[2]]), 60 + i * 10, 60, 1.1, "rgba(16,24,34,0.7)");
+      if (R() < 0.75) addPath(pathOf([ra[4], [ (ra[4][0] + rb[4][0]) / 2 + (R() - 0.5) * 10, (ra[4][1] + rb[4][1]) / 2 + (R() - 0.5) * 10 ], rb[4]]), 170 + i * 12, 70, 1.1, "rgba(16,24,34,0.6)");
+    }
+    // bullet hole: torn paper rim, scorched halo, the hole itself
+    var rim = [], hole = [];
+    for (i = 0; i < 18; i++) {
+      var aa = i / 18 * Math.PI * 2;
+      rim.push([ix + Math.cos(aa) * (11 + R() * 4), iy + Math.sin(aa) * (11 + R() * 4)]);
+      hole.push([ix + Math.cos(aa) * (6.5 + R() * 1.8), iy + Math.sin(aa) * (6.5 + R() * 1.8)]);
+    }
+    var g = document.createElementNS(svgNS, "g");
+    g.innerHTML = '<circle cx="' + ix + '" cy="' + iy + '" r="24" fill="rgba(23,30,40,0.16)"/>' +
+      '<path d="' + pathOf(rim) + 'Z" fill="rgba(255,255,255,0.92)" stroke="rgba(16,24,34,0.35)" stroke-width="0.8"/>' +
+      '<path d="' + pathOf(hole) + 'Z" fill="#0d1117"/><circle cx="' + (ix - 1.5) + '" cy="' + (iy - 1.5) + '" r="2.6" fill="#000"/>';
+    svg.appendChild(g);
+    paths.forEach(function(p){
+      var L = p.el.getTotalLength(); p.el.style.strokeDasharray = L; p.el.style.strokeDashoffset = L;
+      p.el.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { delay: p.delay, duration: p.dur, easing: "cubic-bezier(.16,1,.3,1)", fill: "forwards" });
+    });
+    g.style.transformOrigin = ix + "px " + iy + "px";
+    g.animate([{ transform: "scale(2.2)", opacity: 0 }, { transform: "scale(.9)", opacity: 1, offset: 0.5 }, { transform: "scale(1)", opacity: 1 }], { duration: 90, easing: "ease-out" });
+
+    // muzzle-bright impact flash and sparks
+    var fl = document.createElement("div");
+    fl.className = "mflash"; fl.style.left = ix + "px"; fl.style.top = iy + "px"; st.appendChild(fl);
+    fl.animate([{ transform: "scale(.25)", opacity: 1 }, { transform: "scale(1.5)", opacity: 0 }], { duration: 150, easing: "cubic-bezier(.2,.8,.2,1)", fill: "forwards" }).onfinish = function(){ fl.remove(); };
+    for (i = 0; i < 11; i++) {
+      var sp = document.createElement("i"), sa = R() * 360, sd = 34 + R() * 46;
+      sp.className = "mspark"; sp.style.left = ix + "px"; sp.style.top = iy + "px"; st.appendChild(sp);
+      sp.animate([
+        { transform: "rotate(" + sa + "deg) translateX(4px) scaleX(.4)", opacity: 1 },
+        { transform: "rotate(" + sa + "deg) translateX(" + sd + "px) scaleX(1)", opacity: 1, offset: 0.55 },
+        { transform: "rotate(" + sa + "deg) translateX(" + (sd * 1.25) + "px) scaleX(.2)", opacity: 0 }
+      ], { duration: 170 + R() * 90, easing: "cubic-bezier(.1,.8,.2,1)", fill: "forwards" }).onfinish = (function(n){ return function(){ n.remove(); }; })(sp);
+    }
+
+    // recoil: the card kicks away from the shot and shudders
+    var kx = (ix - W / 2) / W * -16, ky = -9;
+    st.animate([
+      { transform: "none" },
+      { transform: "translate(" + kx + "px," + ky + "px) rotate(" + (kx * 0.12) + "deg) scale(.985)", offset: 0.12 },
+      { transform: "translate(" + (-kx * 0.5) + "px," + (-ky * 0.4) + "px) rotate(" + (-kx * 0.06) + "deg)", offset: 0.34 },
+      { transform: "translate(" + (kx * 0.25) + "px," + (ky * 0.2) + "px)", offset: 0.58 },
+      { transform: "translate(" + (-kx * 0.1) + "px,0)", offset: 0.8 },
+      { transform: "none" }
+    ], { duration: 280, easing: "linear" });
+    var wrap = document.querySelector(".wrap");
+    if (wrap) wrap.animate([{ transform: "none" }, { transform: "translate(2px,3px)" }, { transform: "translate(-2px,-1px)" }, { transform: "translate(1px,1px)" }, { transform: "none" }], { duration: 180 });
+    M.sfx("gunshot", { pan: pan }); M.haptic("heavy");
+    setTimeout(function(){ M.sfx("crack", { pan: pan }); }, 40);
+    setTimeout(function(){ M.sfx("crack", { pan: pan }); M.haptic("light"); }, 190);
+
+    // the burst
+    setTimeout(function(){ shatter(st, card, cells, ix, iy, W, H, layer, pan); }, 340);
+  }
+
+  function shatter(st, card, cells, ix, iy, W, H, layer, pan){
+    var flipped = card.classList.contains("flipped");
+    var face = card.querySelector(flipped ? ".face.back" : ".face.front");
+    var r = st.getBoundingClientRect(), R = Math.random;
+    st.getAnimations().forEach(function(a){ a.cancel(); });
+    var host = document.createElement("div");
+    host.className = "mshards";
+    host.style.left = r.left + "px"; host.style.top = r.top + "px"; host.style.width = W + "px"; host.style.height = H + "px";
+    var faceTpl = face.cloneNode(true);
+    faceTpl.querySelectorAll("[id]").forEach(function(n){ n.removeAttribute("id"); });
+    var crackTpl = layer.cloneNode(true);
+    var longest = 0;
+    cells.forEach(function(c){
+      var vis = clipRect(c.poly, W, H);
+      if (vis.length < 3) return;
+      var ce = centroid(vis);
+      if (!ce || ce.area < 30) return;
+      var sh = document.createElement("div");
+      sh.className = "mshard";
+      sh.style.clipPath = "polygon(" + c.poly.map(function(q){ return q[0].toFixed(1) + "px " + q[1].toFixed(1) + "px"; }).join(",") + ")";
+      sh.style.transformOrigin = ce.x + "px " + ce.y + "px";
+      sh.appendChild(faceTpl.cloneNode(true)); sh.appendChild(crackTpl.cloneNode(true));
+      host.appendChild(sh);
+      var dx = ce.x - ix, dy = ce.y - iy, dist = Math.hypot(dx, dy) || 1, ux = dx / dist, uy = dy / dist;
+      var near = Math.max(0, 1 - dist / (W * 0.75));
+      var speed = (380 + R() * 320) * (0.55 + near * 0.9);
+      var vx = ux * speed + (R() - 0.5) * 110, vy = uy * speed * 0.75 - (200 + R() * 260), G = 2700;
+      var spin = (R() - 0.5) * (700 + near * 600), tilt = (R() - 0.5) * 140, tilt2 = (R() - 0.5) * 100;
+      var D = 950 + R() * 450, frames = [], STEPS = 16;
+      longest = Math.max(longest, D);
+      for (var k = 0; k <= STEPS; k++) {
+        var q = k / STEPS, t = q * D / 1000;
+        var pop = k === 0 ? 0 : 3 + near * 4;
+        var x = vx * t + ux * pop, y = vy * t + 0.5 * G * t * t + uy * pop;
+        frames.push({
+          transform: "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0) rotate(" + (spin * t).toFixed(1) + "deg) rotateX(" + (tilt * q).toFixed(1) + "deg) rotateY(" + (tilt2 * q).toFixed(1) + "deg) scale(" + (1 + 0.05 * Math.sin(Math.PI * Math.min(1, q * 2))).toFixed(3) + ")",
+          opacity: q < 0.68 ? 1 : Math.max(0, 1 - (q - 0.68) / 0.32)
+        });
+      }
+      sh.animate(frames, { duration: D, easing: "linear", fill: "forwards" });
+    });
+    document.body.appendChild(host);
+    layer.remove();
+    st.querySelectorAll(".mflash, .mspark").forEach(function(n){ n.remove(); });
+    st.style.opacity = "0";
+    M.sfx("shatter", { pan: pan }); M.haptic("double");
+    setTimeout(function(){ host.remove(); }, longest + 60);
+    // the next card rises in behind the falling glass
+    setTimeout(function(){
+      shatterBusy = false;
+      if (M._peekHide) M._peekHide();
+      st.style.opacity = "";
+      M._thrown = true;
+      document.getElementById("nextBtn").click();
+      M._thrown = false;
+    }, 130);
+  }
+
+  // ===== v8: 苦手 = the shot glances off. the card is too tough for now, so it gets locked as a target =====
+  var RED = "#E5533A";
+  var _sfx8 = M.sfx;
+  M.sfx = function(name, o){
+    if (name !== "clang" && name !== "ricochet" && name !== "beep" && name !== "lock") return _sfx8.apply(this, arguments);
+    if (!sfxOn) return;
+    var e = engine(); if (!e) return;
+    o = o || {};
+    var t = e.c.currentTime + 0.003, p = o.pan || 0;
+    if (name === "clang") {
+      // struck metal: two inharmonic FM partials and a bright scrape
+      [[pent(3), 1.41, 0.14, 0.7], [pent(8), 2.76, 0.06, 0.45]].forEach(function(cf){
+        var car = e.c.createOscillator(), mod = e.c.createOscillator(), mg = e.c.createGain(), amp = e.c.createGain();
+        car.frequency.value = cf[0]; mod.frequency.value = cf[0] * cf[1];
+        mg.gain.setValueAtTime(cf[0] * 3, t); mg.gain.exponentialRampToValueAtTime(cf[0] * 0.08, t + cf[3] * 0.6);
+        mod.connect(mg); mg.connect(car.frequency); env(amp, t, 0.002, cf[2], cf[3]);
+        car.connect(amp); amp.connect(bus(e, p, 0.4)); car.start(t); mod.start(t); car.stop(t + cf[3] + 0.05); mod.stop(t + cf[3] + 0.05);
+      });
+      nz(e, t, { type: "highpass", f: 5000, d: 0.05, g: 0.12, a: 0.001, pan: p });
+    } else if (name === "ricochet") {
+      // the classic whine: falling pitch with a fast wobble, flying across the stereo field
+      var x = e.c.createOscillator(), lfo = e.c.createOscillator(), lg = e.c.createGain(), g = e.c.createGain(), pn = e.c.createStereoPanner ? e.c.createStereoPanner() : null;
+      x.type = "sine"; x.frequency.setValueAtTime(2900, t); x.frequency.exponentialRampToValueAtTime(760, t + 0.48);
+      lfo.frequency.value = 31; lg.gain.value = 70; lfo.connect(lg); lg.connect(x.frequency);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.07, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.5);
+      x.connect(g);
+      if (pn) { pn.pan.setValueAtTime(p, t); pn.pan.linearRampToValueAtTime(o.to || 0, t + 0.45); g.connect(pn); pn.connect(e.comp); var s2 = e.c.createGain(); s2.gain.value = 0.35; pn.connect(s2); s2.connect(e.verb); }
+      else g.connect(e.comp);
+      x.start(t); lfo.start(t); x.stop(t + 0.55); lfo.stop(t + 0.55);
+    } else if (name === "beep") {
+      osc(e, t, { type: "square", f: pent(14), d: 0.05, g: 0.028, a: 0.002, pan: p });
+    } else {
+      osc(e, t, { type: "square", f: pent(14), d: 0.04, g: 0.026, a: 0.002, pan: p });
+      bell(e, t + 0.05, pent(12), 0.06, 0.5, p, 0.3); bell(e, t + 0.05, pent(16), 0.04, 0.5, p, 0.3);
+    }
+  };
+
+  var _stamp8 = M.stamp;
+  M.stamp = function(kind){
+    if (kind !== "retry" || !canShatter()) return _stamp8.apply(this, arguments);
+    ricochet();
+  };
+  function ricochet(){
+    var st = stage(), W = st.offsetWidth, H = st.offsetHeight, R = Math.random;
+    var ix = (0.3 + R() * 0.4) * W, iy = (0.3 + R() * 0.32) * H;
+    var pan = panOf(st) * 0.4 + (ix / W - 0.5) * 0.8;
+    var side = ix < W / 2 ? -1 : 1;
+    var ang = (side < 0 ? -150 : -30) + (R() - 0.5) * 40;
+    var rad = ang * Math.PI / 180, ux = Math.cos(rad), uy = Math.sin(rad);
+    var kept = [];
+    function keep(n){ st.appendChild(n); kept.push(n); return n; }
+
+    // flash + sparks thrown along the glancing direction
+    var fl = document.createElement("div");
+    fl.className = "mflash"; fl.style.left = ix + "px"; fl.style.top = iy + "px"; st.appendChild(fl);
+    fl.animate([{ transform: "scale(.2)", opacity: 1 }, { transform: "scale(1.1)", opacity: 0 }], { duration: 130, easing: "cubic-bezier(.2,.8,.2,1)", fill: "forwards" }).onfinish = function(){ fl.remove(); };
+    for (var i = 0; i < 14; i++) {
+      var sp = document.createElement("i"), sa = ang + (R() - 0.5) * 70, sd = 40 + R() * 70;
+      sp.className = "mspark"; sp.style.left = ix + "px"; sp.style.top = iy + "px"; st.appendChild(sp);
+      sp.animate([
+        { transform: "rotate(" + sa + "deg) translateX(2px) scaleX(.5)", opacity: 1 },
+        { transform: "rotate(" + (sa + 8) + "deg) translateX(" + sd + "px) scaleX(1)", opacity: 1, offset: 0.5 },
+        { transform: "rotate(" + (sa + 16) + "deg) translate(" + (sd * 1.3) + "px, 10px) scaleX(.2)", opacity: 0 }
+      ], { duration: 200 + R() * 140, easing: "cubic-bezier(.1,.8,.2,1)", fill: "forwards" }).onfinish = (function(n){ return function(){ n.remove(); }; })(sp);
+    }
+
+    // a dent and a scuff, not a hole: this one didn't go through
+    var dent = keep(document.createElement("div"));
+    dent.className = "mdent"; dent.style.left = ix + "px"; dent.style.top = iy + "px";
+    dent.animate([{ transform: "scale(1.8)", opacity: 0 }, { transform: "scale(.92)", opacity: 1, offset: 0.55 }, { transform: "scale(1)", opacity: 1 }], { duration: 110, easing: "ease-out" });
+    var sc = keep(document.createElement("div"));
+    sc.className = "mscuff"; sc.style.left = ix + "px"; sc.style.top = iy + "px"; sc.style.width = (34 + R() * 18) + "px";
+    sc.style.transform = "rotate(" + ang + "deg)";
+    sc.animate([{ transform: "rotate(" + ang + "deg) scaleX(0)" }, { transform: "rotate(" + ang + "deg) scaleX(1)" }], { duration: 90, easing: "cubic-bezier(.2,.8,.2,1)" });
+
+    // tracer: the round leaving the card
+    var r = st.getBoundingClientRect(), tr = document.createElement("i");
+    tr.className = "mtracer"; document.body.appendChild(tr);
+    var gx = r.left + ix, gy = r.top + iy, far = Math.hypot(innerWidth, innerHeight);
+    tr.animate([
+      { transform: "translate(" + gx + "px," + gy + "px) rotate(" + ang + "deg) scaleX(.2)", opacity: 1 },
+      { transform: "translate(" + (gx + ux * far * 0.4) + "px," + (gy + uy * far * 0.4) + "px) rotate(" + ang + "deg) scaleX(1.4)", opacity: 1, offset: 0.4 },
+      { transform: "translate(" + (gx + ux * far) + "px," + (gy + uy * far) + "px) rotate(" + ang + "deg) scaleX(1)", opacity: 0 }
+    ], { duration: 260, easing: "linear", fill: "forwards" }).onfinish = function(){ tr.remove(); };
+
+    // the card takes the hit like a steel plate: hard kick, then a ringing wobble
+    var kx = -side * 12;
+    st.animate([
+      { transform: "perspective(900px) none" },
+      { transform: "perspective(900px) translate(" + kx + "px,-6px) rotate(" + (-side * 3.2) + "deg) rotateY(" + (side * 9) + "deg) scale(.985)", offset: 0.1 },
+      { transform: "perspective(900px) translate(" + (-kx * 0.45) + "px,2px) rotate(" + (side * 2.2) + "deg) rotateY(" + (-side * 5) + "deg)", offset: 0.26 },
+      { transform: "perspective(900px) translate(" + (kx * 0.22) + "px,0) rotate(" + (-side * 1.3) + "deg) rotateY(" + (side * 2.6) + "deg)", offset: 0.44 },
+      { transform: "perspective(900px) translate(" + (-kx * 0.1) + "px,0) rotate(" + (side * 0.7) + "deg) rotateY(" + (-side * 1.2) + "deg)", offset: 0.62 },
+      { transform: "perspective(900px) rotate(" + (-side * 0.3) + "deg)", offset: 0.8 },
+      { transform: "perspective(900px) none" }
+    ], { duration: 620, easing: "linear" });
+    var wrap = document.querySelector(".wrap");
+    if (wrap) wrap.animate([{ transform: "none" }, { transform: "translate(-2px,2px)" }, { transform: "translate(2px,-1px)" }, { transform: "none" }], { duration: 150 });
+
+    M.sfx("gunshot", { pan: pan }); M.sfx("clang", { pan: pan });
+    M.haptic("heavy");
+    setTimeout(function(){ M.sfx("ricochet", { pan: pan, to: side * 0.95 }); }, 25);
+
+    // lock-on: the reticle hunts, then locks onto the dent. this card is the next target
+    var svgNS = "http://www.w3.org/2000/svg", ret = keep(document.createElementNS(svgNS, "svg"));
+    ret.setAttribute("class", "mreticle"); ret.setAttribute("viewBox", "-48 -48 96 96");
+    ret.style.left = ix + "px"; ret.style.top = iy + "px";
+    ret.innerHTML =
+      '<circle r="26" fill="none" stroke="' + RED + '" stroke-width="2.6"/>' +
+      '<circle r="3" fill="' + RED + '"/>' +
+      '<g stroke="' + RED + '" stroke-width="2.6" stroke-linecap="round"><path d="M0 -40 V-31"/><path d="M0 31 V40"/><path d="M-40 0 H-31"/><path d="M31 0 H40"/></g>' +
+      '<g class="mrb" stroke="' + RED + '" stroke-width="2.2" fill="none" stroke-linecap="round"><path d="M-34 -22 V-34 H-22"/><path d="M22 -34 H34 V-22"/><path d="M34 22 V34 H22"/><path d="M-22 34 H-34 V22"/></g>';
+    ret.style.opacity = "0";
+    var hunt = ret.animate([
+      { transform: "translate(" + (-side * 26) + "px, -18px) scale(2.4) rotate(-70deg)", opacity: 0 },
+      { transform: "translate(" + (side * 8) + "px, 6px) scale(1.25) rotate(-12deg)", opacity: 1, offset: 0.45 },
+      { transform: "translate(-3px, -2px) scale(1.06) rotate(4deg)", opacity: 1, offset: 0.75 },
+      { transform: "none", opacity: 1 }
+    ], { delay: 110, duration: 300, easing: "cubic-bezier(.2,.8,.25,1)", fill: "both" });
+    setTimeout(function(){ M.sfx("beep", { pan: pan }); }, 170);
+    setTimeout(function(){ M.sfx("beep", { pan: pan }); M.haptic("light"); }, 290);
+    hunt.onfinish = function(){
+      if (!ret.isConnected) return;
+      ret.style.opacity = "1";
+      M.sfx("lock", { pan: pan }); M.haptic("double");
+      var brk = ret.querySelector(".mrb");
+      brk.animate([{ transform: "scale(1.35)", opacity: 0.4 }, { transform: "scale(.82)", opacity: 1, offset: 0.6 }, { transform: "scale(.9)", opacity: 1 }], { duration: 220, easing: "ease-out", fill: "forwards" });
+      var ring = keep(document.createElementNS(svgNS, "svg"));
+      ring.setAttribute("class", "mreticle"); ring.setAttribute("viewBox", "-48 -48 96 96");
+      ring.style.left = ix + "px"; ring.style.top = iy + "px";
+      ring.innerHTML = '<circle r="26" fill="none" stroke="' + RED + '" stroke-width="2"/>';
+      ring.animate([{ transform: "scale(1)", opacity: 0.9 }, { transform: "scale(2.6)", opacity: 0 }], { duration: 420, easing: "cubic-bezier(.2,.8,.2,1)", fill: "forwards" });
+      var wb = document.getElementById("frontWeak");
+      if (wb && wb.style.display !== "none") wb.animate([{ transform: "scale(.4)", opacity: 0 }, { transform: "scale(1.3)", opacity: 1, offset: 0.55 }, { transform: "none", opacity: 1 }], { duration: 360, easing: OUT });
+      // then everything quietly fades, the card stays
+      setTimeout(function(){
+        kept.forEach(function(n){
+          if (!n.isConnected) return;
+          n.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 380, fill: "forwards" }).onfinish = function(){ n.remove(); };
+        });
+      }, 900);
+    };
+    // if you leave the card early, the marks go with it
+    var clean = function(){ kept.forEach(function(n){ n.remove(); }); };
+    var lab = document.getElementById("cardIndexLabel"), before = lab ? lab._lastFinal || lab.textContent : "";
+    var watch = setInterval(function(){
+      var now = lab ? (lab._lastFinal || lab.textContent) : "";
+      if (now !== before) { clean(); clearInterval(watch); }
+      if (!kept.some(function(n){ return n.isConnected; })) clearInterval(watch);
+    }, 120);
+  }
 })();
 </script>
 <script>
@@ -3564,7 +4340,7 @@
   renderReview();
   renderAddList();
   resetQuizSession();
-  if (window.M) { M.tabs(); M.swipe(); M.keys(); M.chips(); M.tilt(); M.mapInit(); M.sfxInit(); M.settingsInit(); M.holdReset(); M.pinch(); M.milestones(); M.flipLabel(false, true); if (M.trailReset) M.trailReset(qzModeCount); M.intro(); }
+  if (window.M) { M.tabs(); M.swipe(); M.keys(); M.chips(); M.tilt(); M.mapInit(); M.sfxInit(); M.settingsInit(); M.holdReset(); M.pinch(); M.milestones(); M.flipLabel(false, true); M.press(); if (M.trailReset) M.trailReset(qzModeCount); M.intro(); }
 })();
 </script>
 </body>
