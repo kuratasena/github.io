@@ -6,7 +6,7 @@
 <title>AWS SAP 単語帳</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Rye&family=Special+Elite&family=Zilla+Slab:wght@600;700&family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
@@ -595,6 +595,9 @@
   .mshine-sweep::after { content: ""; position: absolute; top: 0; bottom: 0; width: 45%; left: -50%; background: linear-gradient(100deg, transparent, rgba(255,255,255,0.7), transparent); animation: msweep .7s cubic-bezier(.3,.1,.3,1) forwards; }
   @keyframes msweep { to { left: 120%; } }
   .mhap { position: fixed; left: -9999px; top: 0; opacity: 0; pointer-events: none; }
+  /* writing a tip: text cursor everywhere on the card, the hand only on real buttons */
+  .card:has(.tipcomposer), .card:has(.tipcomposer) .face { cursor: text; }
+  .card:has(.tipcomposer) button { cursor: pointer; }
   /* v7: shot & shatter */
   .mcrack { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; border-radius: var(--radius-card); }
   .mcrack svg { position: absolute; left: 0; top: 0; overflow: visible; }
@@ -614,9 +617,196 @@
   .mtracer { position: fixed; z-index: 76; left: 0; top: 0; height: 3px; width: 70px; margin-top: -1.5px; border-radius: 3px; pointer-events: none; transform-origin: 0 50%;
     background: linear-gradient(90deg, rgba(255,200,97,0), #FFE6A8 70%, #fff); box-shadow: 0 0 8px rgba(255,210,120,0.9); }
   @media (prefers-reduced-motion: reduce) { .tabind, .mm-fill, .mtilt { transition: none; } .syncdot.busy { animation: none; } }
+
+  /* =====================================================================
+     WESTERN THEME — 夕暮れの開拓地
+     golden hour, long shadows, warm tones, dust in the air.
+     The app is a sheriff's bounty board; every card is a WANTED poster.
+     ===================================================================== */
+  :root:not([data-theme="__western"]) {
+    color-scheme: dark;
+    --bg: #23151A; --bg-panel: #3A2418; --bg-panel-2: #4A2F1F;
+    --grid-line: rgba(246,234,208,0.08); --grid-line-strong: rgba(246,234,208,0.2);
+    --paper: #EEDFBD; --paper-2: #E8D4A9;
+    --ink: #2B1C11; --ink-soft: #6E5642;
+    --white: #F6EAD0; --white-dim: #D8C49E;
+    --amber: #E2A83F; --amber-deep: #9A5C16; --cyan: #86CFC6;
+    --known: #3F9C92; --retry: #C4512E;
+    --radius-card: 4px; --radius-sm: 6px;
+    --font-jp: 'Zen Old Mincho', 'Zen Kaku Gothic New', serif;
+    --font-mono: 'Special Elite', 'Zen Old Mincho', monospace;
+    --font-west: 'Rye', 'Zen Antique', serif;
+    --font-term: 'Zilla Slab', 'Zen Antique', serif;
+    --font-head: 'Zen Antique', 'Zen Old Mincho', serif;
+    --plank: linear-gradient(180deg, rgba(255,214,160,0.10), rgba(0,0,0,0.22)),
+             repeating-linear-gradient(177deg, rgba(0,0,0,0.13) 0 1px, transparent 1px 7px, rgba(255,210,150,0.06) 7px 8px, transparent 8px 15px),
+             #5A3922;
+  }
+
+  /* ---- the scene behind everything ---- */
+  html { background: #1C1015; }
+  body { background: transparent; background-image: none; color: var(--white); }
+  .wx-scene { position: fixed; inset: 0; z-index: -3; overflow: hidden; pointer-events: none;
+    background: linear-gradient(180deg, #170F1C 0%, #2E1A26 16%, #5E2A2A 36%, #A44A2C 54%, #D9773A 68%, #EFA552 78%, #F6C873 84%, #F8D990 86%); }
+  .wx-sun { position: absolute; left: 70%; top: 80%; width: 54vmin; height: 54vmin; margin: -27vmin 0 0 -27vmin; border-radius: 50%;
+    background: radial-gradient(circle, #FFF4D6 0 13%, rgba(255,226,160,0.9) 19%, rgba(255,184,96,0.45) 38%, rgba(255,150,70,0) 68%); }
+  .wx-far, .wx-near { position: absolute; left: -4%; width: 108%; bottom: 0; height: 30vh; min-height: 180px; will-change: transform; }
+  .wx-near { height: 24vh; min-height: 140px; }
+  .wx-tumble-lane { position: absolute; left: 0; right: 0; bottom: 3vh; height: 60px; }
+  .wx-tumble { position: absolute; left: 0; bottom: 0; width: 46px; height: 46px; }
+  .wx-dust { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 30; pointer-events: none; }
+  .wx-grain { position: fixed; inset: 0; z-index: 31; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* ---- the bounty board ---- */
+  .wrap {
+    position: relative; margin: 26px auto 48px; border-radius: 6px;
+    background:
+      radial-gradient(circle at 16px 16px, #E9DFC9 0 1.5px, #8E8473 2.6px, #3D352C 4.6px, rgba(0,0,0,0.4) 6px, transparent 7.5px),
+      radial-gradient(circle at calc(100% - 16px) 16px, #E9DFC9 0 1.5px, #8E8473 2.6px, #3D352C 4.6px, rgba(0,0,0,0.4) 6px, transparent 7.5px),
+      radial-gradient(circle at 16px calc(100% - 16px), #E9DFC9 0 1.5px, #8E8473 2.6px, #3D352C 4.6px, rgba(0,0,0,0.4) 6px, transparent 7.5px),
+      radial-gradient(circle at calc(100% - 16px) calc(100% - 16px), #E9DFC9 0 1.5px, #8E8473 2.6px, #3D352C 4.6px, rgba(0,0,0,0.4) 6px, transparent 7.5px),
+      linear-gradient(180deg, rgba(255,190,110,0.10), rgba(0,0,0,0) 30%, rgba(0,0,0,0.25)),
+      repeating-linear-gradient(90deg, transparent 0 126px, rgba(0,0,0,0.45) 126px 128px, rgba(255,210,150,0.06) 128px 129px, transparent 129px 255px),
+      repeating-linear-gradient(91deg, rgba(0,0,0,0.10) 0 1px, transparent 1px 9px, rgba(255,210,150,0.04) 9px 10px, transparent 10px 23px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.22 0 0 0 0 0.1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      rgba(52,31,20,0.94);
+    box-shadow: 0 1px 0 rgba(255,220,170,0.08) inset, 0 0 0 1px rgba(0,0,0,0.5), 34px 46px 70px rgba(20,6,4,0.6);
+  }
+  @media (max-width: 600px) {
+    .wrap { margin: 10px 8px 28px; padding: 22px 14px 44px; }
+    nav.tabs button { font-size: 13.5px; padding: 10px 7px; white-space: nowrap; }
+    h1 { font-size: 27px; }
+  }
+
+  .eyebrow { font-family: var(--font-mono); color: var(--amber); letter-spacing: 0.06em; }
+  h1 { font-family: var(--font-head); font-weight: 400; font-size: 32px; letter-spacing: 0.03em; color: var(--white);
+    text-shadow: 0 2px 0 rgba(0,0,0,0.45), 0 0 18px rgba(255,170,80,0.18); display: flex; align-items: center; gap: 10px; }
+  h1::before { content: ""; flex: none; width: 34px; height: 34px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FFE3A0'/%3E%3Cstop offset='.5' stop-color='%23E2A83F'/%3E%3Cstop offset='1' stop-color='%238A5414'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpolygon points='0,-44 11,-19 38,-22 22,0 38,22 11,19 0,44 -11,19 -38,22 -22,0 -38,-22 -11,-19' fill='url(%23g)' stroke='%235A3410' stroke-width='2'/%3E%3Cg fill='url(%23g)' stroke='%235A3410' stroke-width='2'%3E%3Ccircle cx='0' cy='-44' r='6'/%3E%3Ccircle cx='38' cy='-22' r='6'/%3E%3Ccircle cx='38' cy='22' r='6'/%3E%3Ccircle cx='0' cy='44' r='6'/%3E%3Ccircle cx='-38' cy='22' r='6'/%3E%3Ccircle cx='-38' cy='-22' r='6'/%3E%3C/g%3E%3Ccircle r='13' fill='none' stroke='%235A3410' stroke-width='2.5'/%3E%3C/svg%3E") center / contain no-repeat;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5)); }
+  .syncstatus { color: var(--white-dim); }
+
+  nav.tabs { border-bottom: 2px solid rgba(0,0,0,0.45); box-shadow: 0 1px 0 rgba(255,220,170,0.08); }
+  nav.tabs button { font-family: var(--font-head); font-size: 15px; color: var(--white-dim); }
+  nav.tabs button.active { color: var(--white); }
+  .tabind { height: 3px; background: linear-gradient(90deg, #8A5414, #F3CF7A, #8A5414); box-shadow: 0 0 8px rgba(226,168,63,0.5); }
+
+  /* inputs: dark leather */
+  select, input[type="text"], textarea {
+    background: rgba(20,10,6,0.45); border: 1px solid rgba(246,234,208,0.22); color: var(--white);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+  }
+  input::placeholder, textarea::placeholder { color: rgba(216,196,158,0.6); }
+
+  /* chips: leather tags with stitching */
+  .chip { font-family: var(--font-mono); font-size: 12.5px; color: var(--white-dim);
+    background: linear-gradient(180deg, #5B3B26, #452B1B); border: 1px solid #241409;
+    outline: 1px dashed rgba(246,234,208,0.28); outline-offset: -4px; box-shadow: 0 2px 0 rgba(0,0,0,0.35); }
+  .chip.on { color: #2B1C11; background: linear-gradient(180deg, #F6D485, #D79A35 55%, #B47622); border-color: #6B4210;
+    outline-color: rgba(43,28,17,0.35); text-shadow: 0 1px 0 rgba(255,240,200,0.5); font-weight: 400; }
+
+  /* buttons: planks */
+  .navbtn, .markbtn, footer.foot button, .syncbtn, .addsubmit, .mp-open {
+    background: var(--plank); color: var(--white); border: 1px solid #1E1008;
+    box-shadow: inset 0 1px 0 rgba(255,220,170,0.18), 0 3px 0 #1E1008, 0 6px 10px rgba(0,0,0,0.3);
+    font-family: var(--font-head); letter-spacing: 0.04em; text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+  }
+  .navbtn:active, .markbtn:active { box-shadow: inset 0 1px 0 rgba(255,220,170,0.1), 0 1px 0 #1E1008; }
+  .markbtn { color: var(--white-dim); }
+  .markbtn.known.active { background: linear-gradient(180deg, #5BB8AD, #2F7E76); color: #08201D; text-shadow: none; border-color: #123B37; }
+  .markbtn.retry.active { background: linear-gradient(180deg, #DA6A44, #9E3A1F); color: #FFF1E2; border-color: #4A160A; }
+  .addsubmit { background: linear-gradient(180deg, #F6D485, #D79A35 55%, #B47622); color: #2B1C11; text-shadow: none; }
+  .mp-open { background: linear-gradient(180deg, #F6D485, #D79A35 55%, #B47622); color: #2B1C11; text-shadow: none; }
+  footer.foot button { font-size: 12.5px; border-radius: 999px; }
+  .cardcount, .mm-num, .mkeys { color: var(--white-dim); }
+  .mm-go { color: var(--amber); }
+  .mm-track { background: rgba(0,0,0,0.4); box-shadow: inset 0 1px 2px rgba(0,0,0,0.6); }
+  .mm-track .mm-tk { background: #3A2418; }
+  .mm-fill { background: linear-gradient(180deg, #6CCABF, #2F7E76); }
+
+  /* ---- WANTED posters ---- */
+  .face, .mpeek, .qzcard {
+    border: none; border-radius: 3px;
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(circle at 24px 22px, #EDE5D3 0 1.5px, #8E8473 2.6px, #3D352C 4.4px, rgba(0,0,0,0.35) 5.6px, transparent 7px),
+      radial-gradient(circle at calc(100% - 24px) 22px, #EDE5D3 0 1.5px, #8E8473 2.6px, #3D352C 4.4px, rgba(0,0,0,0.35) 5.6px, transparent 7px),
+      radial-gradient(ellipse at 18% 12%, rgba(255,255,255,0.4), rgba(255,255,255,0) 42%),
+      radial-gradient(ellipse at 88% 92%, rgba(130,72,22,0.26), rgba(130,72,22,0) 46%),
+      radial-gradient(ellipse at 6% 96%, rgba(120,64,20,0.2), rgba(120,64,20,0) 34%),
+      radial-gradient(circle at 74% 34%, rgba(150,95,40,0.10) 0 4%, rgba(150,95,40,0) 4.6%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.22 0 0 0 0 0.1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    box-shadow:
+      inset 0 0 0 9px var(--paper), inset 0 0 0 10.5px rgba(43,28,17,0.72),
+      inset 0 0 0 13px var(--paper), inset 0 0 0 13.8px rgba(43,28,17,0.5),
+      inset 0 0 70px rgba(120,64,20,0.38),
+      0 2px 0 rgba(0,0,0,0.3), 18px 28px 30px rgba(14,5,2,0.55);
+  }
+  .face.back { background-color: var(--paper-2); }
+  .face, .mpeek { padding: 22px 26px 24px; }
+  .face.front::before, .mpeek::before {
+    content: "WANTED"; display: block; text-align: center; flex: none;
+    font-family: var(--font-west); font-size: clamp(30px, 8vw, 42px); letter-spacing: 0.08em; line-height: 1;
+    color: var(--ink); padding: 6px 0 8px; margin: 0 0 8px;
+    border-bottom: 3px double rgba(43,28,17,0.55);
+    text-shadow: 0 0 1px rgba(43,28,17,0.5);
+  }
+  .catlabel, .mpk-cat, .qzmeta { font-family: var(--font-mono); color: var(--ink-soft); background: transparent;
+    border: 1px solid rgba(43,28,17,0.45); border-radius: 2px; letter-spacing: 0.02em; }
+  .weakbadge { font-family: var(--font-mono); color: #9E3A1F; background: rgba(196,81,46,0.08);
+    border: 1.5px solid rgba(158,58,31,0.8); border-radius: 2px; transform: rotate(-5deg); display: inline-block; }
+  .termname, .mpk-term { font-family: var(--font-term); font-weight: 700; text-align: center;
+    font-size: clamp(22px, 5.6vw, 31px); color: var(--ink); letter-spacing: 0.01em; text-shadow: 0 0 1px rgba(43,28,17,0.35); }
+  .fliphint, .mpk-hint { font-family: var(--font-mono); color: var(--ink-soft); }
+  .backterm { font-family: var(--font-term); font-size: 16px; color: var(--ink); border-bottom: 1px solid rgba(43,28,17,0.3); padding-bottom: 8px; }
+  .desc { font-family: var(--font-jp); font-size: 15.5px; }
+  .tipsheader { font-family: var(--font-mono); color: var(--amber-deep); border-top: 1px dashed rgba(43,28,17,0.35); }
+  .tipaddtoggle { font-family: var(--font-mono); }
+  .tipitem { background: rgba(226,168,63,0.2); border-left-color: #B47622; }
+  .tipcomposer textarea { background: rgba(255,250,235,0.6); color: var(--ink); border-color: rgba(43,28,17,0.3); box-shadow: inset 0 1px 3px rgba(0,0,0,0.12); }
+  .tipcomposer textarea::placeholder { color: rgba(110,86,66,0.75); }
+  .tipcomposerbtns button { font-family: var(--font-head); background: rgba(255,250,235,0.6); }
+  .tipcomposerbtns button.save { background: linear-gradient(180deg, #F6D485, #D79A35 55%, #B47622); border-color: #6B4210; }
+
+  /* quiz: a poster without the headline */
+  .qzcard { padding: 26px 24px; }
+  .qzprompt { font-family: var(--font-jp); font-size: 15px; }
+  .qzoption { font-family: var(--font-term); font-size: 14.5px; background: rgba(255,250,235,0.45); border: 1px solid rgba(43,28,17,0.28); border-radius: 3px; }
+  .qzoption .qzletter { font-family: var(--font-west); font-size: 12px; background: rgba(43,28,17,0.1); }
+  .qzresultbanner { font-family: var(--font-head); border-radius: 3px; letter-spacing: 0.04em; }
+  .qzresultbanner.correct { background: linear-gradient(180deg, #5BB8AD, #2F7E76); color: #06201C; }
+  .qzresultbanner.incorrect { background: linear-gradient(180deg, #DA6A44, #9E3A1F); color: #FFF1E2; }
+
+  /* list & review rows: dark planks with cream lettering */
+  .termlistitem, .reviewitem { background: rgba(18,8,4,0.38); border: 1px solid rgba(246,234,208,0.14); border-radius: 4px;
+    box-shadow: inset 0 1px 0 rgba(255,220,170,0.06), 5px 8px 12px rgba(10,4,2,0.3); }
+  .tliterm, .reviewitem .rterm { font-family: var(--font-term); font-size: 16px; letter-spacing: 0.01em; }
+  .tlicat { background: transparent; border: 1px solid rgba(246,234,208,0.25); border-radius: 2px; }
+  .tliweak { color: #F3B08F; background: transparent; border: 1px solid rgba(196,81,46,0.7); border-radius: 2px; }
+  .tlimarkbtn { font-family: var(--font-head); background: var(--plank); color: var(--white-dim); border-color: #1E1008; }
+  .tlimarkbtn.known.active { background: linear-gradient(180deg, #5BB8AD, #2F7E76); color: #08201D; }
+  .tlimarkbtn.retry.active { background: linear-gradient(180deg, #DA6A44, #9E3A1F); color: #FFF1E2; }
+
+  /* sheets, toasts, intro in the same light */
+  .msheet { background: linear-gradient(180deg, rgba(255,190,110,0.08), rgba(0,0,0,0) 30%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.22 0 0 0 0 0.1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"), #3A2418; }
+  .ms-title, .mspec-h { font-family: var(--font-head); font-weight: 400; letter-spacing: 0.04em; }
+  .ms-tile { border-radius: 2px; }
+  .mtoast { font-family: var(--font-head); background: linear-gradient(180deg, #F6D485, #D79A35 55%, #B47622); color: #2B1C11; letter-spacing: 0.03em; }
+  .mintro { background: linear-gradient(180deg, #170F1C 0%, #2E1A26 22%, #5E2A2A 44%, #A44A2C 62%, #D9773A 76%, #F2B45E 88%) !important; }
+  .mi-title { font-family: var(--font-head); font-weight: 400; letter-spacing: 0.04em; }
+  .mpeek::before { font-size: clamp(30px, 8vw, 42px); }
+  .mpk-top { margin-bottom: auto; }
 </style>
 </head>
 <body>
+<div class="wx-scene" aria-hidden="true">
+  <div class="wx-sun"></div>
+  <svg class="wx-far" viewBox="0 0 1600 400" preserveAspectRatio="xMidYMax slice"><path d="M0 400V250h70l18-38h120l22 38h60l40-26 90 6 30-52h150l26 52 40 4 60-30 110 8 24-48h170l30 48h60l50-26 120 10 20-40h110l26 40h104v214z" fill="#6E2F27" opacity=".82"/></svg>
+  <svg class="wx-near" viewBox="0 0 1600 400" preserveAspectRatio="xMidYMax slice"><path d="M0 400V318c120-10 240 6 380-6 150-14 260 12 420 2 170-10 300-16 460 0 130 12 230 4 340 4v82z" fill="#2E1813"/><path d="M1180 318v-62m0 22c-16 0-18-14-18-26m18 14c16 0 18-12 18-22M300 330v-44m0 16c-12 0-14-10-14-18m14 10c11 0 13-8 13-14" stroke="#2E1813" stroke-width="12" stroke-linecap="round" fill="none"/></svg>
+  <div class="wx-tumble-lane"></div>
+</div>
+<canvas class="wx-dust" aria-hidden="true"></canvas>
+<div class="wx-grain" aria-hidden="true"></div>
 <div class="wrap">
 
   <header class="top">
@@ -1706,7 +1896,7 @@
     function paint(px, v){
       var w = st.offsetWidth || 1;
       st.style.transform = px ? "translate(" + px + "px," + (Math.abs(px) * -0.03) + "px) rotate(" + (px / w * 14) + "deg)" : "";
-      if (rich) document.body.style.backgroundPosition = px ? (px * -0.08) + "px " + (Math.abs(px) * 0.02) + "px" : "";
+      if (rich && M.parallax) M.parallax(px);
       var p = Math.abs(px) / (w * 0.25), h = px < 0 ? hr : hl, o = px < 0 ? hl : hr;
       h.style.opacity = String(Math.min(1, p)); o.style.opacity = "0";
       var armedNow = p >= 1 && dragging;
@@ -1722,7 +1912,7 @@
       return dt > 0 ? (b.x - a.x) / dt : 0;
     }
     st.addEventListener("pointerdown", function(e){
-      if (e.button > 0 || throwing || e.target.closest("button, textarea, input, a, select")) return;
+      if (e.button > 0 || throwing || e.target.closest("button, textarea, input, a, select") || document.querySelector("#flashcard .tipcomposer")) return;
       spring.stop(); st.getAnimations().forEach(function(a){ a.cancel(); });
       active = true; dragging = false; moved = false; pid = e.pointerId; if (!x) nb = null;
       sx = e.clientX - x; sy = e.clientY; samples = [{ x: x, t: performance.now() }];
@@ -1794,7 +1984,7 @@
     M.sfx("land");
     if (card && card.getAnimations) card.getAnimations().forEach(function(a){ a.cancel(); });
     if (st) st.style.transform = "";
-    if (rich) document.body.style.backgroundPosition = "";
+    if (M.parallax) M.parallax(0);
     var seamless = M._peekFull && M._peekFull();
     swap();
     if (M._peekHide) M._peekHide();
@@ -1948,9 +2138,9 @@
   var LEVELS = [["off", "オフ"], ["lite", "控えめ"], ["std", "標準"], ["rich", "たっぷり"]];
   var NOTES = {
     off: "動きを止めます。マップ、✓ や × の印、正解率のリングはそのまま使えます。",
-    lite: "画面の切り替えだけを動かし、火花、紙吹雪、文字の立ち上がり、カードの傾きを省きます。",
+    lite: "画面の切り替えだけを動かし、火花、紙吹雪、文字の立ち上がりなどの演出を省きます。",
     std: "おすすめ。操作に応える動きをすべて使います。",
-    rich: "標準に加えて、ドラッグやめくりに合わせて背景の方眼が奥行きをもって動き、傾きも深くなります。"
+    rich: "標準に加えて、ドラッグやめくりに合わせて背景の方眼が奥行きをもって動きます。"
   };
   var setSheet = null, setBg = null, demoRaf = 0;
   function cssVar(n, fb){ var v = getComputedStyle(document.documentElement).getPropertyValue(n).trim(); return v || fb; }
@@ -1985,7 +2175,7 @@
         c.globalAlpha = 1 - pOut; c.fillStyle = col.d; rr(c, outX, cy, cw, ch, 6); c.fill();
         if (cyc > 0.4) { c.globalAlpha = Math.min(1, pIn * 3); c.fillStyle = col.p; rr(c, inX, cy, cw, ch, 6); c.fill(); }
         else if (cyc <= 0.25) { c.globalAlpha = 1; c.fillStyle = col.p; rr(c, cx, cy, cw, ch, 6); c.fill(); }
-        c.globalAlpha = 1; c.font = "600 11px 'IBM Plex Mono', monospace"; c.fillStyle = col.d; c.textAlign = "left";
+        c.globalAlpha = 1; c.font = "600 11px 'Special Elite', monospace"; c.fillStyle = col.d; c.textAlign = "left";
         c.fillText("出る 150ms", 12, H - 10); c.textAlign = "right"; c.fillText("入る 420ms", W - 12, H - 10);
       }
       // 2) curves: ease-in vs ease-out, a dot rides each
@@ -2001,7 +2191,7 @@
           c2.stroke();
           var y = cfg[0](qq); c2.fillStyle = cfg[1]; c2.beginPath(); c2.arc(gx + qq * gw, gy + gh - y * gh, 4.5, 0, Math.PI * 2); c2.fill();
           c2.globalAlpha = 0.5; c2.beginPath(); c2.arc(gx + gw + 8, gy + gh - y * gh, 3, 0, Math.PI * 2); c2.fill(); c2.globalAlpha = 1;
-          c2.font = "600 11px 'IBM Plex Mono', monospace"; c2.fillStyle = col.d; c2.textAlign = "left"; c2.fillText(cfg[2], gx, H2 - 8);
+          c2.font = "600 11px 'Special Elite', monospace"; c2.fillStyle = col.d; c2.textAlign = "left"; c2.fillText(cfg[2], gx, H2 - 8);
         });
       }
       // 3) spring: flick the card; the trace shows the overshoot and settle
@@ -2016,7 +2206,7 @@
         c3.stroke();
         var cw3 = 40, ch3 = 54, cx3 = W3 / 2 + sprX.x - cw3 / 2, cy3 = H3 / 2 - ch3 / 2 - 8;
         c3.save(); c3.translate(cx3 + cw3 / 2, cy3 + ch3 / 2); c3.rotate(sprX.x / 140 * 0.25); c3.fillStyle = col.p; rr(c3, -cw3 / 2, -ch3 / 2, cw3, ch3, 6); c3.fill(); c3.restore();
-        c3.font = "600 11px 'IBM Plex Mono', monospace"; c3.fillStyle = col.d; c3.textAlign = "left";
+        c3.font = "600 11px 'Special Elite', monospace"; c3.fillStyle = col.d; c3.textAlign = "left";
         c3.fillText("ばね定数 320、減衰 25", 12, H3 - 10); c3.textAlign = "right"; c3.fillText("弾いてみてください", W3 - 12, H3 - 10);
       }
       if (playing || drag || sprX.raf) demoRaf = requestAnimationFrame(frame);
@@ -2831,6 +3021,9 @@
     }, 130);
   }
 
+  // Pointer tilt removed: it made the card harder to read.
+  M.tilt = function(){};
+
   // ===== v8: 苦手 = the shot glances off. the card is too tough for now, so it gets locked as a target =====
   var RED = "#E5533A";
   var _sfx8 = M.sfx;
@@ -2982,6 +3175,93 @@
       if (!kept.some(function(n){ return n.isConnected; })) clearInterval(watch);
     }, 120);
   }
+
+  // ===== v10: the frontier at golden hour. dust in the air, the odd tumbleweed, depth when you drag =====
+  var dustCv = document.querySelector(".wx-dust"), dust = null;
+  function dustInit(){
+    if (!dustCv) return;
+    var c = dustCv.getContext("2d"), dpr = Math.min(2, window.devicePixelRatio || 1), W = 0, H = 0, P = [], raf = 0, last = 0;
+    var sprite = document.createElement("canvas"); sprite.width = sprite.height = 64;
+    var sg = sprite.getContext("2d"), grd = sg.createRadialGradient(32, 32, 0, 32, 32, 32);
+    grd.addColorStop(0, "rgba(255,226,170,0.9)"); grd.addColorStop(0.35, "rgba(255,200,130,0.35)"); grd.addColorStop(1, "rgba(255,190,120,0)");
+    sg.fillStyle = grd; sg.fillRect(0, 0, 64, 64);
+    function size(){ W = innerWidth; H = innerHeight; dustCv.width = Math.round(W * dpr); dustCv.height = Math.round(H * dpr); c.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    function count(){ return level === "off" ? 18 : lite ? 16 : rich ? 70 : 42; }
+    function seed(){
+      P = [];
+      for (var i = 0, n = count(); i < n; i++) {
+        var big = Math.random() < 0.14;
+        P.push({ x: Math.random() * W, y: Math.random() * H, r: big ? 6 + Math.random() * 10 : 0.6 + Math.random() * 1.3,
+          a: big ? 0.05 + Math.random() * 0.1 : 0.18 + Math.random() * 0.42, big: big,
+          vx: (big ? 5 : 10) + Math.random() * 22, vy: -4 + Math.random() * 7, ph: Math.random() * 6.283 });
+      }
+    }
+    function draw(now){
+      var tt = now / 1000, dt = last ? Math.min(0.05, (now - last) / 1000) : 0; last = now;
+      // wind: a steady breeze with slow gusts
+      var wind = 1 + Math.sin(tt * 0.23) * 0.5 + Math.pow(Math.max(0, Math.sin(tt * 0.071)), 3) * 2.2;
+      c.clearRect(0, 0, W, H);
+      for (var i = 0; i < P.length; i++) {
+        var p = P[i];
+        p.x += p.vx * wind * dt; p.y += (p.vy + Math.sin(tt * 0.9 + p.ph) * 9) * dt;
+        if (p.x > W + 20) { p.x = -20; p.y = Math.random() * H; }
+        if (p.y < -20) p.y = H + 20; else if (p.y > H + 20) p.y = -20;
+        var tw = 0.75 + 0.25 * Math.sin(tt * 2.1 + p.ph * 3);
+        if (p.big) { c.globalAlpha = p.a * tw; c.drawImage(sprite, p.x - p.r, p.y - p.r, p.r * 2, p.r * 2); }
+        else { c.globalAlpha = p.a * tw; c.fillStyle = "#FFE3B0"; c.beginPath(); c.arc(p.x, p.y, p.r, 0, 6.283); c.fill(); }
+      }
+      c.globalAlpha = 1;
+    }
+    function loop(now){ draw(now); raf = requestAnimationFrame(loop); }
+    function start(){ cancelAnimationFrame(raf); raf = 0; last = 0; if (on && !document.hidden) raf = requestAnimationFrame(loop); else draw(performance.now()); }
+    size(); seed(); start();
+    window.addEventListener("resize", function(){ size(); seed(); if (!raf) draw(performance.now()); });
+    document.addEventListener("visibilitychange", start);
+    dust = { refresh: function(){ seed(); start(); } };
+  }
+
+  // a tumbleweed rolls along the horizon now and then (not in 控えめ / オフ)
+  var lane = document.querySelector(".wx-tumble-lane"), tumbleT = 0;
+  function tumbleSchedule(){
+    clearTimeout(tumbleT);
+    if (!lane || !on || lite) return;
+    var wait = rich ? 22000 + Math.random() * 25000 : 50000 + Math.random() * 60000;
+    tumbleT = setTimeout(function(){ tumble(); tumbleSchedule(); }, wait);
+  }
+  function tumble(){
+    if (!on || lite || document.hidden || !lane) return;
+    var el = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    el.setAttribute("class", "wx-tumble"); el.setAttribute("viewBox", "-25 -25 50 50");
+    var d = "", R = Math.random;
+    for (var i = 0; i < 16; i++) {
+      var a1 = R() * 6.283, a2 = a1 + 1.4 + R() * 2.2, r1 = 8 + R() * 14, r2 = 8 + R() * 14;
+      d += "M" + (Math.cos(a1) * r1).toFixed(1) + " " + (Math.sin(a1) * r1).toFixed(1) + " Q" + ((R() - 0.5) * 16).toFixed(1) + " " + ((R() - 0.5) * 16).toFixed(1) + " " + (Math.cos(a2) * r2).toFixed(1) + " " + (Math.sin(a2) * r2).toFixed(1) + " ";
+    }
+    el.innerHTML = '<path d="' + d + '" fill="none" stroke="#3A2214" stroke-width="1.4" stroke-linecap="round" opacity=".9"/><circle r="17" fill="none" stroke="#4A2C18" stroke-width="1" opacity=".5"/>';
+    lane.appendChild(el);
+    var Wd = innerWidth + 120, dur = 9000 + R() * 4000, frames = [], N = 24, bounces = 5 + Math.floor(R() * 3);
+    for (var k = 0; k <= N; k++) {
+      var q = k / N, x = -80 + Wd * q, hop = Math.abs(Math.sin(q * Math.PI * bounces)) * (16 + (1 - q) * 18);
+      frames.push({ transform: "translate(" + x.toFixed(1) + "px," + (-hop).toFixed(1) + "px) rotate(" + (q * 1080).toFixed(0) + "deg)" });
+    }
+    el.animate(frames, { duration: dur, easing: "linear" }).onfinish = function(){ el.remove(); };
+  }
+
+  // rich: the desert moves a little against your drag, near hills more than far ones
+  var far = document.querySelector(".wx-far"), near = document.querySelector(".wx-near"), sun = document.querySelector(".wx-sun");
+  M.parallax = function(px){
+    if (!far) return;
+    var v = rich && on ? px : 0;
+    far.style.transform = v ? "translateX(" + (v * -0.03) + "px)" : "";
+    near.style.transform = v ? "translateX(" + (v * -0.07) + "px)" : "";
+    if (sun) sun.style.transform = v ? "translateX(" + (v * -0.015) + "px)" : "";
+  };
+
+  // keep the scene in step with the motion setting
+  var _applyLevel10 = applyLevel;
+  applyLevel = function(){ _applyLevel10(); if (dust) dust.refresh(); tumbleSchedule(); if (!rich) M.parallax(0); };
+  dustInit(); tumbleSchedule();
+  if (on && !lite) setTimeout(tumble, 2500);
 })();
 </script>
 <script>
@@ -3964,7 +4244,15 @@
     flashcardEl.classList.toggle("flipped", flipped);
     if (window.M) M.flip(flashcardEl, flipped);
   }
-  flashcardEl.addEventListener("click", doFlip);
+  flashcardEl.addEventListener("click", function(e){
+    // while writing a tip, clicks on the card go to the text box instead of flipping the card
+    if (tipComposerOpen && flipped) {
+      var ta = document.getElementById("tipComposerInput");
+      if (ta && e.target !== ta && !e.target.closest("button")) ta.focus();
+      return;
+    }
+    doFlip();
+  });
   document.getElementById("flipBtn").addEventListener("click", doFlip);
   document.getElementById("backTips").addEventListener("click", function(e){ e.stopPropagation(); });
 
