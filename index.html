@@ -3723,6 +3723,12 @@
     return merged;
   }
 
+  // 試験のポイント: which points have been opened, shared with the points tab via localStorage.
+  var POINTS_SEEN_KEY = "awsSapPointsSeen";
+  function readPointsSeen(){ try { return JSON.parse(localStorage.getItem(POINTS_SEEN_KEY) || "{}") || {}; } catch (e) { return {}; } }
+  function writePointsSeen(m){ try { localStorage.setItem(POINTS_SEEN_KEY, JSON.stringify(m)); } catch (e) {} }
+  window.sapPointsSeenChanged = function(){ pushToCloud(); };
+
   function pushToCloud(){
     if (!firebaseReady || !currentUser || !db) return;
     if (pushTimer) clearTimeout(pushTimer);
@@ -3732,6 +3738,7 @@
         customTerms: customTerms,
         progress: progress,
         examTips: examTips,
+        pointsSeen: readPointsSeen(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }).then(function(){
         setSyncStatus("ok");
@@ -3749,6 +3756,10 @@
         customTerms = mergeCustomTermsData(customTerms, cloud.customTerms);
         progress = mergeProgressData(progress, cloud.progress);
         examTips = mergeTipsData(examTips, cloud.examTips);
+        var localSeen = readPointsSeen(), cloudSeen = cloud.pointsSeen || {}, mergedSeen = mergeProgressData(localSeen, cloudSeen);
+        writePointsSeen(mergedSeen);
+        if (window.sapPointsReloadSeen) window.sapPointsReloadSeen();
+        if (Object.keys(mergedSeen).length > Object.keys(cloudSeen).length) pushToCloud();
         customTerms.forEach(function(ct){ registerCategory(ct.cat); });
         saveCustomTerms();
         saveProgress();
@@ -4683,7 +4694,8 @@
   "use strict";
   var data = null, field = "all", query = "", NEW_DAYS = 14, SEEN_KEY = "awsSapPointsSeen", seen = {};
   try { seen = JSON.parse(localStorage.getItem(SEEN_KEY) || "{}") || {}; } catch (e) { seen = {}; }
-  function markSeen(id){ if (!id || seen[id]) return; seen[id] = 1; try { localStorage.setItem(SEEN_KEY, JSON.stringify(seen)); } catch (e) {} }
+  function markSeen(id){ if (!id || seen[id]) return; seen[id] = 1; try { localStorage.setItem(SEEN_KEY, JSON.stringify(seen)); } catch (e) {} if (window.sapPointsSeenChanged) window.sapPointsSeenChanged(); }
+  window.sapPointsReloadSeen = function(){ try { seen = JSON.parse(localStorage.getItem(SEEN_KEY) || "{}") || {}; } catch (e) {} render(); };
   var area = document.getElementById("ptArea"), chips = document.getElementById("ptChips"),
       status = document.getElementById("ptStatus"), search = document.getElementById("ptSearch");
   if (!area) return;
