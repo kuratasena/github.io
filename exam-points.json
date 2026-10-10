@@ -1,0 +1,505 @@
+{
+  "version": 1,
+  "updated": "2026-10-10",
+  "fields": [
+    { "id": "network", "name": "ネットワーク" },
+    { "id": "security", "name": "セキュリティ・権限" },
+    { "id": "org", "name": "組織・マルチアカウント" },
+    { "id": "storage", "name": "ストレージ" },
+    { "id": "database", "name": "データベース" },
+    { "id": "migration", "name": "移行・データ転送" },
+    { "id": "compute", "name": "コンピューティング・コンテナ" },
+    { "id": "integration", "name": "メッセージング・連携" },
+    { "id": "analytics", "name": "分析・ログ" },
+    { "id": "ml", "name": "AI・機械学習" },
+    { "id": "cost", "name": "コスト最適化・運用" },
+    { "id": "strategy", "name": "解き方のコツ" }
+  ],
+  "points": [
+    {
+      "id": "p001", "field": "network", "date": "2026-10-09",
+      "title": "NAT ゲートウェイは内側からしか通信を始められない",
+      "power": "NAT は片道切符の出口専用ドア",
+      "body": [
+        "外から NAT ゲートウェイ経由で通信を開始することはできない",
+        "外部 IP からのインバウンドが ACCEPT されていたら、まず「内側が先に送った通信への返信」を疑う",
+        "調査は「送信元＝自分のインスタンス、宛先＝外部 IP」の向きでフローログを検索する"
+      ],
+      "tags": ["NAT ゲートウェイ", "VPC フローログ"]
+    },
+    {
+      "id": "p002", "field": "network", "date": "2026-10-09",
+      "title": "VPC ピアリングの3つの制限",
+      "power": "重ならない・中継しない・でも遠くてもOK",
+      "body": [
+        "CIDR が重複している VPC 同士はピアリングできない（/16 の中に /24 が含まれる場合も重複）",
+        "推移的ルーティング不可：A–B、B–C があっても A→C は通らない",
+        "エッジ間ルーティング不可：VPN・Direct Connect・IGW・NAT から来た通信をピア先へ中継できない",
+        "別アカウント・別リージョンとのピアリングは可能"
+      ],
+      "tags": ["VPC ピアリング", "CIDR"]
+    },
+    {
+      "id": "p003", "field": "network", "date": "2026-10-09",
+      "title": "Transit Gateway が必要になるのはどんなときか",
+      "power": "隣の家に行くのに、駅ビル（TGW）は建てへん",
+      "body": [
+        "VPC が2つで直通のピアリングがあれば TGW は不要（コスト・手間の無駄）",
+        "VPC が多数（数百）、またはオンプレ・VPN・Direct Connect を含めて相互通信させたいなら TGW",
+        "判断軸は「行き先の数」「通信の出どころが VPC の中か外か」「推移的ルーティングが必要か」"
+      ],
+      "tags": ["Transit Gateway", "VPC ピアリング"]
+    },
+    {
+      "id": "p004", "field": "network", "date": "2026-10-09",
+      "title": "Client VPN と Site-to-Site VPN",
+      "power": "個人は Client、拠点は Site-to-Site",
+      "body": [
+        "在宅勤務など個人の端末から AWS につなぐのは Client VPN",
+        "Client VPN エンドポイントを VPC B に置けば、通信は VPC B の中から出るので、B とピアリングした VPC A へ届く",
+        "「すでにピアリング済み」は最大のヒント。エンドポイントは1つで十分"
+      ],
+      "tags": ["Client VPN", "Site-to-Site VPN"]
+    },
+    {
+      "id": "p005", "field": "network", "date": "2026-10-09",
+      "title": "Direct Connect で数百の VPC とつなぐ構成",
+      "power": "数百の VPC は駅ビル（TGW）で束ね、出口はオンプレの改札だけ",
+      "body": [
+        "DX ゲートウェイ + Transit Gateway をトランジット VIF でつなぐ",
+        "TGW は RAM で他アカウントに共有し、各 VPC をアタッチする",
+        "オンプレ経由でインターネットに出すなら、プライベートサブネットのみ（IGW は置かない）",
+        "VIF の使い分け：多数の VPC → トランジット VIF、少数 → プライベート VIF、S3 などの公開サービス → パブリック VIF"
+      ],
+      "tags": ["Direct Connect", "Transit Gateway", "トランジット VIF"]
+    },
+    {
+      "id": "p006", "field": "network", "date": "2026-10-10",
+      "title": "API を VPC 内からだけ呼べるようにする",
+      "power": "表札（DNS）を変えても、玄関の鍵は開いたまま",
+      "body": [
+        "プライベート API の3点セット：エンドポイントタイプをプライベートに変更 ＋ インターフェース VPC エンドポイント ＋ リソースポリシー",
+        "Route 53 の CNAME などで名前を変えるだけでは、アクセス制限にならない",
+        "エンドポイントタイプは API ごとに選べるので、公開が必要な API はそのままにできる"
+      ],
+      "tags": ["API Gateway", "VPC エンドポイント"]
+    },
+    {
+      "id": "p007", "field": "network", "date": "2026-10-09",
+      "title": "CloudFront を使う理由",
+      "power": "世界に配るなら CloudFront（コンビニに在庫を置く）",
+      "body": [
+        "世界中のエッジでキャッシュするので、遠いユーザーへの遅延が減る",
+        "オリジンフェイルオーバーで、片方のオリジン（別リージョンの S3 など）が落ちても配信を続けられる",
+        "「世界中のユーザー」「画像・動画などの静的コンテンツ」「遅延を減らす」が出たらまず疑う"
+      ],
+      "tags": ["CloudFront", "オリジンフェイルオーバー"]
+    },
+    {
+      "id": "p010", "field": "security", "date": "2026-10-09",
+      "title": "クライアントサイド暗号化には GenerateDataKey が必要",
+      "power": "大きな荷物は使い捨ての鍵で、その鍵だけ金庫の鍵で守る",
+      "body": [
+        "エンベロープ暗号化：データはデータキー（DEK）で、DEK は KMS キーで暗号化する",
+        "アップロード（暗号化）時は kms:GenerateDataKey、ダウンロード（復号）時は kms:Decrypt",
+        "「ダウンロードはできるのにアップロードだけ失敗」→ GenerateDataKey が足りない",
+        "kms:Encrypt は小さいデータ向け。Sign・GetPublicKey は非対称キー（署名）の話"
+      ],
+      "tags": ["KMS", "エンベロープ暗号化"]
+    },
+    {
+      "id": "p011", "field": "security", "date": "2026-10-09",
+      "title": "AWS 管理キーはクロスアカウントで貸せない",
+      "power": "AWS 管理キーはマンション備え付けの鍵、カスタマーマネージドキーは自分で作った合鍵",
+      "body": [
+        "AWS 管理キー（aws/secretsmanager など）はキーポリシーを変更できない",
+        "他アカウントに復号させたいならカスタマーマネージドキーに切り替える",
+        "KMS はキーポリシーが主役。IAM ポリシーだけ許可しても使えない"
+      ],
+      "tags": ["KMS", "Secrets Manager", "クロスアカウント"]
+    },
+    {
+      "id": "p012", "field": "security", "date": "2026-10-10",
+      "title": "クロスアカウントアクセスは「4マス」で確認",
+      "power": "貸す側も借りる側も OK を出す。扉（S3）と鍵（KMS）の両方で",
+      "body": [
+        "借りる側の IAM ロール：S3 の読み取り ＋ KMS の復号",
+        "貸す側のリソースポリシー：バケットポリシー ＋ KMS キーポリシー",
+        "4マスのどれか1つでも欠けると Access Denied",
+        "最小権限なら「完全な権限」は ×、読むだけなら「暗号化」権限は不要"
+      ],
+      "tags": ["S3", "KMS", "バケットポリシー", "クロスアカウント"]
+    },
+    {
+      "id": "p013", "field": "security", "date": "2026-10-09",
+      "title": "他社のリソースにアクセスする最も安全な方法",
+      "power": "合鍵は渡さない。一時パスを発行し、合言葉で本人確認",
+      "body": [
+        "アクセスキーや IAM ユーザーの資格情報を渡すのは ×",
+        "相手側が IAM ロールを作り、こちらは AssumeRole で一時認証情報を得る",
+        "サードパーティが顧客のリソースを触る話なら外部 ID がセット（混乱した代理問題の対策）"
+      ],
+      "tags": ["IAM ロール", "AssumeRole", "外部 ID"]
+    },
+    {
+      "id": "p014", "field": "security", "date": "2026-10-09",
+      "title": "最小権限ポリシーは IAM Access Analyzer で自動生成",
+      "power": "行動履歴（CloudTrail）から、服のサイズ（ポリシー）を自動で仕立てる",
+      "body": [
+        "CloudTrail の記録をもとに、実際に使った分だけのポリシーを生成できる",
+        "生成後は人がレビューして、不要な権限を削り、記録期間外の操作を足す",
+        "自作スクリプト・EMR・CodeGuru より手間が少ない",
+        "最小権限の目的は、乗っ取られたときの被害範囲を小さくすること"
+      ],
+      "tags": ["IAM Access Analyzer", "CloudTrail", "最小権限"]
+    },
+    {
+      "id": "p015", "field": "security", "date": "2026-10-09",
+      "title": "AWS WAF のルールはいきなり Block にしない",
+      "power": "Count は試着室、Block は本番",
+      "body": [
+        "まず Count で一致数を記録 → WAF ログで誤検知を分析 → ルール修正 → Block に切り替え",
+        "最初から Block は正当なユーザーを止める恐れがある",
+        "Allow から始めると何も守れない",
+        "レートベースのルールは大量アクセス対策で、SQL インジェクションなどの中身の攻撃は防げない"
+      ],
+      "tags": ["AWS WAF", "Web ACL"]
+    },
+    {
+      "id": "p016", "field": "security", "date": "2026-10-09",
+      "title": "シークレットとは",
+      "power": "シークレットは金庫にしまったパスワード",
+      "body": [
+        "DB のパスワードなど、見られたら困る情報を Secrets Manager に保存する",
+        "コードや設定ファイルに直接書かず、必要なときに取りに行く",
+        "自動ローテーション（パスワードの定期変更）もできる"
+      ],
+      "tags": ["Secrets Manager"]
+    },
+    {
+      "id": "p020", "field": "org", "date": "2026-10-09",
+      "title": "禁止は SCP、監視は Config",
+      "power": "禁止は門番（SCP）、報告は監視カメラ（Config）",
+      "body": [
+        "「できないようにしたい」は予防的コントロール → SCP",
+        "AWS Config・CloudTrail は「やった後に見つける」検出的コントロールで、止める力はない",
+        "SCP を使うには Organizations の「すべての機能」が必要。一括請求のみでは使えない",
+        "SCP は許可を与えない（天井を作るだけ）。管理アカウントには効かない"
+      ],
+      "tags": ["SCP", "AWS Organizations", "AWS Config"]
+    },
+    {
+      "id": "p021", "field": "org", "date": "2026-10-09",
+      "title": "SCP は効かせたい範囲の一番上の OU に付ける",
+      "power": "ルールは効かせたい範囲の一番上に貼る",
+      "body": [
+        "上の OU に付けた SCP は下の OU・アカウントに継承される。重ねて付ける必要はない",
+        "リージョン制限は aws:RequestedRegion（全サービス共通）。ec2:Region は EC2 専用の引っかけ",
+        "インスタンスタイプ制限は ec2:InstanceType",
+        "実務ではリージョン制限の SCP で、IAM などのグローバルサービスを例外にする"
+      ],
+      "tags": ["SCP", "OU", "条件キー"]
+    },
+    {
+      "id": "p022", "field": "org", "date": "2026-10-09",
+      "title": "共通の CIDR リストはプレフィックスリスト + RAM で共有",
+      "power": "住所録は1冊だけ作って、みんなで回し読み",
+      "body": [
+        "中央アカウントでカスタマーマネージドプレフィックスリストを作り、RAM で組織に共有",
+        "各アカウントのセキュリティグループはプレフィックスリスト ID を参照するだけ",
+        "CIDR の変更は中央を更新するだけで全アカウントに反映",
+        "各アカウントに Lambda を配って書き込む仕組みは運用負荷が大きい"
+      ],
+      "tags": ["プレフィックスリスト", "AWS RAM"]
+    },
+    {
+      "id": "p030", "field": "storage", "date": "2026-10-09",
+      "title": "既存オブジェクトの暗号化は「コピーで上書き」",
+      "power": "新規は設定、既存はコピーで上書き",
+      "body": [
+        "バケットの暗号化設定は、これから入るオブジェクトにしか効かない",
+        "既存の大量オブジェクトは S3 バッチ操作で同じ場所にコピーして暗号化",
+        "要件に SSE-S3 と書いてあれば KMS の選択肢は過剰で ×"
+      ],
+      "tags": ["S3", "SSE-S3", "S3 バッチ操作"]
+    },
+    {
+      "id": "p031", "field": "storage", "date": "2026-10-09",
+      "title": "SSE-S3 と SSE-KMS の使い分け",
+      "power": "S3 はおまかせ、KMS は自分で鍵番",
+      "body": [
+        "SSE-S3：キー管理まで AWS におまかせ。とにかく暗号化したいとき",
+        "SSE-KMS：キーのアクセス制御や利用の監査が必要なとき",
+        "要件に書いていない強い仕組みは過剰で減点対象"
+      ],
+      "tags": ["SSE-S3", "SSE-KMS"]
+    },
+    {
+      "id": "p032", "field": "storage", "date": "2026-10-09",
+      "title": "アクセスが減る時期が分かっているならライフサイクルポリシー",
+      "power": "分析は身軽に、保管は冷凍庫に",
+      "body": [
+        "半年以上ほぼアクセスなし・無期限保持 → Glacier Deep Archive が最安",
+        "アクセスパターンが読めないときだけ Intelligent-Tiering",
+        "Deep Archive のデータは Athena で直接クエリできない（復元が必要）"
+      ],
+      "tags": ["S3 ライフサイクル", "Glacier Deep Archive", "Intelligent-Tiering"]
+    },
+    {
+      "id": "p033", "field": "storage", "date": "2026-10-10",
+      "title": "共有ファイルストレージの選び方",
+      "power": "Windows は FSx for Windows、Linux は EFS、爆速は Lustre",
+      "body": [
+        "Windows・AD・SMB・Windows ACL → FSx for Windows File Server",
+        "Linux・NFS → EFS（Windows ACL 非対応）",
+        "HPC・大量データの高速処理 → FSx for Lustre",
+        "「全インスタンスで同じコンテンツ」なら EBS（1台専用）ではなく共有ストレージへ"
+      ],
+      "tags": ["FSx for Windows", "EFS", "FSx for Lustre"]
+    },
+    {
+      "id": "p040", "field": "database", "date": "2026-10-09",
+      "title": "フェイルオーバー時間を短縮する",
+      "power": "控えの選手を常にベンチ入り、接続は受付係が引き継ぐ",
+      "body": [
+        "DB 側の切替を速く → Aurora ＋ Aurora レプリカ（2つはセット）",
+        "アプリ側の再接続を速く → RDS Proxy",
+        "ElastiCache は読み取り高速化用で、フェイルオーバーは速くならない",
+        "RDS のリードレプリカと Aurora レプリカは別物。昇格は Aurora の方が速い"
+      ],
+      "tags": ["Aurora", "RDS Proxy", "マルチ AZ"]
+    },
+    {
+      "id": "p041", "field": "database", "date": "2026-10-10",
+      "title": "既存 DB の引っ越し先（互換サービス）",
+      "power": "Mongo は Document、Cassandra は Keyspaces",
+      "body": [
+        "MongoDB → DocumentDB、Cassandra → Keyspaces、MySQL/PostgreSQL → RDS / Aurora",
+        "「コード変更不可」なら互換サービスを選ぶ。リレーショナルの Aurora に NoSQL は移せない",
+        "「オンデマンド容量モード」は DynamoDB の機能。他サービスの選択肢に混ざっていたら引っかけ"
+      ],
+      "tags": ["DocumentDB", "互換サービス"]
+    },
+    {
+      "id": "p042", "field": "database", "date": "2026-10-09",
+      "title": "マルチリージョン化の定番セット",
+      "power": "S3 は CRR、DynamoDB はグローバル、入口は CloudFront",
+      "body": [
+        "S3 → クロスリージョンレプリケーション、DynamoDB → グローバルテーブル、Aurora → Global Database",
+        "「同じリージョン内」の複製はマルチリージョンにならない",
+        "DynamoDB の複製に DMS を使う案は手間が多い"
+      ],
+      "tags": ["DynamoDB グローバルテーブル", "S3 CRR", "マルチリージョン"]
+    },
+    {
+      "id": "p050", "field": "migration", "date": "2026-10-09",
+      "title": "大容量移行は、まず「データ量 ÷ 回線速度」を計算",
+      "power": "回線で運べないなら、トラックで運べ",
+      "body": [
+        "200TB ÷ 100Mbps ≒ 約185日。期限を大きく超えるならネットワーク系の選択肢は即消去",
+        "回線が細い＋大容量＋期限が短い → Snowball Edge（転送中の暗号化も標準）",
+        "Direct Connect は開通に時間がかかるので「すぐに」の問題では外れやすい"
+      ],
+      "tags": ["Snowball Edge", "Direct Connect"]
+    },
+    {
+      "id": "p051", "field": "migration", "date": "2026-10-10",
+      "title": "データ転送サービスの使い分け",
+      "power": "送るなら DataSync、つなぎ続けるなら Gateway、運ぶなら Snowball",
+      "body": [
+        "回線が太い（DX など）なら DataSync でネットワーク転送",
+        "DataSync に Direct Connect は必須ではない（インターネット・VPN でも可）",
+        "Storage Gateway はオンプレから S3 を日常的に使い続けるための橋渡し"
+      ],
+      "tags": ["DataSync", "Storage Gateway", "Snowball"]
+    },
+    {
+      "id": "p052", "field": "migration", "date": "2026-10-09",
+      "title": "アプリを変えずに移行する（リフト＆シフト）",
+      "power": "引っ越しは家具そのまま、管理は管理会社におまかせ",
+      "body": [
+        "VM → AMI ＋ Auto Scaling ＋ ALB",
+        "RabbitMQ / ActiveMQ → Amazon MQ（SQS に替えるとコード修正が必要）",
+        "Kubernetes → EKS（EC2 に自前で入れるのは運用負荷大）",
+        "Lambda や SQS への作り替えは「大幅なリファクタリング」で ×"
+      ],
+      "tags": ["Amazon MQ", "EKS", "リフト＆シフト"]
+    },
+    {
+      "id": "p060", "field": "compute", "date": "2026-10-09",
+      "title": "コンテナ実行基盤の選び方",
+      "power": "迷ったら ECS on Fargate",
+      "body": [
+        "Kubernetes の指定や既存資産があれば EKS、なければ ECS",
+        "GPU・ホスト設定・常時フル稼働でのコスト削減なら EC2 上、それ以外は Fargate",
+        "条件が何も書かれていなければ ECS on Fargate が運用負荷最小"
+      ],
+      "tags": ["ECS", "EKS", "Fargate"]
+    },
+    {
+      "id": "p061", "field": "compute", "date": "2026-10-10",
+      "title": "定期実行のバッチ処理",
+      "power": "目覚まし時計は EventBridge、働き手は Fargate",
+      "body": [
+        "Lambda は最大15分。超える処理は Fargate や AWS Batch",
+        "決まった時刻の起動は EventBridge のスケジュール",
+        "Step Functions は指揮者で、自分で時刻を見て起動する機能はない",
+        "ソースコード変更不可のバイナリはコンテナに入れて動かす"
+      ],
+      "tags": ["Lambda", "Fargate", "EventBridge"]
+    },
+    {
+      "id": "p062", "field": "compute", "date": "2026-10-10",
+      "title": "数時間かかるコンテナ処理のパイプライン",
+      "power": "運ぶ（DataSync）→ 合図（S3 イベント）→ 指揮（Step Functions）→ 働く（Batch）",
+      "body": [
+        "既存の Docker イメージは ECR に置き、AWS Batch で実行",
+        "Lambda は起動係としては使えるが、重い処理本体には使えない"
+      ],
+      "tags": ["AWS Batch", "ECR", "Step Functions"]
+    },
+    {
+      "id": "p070", "field": "integration", "date": "2026-10-09",
+      "title": "外部サービスが遅いなら、間にキューを挟む",
+      "power": "注文は伝票に書いて渡す。調理を待たずに次のお客さんへ",
+      "body": [
+        "疎結合・非同期・確実に処理 → SQS",
+        "失敗しても可視性タイムアウト後に再試行、何度もダメなら DLQ",
+        "「イベントを保存し」の文言は SQS（SNS・EventBridge は配る側）"
+      ],
+      "tags": ["SQS", "疎結合", "DLQ"]
+    },
+    {
+      "id": "p071", "field": "integration", "date": "2026-10-09",
+      "title": "メッセージング系サービスの役割",
+      "power": "ためるなら SQS、配るなら SNS、仕分けは EventBridge、順番管理は Step Functions",
+      "body": [
+        "SQS は私書箱、SNS は拡声器、EventBridge は仕分け係、Step Functions は指揮者",
+        "SNS で配って SQS で受ける（ファンアウト）組み合わせもよく使う"
+      ],
+      "tags": ["SQS", "SNS", "EventBridge", "Step Functions"]
+    },
+    {
+      "id": "p072", "field": "integration", "date": "2026-10-09",
+      "title": "SNS と SQS の向き",
+      "power": "SNS が送り、SQS が受け、Lambda が取りに行く",
+      "body": [
+        "購読するのは SQS。SNS が SQS を購読することはできない",
+        "SQS から SNS に発行することもできない",
+        "SNS は1台のまま、各リージョンの SQS をクロスリージョンでサブスクライブさせられる",
+        "SQS と Lambda はリージョンサービスなので、処理したいリージョンに置く"
+      ],
+      "tags": ["SNS", "SQS", "ファンアウト"]
+    },
+    {
+      "id": "p073", "field": "integration", "date": "2026-10-10",
+      "title": "SQS の設定：タイムアウトとリトライ回数",
+      "power": "タイムアウトはちょい長め、リトライは数回許す",
+      "body": [
+        "可視性タイムアウトは図書館の貸出期間。二重処理を防ぎ、失敗時は自動で再挑戦させる",
+        "目安は最大処理時間より少し長め。3時間などの極端な値は ×",
+        "maxReceiveCount = 1 は赤信号。一時的な中断だけで DLQ 行きになる",
+        "「ログにエラーなし」＋「DLQ にたまる」→ SQS の設定を疑う"
+      ],
+      "tags": ["SQS", "可視性タイムアウト", "maxReceiveCount"]
+    },
+    {
+      "id": "p074", "field": "integration", "date": "2026-10-10",
+      "title": "メール送信は SES",
+      "power": "お客さんへのメールは SES、システムの通知は SNS",
+      "body": [
+        "SES のテンプレートに顧客データを差し込んで送る（SendTemplatedEmail）",
+        "EC2 に SMTP サーバーを建てる案は ×",
+        "AWS が機能として持っているもの（テンプレート差し込み）を自作する案は落とす"
+      ],
+      "tags": ["SES", "SNS"]
+    },
+    {
+      "id": "p080", "field": "analytics", "date": "2026-10-09",
+      "title": "ログ調査の定番ルート",
+      "power": "Insights は手軽、Athena は大量、Mirroring は中身",
+      "body": [
+        "手軽にすぐ調べる → CloudWatch Logs Insights（追加構築ほぼ不要）",
+        "大量・長期保存・コスト重視 → S3 ＋ Athena",
+        "パケットの中身まで → Traffic Mirroring（オーバースペックになりがち）"
+      ],
+      "tags": ["CloudWatch Logs Insights", "Athena", "Traffic Mirroring"]
+    },
+    {
+      "id": "p081", "field": "analytics", "date": "2026-10-09",
+      "title": "S3 のデータをクエリするならまず Athena",
+      "power": "Select は1ファイル用のピンセット",
+      "body": [
+        "Athena ＋ Glue Data Catalog はサーバーレスで、使った分だけ課金",
+        "S3 Select は1つのオブジェクト内の絞り込み用で、横断分析には向かない",
+        "Redshift 系はクラスター費用がかかり、小さな要件ではオーバースペック"
+      ],
+      "tags": ["Athena", "Glue", "S3 Select"]
+    },
+    {
+      "id": "p082", "field": "analytics", "date": "2026-10-09",
+      "title": "IoT データの入口は IoT Core",
+      "power": "IoT の玄関は IoT Core、ためる倉庫は S3、調べる虫眼鏡は Athena",
+      "body": [
+        "IoT Core → ルールで Lambda → S3 → Glue ＋ Athena ＋ QuickSight",
+        "入口はデータの種類で選ぶ：IoT は IoT Core、ファイルは Transfer Family、ストリームは Kinesis、引っ越しは Snowball",
+        "購入品のセンサーのコードを改修する案は現実的でない"
+      ],
+      "tags": ["IoT Core", "Athena", "QuickSight"]
+    },
+    {
+      "id": "p090", "field": "ml", "date": "2026-10-09",
+      "title": "AI サービスは自作より既製品",
+      "power": "読むなら Textract、理解するなら Comprehend、見るなら Rekognition",
+      "body": [
+        "手書き・スキャン・フォームの読み取り → Textract",
+        "感情分析・キーフレーズ抽出 → Comprehend",
+        "画像・動画の物体や人物の認識 → Rekognition",
+        "SageMaker・EC2・EKS での自作は運用負荷が大きい"
+      ],
+      "tags": ["Textract", "Comprehend", "Rekognition"]
+    },
+    {
+      "id": "p100", "field": "cost", "date": "2026-10-09",
+      "title": "サイズの悩みは Compute Optimizer",
+      "power": "サイズ選びは AI 仕立て屋におまかせ",
+      "body": [
+        "EC2・EBS・Lambda などの使用状況を分析し、最適なサイズを推奨する",
+        "メモリ使用率を使うなら CloudWatch エージェントがセット",
+        "エンタープライズサポートへの加入は高コストで、費用対効果の問題では外れやすい"
+      ],
+      "tags": ["Compute Optimizer", "CloudWatch エージェント"]
+    },
+    {
+      "id": "p110", "field": "strategy", "date": "2026-10-09",
+      "title": "「すでにあるもの」は最大のヒント",
+      "power": "すでにあるもので足りないか？と立ち止まる",
+      "body": [
+        "ピアリング済み・DX あり・既存のコンテナなどは、それを活かす選択肢が正解になりやすい",
+        "新しいサービスを足す選択肢（TGW、追加の EC2 など）は、まず疑う"
+      ],
+      "tags": ["解き方"]
+    },
+    {
+      "id": "p111", "field": "strategy", "date": "2026-10-09",
+      "title": "要件に書いてあることが最優先",
+      "power": "安全そうな選択肢に引っ張られない",
+      "body": [
+        "要件にない強い仕組み（SSE-S3 指定なのに KMS など）は過剰で ×",
+        "紛らわしいペアは、送信元・宛先などの向きを指差し確認"
+      ],
+      "tags": ["解き方"]
+    },
+    {
+      "id": "p112", "field": "strategy", "date": "2026-10-09",
+      "title": "運用オーバーヘッド最小の問題の見方",
+      "power": "AWS が機能として持っているなら、自作しない",
+      "body": [
+        "自前インストール・自作スクリプト・アカウントごとの Lambda 配布は落とす",
+        "マネージド・サーバーレス・共有で済む仕組みを先に探す",
+        "選択肢は「部品」に分けて採点し、1つでも × の部品があれば全体が ×"
+      ],
+      "tags": ["解き方"]
+    }
+  ]
+}
