@@ -4681,12 +4681,14 @@
 /* 試験のポイント: reads exam-points.json from this site and shows it grouped by field. */
 (function(){
   "use strict";
-  var data = null, field = "all", query = "", NEW_DAYS = 3;
+  var data = null, field = "all", query = "", NEW_DAYS = 14, SEEN_KEY = "awsSapPointsSeen", seen = {};
+  try { seen = JSON.parse(localStorage.getItem(SEEN_KEY) || "{}") || {}; } catch (e) { seen = {}; }
+  function markSeen(id){ if (!id || seen[id]) return; seen[id] = 1; try { localStorage.setItem(SEEN_KEY, JSON.stringify(seen)); } catch (e) {} }
   var area = document.getElementById("ptArea"), chips = document.getElementById("ptChips"),
       status = document.getElementById("ptStatus"), search = document.getElementById("ptSearch");
   if (!area) return;
   function esc(x){ return String(x == null ? "" : x).replace(/[&<>"']/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
-  function isNew(d){ var t = Date.parse(d); return !isNaN(t) && (Date.now() - t) < NEW_DAYS * 864e5; }
+  function isNew(p){ if (seen[p.id]) return false; var t = Date.parse(p.date); return !isNaN(t) && (Date.now() - t) < NEW_DAYS * 864e5; }
   function hay(p){ return [p.title, p.power].concat(p.body || [], p.tags || []).join(" ").toLowerCase(); }
   function matches(p){ return (field === "all" || p.field === field) && (!query || hay(p).indexOf(query) >= 0); }
   function renderChips(){
@@ -4700,8 +4702,8 @@
   }
   function card(p){
     var tags = (p.tags || []).map(function(t){ return '<span class="pttag">' + esc(t) + '</span>'; }).join("");
-    return '<details class="ptcard"><summary class="ptsum"><span class="pttitle"><span>' + esc(p.title) +
-      (isNew(p.date) ? '<span class="ptnew">NEW</span>' : '') + '</span></span>' +
+    return '<details class="ptcard" data-id="' + esc(p.id) + '"><summary class="ptsum"><span class="pttitle"><span>' + esc(p.title) +
+      (isNew(p) ? '<span class="ptnew">NEW</span>' : '') + '</span></span>' +
       (p.power ? '<span class="ptpower">🧠 ' + esc(p.power) + '</span>' : '') + '</summary>' +
       '<div class="ptbody"><ul>' + (p.body || []).map(function(b){ return '<li>' + esc(b) + '</li>'; }).join("") + '</ul>' +
       '<div class="ptmeta">' + tags + (p.date ? '<span class="ptdate">' + esc(p.date) + '</span>' : '') + '</div></div></details>';
@@ -4724,6 +4726,11 @@
     var b = e.target.closest("[data-f]"); if (!b) return;
     field = b.getAttribute("data-f"); render();
   });
+  area.addEventListener("toggle", function(e){
+    var d = e.target; if (!d.open || !d.classList || !d.classList.contains("ptcard")) return;
+    markSeen(d.getAttribute("data-id"));
+    var b = d.querySelector(".ptnew"); if (b) b.remove();
+  }, true);
   search.addEventListener("input", function(){ query = search.value.trim().toLowerCase(); render(); });
   fetch("exam-points.json?v=" + Date.now(), { cache: "no-store" })
     .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
