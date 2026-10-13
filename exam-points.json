@@ -965,6 +965,19 @@
         "遅れてもいい処理の分は、スポットインスタンスにして安くします。"
       ],
       "tags": ["解き方", "マルチ AZ", "高可用性"]
+    },
+    {
+      "id": "p018", "field": "security", "date": "2026-10-13",
+      "title": "パスワードの自動ローテーションなら Secrets Manager（Parameter Store ではない）",
+      "power": "パスワードの定期交換まで任せるなら Secrets Manager。Parameter Store はただの金庫",
+      "body": [
+        "Secrets Manager は、パスワードのランダム生成、安全な保管、定期的な自動変更（ローテーション）まで、1つのサービスでできます。",
+        "CloudFormation では、シークレットのリソースでパスワードを自動生成し、RotationSchedule リソースで「何日ごとに変えるか」を指定します。実際の変更は Lambda 関数が行います。",
+        "RDS などのデータベースには AWS が用意したローテーション用の Lambda があるので、自分で一から書く必要はありません。",
+        "Systems Manager Parameter Store の SecureString も暗号化して保管できますが、自動ローテーションの機能はありません。「Parameter Store の RotationSchedule」というリソースは存在しません。",
+        "EventBridge で Lambda を定期的に起動してローテーションする方法も動きますが、Secrets Manager の標準機能があるのに自作するので、運用の手間が増えます。"
+      ],
+      "tags": ["Secrets Manager", "ローテーション", "Parameter Store", "CloudFormation", "RDS"]
     }
   ]
 }
