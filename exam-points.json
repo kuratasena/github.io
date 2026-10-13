@@ -835,6 +835,31 @@
         "さらにバケットポリシーで「このエンドポイントを通った通信だけ許可する」と書けば、外からは一切触れなくなります（条件 aws:sourceVpce）。"
       ],
       "tags": ["S3", "VPC エンドポイント", "PrivateLink", "Client VPN"]
+    },
+    {
+      "id": "p024", "field": "org", "date": "2026-10-13",
+      "title": "社内の Active Directory で複数の AWS アカウントにログインするなら IAM Identity Center ＋ AD Connector",
+      "power": "社員名簿は社内の AD に1冊だけ。AWS は受付（AD Connector）で名簿を照会するだけ",
+      "body": [
+        "IAM Identity Center は、Organizations の中のたくさんの AWS アカウントへのログインを1か所でまとめて管理するサービスです（シングルサインオン）。",
+        "AD Connector は、AWS からオンプレミスの Active Directory へ「この人は本物？」と問い合わせを中継する窓口です。ユーザー情報は AWS にコピーされず、社内の AD だけで管理できます。",
+        "AD Connector はオンプレミスの AD と通信するので、VPN か Direct Connect が必要です。問題文に「すでに VPN がある」と書いてあれば、そのまま使えます。",
+        "権限セット（どのアカウントで何ができるかのセット）を、AD のグループに割り当てます。社員を AD のグループに入れるだけで、AWS の権限も決まります。",
+        "IAM Identity Center 自体にユーザーを作る方法や、SCIM で同期する方法は、「ユーザーは社内の AD だけで管理」という要件に合いません。",
+        "アカウントごとに IAM の SAML や OIDC の設定をして、IAM ユーザーやロールを手で作る方法は、運用の手間が大きいので不正解です。"
+      ],
+      "tags": ["IAM Identity Center", "AD Connector", "Active Directory", "権限セット", "シングルサインオン"]
+    },
+    {
+      "id": "p116", "field": "strategy", "date": "2026-10-13",
+      "title": "「複数アカウント」＋「ログイン」なら、まず IAM Identity Center",
+      "power": "アカウントが増えたら、入口は1つにまとめる",
+      "body": [
+        "問題文に「Organizations」「複数のアカウント」「社員がサインイン」がそろったら、まず IAM Identity Center の選択肢を探します。",
+        "「アカウントの1つで IAM を設定して」「IAM ユーザーを作成して」と書いてある選択肢は、手間が大きいので消せます。",
+        "Identity Center の選択肢が2つ残ったら、「ユーザーをどこで管理するか」で決めます。社内の AD で管理するなら、ID ソースを Active Directory にしている方が正解です。"
+      ],
+      "tags": ["解き方", "IAM Identity Center"]
     }
   ]
 }
