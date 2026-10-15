@@ -1004,6 +1004,32 @@
         "「サーバーレスで簡単な API」と出たら、まず API Gateway の選択肢を探します。"
       ],
       "tags": ["Lambda", "API Gateway", "ALB", "NLB", "Global Accelerator", "Lambda@Edge"]
+    },
+    {
+      "id": "p130", "field": "network", "date": "2026-10-15",
+      "title": "HTTP と HTTPS の両方を受けるサーバーレスの入口は CloudFront",
+      "power": "API Gateway は HTTPS 専用の受付。HTTP も受けるなら CloudFront",
+      "body": [
+        "API Gateway は HTTPS しか受け付けません。暗号化されていない HTTP のリクエストは受けられないので、「HTTP と HTTPS の両方」と書いてあれば外します。",
+        "CloudFront は HTTP と HTTPS の両方を受けられます。HTTP で来たら HTTPS に自動で切り替える設定もできます。",
+        "Lambda@Edge は CloudFront の配信拠点で動く関数です。リクエストのドメイン名を見て、行き先の URL へリダイレクトする、といった処理を書けます。",
+        "CloudFront と Lambda@Edge の組み合わせは、サーバーの管理がいらず、使った分だけの料金です。リダイレクトのような小さな処理にぴったりです。",
+        "ALB も HTTP と HTTPS を受けて Lambda を呼べますが、動かしている時間ずっと料金がかかり、1つのリージョンにしか置けません。運用の手間とコストを最小にしたい問題では、CloudFront の方が選ばれます。"
+      ],
+      "tags": ["CloudFront", "Lambda@Edge", "API Gateway", "リダイレクト", "HTTPS"]
+    },
+    {
+      "id": "p019", "field": "security", "date": "2026-10-15",
+      "title": "複数のドメインを HTTPS にするなら ACM の証明書に SAN でまとめる",
+      "power": "証明書は1枚に、ドメインを何個でも書き込める（SAN）",
+      "body": [
+        "HTTPS で通信するには、SSL/TLS 証明書（そのドメインが本物だと証明するもの）が必要です。",
+        "ACM（AWS Certificate Manager）を使うと、証明書を無料で作れて、期限が来たら自動で更新してくれます。",
+        "SAN（サブジェクト代替名）に複数のドメインを書けば、1枚の証明書で全部のドメインを HTTPS にできます。",
+        "ACM の証明書は、CloudFront、ALB、API Gateway に付けられます。EC2 に直接入れることはできません。",
+        "CloudFront で使う証明書は、必ずバージニア北部リージョン（us-east-1）の ACM で作ります。Lambda@Edge の関数も us-east-1 で作ります。"
+      ],
+      "tags": ["ACM", "SSL/TLS 証明書", "SAN", "CloudFront", "us-east-1"]
     }
   ]
 }
