@@ -978,6 +978,32 @@
         "EventBridge で Lambda を定期的に起動してローテーションする方法も動きますが、Secrets Manager の標準機能があるのに自作するので、運用の手間が増えます。"
       ],
       "tags": ["Secrets Manager", "ローテーション", "Parameter Store", "CloudFormation", "RDS"]
+    },
+    {
+      "id": "p128", "field": "network", "date": "2026-10-15",
+      "title": "API Gateway の REST API と HTTP API の違い",
+      "power": "多機能の REST、安くて速い HTTP。DynamoDB に直結できるのは REST だけ",
+      "body": [
+        "API Gateway には REST API と HTTP API の2種類があります。どちらも HTTPS で公開でき、サーバーなしで自動でスケールします。",
+        "REST API は機能が多い方です。DynamoDB など、ほぼすべての AWS サービスに Lambda を挟まず直接つなげます（AWS 統合）。API キーや使用量プラン、キャッシュも使えます。",
+        "HTTP API は、機能を絞った代わりに安くて速い方です。直接つなげる AWS サービスは SQS、Step Functions、Kinesis、EventBridge などの一部だけで、DynamoDB には直接つなげません。",
+        "HTTP API から DynamoDB を使うなら、間に Lambda を置いて、Lambda から DynamoDB を読み書きします。",
+        "「API Gateway → DynamoDB 直結」は REST、「API Gateway → Lambda → DynamoDB」は REST でも HTTP でも OK、と覚えます。"
+      ],
+      "tags": ["API Gateway", "REST API", "HTTP API", "DynamoDB", "サーバーレス"]
+    },
+    {
+      "id": "p129", "field": "network", "date": "2026-10-15",
+      "title": "Lambda を後ろに置ける入口は API Gateway と ALB だけ",
+      "power": "Lambda を呼べる受付は API Gateway と ALB。NLB と Global Accelerator は呼べない",
+      "body": [
+        "Lambda を直接呼び出せる入口は、API Gateway と ALB（アプリケーションロードバランサー）です。",
+        "NLB（ネットワークロードバランサー）は、Lambda をターゲットにできません。つなげる相手は EC2、IP アドレス、ALB です。",
+        "Global Accelerator は、世界中から AWS への通信を速く安定させるサービスです。つなげる相手は ALB、NLB、EC2、Elastic IP で、Lambda や Lambda@Edge にはつなげません。",
+        "Lambda@Edge は CloudFront の中で動く関数です。CloudFront 以外とは組み合わせられません。",
+        "「サーバーレスで簡単な API」と出たら、まず API Gateway の選択肢を探します。"
+      ],
+      "tags": ["Lambda", "API Gateway", "ALB", "NLB", "Global Accelerator", "Lambda@Edge"]
     }
   ]
 }
