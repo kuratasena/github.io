@@ -1077,6 +1077,32 @@
         "「可能な限り正確に」とあれば、一番細かいデータを出す CUR が候補です。"
       ],
       "tags": ["解き方", "AWS Organizations", "請求"]
+    },
+    {
+      "id": "p025", "field": "org", "date": "2026-10-18",
+      "title": "新しいアカウントに自動で同じ構成を作るなら CloudFormation StackSets（自動デプロイ）",
+      "power": "共有は RAM、配布は StackSets。新入社員の机は自動で用意",
+      "body": [
+        "StackSets は、1つの CloudFormation テンプレートを、たくさんのアカウントとリージョンにまとめて配る仕組みです。管理アカウント（または委任された管理者アカウント）から操作します。",
+        "Organizations と連携した「サービスマネージド」の権限で作り、「自動デプロイ」をオンにすると、対象の OU に新しいアカウントが入った瞬間に、そのアカウントへ自動でスタックが作られます。人が毎回作業する必要はありません。",
+        "Transit Gateway の例では、まず管理アカウントの Transit Gateway を RAM で組織に共有します。共有しておかないと、メンバーアカウントからアタッチメントを作れません。",
+        "次に StackSets で、各メンバーアカウントに VPC と「VPC アタッチメント」を作り、共有された Transit Gateway の ID を指定してつなぎます。",
+        "SCP は「やっていいことの上限」を決めるもので、リソースを共有する機能はありません。Service Catalog は「使ってよい構成の一覧（カタログ）」を用意するサービスで、Transit Gateway の共有には使いません。"
+      ],
+      "tags": ["CloudFormation StackSets", "自動デプロイ", "AWS RAM", "Transit Gateway", "AWS Organizations"]
+    },
+    {
+      "id": "p132", "field": "network", "date": "2026-10-18",
+      "title": "Transit Gateway のアタッチメントは「何をつなぐか」で種類が違う",
+      "power": "VPC をつなぐのは VPC アタッチメント、TGW 同士をつなぐのがピアリングアタッチメント",
+      "body": [
+        "アタッチメントとは、Transit Gateway（乗り換え駅）に何かをつなぐための「接続口」です。",
+        "VPC アタッチメント：VPC を Transit Gateway につなぎます。VPC を駅につなぎたいならこれです。",
+        "ピアリングアタッチメント：Transit Gateway 同士をつなぎます。主に別のリージョンの Transit Gateway とつなぐときに使います。VPC をつなぐためのものではありません。",
+        "ほかに、VPN アタッチメント（オンプレミスと VPN でつなぐ）、Direct Connect ゲートウェイとのアタッチメントなどがあります。",
+        "選択肢で「VPC をつなぐのにピアリングアタッチメント」と書いてあったら不正解です。"
+      ],
+      "tags": ["Transit Gateway", "VPC アタッチメント", "ピアリングアタッチメント"]
     }
   ]
 }
