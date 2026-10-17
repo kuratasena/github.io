@@ -647,13 +647,9 @@
   html { background: #1C1015; }
   body { background: transparent; background-image: none; color: var(--white); }
   .wx-scene { position: fixed; inset: 0; z-index: -3; overflow: hidden; pointer-events: none;
-    background: linear-gradient(180deg, #170F1C 0%, #2E1A26 16%, #5E2A2A 36%, #A44A2C 54%, #D9773A 68%, #EFA552 78%, #F6C873 84%, #F8D990 86%); }
-  .wx-sun { position: absolute; left: 70%; top: 80%; width: 54vmin; height: 54vmin; margin: -27vmin 0 0 -27vmin; border-radius: 50%;
-    background: radial-gradient(circle, #FFF4D6 0 13%, rgba(255,226,160,0.9) 19%, rgba(255,184,96,0.45) 38%, rgba(255,150,70,0) 68%); }
-  .wx-far, .wx-near { position: absolute; left: -4%; width: 108%; bottom: 0; height: 30vh; min-height: 180px; will-change: transform; }
-  .wx-near { height: 24vh; min-height: 140px; }
-  .wx-tumble-lane { position: absolute; left: 0; right: 0; bottom: 3vh; height: 60px; }
-  .wx-tumble { position: absolute; left: 0; bottom: 0; width: 46px; height: 46px; }
+    background: #3a2430 url("bg-desert.jpg") 62% 70% / cover no-repeat; }
+  .wx-scene::after { content: ""; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0) 40%, rgba(10,4,8,0.35) 100%); }
   .wx-dust { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 30; pointer-events: none; }
   .wx-grain { position: fixed; inset: 0; z-index: 31; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
@@ -792,7 +788,7 @@
   .ms-title, .mspec-h { font-family: var(--font-head); font-weight: 400; letter-spacing: 0.04em; }
   .ms-tile { border-radius: 2px; }
   .mtoast { font-family: var(--font-head); background: linear-gradient(180deg, #F6D485, #D79A35 55%, #B47622); color: #2B1C11; letter-spacing: 0.03em; }
-  .mintro { background: linear-gradient(180deg, #170F1C 0%, #2E1A26 22%, #5E2A2A 44%, #A44A2C 62%, #D9773A 76%, #F2B45E 88%) !important; }
+  .mintro { background: linear-gradient(180deg, rgba(14,8,14,0.55), rgba(14,8,14,0.25) 60%, rgba(14,8,14,0.55)), #3a2430 url("bg-desert.jpg") 62% 70% / cover no-repeat !important; }
   .mi-title { font-family: var(--font-head); font-weight: 400; letter-spacing: 0.04em; }
   .mpeek::before { font-size: clamp(30px, 8vw, 42px); }
   .mpk-top { margin-bottom: auto; }
@@ -828,15 +824,24 @@
   .pttag { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-soft); background: rgba(43,28,17,0.08); padding: 3px 7px; border-radius: 4px; }
   .ptdate { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-soft); margin-left: auto; }
   .ptnew { font-family: var(--font-mono); font-size: 10px; color: #fff; background: var(--retry); padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: 1px; }
+  /* service groups inside a field */
+  .ptsvc { margin: 0 0 16px; }
+  .ptsvc:last-child { margin-bottom: 4px; }
+  .ptsvchead { display: flex; align-items: center; gap: 8px; margin: 2px 0 8px; }
+  .ptsvchead::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 6px rgba(226,168,63,0.6); flex: none; }
+  .ptsvcname { font-family: var(--font-head, var(--font-jp)); font-size: 14px; color: #F3DDB0; letter-spacing: 0.02em; }
+  .ptsvccount { font-family: var(--font-mono); font-size: 10.5px; color: var(--white-dim); background: rgba(255,255,255,0.08); border-radius: 999px; padding: 1px 7px; }
+  .ptsvc .ptlist { padding-left: 14px; border-left: 1px dashed rgba(246,234,208,0.18); margin-left: 3px; }
+  /* card tips that come from the 解説 */
+  .tipsrc { display: inline-block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.02em; color: #6B4210; background: rgba(43,28,17,0.08); border-radius: 4px; padding: 1px 6px; margin-right: 6px; vertical-align: 1px; }
+  .tipitem.tipauto { background: rgba(120,160,190,0.14); border-left-color: #5E7F96; }
+  .tipautolist + .tiplist { margin-top: 8px; }
+  .tlitip.auto { background: rgba(140,180,210,0.12); border-left-color: #7FA2BA; }
+  .tlitip.auto .tipsrc { color: #E7D7B5; background: rgba(255,255,255,0.1); }
 </style>
 </head>
 <body>
-<div class="wx-scene" aria-hidden="true">
-  <div class="wx-sun"></div>
-  <svg class="wx-far" viewBox="0 0 1600 400" preserveAspectRatio="xMidYMax slice"><path d="M0 400V250h70l18-38h120l22 38h60l40-26 90 6 30-52h150l26 52 40 4 60-30 110 8 24-48h170l30 48h60l50-26 120 10 20-40h110l26 40h104v214z" fill="#6E2F27" opacity=".82"/></svg>
-  <svg class="wx-near" viewBox="0 0 1600 400" preserveAspectRatio="xMidYMax slice"><path d="M0 400V318c120-10 240 6 380-6 150-14 260 12 420 2 170-10 300-16 460 0 130 12 230 4 340 4v82z" fill="#2E1813"/><path d="M1180 318v-62m0 22c-16 0-18-14-18-26m18 14c16 0 18-12 18-22M300 330v-44m0 16c-12 0-14-10-14-18m14 10c11 0 13-8 13-14" stroke="#2E1813" stroke-width="12" stroke-linecap="round" fill="none"/></svg>
-  <div class="wx-tumble-lane"></div>
-</div>
+<div class="wx-scene" aria-hidden="true"></div>
 <canvas class="wx-dust" aria-hidden="true"></canvas>
 <div class="wx-grain" aria-hidden="true"></div>
 <div class="wrap">
@@ -3582,6 +3587,33 @@
     pushToCloud();
   }
   function getTipsFor(id){ return examTips[id] || []; }
+
+  // ---- 試験のポイント from the 解説 (exam-points.json): short summaries attached to cards ----
+  var autoTips = {};
+  function getAutoTipsFor(id){ return autoTips[id] || []; }
+  function hasAnyTips(id){ return getTipsFor(id).length > 0 || getAutoTipsFor(id).length > 0; }
+  window.sapPointsData = window.sapPointsData || fetch("exam-points.json?v=" + Date.now(), { cache: "no-store" })
+    .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); });
+  window.sapPointsData.then(function(d){
+    var have = {}; TERMS.forEach(function(x){ have[x.id] = 1; });
+    var added = false;
+    (d.terms || []).forEach(function(x){
+      if (!x || !x.id || have[x.id]) return;
+      TERMS.push(t(x.id, x.term, x.cat, x.desc));
+      have[x.id] = 1; added = true;
+      if (order.indexOf(x.id) === -1) order.push(x.id);
+    });
+    autoTips = {};
+    (d.points || []).slice().sort(function(a, b){ return String(a.date || "").localeCompare(String(b.date || "")); }).forEach(function(p){
+      if (!p.summary) return;
+      (p.cards || []).forEach(function(cid){
+        (autoTips[cid] = autoTips[cid] || []).push({ pid: p.id, text: p.summary, title: p.title });
+      });
+    });
+    if (added && shuffled) shuffleOrder();
+    renderCard();
+    if (viewMode === "list") renderTermList();
+  }).catch(function(){});
   function addTip(id, text){
     text = (text || "").trim();
     if (!text) return;
@@ -3987,7 +4019,7 @@
       html += '</button>';
       if (qz.answered && qz.expanded[i]) {
         var eCls = (i === qz.correctIdx) ? "correct" : (i === qz.selectedIdx ? "incorrect" : "");
-        var optTips = getTipsFor(opt.id);
+        var optTips = getAutoTipsFor(opt.id).map(function(a){ return a.text; }).concat(getTipsFor(opt.id));
         html += '<div class="qzexplain ' + eCls + '"><p style="margin:0;">' + escapeHtml(opt.desc) + '</p>';
         if (optTips.length) {
           html += '<div class="tiplist" style="margin-top:8px;">';
@@ -4141,17 +4173,18 @@
     }
     var html = "";
     list.forEach(function(item){
-      var tips = getTipsFor(item.id);
+      var tips = getTipsFor(item.id), atips = getAutoTipsFor(item.id);
       var mk = progress[item.id];
       html += '<div class="termlistitem" data-fid="' + escapeHtml(item.id) + '">';
       html += '<div class="tlihead"><span class="tliterm">' + escapeHtml(item.term) + '</span>';
       html += '<span class="tlibadges"><span class="tlicat">' + escapeHtml(CATMAP[item.cat] || item.cat) + '</span>';
       if (mk === "retry") html += '<span class="tliweak">苦手</span>';
-      if (tips.length) html += '<span class="tlitipbadge">🎯</span>';
+      if (tips.length || atips.length) html += '<span class="tlitipbadge">🎯</span>';
       html += '</span></div>';
       html += '<p class="tlidesc">' + escapeHtml(item.desc) + '</p>';
-      if (tips.length) {
+      if (tips.length || atips.length) {
         html += '<div class="tlitips">';
+        atips.forEach(function(a){ html += '<div class="tlitip auto"><span class="tipsrc">📘 解説</span>' + escapeHtml(a.text) + '</div>'; });
         tips.forEach(function(tp){ html += '<div class="tlitip">' + escapeHtml(tp) + '</div>'; });
         html += '</div>';
       }
@@ -4198,12 +4231,19 @@
 
   function renderTipsSection(item){
     var container = document.getElementById("backTips");
-    var tips = getTipsFor(item.id);
-    document.getElementById("frontTipBadge").style.display = tips.length ? "inline" : "none";
+    var tips = getTipsFor(item.id), atips = getAutoTipsFor(item.id);
+    document.getElementById("frontTipBadge").style.display = (tips.length || atips.length) ? "inline" : "none";
 
     var html = '<div class="tipsheader">🎯 試験のポイント<button type="button" class="tipaddtoggle" id="tipAddToggle">' + (tipComposerOpen ? "閉じる" : "+ 追加") + '</button></div>';
 
-    if (tips.length === 0 && !tipComposerOpen) {
+    if (atips.length) {
+      html += '<div class="tiplist tipautolist">';
+      atips.forEach(function(a){
+        html += '<div class="tipitem tipauto"><span class="tiptext"><span class="tipsrc">📘 解説</span>' + escapeHtml(a.text) + '</span></div>';
+      });
+      html += '</div>';
+    }
+    if (tips.length === 0 && atips.length === 0 && !tipComposerOpen) {
       html += '<p class="tipempty">まだありません。「+ 追加」から、この用語の引っかけポイントや注意点を書き留められます。</p>';
     } else if (tips.length > 0) {
       html += '<div class="tiplist">';
@@ -4664,7 +4704,7 @@
       var list = getFiltered();
       if (!list.length) return null;
       var it = list[((currentPos + off) % list.length + list.length) % list.length];
-      return { term: it.term, cat: CATMAP[it.cat] || it.cat, weak: progress[it.id] === "retry", tip: getTipsFor(it.id).length > 0 };
+      return { term: it.term, cat: CATMAP[it.cat] || it.cat, weak: progress[it.id] === "retry", tip: hasAnyTips(it.id) };
     },
     jumpTo: function(id){
       switchTab("cards");
@@ -4701,7 +4741,7 @@
   if (!area) return;
   function esc(x){ return String(x == null ? "" : x).replace(/[&<>"']/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function isNew(p){ if (seen[p.id]) return false; var t = Date.parse(p.date); return !isNaN(t) && (Date.now() - t) < NEW_DAYS * 864e5; }
-  function hay(p){ return [p.title, p.power].concat(p.body || [], p.tags || []).join(" ").toLowerCase(); }
+  function hay(p){ return [p.title, p.power, p.service || "", p.summary || ""].concat(p.body || [], p.tags || []).join(" ").toLowerCase(); }
   function matches(p){ return (field === "all" || p.field === field) && (!query || hay(p).indexOf(query) >= 0); }
   function renderChips(){
     var counts = {}; data.points.forEach(function(p){ counts[p.field] = (counts[p.field] || 0) + 1; });
@@ -4729,7 +4769,19 @@
       list.sort(function(a, b){ return String(b.date || "").localeCompare(String(a.date || "")); });
       if (!list.length) return;
       shown += list.length;
-      html += '<section class="ptfield"><div class="ptfieldhead">' + esc(f.name) + '<span>' + list.length + '件</span></div><div class="ptlist">' + list.map(card).join("") + '</div></section>';
+      // within a field, group by service (biggest groups first; ties by newest point)
+      var groups = [], byName = {};
+      list.forEach(function(p){
+        var k = p.service || "その他";
+        if (!byName[k]) { byName[k] = { name: k, items: [] }; groups.push(byName[k]); }
+        byName[k].items.push(p);
+      });
+      groups.sort(function(a, b){ return b.items.length - a.items.length; });
+      html += '<section class="ptfield"><div class="ptfieldhead">' + esc(f.name) + '<span>' + list.length + '件</span></div>' +
+        groups.map(function(g){
+          return '<div class="ptsvc"><div class="ptsvchead"><span class="ptsvcname">' + esc(g.name) + '</span><span class="ptsvccount">' + g.items.length + '</span></div>' +
+            '<div class="ptlist">' + g.items.map(card).join("") + '</div></div>';
+        }).join("") + '</section>';
     });
     area.innerHTML = html || '<p class="emptynote">該当するポイントがありません。</p>';
     status.textContent = shown + " 件のポイント" + (data.updated ? "（最終更新 " + data.updated + "）" : "");
@@ -4744,9 +4796,10 @@
     var b = d.querySelector(".ptnew"); if (b) b.remove();
   }, true);
   search.addEventListener("input", function(){ query = search.value.trim().toLowerCase(); render(); });
-  fetch("exam-points.json?v=" + Date.now(), { cache: "no-store" })
-    .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
+  (window.sapPointsData || fetch("exam-points.json?v=" + Date.now(), { cache: "no-store" })
+    .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }))
     .then(function(d){
+      d = JSON.parse(JSON.stringify(d));
       d.fields = d.fields || []; d.points = d.points || [];
       var known = {}; d.fields.forEach(function(f){ known[f.id] = 1; });
       d.points.forEach(function(p){ if (!known[p.field]) { known[p.field] = 1; d.fields.push({ id: p.field, name: p.field }); } });
