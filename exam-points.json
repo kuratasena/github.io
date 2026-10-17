@@ -1262,6 +1262,20 @@
         "選択肢の構成が立派でも、「問題文のどの要件のためにそれが必要か」を説明できなければ、やりすぎを疑います。"
       ],
       "tags": ["解き方", "マルチ AZ", "マルチリージョン", "高可用性"]
+    },
+    {
+      "id": "p069", "field": "compute", "date": "2026-10-18",
+      "title": "CloudFormation と Elastic Beanstalk の使い分け",
+      "power": "Beanstalk はおまかせコース、CloudFormation は設計図どおりのオーダーメイド",
+      "body": [
+        "Elastic Beanstalk は、アプリのコードを渡すだけで、EC2、ロードバランサー、Auto Scaling などを自動で組み立ててくれるサービスです。早く簡単に動かしたいときに向いています。",
+        "CloudFormation は、構成を設計図（テンプレート）に細かく書いて、そのとおりに作るサービスです。どんな AWS のリソースでも、好きな組み合わせで作れます。",
+        "どちらが正解かは、ツールの名前より「中身の構成」で決まることが多いです。Beanstalk の選択肢でも、ロードバランサーの種類やリージョンの数などが要件に合っていなければ不正解です。",
+        "Beanstalk の環境の中で RDS を作ると、DB が環境と一緒に消える作りになります。環境を作り直したり消したりすると DB も消えるので、本番の DB は Beanstalk の外で作るのが AWS のおすすめです。",
+        "CloudFormation なら、DB に削除ポリシー（DeletionPolicy: Retain）を付けて、スタックを消しても DB を残せます。",
+        "「アプリだけ早く動かしたい」「インフラは気にしたくない」なら Beanstalk、「構成を細かく決めたい」「DB を守りたい」「同じ構成を何度も作りたい」なら CloudFormation を選びます。"
+      ],
+      "tags": ["CloudFormation", "Elastic Beanstalk", "DeletionPolicy", "IaC"]
     }
   ]
 }
