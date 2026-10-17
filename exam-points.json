@@ -1317,6 +1317,22 @@
         "Trusted Advisor は、すでに AWS で動いているリソースを見てアドバイスするサービスです。オンプレミスのサーバーの情報を取り込んで、移行先を推奨する機能はありません。"
       ],
       "tags": ["Application Discovery Service", "Discovery Agent", "Migration Hub", "EC2 インスタンスの推奨", "移行計画"]
+    },
+    {
+      "id": "p055", "field": "migration", "date": "2026-10-18",
+      "title": "Migration Hub は移行の「司令塔」。自分ではデータを運ばない",
+      "power": "Migration Hub は引っ越しの管理ボード。荷物を運ぶのはトラック（MGN・DMS）",
+      "body": [
+        "Migration Hub は、移行の計画から完了までを1か所で見るための画面です。自分ではサーバーやデータを運びません。",
+        "機能1・サーバーの一覧：Discovery Agent などで集めたオンプレミスのサーバー情報が、ここに一覧で集まります。CSV で手入力の情報を取り込むこともできます。",
+        "機能2・グループ分け：サーバーを「このアプリ用」とアプリケーションごとにまとめます。移行はこのグループ単位で進めます。",
+        "機能3・EC2 の推奨：各サーバーの実際の使い方から、ちょうどいい EC2 のインスタンスタイプと費用の見積もりを出します。",
+        "機能4・移行戦略の推奨（Strategy Recommendations）：アプリごとに「そのまま移す（リホスト）」「少し手を入れる（リプラットフォーム）」「作り直す（リファクタリング）」のどれが良いかを提案します。",
+        "機能5・進み具合の追跡：実際にサーバーを運ぶのは Application Migration Service（MGN）、データベースを運ぶのは DMS などの別のサービスです。Migration Hub は、それらの進み具合をアプリごとにまとめて表示します。",
+        "使う前に「ホームリージョン」を1つ決めます。移行の情報はすべてそのリージョンに集まります。",
+        "流れで覚える：Discovery で調べる → Migration Hub でまとめて計画する → MGN や DMS で運ぶ → Migration Hub で進み具合を見る。"
+      ],
+      "tags": ["Migration Hub", "Application Migration Service", "DMS", "Strategy Recommendations", "移行計画"]
     }
   ]
 }
