@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-13",
+  "updated": "2026-10-18",
   "fields": [
     { "id": "network", "name": "ネットワーク" },
     { "id": "security", "name": "セキュリティ・権限" },
