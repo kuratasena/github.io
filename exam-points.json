@@ -1303,6 +1303,20 @@
         "「全アカウントに」「複数のリージョンに」「新しいアカウントにも自動で」と出たらスタックセット、1つのアカウントだけならスタック、と覚えます。"
       ],
       "tags": ["CloudFormation", "スタック", "スタックセット", "スタックインスタンス"]
+    },
+    {
+      "id": "p054", "field": "migration", "date": "2026-10-18",
+      "title": "移行前の調査は「Discovery Agent で集める → Migration Hub でまとめる・グループ分け・EC2 の推奨」",
+      "power": "調べるのは Discovery、まとめて見積もるのは Migration Hub。Trusted Advisor は AWS に来てから",
+      "body": [
+        "Application Discovery Service は、オンプレミスのサーバーの情報を集めるサービスです。物理マシンや VM に Discovery Agent を入れると、構成（CPU・メモリ・OS など）、性能（使用率）、動いているプロセス、どこと通信しているか（ネットワーク接続）まで細かく集められます。",
+        "VMware の VM だけで、エージェントを入れたくない場合は、エージェントなしの Discovery Agentless Collector も使えます。ただし、プロセスやネットワーク接続など、サーバーの中の細かい情報は、エージェント版の方が詳しく取れます。",
+        "集めた情報は Migration Hub に集まります。Migration Hub では、サーバーを「このアプリに使っているサーバーたち」とグループにまとめて、移行の単位を決められます。",
+        "Migration Hub は、集めた使用状況をもとに、ちょうどいい EC2 のインスタンスタイプと、その費用の見積もりも出してくれます（EC2 インスタンスの推奨）。",
+        "Systems Manager Agent や Application Manager は、AWS に来た後のサーバーやアプリの運用・管理のためのもので、移行前の調査やグループ分けには使いません。",
+        "Trusted Advisor は、すでに AWS で動いているリソースを見てアドバイスするサービスです。オンプレミスのサーバーの情報を取り込んで、移行先を推奨する機能はありません。"
+      ],
+      "tags": ["Application Discovery Service", "Discovery Agent", "Migration Hub", "EC2 インスタンスの推奨", "移行計画"]
     }
   ]
 }
