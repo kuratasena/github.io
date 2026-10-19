@@ -1767,7 +1767,7 @@
     { "id": "xi03", "term": "SQS のキューの長さでスケーリング", "cat": "integration",
       "desc": "SQS にたまっているメッセージ数（ApproximateNumberOfMessagesVisible）を見て、処理する EC2 の台数を Auto Scaling で増減させる構成。「1台あたりの待ち件数」を目標にしたターゲット追跡がよく使われる。" },
     { "id": "xa03", "term": "OpenSearch のストレージ階層（ホット / UltraWarm / コールド）", "cat": "analytics",
-      "desc": "ホットはふつうのデータノードで、書き込みと速い検索ができるが高い。UltraWarm は S3 を土台にした安い読み取り専用の階層。コールドはさらに安く、使うときに UltraWarm へ戻してから検索する。" },
+      "desc": "AWS のマネージド版（Amazon OpenSearch Service）だけの機能で、使うには専用マスターノードが必要。OpenSearch Serverless やオープンソース版にはない。ホットはふつうのデータノードで、書き込みと速い検索ができるが高い。UltraWarm は S3 を土台にした安い読み取り専用の階層。コールドはさらに安く、使うときに UltraWarm へ戻してから検索する。" },
     { "id": "xa04", "term": "Index State Management（ISM）", "cat": "analytics",
       "desc": "OpenSearch のインデックスを、作ってからの日数などのルールで、ホット → UltraWarm → コールド → 削除と自動で移していく機能。" }
   ]
