@@ -1591,6 +1591,22 @@
       ],
       "cards": ["xi03", "i06", "co06", "co08", "i04"],
       "tags": ["SQS", "EC2 Auto Scaling", "Lambda", "Amazon MQ", "疎結合"]
+    },
+    {
+      "id": "p084", "field": "analytics", "service": "OpenSearch", "date": "2026-10-19",
+      "title": "OpenSearch の費用を下げるなら「ホットを減らして UltraWarm を足す」＋ 元データは S3 ライフサイクルでアーカイブ",
+      "power": "よく使う本は手元の棚（ホット）、読むだけの本は安い書庫（UltraWarm）、原本は地下倉庫（Deep Archive）",
+      "summary": "OpenSearch はホットのデータノードを減らし、読むだけのデータは安い UltraWarm に移す。ただしホットは取り込みに必要なのでゼロにはできない。元データのアーカイブは S3 ライフサイクルで Deep Archive へ移し、消さない。",
+      "body": [
+        "OpenSearch のデータノード（ホット）は、データの取り込み（書き込み）と速い検索ができますが、料金が高い階層です。",
+        "UltraWarm は、S3 を土台にした安い階層です。読み取り専用なので、分析で読むだけのデータを置くのに向いています。データノードを減らし、UltraWarm を足すと、たくさんのデータを安く持てます。",
+        "新しいデータは、まずホットに取り込み、そのあと ISM などで UltraWarm に移します。UltraWarm は書き込めないので、すべてのデータノードを UltraWarm に置き換えることはできません。",
+        "元の入力データは「すべてアーカイブとして保持」が要件なので、消してはいけません。S3 ライフサイクルポリシーで、一定期間たったら S3 Glacier Deep Archive に自動で移すと、一番安く保管できます。",
+        "クラスターにロードしてすぐに Deep Archive に移すのは早すぎます。読み直しが必要になったときに、取り出しに何時間もかかってしまいます。",
+        "インスタンスストアのデータノードを足すのは、ホットを増やすのと同じで、費用は下がりません。"
+      ],
+      "cards": ["xa03", "xa04", "a10", "xt03", "xt02"],
+      "tags": ["OpenSearch", "UltraWarm", "ISM", "S3 ライフサイクル", "Glacier Deep Archive"]
     }
   ],
   "terms": [
@@ -1749,6 +1765,10 @@
     { "id": "xp08", "term": "ターゲット追跡スケーリング", "cat": "compute",
       "desc": "「使用率を70%に保つ」のように目標値を決めておくと、その値に近づくように容量を自動で増減させるスケーリング方法。" },
     { "id": "xi03", "term": "SQS のキューの長さでスケーリング", "cat": "integration",
-      "desc": "SQS にたまっているメッセージ数（ApproximateNumberOfMessagesVisible）を見て、処理する EC2 の台数を Auto Scaling で増減させる構成。「1台あたりの待ち件数」を目標にしたターゲット追跡がよく使われる。" }
+      "desc": "SQS にたまっているメッセージ数（ApproximateNumberOfMessagesVisible）を見て、処理する EC2 の台数を Auto Scaling で増減させる構成。「1台あたりの待ち件数」を目標にしたターゲット追跡がよく使われる。" },
+    { "id": "xa03", "term": "OpenSearch のストレージ階層（ホット / UltraWarm / コールド）", "cat": "analytics",
+      "desc": "ホットはふつうのデータノードで、書き込みと速い検索ができるが高い。UltraWarm は S3 を土台にした安い読み取り専用の階層。コールドはさらに安く、使うときに UltraWarm へ戻してから検索する。" },
+    { "id": "xa04", "term": "Index State Management（ISM）", "cat": "analytics",
+      "desc": "OpenSearch のインデックスを、作ってからの日数などのルールで、ホット → UltraWarm → コールド → 削除と自動で移していく機能。" }
   ]
 }
