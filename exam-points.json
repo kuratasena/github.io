@@ -1541,7 +1541,8 @@
         "機能4・移行戦略の推奨（Strategy Recommendations）：アプリごとに「そのまま移す（リホスト）」「少し手を入れる（リプラットフォーム）」「作り直す（リファクタリング）」のどれが良いかを提案します。",
         "機能5・進み具合の追跡：実際にサーバーを運ぶのは Application Migration Service（MGN）、データベースを運ぶのは DMS などの別のサービスです。Migration Hub は、それらの進み具合をアプリごとにまとめて表示します。",
         "使う前に「ホームリージョン」を1つ決めます。移行の情報はすべてそのリージョンに集まります。",
-        "流れで覚える：Discovery で調べる → Migration Hub でまとめて計画する → MGN や DMS で運ぶ → Migration Hub で進み具合を見る。"
+        "流れで覚える：Discovery で調べる → Migration Hub でまとめて計画する → MGN や DMS で運ぶ → Migration Hub で進み具合を見る。",
+        "Discovery Agent との違い：Agent は各サーバーの中に入って情報を「集める」道具（現場の調査員）。Migration Hub はその情報を受け取って「まとめる・グループ分けする・推奨を出す・進み具合を見る」場所（本部の管理ボード）。Agent だけでは計画が立てられず、Migration Hub だけではサーバーの中の情報が集まらない。"
       ],
       "cards": ["mi05", "mi02", "mi03"],
       "tags": ["Migration Hub", "Application Migration Service", "DMS", "Strategy Recommendations", "移行計画"]
