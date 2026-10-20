@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-19",
+  "updated": "2026-10-20",
   "fields": [
     { "id": "network", "name": "ネットワーク" },
     { "id": "security", "name": "セキュリティ・権限" },
@@ -1607,6 +1607,21 @@
       ],
       "cards": ["xa03", "xa04", "a10", "xt03", "xt02"],
       "tags": ["OpenSearch", "UltraWarm", "ISM", "S3 ライフサイクル", "Glacier Deep Archive"]
+    },
+    {
+      "id": "p150", "field": "org", "service": "SCP", "date": "2026-10-20",
+      "title": "「この OU では〇〇を絶対にさせない」は、Deny を書いた SCP をその OU に付ける",
+      "power": "禁止は Deny で門番に頼む。Allow を足しても門は閉まらない",
+      "summary": "特定の OU で危険な操作をさせないなら、その操作を Deny する SCP をその OU に付けるのが一番手間が少ない。Config や EventBridge＋Lambda は起きた後の対処、Allow を足す SCP は FullAWSAccess が残っていると効かない。",
+      "body": [
+        "「できないようにしたい」は予防です。SCP で操作そのものを Deny すれば、その OU のアカウントでは誰も実行できなくなります。Staging OU に付ければ、中のアカウントすべてに一度で効きます。",
+        "AWS Config のルールは、ルール違反を「見つけて知らせる」だけで、作成そのものは止めません（検出的コントロール）。",
+        "EventBridge ＋ Lambda で作られたルールを自動で消す方法は、一瞬は開いてしまううえ、アカウントごとに仕組みを配って保守する手間がかかります。",
+        "「0.0.0.0/0 でなければ許可」という Allow の SCP は、FullAWSAccess が付いたままだと全部許可のままで、何も制限できません。禁止したいなら Deny で書きます。",
+        "注意：解説の SCP の例にある aws:SourceIp は「API を呼んだ人の IP アドレス」を表す条件で、セキュリティグループのルールに書く IP 範囲ではありません。試験では「Deny の SCP をその OU に付ける」が正解の型として出ますが、実務で 0.0.0.0/0 のルールを確実に止めるには、Firewall Manager のセキュリティグループポリシーや Config の自動修復を組み合わせることが多いです。"
+      ],
+      "cards": ["c15", "mg07", "xc02", "xm07", "xs10", "sc08"],
+      "tags": ["SCP", "Deny", "AWS Config", "EventBridge", "セキュリティグループ"]
     }
   ],
   "terms": [
@@ -1769,6 +1784,8 @@
     { "id": "xa03", "term": "OpenSearch のストレージ階層（ホット / UltraWarm / コールド）", "cat": "analytics",
       "desc": "AWS のマネージド版（Amazon OpenSearch Service）だけの機能で、使うには専用マスターノードが必要。OpenSearch Serverless やオープンソース版にはない。ホットはふつうのデータノードで、書き込みと速い検索ができるが高い。UltraWarm は S3 を土台にした安い読み取り専用の階層。コールドはさらに安く、使うときに UltraWarm へ戻してから検索する。" },
     { "id": "xa04", "term": "Index State Management（ISM）", "cat": "analytics",
-      "desc": "OpenSearch のインデックスを、作ってからの日数などのルールで、ホット → UltraWarm → コールド → 削除と自動で移していく機能。" }
+      "desc": "OpenSearch のインデックスを、作ってからの日数などのルールで、ホット → UltraWarm → コールド → 削除と自動で移していく機能。" },
+    { "id": "xs10", "term": "条件キー aws:SourceIp", "cat": "security",
+      "desc": "ポリシーの条件で使うキーのひとつ。「API を呼び出した人の IP アドレス」を表す。セキュリティグループに書く IP アドレスの範囲（ルールの中身）を表すものではない。" }
   ]
 }
