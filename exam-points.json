@@ -1356,7 +1356,7 @@
         "ALB の後ろに EC2 を置くだけでは、台数は増えません。自動で増やすには Auto Scaling も必要で、さらにサーバーの管理も残ります。",
         "EKS は Kubernetes の管理が必要で、運用の手間が大きくなります。"
       ],
-      "cards": ["co08", "fr02"],
+      "cards": ["co08", "fr02", "xp09"],
       "tags": ["Lambda", "API Gateway", "サーバーレス", "スケーリング"]
     },
     {
@@ -1622,6 +1622,21 @@
       ],
       "cards": ["c15", "mg07", "xc02", "xm07", "xs10", "sc08"],
       "tags": ["SCP", "Deny", "AWS Config", "EventBridge", "セキュリティグループ"]
+    },
+    {
+      "id": "p160", "field": "compute", "service": "Lambda・サーバーレス", "date": "2026-10-20",
+      "title": "Webhook の受け口をサーバーレスにするなら「API Gateway ＋ 処理ごとの Lambda」",
+      "power": "受付は1つ（API Gateway）、担当者はパスごとに分ける（Lambda）",
+      "summary": "Webhook のように HTTP で呼ばれる小さな処理は、API Gateway の1つの入口から処理ごとの Lambda へ振り分けるのが運用最小。App Runner は ALB のターゲットにできず、Fargate はコンテナの管理が残る。",
+      "body": [
+        "API Gateway（HTTP API）で入口を1つ作り、「/build なら A の Lambda、/deploy なら B の Lambda」のようにパスごとに振り分けます。Git サーバー側は、同じ入口のパス違いを登録するだけです。",
+        "Lambda も API Gateway もサーバーがなく、呼ばれた分だけ動いて自動でスケールします。EC2、ALB、Auto Scaling の管理が全部なくなります。",
+        "Lambda 関数 URL でも呼び出せますが、Webhook が増えるほど URL がバラバラに増え、認証や流量制限、ログをまとめて管理しにくくなります。",
+        "App Runner は自分で HTTPS の URL を持つサービスで、ALB のターゲットにはできません。ALB を前に置くこと自体が余計な構成です。",
+        "ECS on Fargate はサーバーの管理はいりませんが、コンテナのイメージ作りや更新が必要です。また API Gateway から Fargate へは直接つなげず、VPC リンクとロードバランサーを間に挟む必要があり、部品が増えます。"
+      ],
+      "cards": ["co08", "fr02", "xn20", "xp09", "xc09", "co01", "co07"],
+      "tags": ["API Gateway", "Lambda", "Webhook", "Lambda 関数 URL", "App Runner", "サーバーレス"]
     }
   ],
   "terms": [
@@ -1786,6 +1801,10 @@
     { "id": "xa04", "term": "Index State Management（ISM）", "cat": "analytics",
       "desc": "OpenSearch のインデックスを、作ってからの日数などのルールで、ホット → UltraWarm → コールド → 削除と自動で移していく機能。" },
     { "id": "xs10", "term": "条件キー aws:SourceIp", "cat": "security",
-      "desc": "ポリシーの条件で使うキーのひとつ。「API を呼び出した人の IP アドレス」を表す。セキュリティグループに書く IP アドレスの範囲（ルールの中身）を表すものではない。" }
+      "desc": "ポリシーの条件で使うキーのひとつ。「API を呼び出した人の IP アドレス」を表す。セキュリティグループに書く IP アドレスの範囲（ルールの中身）を表すものではない。" },
+    { "id": "xp09", "term": "Lambda 関数 URL", "cat": "compute",
+      "desc": "Lambda 関数に、専用の HTTPS の URL を直接付ける機能。API Gateway なしで呼び出せて手軽だが、関数ごとに URL がバラバラになり、使用量プランやまとめた管理などの機能はない。" },
+    { "id": "xc09", "term": "Webhook", "cat": "concept",
+      "desc": "あるシステムで出来事（例: Git に push された）が起きたときに、決めておいた URL へ自動で HTTP のリクエストを送って知らせる仕組み。" }
   ]
 }
