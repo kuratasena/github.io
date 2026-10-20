@@ -1525,7 +1525,7 @@
         "Systems Manager Agent や Application Manager は、AWS に来た後のサーバーやアプリの運用・管理のためのもので、移行前の調査やグループ分けには使いません。",
         "Trusted Advisor は、すでに AWS で動いているリソースを見てアドバイスするサービスです。オンプレミスのサーバーの情報を取り込んで、移行先を推奨する機能はありません。"
       ],
-      "cards": ["mi01", "mi05", "mg19"],
+      "cards": ["mi01", "mi05", "mg19", "xg03"],
       "tags": ["Application Discovery Service", "Discovery Agent", "Migration Hub", "EC2 インスタンスの推奨", "移行計画"]
     },
     {
@@ -1637,6 +1637,21 @@
       ],
       "cards": ["co08", "fr02", "xn20", "xp09", "xc09", "co01", "co07"],
       "tags": ["API Gateway", "Lambda", "Webhook", "Lambda 関数 URL", "App Runner", "サーバーレス"]
+    },
+    {
+      "id": "p161", "field": "migration", "service": "移行計画（Discovery・Migration Hub）", "date": "2026-10-20",
+      "title": "集めたサーバー情報を SQL で分析したいなら「Discovery Agent ＋ データ探索 ＋ Athena」",
+      "power": "集めるのは Agent、ためるのは S3、SQL で聞くのは Athena",
+      "summary": "移行前にプロセスやネットワークまで集めるなら Discovery Agent。Migration Hub でデータ探索をオンにすると S3 にたまり、Athena の SQL（事前定義クエリあり）でそのまま分析できる。",
+      "body": [
+        "プロセスやネットワーク接続、システムの細かい情報まで集めたいなら、各サーバーに Discovery Agent を入れます。VMware の上で動くサーバーにも入れられます。",
+        "Migration Hub で「データ探索」をオンにすると、エージェントが集めた情報が自動で S3 にたまり、Athena から SQL で検索できるようになります。よく使う検索は事前定義クエリとして最初から用意されています。",
+        "Athena はサーバー不要で、標準の SQL が使えます。「慣れた SQL で分析したい」という要件にそのまま合います。",
+        "Agentless Collector（エージェントなし）は入れる手間がない代わりに、実行中のプロセスなど、サーバーの中の細かい情報は取れません。S3 Select も1つのファイル用で、たくさんのデータの分析には向きません。",
+        "自作スクリプトで集めて CLI でアップロードする方法や、手で足りない情報を書き足す方法は、手間とミスが増えます。Migration Hub の画面は、SQL で自由に分析する場所ではありません。"
+      ],
+      "cards": ["xg02", "xg03", "mi01", "mi05", "a01"],
+      "tags": ["Application Discovery Service", "Discovery Agent", "Migration Hub", "Athena", "データ探索"]
     }
   ],
   "terms": [
@@ -1805,6 +1820,10 @@
     { "id": "xp09", "term": "Lambda 関数 URL", "cat": "compute",
       "desc": "Lambda 関数に、専用の HTTPS の URL を直接付ける機能。API Gateway なしで呼び出せて手軽だが、関数ごとに URL がバラバラになり、使用量プランやまとめた管理などの機能はない。" },
     { "id": "xc09", "term": "Webhook", "cat": "concept",
-      "desc": "あるシステムで出来事（例: Git に push された）が起きたときに、決めておいた URL へ自動で HTTP のリクエストを送って知らせる仕組み。" }
+      "desc": "あるシステムで出来事（例: Git に push された）が起きたときに、決めておいた URL へ自動で HTTP のリクエストを送って知らせる仕組み。" },
+    { "id": "xg02", "term": "Application Discovery Service のデータ探索（Athena）", "cat": "migration",
+      "desc": "Migration Hub でオンにすると、Discovery Agent が集めたサーバーの情報が自動で S3 にたまり、Athena から SQL で検索できるようになる機能。よく使う検索は「事前定義クエリ」として最初から用意されている。" },
+    { "id": "xg03", "term": "Discovery Agent と Agentless Collector", "cat": "migration",
+      "desc": "どちらも移行前にサーバー情報を集める道具。Discovery Agent は各サーバーに入れて、プロセスやネットワーク接続まで細かく集める。Agentless Collector は VMware の仮想マシンを外から調べるので入れる手間はないが、サーバーの中の細かい情報は取れない。" }
   ]
 }
