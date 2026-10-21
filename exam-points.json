@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-20",
+  "updated": "2026-10-21",
   "fields": [
     { "id": "network", "name": "ネットワーク" },
     { "id": "security", "name": "セキュリティ・権限" },
@@ -26,7 +26,7 @@
         "VPC フローログ（通信の記録）で、外部の IP アドレスからの受信が許可（ACCEPT）されていたら、それは「中のサーバーが先に送った通信への返事」だと考えます。",
         "原因を調べるときは、送信元が自分のサーバー、宛先がその外部の IP アドレスになっている記録を探します。"
       ],
-      "cards": ["xn01", "xn03", "nw08"],
+      "cards": ["xn01", "xn03", "nw08", "xn21"],
       "tags": ["NAT ゲートウェイ", "VPC フローログ"]
     },
     {
@@ -1653,6 +1653,22 @@
       ],
       "cards": ["xg02", "xg03", "mi01", "mi05", "a01"],
       "tags": ["Application Discovery Service", "Discovery Agent", "Migration Hub", "Athena", "データ探索"]
+    },
+    {
+      "id": "p162", "field": "network", "service": "VPC・NAT ゲートウェイ", "date": "2026-10-21",
+      "title": "VPC の Lambda から固定のパブリック IP で外に出るなら「NAT ゲートウェイ ＋ Elastic IP」",
+      "power": "Lambda は裏口しか持たない。外に出るときは NAT の看板（Elastic IP）を借りる",
+      "summary": "VPC に接続した Lambda はプライベート IP しか持たない。プライベートサブネットに置き、Elastic IP を付けた NAT ゲートウェイ経由で出せば、相手から見える送信元は常にその1つの IP になる。IGW や Egress-only IGW には Elastic IP を付けられない。",
+      "body": [
+        "VPC に接続した Lambda は、プライベート IP しか持ちません。パブリックサブネットに置いても、パブリック IP は付かないので、インターネットゲートウェイから直接は出られません。",
+        "そこで Lambda はプライベートサブネットに置き、そのサブネットのルートテーブルで「0.0.0.0/0 → NAT ゲートウェイ」とします。NAT ゲートウェイはパブリックサブネットに置き、Elastic IP を付けます。",
+        "NAT ゲートウェイを通った通信は、送信元が NAT ゲートウェイの Elastic IP に置き換わります。外部の会社から見ると、いつも同じ1つの IP アドレスから来るので、許可リストに登録できます。",
+        "インターネットゲートウェイは VPC の出入口で、IP アドレスを持ちません。Elastic IP を付けることはできません。",
+        "Egress-only インターネットゲートウェイは IPv6 専用です。IPv4 の許可リストの話には使えず、Elastic IP も付けられません。",
+        "Lambda の同時実行数が増えても、送信元の IP は NAT ゲートウェイの Elastic IP のままです。"
+      ],
+      "cards": ["xp10", "xn01", "xn09", "xn21", "xn22", "co08"],
+      "tags": ["NAT ゲートウェイ", "Elastic IP", "Lambda", "インターネットゲートウェイ", "許可リスト"]
     }
   ],
   "terms": [
@@ -1825,6 +1841,12 @@
     { "id": "xg02", "term": "Application Discovery Service のデータ探索（Athena）", "cat": "migration",
       "desc": "Migration Hub でオンにすると、Discovery Agent が集めたサーバーの情報が自動で S3 にたまり、Athena から SQL で検索できるようになる機能。よく使う検索は「事前定義クエリ」として最初から用意されている。" },
     { "id": "xg03", "term": "Discovery Agent と Agentless Collector", "cat": "migration",
-      "desc": "どちらも移行前にサーバー情報を集める道具。Discovery Agent は各サーバーに入れて、プロセスやネットワーク接続まで細かく集める。Agentless Collector は VMware の仮想マシンを外から調べるので入れる手間はないが、サーバーの中の細かい情報は取れない。" }
+      "desc": "どちらも移行前にサーバー情報を集める道具。Discovery Agent は各サーバーに入れて、プロセスやネットワーク接続まで細かく集める。Agentless Collector は VMware の仮想マシンを外から調べるので入れる手間はないが、サーバーの中の細かい情報は取れない。" },
+    { "id": "xn21", "term": "インターネットゲートウェイ（IGW）", "cat": "network",
+      "desc": "VPC とインターネットをつなぐ出入口。VPC に1つ付けるだけで、IP アドレスは持たない（Elastic IP も付けられない）。パブリック IP を持つリソースだけが、これを通って直接インターネットに出られる。" },
+    { "id": "xn22", "term": "Egress-only インターネットゲートウェイ", "cat": "network",
+      "desc": "IPv6 専用の、中から外へ出るだけの出口。IPv4 の NAT ゲートウェイの IPv6 版のような役割。IP アドレスは持たず、Elastic IP も付けられない。" },
+    { "id": "xp10", "term": "VPC に接続した Lambda", "cat": "compute",
+      "desc": "VPC の中のリソース（RDS など）にアクセスするため、VPC のサブネットに接続した Lambda。プライベート IP しか持たないので、インターネットに出るにはプライベートサブネットに置き、NAT ゲートウェイを通す必要がある。" }
   ]
 }
