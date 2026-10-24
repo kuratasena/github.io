@@ -941,7 +941,7 @@
         "CloudWatch アラームが鳴ったら、自動で元のバージョンに戻します（自動ロールバック）。人がスクリプトを実行する必要はありません。",
         "CLI スクリプトの改良や、CloudFormation の変更セットだけでは、少しずつの切り替えや自動ロールバックはできません。"
       ],
-      "cards": ["xp05", "dv03", "co08", "xc07"],
+      "cards": ["xp05", "dv03", "co08", "xc07", "xp13", "xp14"],
       "tags": ["AWS SAM", "CodeDeploy", "Lambda", "カナリアリリース"]
     },
     {
@@ -1812,6 +1812,21 @@
       ],
       "cards": ["xn26", "xn01", "xn09", "xn07", "nw04"],
       "tags": ["BYOIP", "NAT ゲートウェイ", "Elastic IP", "許可リスト", "移行"]
+    },
+    {
+      "id": "p168", "field": "compute", "service": "Lambda・サーバーレス", "date": "2026-10-24",
+      "title": "Lambda のカナリアリリースは「新しいバージョンを発行 ＋ エイリアスの割合指定（routing-config）」",
+      "power": "名札（エイリアス）の先を、新旧2つに割り振る",
+      "summary": "Lambda のカナリアリリースは、新しいバージョンを発行し、エイリアスを update-alias の routing-config で「新しい版に10%」のように割り振る。割合の指定は関数の設定ではなくエイリアス。CodeDeploy の OneAtATime は EC2 向けでカナリアではない。",
+      "body": [
+        "Lambda のバージョンは、ある時点の関数を固定したものです。エイリアス（例: prod）は、どのバージョンを使うかを指す名札です。",
+        "新しいバージョンを発行し、エイリアスを update-alias の routing-config で「旧バージョン 90%、新バージョン 10%」のように設定すると、一部の利用者にだけ新しい版を出せます（カナリアリリース）。問題があっても影響は一部で済み、割合を戻せばすぐ元に戻せます。",
+        "割合を指定できるのはエイリアスです。update-function-configuration（関数の設定変更）に routing-config というパラメータはありません。",
+        "CodeDeploy の OneAtATime は、EC2 などのサーバーに1台ずつ入れていく設定で、Lambda のカナリアではありません。Lambda を CodeDeploy で段階的に出すなら、LambdaCanary10Percent5Minutes のような Lambda 用の設定を使います。",
+        "CloudFormation のスタックを丸ごと2つ作って Route 53 の重み付きルーティングで分ける方法も、似たことはできますが、管理するものが増えて手間がかかります。"
+      ],
+      "cards": ["xp13", "xc07", "xp14", "dv03", "co08"],
+      "tags": ["Lambda", "エイリアス", "カナリアリリース", "CodeDeploy", "routing-config"]
     }
   ],
   "terms": [
@@ -2026,6 +2041,10 @@
     { "id": "xf04", "term": "AWS Billing and Cost Management", "cat": "finops",
       "desc": "AWS の請求とコスト管理の機能をまとめた画面（コンソール）。請求書の確認や支払いのほか、コスト配分タグの有効化、コストカテゴリー、Cost Explorer、AWS Budgets、CUR などの入口がここに集まっている。" },
     { "id": "xn26", "term": "BYOIP（Bring Your Own IP）", "cat": "network",
-      "desc": "会社がもともと持っているパブリック IP アドレスの範囲（IPv4 は /24 以上）を AWS に登録して、そこから Elastic IP を作って使う仕組み。移行しても IP アドレスを変えずに済む。" }
+      "desc": "会社がもともと持っているパブリック IP アドレスの範囲（IPv4 は /24 以上）を AWS に登録して、そこから Elastic IP を作って使う仕組み。移行しても IP アドレスを変えずに済む。" },
+    { "id": "xp13", "term": "Lambda のバージョンとエイリアス", "cat": "compute",
+      "desc": "バージョンは、ある時点の関数を固定したもの（v1、v2…）。エイリアスは、バージョンを指す名札（例: prod）。エイリアスには2つのバージョンを割合で指定でき（update-alias の routing-config）、新しい版に一部だけ流すカナリアリリースができる。" },
+    { "id": "xp14", "term": "CodeDeploy のデプロイ設定", "cat": "devtools",
+      "desc": "新しい版への切り替え方の設定。EC2 向けは OneAtATime（1台ずつ）、HalfAtATime、AllAtOnce など。Lambda 向けは LambdaCanary10Percent5Minutes（最初の5分は10%だけ）や LambdaLinear10PercentEvery1Minute（1分ごとに10%ずつ）など。" }
   ]
 }
