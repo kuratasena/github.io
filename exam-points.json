@@ -1903,7 +1903,7 @@
         "AMI を作るとき、ふつうは再起動が入ります。再起動なしにもできますが、新しいインスタンスを立てる必要があり、手順が多くなります。",
         "注意：この問題は出典によって正解が C（DLM のスナップショット）とされていることもありますが、「S3 バケットにバックアップ」と書かれているなら、Session Manager でコピーする A の方が要件に合います。"
       ],
-      "cards": ["xm10", "mg18", "xt13", "xm11", "xp16"],
+      "cards": ["xm10", "mg18", "xt13", "xm11", "xp16", "xm16"],
       "tags": ["Session Manager", "Systems Manager", "EBS スナップショット", "DLM", "IAM ロール"]
     },
     {
@@ -1938,6 +1938,22 @@
       ],
       "cards": ["xm13", "mg08", "xm14", "mg07", "c15", "xm15"],
       "tags": ["Control Tower", "ガードレール", "AWS Config", "RDS", "暗号化"]
+    },
+    {
+      "id": "p109", "field": "cost", "service": "Systems Manager", "date": "2026-10-25",
+      "title": "SSH をやめて、実行したコマンドも記録したいなら「Session Manager ＋ 22番ポートを閉じる」",
+      "power": "玄関（22番）は閉めて、通用口（Session Manager）だけ使う。出入りは全部記録",
+      "summary": "EC2 に AmazonSSMManagedInstanceCore 入りの IAM ロールを付け、セキュリティグループの22番を全部閉じて、Session Manager で入る。ポートも SSH キーもいらず、誰が何を実行したかを CloudWatch Logs や S3 に残せる。IP で絞る、Instance Connect にする、だけでは監査にならない。",
+      "body": [
+        "EC2 に、AmazonSSMManagedInstanceCore（Systems Manager を使うための AWS 管理ポリシー）を入れた IAM ロールを付けます。最新の Amazon Linux には SSM エージェントが最初から入っています。",
+        "セキュリティグループの22番ポート（SSH）のルールを全部消します。Session Manager は EC2 の側から Systems Manager へつなぎにいくので、外から入ってくるポートを開けなくても使えます。",
+        "エンジニアは Session Manager のプラグインを入れ、start-session で EC2 に入ります。誰がいつ入ったかは IAM と CloudTrail で管理できます。",
+        "セッションのログを CloudWatch Logs や S3 に送る設定をすれば、実行したコマンドを記録して監査できます。",
+        "プライベートサブネットの EC2 が Systems Manager とやり取りするには、NAT ゲートウェイか、Systems Manager 用の VPC エンドポイントが必要です（今回は NAT ゲートウェイがあるので使えます）。",
+        "22番を開けたまま IP で絞る方法や、Config・Firewall Manager でルールを守らせる方法では、実行したコマンドの記録は残りません。EC2 Instance Connect は SSH キーの管理が楽になるだけで、22番は使うしコマンドの記録も残りません。"
+      ],
+      "cards": ["xm10", "xm16", "xp17", "mg18", "sc08"],
+      "tags": ["Session Manager", "SSH", "監査", "IAM ロール", "セキュリティグループ"]
     }
   ],
   "terms": [
@@ -2182,6 +2198,10 @@
     { "id": "xm14", "term": "ランディングゾーン", "cat": "mgmt",
       "desc": "Control Tower が作る、複数アカウントの土台となる環境。ログ用・監査用のアカウント、OU、ガードレールなどがベストプラクティスどおりに最初からそろう。" },
     { "id": "xm15", "term": "Control Tower の Account Factory", "cat": "mgmt",
-      "desc": "Control Tower で、新しいアカウントを決まった設定（OU、ネットワーク、ガードレールなど）で自動で作る仕組み。Terraform で使う AFT（Account Factory for Terraform）もある。" }
+      "desc": "Control Tower で、新しいアカウントを決まった設定（OU、ネットワーク、ガードレールなど）で自動で作る仕組み。Terraform で使う AFT（Account Factory for Terraform）もある。" },
+    { "id": "xm16", "term": "AmazonSSMManagedInstanceCore", "cat": "mgmt",
+      "desc": "EC2 が Systems Manager に登録されて、Session Manager などを使えるようにするための AWS 管理の IAM ポリシー。EC2 に付ける IAM ロールに入れる。" },
+    { "id": "xp17", "term": "EC2 Instance Connect", "cat": "compute",
+      "desc": "使い捨ての SSH キーを一時的に送り込んで、EC2 に SSH で入る仕組み。SSH キーの管理はいらなくなるが、SSH（22番ポート）は使うので、ポートを開ける必要がある。実行したコマンドの記録は残らない。" }
   ]
 }
