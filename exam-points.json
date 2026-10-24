@@ -1747,6 +1747,23 @@
       ],
       "cards": ["xs06", "xt11", "xs13", "xt12", "sc13", "xt05"],
       "tags": ["S3", "SSE-KMS", "SSE-C", "デフォルト暗号化", "バケットポリシー"]
+    },
+    {
+      "id": "p166", "field": "network", "service": "CloudFront", "date": "2026-10-24",
+      "title": "CloudFront の後ろの ALB を別リージョンでも止まらなくするなら「別リージョンに ALB 一式 ＋ オリジングループ」",
+      "power": "入口（CloudFront）は1つのまま、裏口（オリジン）を2つ用意して自動で切り替え",
+      "summary": "CloudFront の後ろの ALB を複数リージョンで冗長化するなら、別リージョンに ALB・Auto Scaling・EC2 を作り、CloudFront のオリジングループでメインとサブに登録する。ALB はリージョンをまたげず、Global Accelerator は CloudFront をエンドポイントにできない。",
+      "body": [
+        "別のリージョンに ALB、Auto Scaling グループ、EC2 を一式作ります。",
+        "今の CloudFront に、新しい ALB を2つ目のオリジンとして追加し、2つのオリジンでオリジングループを作ります（片方がプライマリ、もう片方がセカンダリ）。",
+        "プライマリの ALB がエラーを返したら、CloudFront が自動でセカンダリの ALB から取ってきます。DNS（Route 53）の変更はいりません。",
+        "ALB は1つのリージョンの中だけのサービスです。別のリージョンの Auto Scaling グループをターゲットにしたり、ALB 自体でリージョン間のフェイルオーバーをしたりはできません。",
+        "1つのドメイン名（www.example.com）は、同時に1つの CloudFront ディストリビューションにしか登録できません。CloudFront を2つ作って Route 53 で切り替える構成は、そのままでは成り立ちません。",
+        "Global Accelerator のエンドポイントにできるのは ALB、NLB、EC2、Elastic IP で、CloudFront は登録できません。",
+        "注意：オリジングループの自動切り替えは、読み取りのリクエスト（GET、HEAD、OPTIONS）に対して働きます。"
+      ],
+      "cards": ["xn14", "nw01", "xn07", "nw04", "nw06"],
+      "tags": ["CloudFront", "オリジングループ", "ALB", "マルチリージョン", "Global Accelerator"]
     }
   ],
   "terms": [
