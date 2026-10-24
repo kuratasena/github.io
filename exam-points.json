@@ -2045,6 +2045,6 @@
     { "id": "xp13", "term": "Lambda のバージョンとエイリアス", "cat": "compute",
       "desc": "バージョンは、ある時点の関数を固定したもの（v1、v2…）。エイリアスは、バージョンを指す名札（例: prod）。エイリアスには2つのバージョンを割合で指定でき（update-alias の routing-config）、新しい版に一部だけ流すカナリアリリースができる。" },
     { "id": "xp14", "term": "CodeDeploy のデプロイ設定", "cat": "devtools",
-      "desc": "新しい版への切り替え方の設定。EC2 向けは OneAtATime（1台ずつ）、HalfAtATime、AllAtOnce など。Lambda 向けは LambdaCanary10Percent5Minutes（最初の5分は10%だけ）や LambdaLinear10PercentEvery1Minute（1分ごとに10%ずつ）など。" }
+      "desc": "新しい版への切り替え方の設定。CodeDeploy は EC2・オンプレミス、Lambda、ECS の3種類に使え、それぞれ設定が違う。EC2・オンプレミス向けは OneAtATime（1台ずつ）、HalfAtATime、AllAtOnce。Lambda 向けは LambdaCanary10Percent5Minutes（最初の5分は10%だけ）や LambdaLinear10PercentEvery1Minute（1分ごとに10%ずつ）。ECS 向けは ECSCanary〜、ECSLinear〜、ECSAllAtOnce（ブルー/グリーン）。" }
   ]
 }
