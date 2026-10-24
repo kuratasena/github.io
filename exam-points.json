@@ -567,7 +567,7 @@
         "メモリの使用率も分析に使うなら、サーバーに CloudWatch エージェントを入れる必要があります。",
         "エンタープライズサポートに加入する選択肢は費用が高いので、コスト重視の問題では不正解になりやすいです。"
       ],
-      "cards": ["mg06", "xm05"],
+      "cards": ["mg06", "xm05", "xm08"],
       "tags": ["Compute Optimizer", "CloudWatch エージェント"]
     },
     {
@@ -1765,6 +1765,22 @@
       ],
       "cards": ["xn14", "nw01", "xn07", "nw04", "nw06"],
       "tags": ["CloudFront", "オリジングループ", "ALB", "マルチリージョン", "Global Accelerator"]
+    },
+    {
+      "id": "p106", "field": "cost", "service": "サイズ最適化", "date": "2026-10-24",
+      "title": "Lambda のメモリの推奨を毎週 CSV で出すなら「Compute Optimizer ＋ エクスポート API を EventBridge で定期実行」",
+      "power": "分析はおまかせ（Compute Optimizer）、毎週の配達だけ自分で予約（EventBridge）",
+      "summary": "Lambda の推奨メモリやコストの差は Compute Optimizer が出してくれる。CSV の書き出しは ExportLambdaFunctionRecommendations を呼ぶ Lambda を、EventBridge で毎週動かす。コンソールに定期エクスポートはなく、Trusted Advisor やログの自前集計は遠回り。",
+      "body": [
+        "Compute Optimizer は、Lambda の使われ方を見て、推奨メモリ、推定コスト、今の設定との差を出してくれます。最初にオプトイン（利用開始）が必要です。",
+        "推奨は ExportLambdaFunctionRecommendations という API で、CSV ファイルとして S3 に書き出せます。",
+        "この API を呼ぶ小さな Lambda を作り、EventBridge のスケジュールで1週間ごとに動かせば、毎週のレポートが自動でそろいます。",
+        "Compute Optimizer のコンソールからのエクスポートは、その場で1回ずつ行うもので、定期実行の設定はありません。強化されたインフラストラクチャメトリクスは、EC2 などの分析期間を延ばす有料オプションで、今回の要件とは関係ありません。",
+        "CloudWatch Logs から自分でデータを集めて計算する方法は、推奨やコストの計算を自作することになり、開発に時間がかかります。",
+        "Trusted Advisor のためにサポートプランを買う方法は、費用がかかるうえ、Lambda のメモリの細かい推奨には向きません。"
+      ],
+      "cards": ["mg06", "xm08", "xm09", "i03", "mg19"],
+      "tags": ["Compute Optimizer", "Lambda", "EventBridge", "CSV", "コスト最適化"]
     }
   ],
   "terms": [
@@ -1969,6 +1985,10 @@
     { "id": "xt12", "term": "S3 バージョニング", "cat": "storage",
       "desc": "同じ名前のオブジェクトを上書き・削除しても、前の版を残しておく S3 の機能。有効だと、上書きしても古い版（古い暗号化のもの）が残る。" },
     { "id": "xn25", "term": "セキュリティグループの参照", "cat": "network",
-      "desc": "セキュリティグループのルールで、送信元に IP アドレスではなく別のセキュリティグループを指定すること。「そのグループが付いているリソースからの通信を許可」という意味で、IP アドレスの一覧を持たせる仕組みではない。" }
+      "desc": "セキュリティグループのルールで、送信元に IP アドレスではなく別のセキュリティグループを指定すること。「そのグループが付いているリソースからの通信を許可」という意味で、IP アドレスの一覧を持たせる仕組みではない。" },
+    { "id": "xm08", "term": "Compute Optimizer の推奨のエクスポート", "cat": "mgmt",
+      "desc": "Compute Optimizer の推奨（Lambda なら推奨メモリ、推定コスト、今との差など）を CSV で S3 に書き出す機能。Lambda 用は ExportLambdaFunctionRecommendations という API。コンソールからは都度実行で、定期実行の設定はないので、定期的に出すなら EventBridge と Lambda で API を呼ぶ。" },
+    { "id": "xm09", "term": "強化されたインフラストラクチャメトリクス（Compute Optimizer）", "cat": "mgmt",
+      "desc": "Compute Optimizer の有料オプション。EC2 などの分析に使う期間を、ふだんの14日から最大3か月に延ばして、推奨の精度を上げる。Lambda の推奨やレポートの出力とは関係ない。" }
   ]
 }
