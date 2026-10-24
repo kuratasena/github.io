@@ -2076,6 +2076,22 @@
       ],
       "cards": ["io01", "xc12", "xs16", "xi04", "i04"],
       "tags": ["IoT Core", "MQTT", "X.509 証明書", "Amazon MQ"]
+    },
+    {
+      "id": "p181", "field": "security", "service": "IAM・権限の設計", "date": "2026-10-25",
+      "title": "「承認されたリソースだけを、必ず CloudFormation で作らせる」なら「人は CloudFormation だけ ＋ リソースの権限はサービスロールに」",
+      "power": "人は注文票（CloudFormation）を出すだけ。作るのは許可証を持った職人（サービスロール）",
+      "summary": "エンジニアの IAM ロールには CloudFormation の操作だけを許可し、承認されたリソースを作る権限はサービスロールに持たせて、スタックに指定する。エンジニアは直接リソースを作れず、CloudFormation 経由でも承認されたものしか作れない。",
+      "body": [
+        "エンジニアの IAM ロールには、CloudFormation の操作（スタックの作成・更新など）だけを許可します。EC2 などのリソースを直接作る権限は与えません。",
+        "承認されたリソースを作る権限は、新しく作る IAM サービスロールに持たせます。",
+        "スタックを作るとき、そのサービスロールを CloudFormation に指定します。CloudFormation は、エンジニアの権限ではなくサービスロールの権限でリソースを作ります。",
+        "これで、エンジニアはコンソールなどで直接リソースを作れず（必ず CloudFormation 経由）、テンプレートに承認されていないリソースを書いても、サービスロールに権限がないので作れません。",
+        "エンジニアには、そのサービスロールを CloudFormation に渡すための iam:PassRole の権限も必要です。",
+        "エンジニアに承認されたリソースの権限を直接与えると、CloudFormation を使わずに作れてしまいます。テンプレートを渡すだけ、スタックへのアクセスを絞るだけでも、中身を書き換えれば承認外のリソースを作れてしまいます。"
+      ],
+      "cards": ["xm18", "xs17", "mg01", "sc11", "mg16"],
+      "tags": ["CloudFormation", "サービスロール", "IAM", "iam:PassRole", "最小権限"]
     }
   ],
   "terms": [
@@ -2350,6 +2366,10 @@
     { "id": "xs16", "term": "X.509 証明書（デバイス認証）", "cat": "security",
       "desc": "「この機器は本物です」と証明するための電子的な身分証明書。IoT Core では、機器ごとに1枚ずつ証明書を発行して、接続のときに本人確認する。" },
     { "id": "xi04", "term": "IoT のモノ（Thing）とモノのタイプ（Thing Type）", "cat": "iot",
-      "desc": "Thing は IoT Core に登録した1台1台の機器。Thing Type は「温度センサー」のような機器の種類のひな形で、同じ種類の Thing に共通の項目を持たせられる。Thing に証明書とポリシーを付けて接続させる。" }
+      "desc": "Thing は IoT Core に登録した1台1台の機器。Thing Type は「温度センサー」のような機器の種類のひな形で、同じ種類の Thing に共通の項目を持たせられる。Thing に証明書とポリシーを付けて接続させる。" },
+    { "id": "xm18", "term": "CloudFormation のサービスロール", "cat": "mgmt",
+      "desc": "CloudFormation がリソースを作るときに使う IAM ロール。スタックに指定すると、CloudFormation は操作した人の権限ではなく、このロールの権限でリソースを作る。人には CloudFormation の操作だけを許し、作れるリソースはこのロールで決める、という使い方ができる。" },
+    { "id": "xs17", "term": "iam:PassRole", "cat": "security",
+      "desc": "IAM ロールを AWS のサービス（CloudFormation、EC2、Lambda など）に「渡して使わせる」ための権限。これがないと、自分より強いロールをサービスに渡して権限を広げることができないようになっている。" }
   ]
 }
