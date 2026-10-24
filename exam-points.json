@@ -1166,7 +1166,7 @@
         "Lambda@Edge は CloudFront の中で動く関数です。CloudFront 以外とは組み合わせられません。",
         "「サーバーレスで簡単な API」と出たら、まず API Gateway の選択肢を探します。"
       ],
-      "cards": ["co08", "xn07", "xn08", "nw04", "a03"],
+      "cards": ["co08", "xn07", "xn08", "nw04"],
       "tags": ["Lambda", "API Gateway", "ALB", "NLB", "Global Accelerator", "Lambda@Edge"]
     },
     {
