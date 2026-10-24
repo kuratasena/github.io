@@ -223,7 +223,7 @@
         "SCP を使うには、AWS Organizations で「すべての機能」を有効にする必要があります。「一括請求のみ」の設定では使えません。",
         "SCP は権限を与えるものではなく、「ここまでしか許さない」という上限を決めるものです。また、管理アカウントには効きません。"
       ],
-      "cards": ["c15", "mg07", "mg14", "xs14", "xm13"],
+      "cards": ["c15", "mg07", "mg14", "xs14", "xm13", "xm17"],
       "tags": ["SCP", "AWS Organizations", "AWS Config"]
     },
     {
@@ -988,7 +988,7 @@
         "IAM Identity Center 自体にユーザーを作る方法や、SCIM で同期する方法は、「ユーザーは社内の AD だけで管理」という要件に合いません。",
         "アカウントごとに IAM の SAML や OIDC の設定をして、IAM ユーザーやロールを手で作る方法は、運用の手間が大きいので不正解です。"
       ],
-      "cards": ["sc10", "xs04", "xs09", "sc07"],
+      "cards": ["sc10", "xs04", "xs09", "sc07", "xs15", "xm17"],
       "tags": ["IAM Identity Center", "AD Connector", "Active Directory", "権限セット", "シングルサインオン"]
     },
     {
@@ -2015,6 +2015,21 @@
       ],
       "cards": ["xn27", "nw06", "c19", "c03", "xn07"],
       "tags": ["Route 53", "フェイルオーバールーティング", "ヘルスチェック", "アクティブ-パッシブ", "災害対策"]
+    },
+    {
+      "id": "p153", "field": "org", "service": "IAM Identity Center", "date": "2026-10-25",
+      "title": "社内の AD でコンソールに入るのを一番安くするなら「Organizations すべての機能 ＋ IAM Identity Center ＋ AD Connector」",
+      "power": "名簿は社内の AD のまま。受付（AD Connector）を置くだけなら安い。AWS に名簿の写し（Managed AD）は要らない",
+      "summary": "IAM Identity Center を使うには Organizations の「すべての機能」が必要。社内の AD をそのまま使うなら、問い合わせを中継するだけの AD Connector が一番安い。AWS Managed Microsoft AD ＋ 信頼関係は、AWS 側にも AD が要るときの高い選択肢。",
+      "body": [
+        "IAM Identity Center は Organizations と連携して動くので、組織を作り「すべての機能」を有効にします（一括請求のみでは使えません）。",
+        "AD Connector は、AWS からオンプレミスの AD へ「この人は本物？」と問い合わせを中継するだけの窓口です。AD そのものを AWS に作らないので、安く済みます。",
+        "IAM Identity Center の ID ソースに AD Connector を選び、AD の既存のグループに権限セットを割り当てます。IT 担当者は、いつもの AD のアカウントでコンソールに入れます。IAM ユーザーは不要になります。",
+        "AWS Managed Microsoft AD は、AWS の中に本物の AD を作るサービスで、AD Connector より高くなります。オンプレの AD と信頼関係を結ぶ手間もかかります。「コスト効果が高い」なら選びません。",
+        "AWS Managed Microsoft AD を選ぶのは、オンプレの AD が止まっても AWS で認証したい、AD に対応したアプリを AWS で動かしたい、など AWS 側にも AD が必要なときです。"
+      ],
+      "cards": ["sc10", "xs04", "xs15", "xm17", "xs09"],
+      "tags": ["IAM Identity Center", "AD Connector", "AWS Managed Microsoft AD", "Organizations", "コスト"]
     }
   ],
   "terms": [
@@ -2273,6 +2288,10 @@
     { "id": "xt15", "term": "S3 イベント通知", "cat": "storage",
       "desc": "S3 にオブジェクトが入った・消えたなどのタイミングで、Lambda、SQS、SNS、EventBridge に知らせる機能。定期的に S3 を見に行く（ポーリング）必要がなくなる。" },
     { "id": "xn27", "term": "Route 53 のルーティングポリシー", "cat": "network",
-      "desc": "シンプル（1つに向ける）、フェイルオーバー（メインがダメならサブ。アクティブ-パッシブ）、加重（割合で分ける）、レイテンシー（近くて速いリージョンへ）、位置情報（国・地域で分ける）、地理的近接性（距離で分ける）、マルチバリュー（複数の IP を返す）、IP ベース（送信元の IP で分ける）。" }
+      "desc": "シンプル（1つに向ける）、フェイルオーバー（メインがダメならサブ。アクティブ-パッシブ）、加重（割合で分ける）、レイテンシー（近くて速いリージョンへ）、位置情報（国・地域で分ける）、地理的近接性（距離で分ける）、マルチバリュー（複数の IP を返す）、IP ベース（送信元の IP で分ける）。" },
+    { "id": "xs15", "term": "AWS Managed Microsoft AD", "cat": "security",
+      "desc": "AWS の中で動く、本物の Active Directory を AWS が管理してくれるサービス。オンプレミスの AD と信頼関係を結ぶこともできる。AD Connector（問い合わせを中継するだけ）より高いが、AWS 側にも AD が必要なとき（オンプレの AD が止まっても使いたい、AD 対応アプリを AWS で動かすなど）に選ぶ。" },
+    { "id": "xm17", "term": "Organizations の「すべての機能」と「一括請求のみ」", "cat": "mgmt",
+      "desc": "Organizations には2つのモードがある。一括請求のみは、請求をまとめるだけ。すべての機能を有効にすると、SCP、IAM Identity Center、StackSets の自動デプロイなど、組織全体を管理する機能が使えるようになる。" }
   ]
 }
