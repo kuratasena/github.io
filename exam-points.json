@@ -389,7 +389,7 @@
         "Kubernetes は EKS に移します。EC2 に自分で入れて動かすと、運用の手間が大きくなります。",
         "Lambda や SQS に作り替える選択肢は「大幅な作り直し」になるので、アプリを変えたくない問題では不正解です。"
       ],
-      "cards": ["i04", "ct04", "mi02"],
+      "cards": ["i04", "ct04", "mi02", "xg05"],
       "tags": ["Amazon MQ", "EKS", "リフト＆シフト"]
     },
     {
@@ -1842,6 +1842,22 @@
       ],
       "cards": ["mi08", "xc11", "st06", "xn07", "xn08", "st08"],
       "tags": ["Transfer Family", "SFTP", "S3", "Route 53", "マネージドサービス"]
+    },
+    {
+      "id": "p170", "field": "migration", "service": "リフト＆シフト", "date": "2026-10-24",
+      "title": "VMware の VM を中身そのままで EC2 にするなら「OVF で書き出し → S3 → VM Import」",
+      "power": "家具ごと箱詰め（OVF）して、AWS で荷ほどき（VM Import）",
+      "summary": "VM のソフトと設定を保ったまま EC2 にするなら、vSphere で OVF/OVA に書き出して S3 に置き、vmimport ロールを用意して CLI の EC2 import で AMI にする。DataSync や Storage Gateway はファイルを運ぶだけで、VM の中身ごとは移せない。",
+      "body": [
+        "VMware vSphere で、アプリの入った VM を OVF（または OVA）という形式のイメージとして書き出します。",
+        "そのイメージを、移行先のリージョンの S3 バケットに置きます。",
+        "VM Import が S3 を読むための IAM サービスロール（vmimport）を作り、AWS CLI の EC2 import コマンド（import-image）で取り込むと、AMI ができます。OS、インストール済みのソフト、設定がそのまま残ります。",
+        "DataSync や Storage Gateway はファイルを運ぶ・共有する道具で、VM そのもの（OS や設定）を EC2 にはしてくれません。",
+        "Systems Manager の登録や AWS Backup は、オンプレミスのサーバーを管理・バックアップするためのもので、VM を AMI に変換する手順にはなりません。",
+        "台数が多い本格的な移行で、止める時間を短くしたいなら、Application Migration Service（MGN）で動かしたまま複製し続け、最後に切り替える方法がよく使われます。"
+      ],
+      "cards": ["xg05", "mi02", "co05", "mi04", "st08"],
+      "tags": ["VM Import/Export", "VMware", "OVF", "AMI", "リフト＆シフト"]
     }
   ],
   "terms": [
@@ -2062,6 +2078,8 @@
     { "id": "xp14", "term": "CodeDeploy のデプロイ設定", "cat": "devtools",
       "desc": "新しい版への切り替え方の設定。CodeDeploy は EC2・オンプレミス、Lambda、ECS の3種類に使え、それぞれ設定が違う。EC2・オンプレミス向けは OneAtATime（1台ずつ）、HalfAtATime、AllAtOnce。Lambda 向けは LambdaCanary10Percent5Minutes（最初の5分は10%だけ）や LambdaLinear10PercentEvery1Minute（1分ごとに10%ずつ）。ECS 向けは ECSCanary〜、ECSLinear〜、ECSAllAtOnce（ブルー/グリーン）。" },
     { "id": "xc11", "term": "SFTP", "cat": "concept",
-      "desc": "SSH の仕組みを使って、ファイルを暗号化してやり取りする通信のルール。取引先とのファイルの受け渡しによく使われる。TCP の 22 番ポートを使う。" }
+      "desc": "SSH の仕組みを使って、ファイルを暗号化してやり取りする通信のルール。取引先とのファイルの受け渡しによく使われる。TCP の 22 番ポートを使う。" },
+    { "id": "xg05", "term": "VM Import/Export", "cat": "migration",
+      "desc": "VMware などの仮想マシンのイメージ（OVA/OVF、VMDK など）を S3 に置いて、EC2 の AMI として取り込む（または逆に書き出す）機能。OS、ソフト、設定をそのまま持っていける。取り込みには vmimport という IAM サービスロールが必要。" }
   ]
 }
