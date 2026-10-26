@@ -823,6 +823,8 @@
   .ptmeta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; }
   .pttag { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-soft); background: rgba(43,28,17,0.08); padding: 3px 7px; border-radius: 4px; }
   .ptdate { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-soft); margin-left: auto; }
+  .ptchips .chip.chipnew:not(.on) { border-color: var(--retry); color: var(--white); }
+  .ptchips .chip.chipnew:not(.on)::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--retry); margin-right: 6px; vertical-align: 1px; }
   .ptnew { font-family: var(--font-mono); font-size: 10px; color: #fff; background: var(--retry); padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: 1px; }
   /* service groups inside a field */
   .ptsvc { margin: 0 0 16px; }
@@ -4732,23 +4734,27 @@
 /* 試験のポイント: reads exam-points.json from this site and shows it grouped by field. */
 (function(){
   "use strict";
-  var data = null, field = "all", query = "", NEW_DAYS = 14, SEEN_KEY = "awsSapPointsSeen", seen = {};
+  var data = null, field = "all", query = "", newOnly = false, newSet = {}, NEW_DAYS = 14, SEEN_KEY = "awsSapPointsSeen", seen = {};
   try { seen = JSON.parse(localStorage.getItem(SEEN_KEY) || "{}") || {}; } catch (e) { seen = {}; }
   function markSeen(id){ if (!id || seen[id]) return; seen[id] = 1; try { localStorage.setItem(SEEN_KEY, JSON.stringify(seen)); } catch (e) {} if (window.sapPointsSeenChanged) window.sapPointsSeenChanged(); }
-  window.sapPointsReloadSeen = function(){ try { seen = JSON.parse(localStorage.getItem(SEEN_KEY) || "{}") || {}; } catch (e) {} render(); };
+  window.sapPointsReloadSeen = function(){ try { seen = JSON.parse(localStorage.getItem(SEEN_KEY) || "{}") || {}; } catch (e) {} computeNew(); render(); };
   var area = document.getElementById("ptArea"), chips = document.getElementById("ptChips"),
       status = document.getElementById("ptStatus"), search = document.getElementById("ptSearch");
   if (!area) return;
   function esc(x){ return String(x == null ? "" : x).replace(/[&<>"']/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function isNew(p){ if (seen[p.id]) return false; var t = Date.parse(p.date); return !isNaN(t) && (Date.now() - t) < NEW_DAYS * 864e5; }
+  // Points that were NEW when the list loaded stay in the NEW filter for this visit, even after you open them.
+  function computeNew(){ newSet = {}; if (data) data.points.forEach(function(p){ if (isNew(p)) newSet[p.id] = 1; }); if (newOnly && !Object.keys(newSet).length) newOnly = false; }
   function hay(p){ return [p.title, p.power, p.service || "", p.summary || ""].concat(p.body || [], p.tags || []).join(" ").toLowerCase(); }
-  function matches(p){ return (field === "all" || p.field === field) && (!query || hay(p).indexOf(query) >= 0); }
+  function matches(p){ return (field === "all" || p.field === field) && (!newOnly || newSet[p.id]) && (!query || hay(p).indexOf(query) >= 0); }
   function renderChips(){
-    var counts = {}; data.points.forEach(function(p){ counts[p.field] = (counts[p.field] || 0) + 1; });
-    var html = '<button type="button" class="chip' + (field === "all" ? " on" : "") + '" data-f="all">すべて<b>' + data.points.length + '</b></button>';
+    var counts = {}, total = 0, newCount = Object.keys(newSet).length;
+    data.points.forEach(function(p){ if (newOnly && !newSet[p.id]) return; counts[p.field] = (counts[p.field] || 0) + 1; total++; });
+    var html = '<button type="button" class="chip' + (field === "all" ? " on" : "") + '" data-f="all">すべて<b>' + total + '</b></button>';
+    if (newCount) html += '<button type="button" class="chip chipnew' + (newOnly ? " on" : "") + '" data-new="1" aria-pressed="' + newOnly + '">NEWだけ<b>' + newCount + '</b></button>';
     data.fields.forEach(function(f){
-      if (!counts[f.id]) return;
-      html += '<button type="button" class="chip' + (field === f.id ? " on" : "") + '" data-f="' + esc(f.id) + '">' + esc(f.name) + '<b>' + counts[f.id] + '</b></button>';
+      if (!counts[f.id] && field !== f.id) return;
+      html += '<button type="button" class="chip' + (field === f.id ? " on" : "") + '" data-f="' + esc(f.id) + '">' + esc(f.name) + '<b>' + (counts[f.id] || 0) + '</b></button>';
     });
     chips.innerHTML = html;
   }
@@ -4783,10 +4789,11 @@
             '<div class="ptlist">' + g.items.map(card).join("") + '</div></div>';
         }).join("") + '</section>';
     });
-    area.innerHTML = html || '<p class="emptynote">該当するポイントがありません。</p>';
-    status.textContent = shown + " 件のポイント" + (data.updated ? "（最終更新 " + data.updated + "）" : "");
+    area.innerHTML = html || '<p class="emptynote">' + (newOnly ? "この分野にNEWのポイントはありません。" : "該当するポイントがありません。") + '</p>';
+    status.textContent = (newOnly ? "NEW " : "") + shown + " 件のポイント" + (data.updated ? "（最終更新 " + data.updated + "）" : "");
   }
   chips.addEventListener("click", function(e){
+    var n = e.target.closest("[data-new]"); if (n) { newOnly = !newOnly; render(); return; }
     var b = e.target.closest("[data-f]"); if (!b) return;
     field = b.getAttribute("data-f"); render();
   });
@@ -4803,7 +4810,7 @@
       d.fields = d.fields || []; d.points = d.points || [];
       var known = {}; d.fields.forEach(function(f){ known[f.id] = 1; });
       d.points.forEach(function(p){ if (!known[p.field]) { known[p.field] = 1; d.fields.push({ id: p.field, name: p.field }); } });
-      data = d; render();
+      data = d; computeNew(); render();
     })
     .catch(function(){ status.textContent = "ポイントを読み込めませんでした。通信状況を確認して再読み込みしてください。"; });
 })();
