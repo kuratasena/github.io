@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "fields": [
     { "id": "network", "name": "ネットワーク" },
     { "id": "security", "name": "セキュリティ・権限" },
@@ -2107,6 +2107,20 @@
       ],
       "cards": ["db04", "xd12", "st06", "db08"],
       "tags": ["DynamoDB", "TTL", "大量書き込み", "低レイテンシー"]
+    },
+    {
+      "id": "p192", "field": "migration", "service": "移行計画（Discovery・Migration Hub）", "date": "2026-10-26",
+      "title": "Migration Evaluator と Application Discovery Service の違い：「いくら？」か「何がある・どうつながってる？」か",
+      "power": "Evaluator は見積もり屋（お金）、Discovery は家財の棚卸し（中身とつながり）",
+      "summary": "費用・TCO なら Migration Evaluator、サーバーの中身と依存関係なら Application Discovery Service。",
+      "body": [
+        "Migration Evaluator は、AWS に移したらいくらになるか（TCO）を出すサービスです。成果物は Quick Insights などの費用レポートです。",
+        "Application Discovery Service は、サーバーのスペック・使用率・動いているプロセス・ほかのサーバーとの通信（依存関係）を集めるサービスです。集めた情報は Migration Hub に送られます。",
+        "問題文が「コスト」「TCO」「ビジネスケース」なら Evaluator、「依存関係」「サーバーの一覧・構成」「どの順番で移すか」なら Discovery です。",
+        "両方がセットで出てくることもあります。例：Evaluator でサーバー一覧と費用を出す → Migration Hub でまとめて見る → Discovery で依存関係を調べる。"
+      ],
+      "cards": ["xg01", "mi01", "mi05", "xg03"],
+      "tags": ["Migration Evaluator", "Application Discovery Service", "TCO", "依存関係"]
     }
   ],
   "terms": [
