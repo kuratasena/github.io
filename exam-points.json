@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-26",
+  "updated": "2026-10-27",
   "fields": [
     { "id": "network", "name": "ネットワーク" },
     { "id": "security", "name": "セキュリティ・権限" },
@@ -2121,6 +2121,20 @@
       ],
       "cards": ["xg01", "mi01", "mi05", "xg03"],
       "tags": ["Migration Evaluator", "Application Discovery Service", "TCO", "依存関係"]
+    },
+    {
+      "id": "p193", "field": "migration", "service": "リフト＆シフト", "date": "2026-10-27",
+      "title": "大量の VM を最短・ダウンタイム最小で移すなら MGN。VM Import は「少数を1回取り込む」用",
+      "power": "MGN は引っ越しトラック付きの同時進行コピー。VM Import は箱詰めして1個ずつ送る",
+      "summary": "VMが多い・最短・ダウンタイム最小なら Application Migration Service（継続レプリケーション）。VM Import/Export は手作業が多く大量移行には遅い。",
+      "body": [
+        "MGN は、動いているサーバーを止めずに AWS へコピーし続け（継続レプリケーション）、最後に短時間で切り替えます。だからダウンタイムが最小で、200台のような大量移行も並行して進められます。",
+        "VM Import/Export は、VM を書き出して S3 に置き、AMI に変換する手作業の流れです。1台ずつ手間がかかり、書き出し中の変更も反映されません。少数の VM をそのまま取り込みたいときの道具です。",
+        "Windows ファイルサーバーの行き先は FSx for Windows File Server、運ぶのは DataSync（Direct Connect 経由）が定番の組み合わせです。",
+        "25TB を 5Gbps で送ると約11時間で終わります。Snowball は発注から配送まで1〜2週間かかるので、回線が太いときは「最短」になりません。"
+      ],
+      "cards": ["mi02", "xg05", "mi04", "xt08", "mi07"],
+      "tags": ["MGN", "VM Import/Export", "DataSync", "FSx for Windows", "Snowball"]
     }
   ],
   "terms": [
