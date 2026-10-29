@@ -2373,6 +2373,20 @@
       ],
       "cards": ["xd02", "xd15", "nw04"],
       "tags": ["解き方", "消去法", "マルチリージョン", "セッション管理"]
+    },
+    {
+      "id": "p210", "field": "cost", "service": "Systems Manager", "date": "2026-10-30",
+      "title": "Windows の EC2 に安全・安く RDP するなら Fleet Manager。ログインは IAM Identity Center ＋ AD Connector",
+      "power": "裏口（ポート 3389）も門番小屋（踏み台）もいらない。管理会社（SSM）の窓口から部屋に入る",
+      "summary": "インターネットから Windows EC2 に RDP ＋ 社内 AD で認証 ＋ 低コスト → IAM Identity Center ＋ AD Connector で認証し、Systems Manager Fleet Manager で RDP。踏み台・RD ゲートウェイ・Managed AD・新規 Direct Connect はコストと手間が増える。",
+      "body": [
+        "Windows の EC2 にリモートデスクトップ（RDP）でつなぐなら、Systems Manager の Fleet Manager が使えます。ブラウザの AWS コンソールから RDP 接続でき、RDP のポート（3389）をインターネットに開けたり、踏み台サーバーを置いたりする必要がありません。",
+        "社内の Active Directory でログインさせるなら、IAM Identity Center と AD Connector を組み合わせます。AD を AWS に新しく作る（AWS Managed Microsoft AD）より安く済みます。AD Connector はオンプレの AD と通信するので VPN か Direct Connect が必要ですが、「VPN の機器はもうある」と書いてあればそれを使います。",
+        "踏み台サーバー（EC2）や、Marketplace のリモートデスクトップゲートウェイは、自分でパッチ当てや台数の管理をする必要があり、料金も追加でかかります。",
+        "在宅のエンジニアがインターネットからつなぐ要件に、会社と AWS を結ぶ Direct Connect を新しく引く選択肢は、目的が違ううえに高額です。"
+      ],
+      "cards": ["xm19", "mg18", "sc10", "sc07"],
+      "tags": ["Fleet Manager", "RDP", "AD Connector", "IAM Identity Center", "踏み台なし"]
     }
   ],
   "terms": [
@@ -2705,6 +2719,8 @@
     { "id": "xs24", "term": "KMS マルチリージョンキー", "cat": "security",
       "desc": "同じ鍵の中身とキー ID を持つ KMS キーを、複数のリージョンに複製できる仕組み。あるリージョンで暗号化したデータを、別のリージョンで復号し直さずにそのまま使える。普通の KMS キーは作ったリージョンの中だけで使える。マルチリージョンにするかどうかは作るときに決める（後から変えられない）。" },
     { "id": "xs25", "term": "Secrets Manager のシークレットのレプリケーション", "cat": "security",
-      "desc": "シークレットを別のリージョンに自動で複製する機能。元のシークレットを更新（ローテーション）すると、複製先にも自動で反映される。複製先のリージョンでは、そのリージョンの KMS キーで暗号化する。マルチリージョンのアプリや災害対策で使う。" }
+      "desc": "シークレットを別のリージョンに自動で複製する機能。元のシークレットを更新（ローテーション）すると、複製先にも自動で反映される。複製先のリージョンでは、そのリージョンの KMS キーで暗号化する。マルチリージョンのアプリや災害対策で使う。" },
+    { "id": "xm19", "term": "Systems Manager Fleet Manager", "cat": "mgmt",
+      "desc": "Systems Manager の中にある、サーバーをまとめて見て操作する画面。Windows の EC2 には、AWS コンソールからブラウザで RDP 接続できる。裏では Session Manager の仕組みを使うので、RDP のポート（3389）を開けたり踏み台サーバーを置いたりしなくてよい。" }
   ]
 }
