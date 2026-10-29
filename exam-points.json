@@ -2402,6 +2402,21 @@
       ],
       "cards": ["xt22", "st02", "sc13"],
       "tags": ["EBS", "デフォルト暗号化", "KMS", "Config"]
+    },
+    {
+      "id": "p212", "field": "compute", "service": "EC2・Auto Scaling", "date": "2026-10-30",
+      "title": "SSH で入るたびに違う認証情報 ＋ CloudTrail に記録 → EC2 Instance Connect",
+      "power": "毎回使い捨ての鍵（60秒で失効）を発行。合鍵を配らないから、なくす心配もない",
+      "summary": "SSH 接続ごとに一意の認証情報 ＋ CloudTrail で記録 ＋ 管理の手間を最小 → EC2 Instance Connect（接続のたびに一時的な公開鍵を送り、60秒で失効。権限は IAM）。Secrets Manager にキーを保管・Lambda で毎日更新は自作が多く、接続ごとに一意にもならない。コマンドの記録や22番を閉じたいなら Session Manager。",
+      "body": [
+        "EC2 Instance Connect は、接続のたびに使い捨ての SSH 公開鍵を EC2 に送り込み、その鍵は60秒で無効になります。だから「接続ごとに一意の認証情報」になり、SSH キーを配ったり保管したりする必要がありません。",
+        "誰がいつ鍵を送り込んだか（SendSSHPublicKey）は CloudTrail に記録されます。使ってよい人は IAM ポリシーで決めます。",
+        "Ubuntu 20.04 以降や Amazon Linux 2 以降の AMI には、最初から Instance Connect が入っています。AWS コンソールからブラウザで SSH できます。",
+        "Secrets Manager に SSH キーを保管する方法や、Lambda で毎日キーを作り直す方法は、自作の仕組みが必要なうえ、1日の間は同じキーを使い回すので「接続ごとに一意」になりません。",
+        "使い分け：SSH で入る前提で、接続ごとの認証と CloudTrail の記録が必要なら Instance Connect。22番ポートを閉じたい、実行したコマンドまで記録したいなら Session Manager。"
+      ],
+      "cards": ["xp17", "xm10", "sc17", "mg02"],
+      "tags": ["EC2 Instance Connect", "SSH", "CloudTrail", "Session Manager"]
     }
   ],
   "terms": [
@@ -2650,7 +2665,7 @@
     { "id": "xm16", "term": "AmazonSSMManagedInstanceCore", "cat": "mgmt",
       "desc": "EC2 が Systems Manager に登録されて、Session Manager などを使えるようにするための AWS 管理の IAM ポリシー。EC2 に付ける IAM ロールに入れる。" },
     { "id": "xp17", "term": "EC2 Instance Connect", "cat": "compute",
-      "desc": "使い捨ての SSH キーを一時的に送り込んで、EC2 に SSH で入る仕組み。SSH キーの管理はいらなくなるが、SSH（22番ポート）は使うので、ポートを開ける必要がある。実行したコマンドの記録は残らない。" },
+      "desc": "使い捨ての SSH キーを一時的に送り込んで（60秒で失効）、EC2 に SSH で入る仕組み。接続ごとに別の鍵になり、鍵を送った記録は CloudTrail に残る。SSH キーの管理はいらなくなるが、SSH（22番ポート）は使うので、ポートを開ける必要がある。実行したコマンドの記録は残らない。" },
     { "id": "xf05", "term": "AWS Budgets のアクション", "cat": "finops",
       "desc": "予算のしきい値を超えたときに、自動で実行できる対処。できるのは IAM ポリシーを付ける、SCP を付ける、特定の EC2・RDS インスタンスを止める、の3種類。「すべてのサービスを終了する」ような機能はないので、もっと広く止めたいなら SNS 通知から Lambda を動かす。" },
     { "id": "xd10", "term": "Aurora のクローン（クロスアカウント）", "cat": "database",
