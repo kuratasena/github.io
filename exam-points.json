@@ -2257,6 +2257,20 @@
       ],
       "cards": ["xt21", "st08", "st06", "st07"],
       "tags": ["Storage Gateway", "ファイルゲートウェイ", "SMB", "Glacier Deep Archive"]
+    },
+    {
+      "id": "p202", "field": "cost", "service": "購入オプション（スポット・予約）", "date": "2026-10-30",
+      "title": "Savings Plans が効くのは EC2・Fargate・Lambda まで。MemoryDB や RDS は予約ノード・リザーブドインスタンス",
+      "power": "Savings Plans はコンピューティング専用の回数券。データベースやキャッシュには、それぞれの定期券（予約ノード）を買う",
+      "summary": "一定負荷の EC2 → EC2 Instance Savings Plans。変動する Lambda → 最小使用量を Compute Savings Plans。MemoryDB・ElastiCache・RDS → 予約ノード／リザーブドインスタンス（Compute Savings Plans の対象外）。Lambda の予約同時実行は割引ではない。",
+      "body": [
+        "Savings Plans には主に2種類あり、割引が効く範囲が違います。EC2 Instance Savings Plans は EC2 だけ（同じリージョン・同じインスタンスファミリー）で、割引率が一番大きいです。Compute Savings Plans は EC2・Fargate・Lambda に効き、リージョンやインスタンスの種類を変えても割引が続きます。",
+        "MemoryDB・ElastiCache・RDS・Redshift・OpenSearch などのデータ系のサービスは、Savings Plans の対象外です。これらは、それぞれの予約ノードやリザーブドインスタンスで安くします。",
+        "Lambda の「予約同時実行」は、同時に動ける数を確保する設定で、割引ではありません。Lambda を安くするなら Compute Savings Plans です。",
+        "負荷が一定の EC2 は EC2 Instance Savings Plans、変動する Lambda は「最低限使う分」だけ Compute Savings Plans、キャッシュは予約ノード、のようにサービスごとに一番合う割引を組み合わせます。"
+      ],
+      "cards": ["xf06", "xf07", "f04", "c13"],
+      "tags": ["Savings Plans", "予約ノード", "Lambda 予約同時実行", "MemoryDB", "コスト最適化"]
     }
   ],
   "terms": [
@@ -2569,6 +2583,10 @@
     { "id": "xs23", "term": "STS の AssumeRole と GetSessionToken", "cat": "security",
       "desc": "どちらも STS（一時的な認証情報を発行するサービス）の操作。AssumeRole は、ロールを借りて、そのロールの権限の一時的な認証情報をもらう（別アカウントのロールも借りられる）。GetSessionToken は、自分自身の権限のまま一時的な認証情報をもらう操作で、主に MFA を使うときに使う。ロールは借りられない。" },
     { "id": "xt21", "term": "Storage Gateway の3種類（ファイル・ボリューム・テープ）", "cat": "storage",
-      "desc": "ファイルゲートウェイは SMB/NFS でつなぐファイル置き場で、中身は S3 にファイルとして保存される。ボリュームゲートウェイは iSCSI でつなぐディスクで、EBS スナップショットとしてバックアップされる。テープゲートウェイは、バックアップソフトから仮想のテープ装置に見える仕組みで、物理テープの置き換えに使う。" }
+      "desc": "ファイルゲートウェイは SMB/NFS でつなぐファイル置き場で、中身は S3 にファイルとして保存される。ボリュームゲートウェイは iSCSI でつなぐディスクで、EBS スナップショットとしてバックアップされる。テープゲートウェイは、バックアップソフトから仮想のテープ装置に見える仕組みで、物理テープの置き換えに使う。" },
+    { "id": "xf06", "term": "Compute Savings Plans と EC2 Instance Savings Plans", "cat": "finops",
+      "desc": "どちらも1年か3年、1時間あたりの利用額を約束して安くする仕組み。EC2 Instance Savings Plans は、決まったリージョンとインスタンスファミリーの EC2 だけが対象で、割引率が大きい（最大72%）。Compute Savings Plans は EC2・Fargate・Lambda が対象で、リージョンや種類を変えても割引が続く（最大66%）。RDS や MemoryDB などには効かない。" },
+    { "id": "xf07", "term": "Lambda の予約同時実行", "cat": "compute",
+      "desc": "Lambda 関数が同時に動ける数を、その関数のためにあらかじめ確保しておく設定。ほかの関数に取られないようにする（または上限を決める）ためのもので、料金の割引はない。" }
   ]
 }
