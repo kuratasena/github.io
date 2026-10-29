@@ -2432,6 +2432,20 @@
       ],
       "cards": ["xn34", "xn35", "xn31", "xn11", "nw02"],
       "tags": ["Route 53 Resolver", "アウトバウンドエンドポイント", "インバウンドエンドポイント", "ハイブリッド DNS"]
+    },
+    {
+      "id": "p214", "field": "analytics", "service": "Kinesis", "date": "2026-10-30",
+      "title": "「ミリ秒で遅延なく」なら Kinesis Data Streams。Firehose はためてから届けるので即時には向かない",
+      "power": "Data Streams は流れるそうめん（すぐ取れる）。Firehose は宅配便（ある程度たまったらまとめて配達）",
+      "summary": "IoT データをミリ秒単位で処理して即可視化 → IoT Core → Kinesis Data Streams →（Lambda など）→ OpenSearch Service ＋ Dashboards。Firehose はバッファリング（OpenSearch 宛ては初期値300秒）するので「数ミリ秒以内」には不向き。",
+      "body": [
+        "「リアルタイム」「ミリ秒」「遅延なく」と出たら Kinesis Data Streams です。データが届いたらすぐ（ミリ秒単位で）読み出せます。読み出して OpenSearch などに書き込むのは、Lambda などの受け取り役（コンシューマー）です。",
+        "Amazon Data Firehose は、データをためてからまとめて届ける配送サービスです。OpenSearch に送る場合、初期設定では最大300秒ためてから送ります。サーバー管理なしで S3・Redshift・OpenSearch へ届けられて楽ですが、「数ミリ秒以内」には向きません。",
+        "「近いうちに届けば OK」「設定だけで S3 や Redshift に保存したい」なら Firehose、「すぐ処理したい」「自分で処理を書きたい」なら Data Streams、と使い分けます。",
+        "IoT のデータの入口は IoT Core、検索と可視化は OpenSearch Service ＋ OpenSearch Dashboards が定番の組み合わせです。Neptune（つながりを扱うグラフ DB）や DocumentDB は、センサーデータの即時の可視化には合いません。"
+      ],
+      "cards": ["xa05", "a06", "a03", "a10", "io01"],
+      "tags": ["Kinesis Data Streams", "Data Firehose", "OpenSearch", "IoT Core", "リアルタイム"]
     }
   ],
   "terms": [
@@ -2772,6 +2786,8 @@
     { "id": "xn34", "term": "Route 53 Resolver のインバウンド／アウトバウンドエンドポイント", "cat": "network",
       "desc": "VPC とオンプレミスの間で DNS の問い合わせを通すための窓口。アウトバウンドエンドポイントは、VPC からオンプレの DNS へ問い合わせを送る「出口」。インバウンドエンドポイントは、オンプレから VPC の名前（プライベートホストゾーンなど）を引きに来る「入口」。Direct Connect か VPN でつながっている必要がある。" },
     { "id": "xn35", "term": "Resolver ルール（条件付きフォワーディング）", "cat": "network",
-      "desc": "「この名前（ドメイン）で終わるものは、この DNS サーバーに聞きに行く」という転送の決まり。例：corp.example.com はオンプレの DNS へ転送し、それ以外はいつもどおり AWS が答える。アウトバウンドエンドポイントとセットで使い、ほかのアカウントの VPC と RAM で共有もできる。" }
+      "desc": "「この名前（ドメイン）で終わるものは、この DNS サーバーに聞きに行く」という転送の決まり。例：corp.example.com はオンプレの DNS へ転送し、それ以外はいつもどおり AWS が答える。アウトバウンドエンドポイントとセットで使い、ほかのアカウントの VPC と RAM で共有もできる。" },
+    { "id": "xa05", "term": "Kinesis Data Streams と Data Firehose の違い", "cat": "analytics",
+      "desc": "Data Streams は、届いたデータをミリ秒単位ですぐ読み出せる流れ。読み出して処理する役（Lambda や自作アプリ）は自分で用意する。Firehose は、データをためて（バッファリング）からまとめて S3・Redshift・OpenSearch などへ自動で届ける配送サービスで、設定だけで使えるが数十秒〜数分の遅れがある。" }
   ]
 }
