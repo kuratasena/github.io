@@ -2518,6 +2518,21 @@
       ],
       "cards": ["xm13", "xm15", "c15"],
       "tags": ["Control Tower", "予防コントロール", "SCP", "ガードレール", "コスト管理"]
+    },
+    {
+      "id": "p220", "field": "compute", "service": "CloudFormation・Elastic Beanstalk", "date": "2026-10-31",
+      "title": "中身が残った S3 バケットは CloudFormation で消せない → 中身を空にする Lambda をカスタムリソースにする",
+      "power": "引っ越しの最後は「部屋を空にする係（カスタムリソース）」を先に呼んでから、部屋（バケット）を返す",
+      "summary": "スタック削除時に S3 バケットが消せない（中身が残っている）→ バケットを空にする Lambda をカスタムリソースにして、バケットに DependsOn（削除は逆順なので、先に空にしてからバケットを消す）。DeletionPolicy: Delete やライフサイクルルールでは解決しない。",
+      "body": [
+        "CloudFormation は、中にオブジェクトが残っている S3 バケットを削除できません。スタックの削除が失敗する定番の原因です。",
+        "解決の定番は、バケットの中身を全部消す Lambda を「カスタムリソース」としてスタックに入れることです。スタックを削除するとき、CloudFormation がその Lambda を呼び出してバケットを空にし、そのあとでバケットを消します。",
+        "順番は DependsOn で決めます。カスタムリソースに「バケットに DependsOn」を付けると、作るときはバケット → カスタムリソース、消すときは逆にカスタムリソース（中身を空にする）→ バケットの順になります。",
+        "DeletionPolicy: Delete は「スタックを消したらリソースも消す」設定で、S3 バケットはもともとこの動きです。中身が残っていれば、やはり削除に失敗します。",
+        "S3 のライフサイクルルールは日単位（最短1日）なので「30分で期限切れ」は設定できず、削除のタイミングで空になっている保証もありません。"
+      ],
+      "cards": ["xm20", "mg01", "xt03"],
+      "tags": ["CloudFormation", "カスタムリソース", "DependsOn", "S3", "DeletionPolicy"]
     }
   ],
   "terms": [
@@ -2864,6 +2879,8 @@
     { "id": "xs26", "term": "Directory Service の3種類（Managed Microsoft AD・Simple AD・AD Connector）", "cat": "security",
       "desc": "Managed Microsoft AD は、AWS 上に本物の Active Directory を作るマネージドサービスで、MFA・オンプレの AD との信頼関係・グループポリシーなどが使える。Simple AD は Samba ベースの小規模向けの簡易版で安いが、MFA や信頼関係には対応しない。AD Connector は AD を作らず、オンプレの AD に問い合わせを中継するだけ。" },
     { "id": "xd17", "term": "ElastiCache の Redis と Memcached の違い", "cat": "database",
-      "desc": "どちらもメモリ上の超高速なキャッシュ。Redis（Valkey）は、レプリカ・自動フェイルオーバー・バックアップ・グローバルデータストア（別リージョンへの複製）・いろいろなデータ型に対応する。Memcached は、とにかくシンプルで速いが、複製もバックアップもなく、ノードが落ちるとデータが消える。消えて困るデータや DR が必要なら Redis。" }
+      "desc": "どちらもメモリ上の超高速なキャッシュ。Redis（Valkey）は、レプリカ・自動フェイルオーバー・バックアップ・グローバルデータストア（別リージョンへの複製）・いろいろなデータ型に対応する。Memcached は、とにかくシンプルで速いが、複製もバックアップもなく、ノードが落ちるとデータが消える。消えて困るデータや DR が必要なら Redis。" },
+    { "id": "xm20", "term": "CloudFormation のカスタムリソースと DependsOn", "cat": "mgmt",
+      "desc": "カスタムリソースは、CloudFormation が標準でできない処理を、スタックの作成・更新・削除のときに Lambda などで実行させる仕組み（例：削除の前に S3 バケットを空にする）。DependsOn は作る順番を決める属性で、A に「B に DependsOn」を付けると、作るときは B → A、消すときは A → B の順になる。" }
   ]
 }
