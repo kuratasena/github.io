@@ -2546,6 +2546,20 @@
       ],
       "cards": ["fr02", "xn19", "xn20", "i02", "db04"],
       "tags": ["API Gateway", "API キー", "使用量プラン", "ステージ", "サーバーレス"]
+    },
+    {
+      "id": "p222", "field": "migration", "service": "データ転送（Snow・DataSync）", "date": "2026-10-31",
+      "title": "オンプレの NFS → EFS へ毎日複製するなら DataSync で直接 EFS へ（Direct Connect はプライベート VIF ＋ PrivateLink）",
+      "power": "引っ越し屋（DataSync）は新居（EFS）に直接運ぶ。倉庫（S3）を経由させない",
+      "summary": "オンプレの NFS で作られるファイルを切り替え前に EFS へ継続的に複製 → オンプレに DataSync エージェント、スケジュールタスクで EFS に直接転送。Direct Connect ならプライベート VIF ＋ DataSync のインターフェース VPC エンドポイント。S3 経由＋Lambda や Storage Gateway は遠回り。",
+      "body": [
+        "オンプレの NFS のファイルを EFS に毎日コピーするなら、DataSync で直接 EFS に送ります。オンプレに DataSync エージェント（仮想マシン）を置き、タスクにスケジュールを付ければ、差分だけを自動で転送して、届いた後に中身が正しいかも確かめてくれます。",
+        "Direct Connect がある場合は、プライベート VIF で VPC につなぎ、DataSync 用のインターフェース VPC エンドポイント（PrivateLink）経由で通信させると、インターネットを通らずに済みます。",
+        "いったん S3 に送ってから Lambda で EFS にコピーする方法は、2段階になって手間が増えます。DataSync は EFS・FSx・S3 のどれにも直接送れます。",
+        "Storage Gateway のファイルゲートウェイは、裏の保存先が S3 で、EFS には入りません。オンプレから使い続けるための橋渡し役で、移行のための複製には DataSync を使います。"
+      ],
+      "cards": ["mi04", "xg06", "st04", "xn04", "nw02"],
+      "tags": ["DataSync", "EFS", "NFS", "Direct Connect", "PrivateLink"]
     }
   ],
   "terms": [
@@ -2894,6 +2908,8 @@
     { "id": "xd17", "term": "ElastiCache の Redis と Memcached の違い", "cat": "database",
       "desc": "どちらもメモリ上の超高速なキャッシュ。Redis（Valkey）は、レプリカ・自動フェイルオーバー・バックアップ・グローバルデータストア（別リージョンへの複製）・いろいろなデータ型に対応する。Memcached は、とにかくシンプルで速いが、複製もバックアップもなく、ノードが落ちるとデータが消える。消えて困るデータや DR が必要なら Redis。" },
     { "id": "xm20", "term": "CloudFormation のカスタムリソースと DependsOn", "cat": "mgmt",
-      "desc": "カスタムリソースは、CloudFormation が標準でできない処理を、スタックの作成・更新・削除のときに Lambda などで実行させる仕組み（例：削除の前に S3 バケットを空にする）。DependsOn は作る順番を決める属性で、A に「B に DependsOn」を付けると、作るときは B → A、消すときは A → B の順になる。" }
+      "desc": "カスタムリソースは、CloudFormation が標準でできない処理を、スタックの作成・更新・削除のときに Lambda などで実行させる仕組み（例：削除の前に S3 バケットを空にする）。DependsOn は作る順番を決める属性で、A に「B に DependsOn」を付けると、作るときは B → A、消すときは A → B の順になる。" },
+    { "id": "xg06", "term": "DataSync エージェントとタスク", "cat": "migration",
+      "desc": "DataSync エージェントは、オンプレ側に置く仮想マシンで、NFS・SMB などのファイルを読み取って AWS に送る役。タスクは「どこから（ソース）どこへ（宛先：S3・EFS・FSx）送るか」の設定で、スケジュールを付けると毎日などの決まった時間に、変わった分だけ自動で転送し、届いたデータが正しいかも確かめる。" }
   ]
 }
