@@ -2475,6 +2475,20 @@
       ],
       "cards": ["db06", "a05", "mi03", "xg04"],
       "tags": ["Keyspaces", "Cassandra", "Glue", "DMS", "移行"]
+    },
+    {
+      "id": "p217", "field": "security", "service": "Directory Service（AD）", "date": "2026-10-31",
+      "title": "AWS 上に本格的な AD ＋ MFA → AWS Managed Microsoft AD。Simple AD は MFA 非対応の簡易版",
+      "power": "本格派は Managed AD、お手軽版は Simple AD、取り次ぎだけなら AD Connector",
+      "summary": "AWS 上で中央管理する AD に Windows EC2 を参加させる ＋ MFA などの高度なセキュリティ ＋ マネージド → AWS Managed Microsoft AD。管理作業は WorkSpaces から。Simple AD は MFA や信頼関係に非対応。AD Connector は AD を AWS に作らない。",
+      "body": [
+        "AWS Directory Service には主に3種類あります。AWS Managed Microsoft AD は、AWS 上に本物の Active Directory を作るマネージドサービスで、MFA（RADIUS 連携）、オンプレの AD との信頼関係、グループポリシーなど、ほぼすべての機能が使えます。",
+        "Simple AD は、Samba を使った小規模向けの簡易版で安価ですが、MFA や信頼関係などには対応していません。「MFA」「高度なセキュリティ」「本格的な AD」と出たら Simple AD は外します。",
+        "AD Connector は、AWS に AD を作らず、オンプレの AD に問い合わせを中継するだけの窓口です。「AWS 上に中央管理の AD を置く」が要件なら、AD Connector ではなく Managed Microsoft AD です。",
+        "AD の管理作業をする場所は、Amazon WorkSpaces（マネージドの仮想デスクトップ）を使えば、管理用の EC2 を自分で立ててパッチを当てる必要がありません。AppStream 2.0 はアプリ1つだけを配信する仕組みで、デスクトップ全体で管理作業をする用途には向きません。"
+      ],
+      "cards": ["xs26", "sc07", "eu02", "eu01"],
+      "tags": ["Managed Microsoft AD", "Simple AD", "AD Connector", "WorkSpaces", "MFA"]
     }
   ],
   "terms": [
@@ -2817,6 +2831,8 @@
     { "id": "xn35", "term": "Resolver ルール（条件付きフォワーディング）", "cat": "network",
       "desc": "「この名前（ドメイン）で終わるものは、この DNS サーバーに聞きに行く」という転送の決まり。例：corp.example.com はオンプレの DNS へ転送し、それ以外はいつもどおり AWS が答える。アウトバウンドエンドポイントとセットで使い、ほかのアカウントの VPC と RAM で共有もできる。" },
     { "id": "xa05", "term": "Kinesis Data Streams と Data Firehose の違い", "cat": "analytics",
-      "desc": "Data Streams は、届いたデータをミリ秒単位ですぐ読み出せる流れ。読み出して処理する役（Lambda や自作アプリ）は自分で用意する。Firehose は、データをためて（バッファリング）からまとめて S3・Redshift・OpenSearch などへ自動で届ける配送サービスで、設定だけで使えるが数十秒〜数分の遅れがある。" }
+      "desc": "Data Streams は、届いたデータをミリ秒単位ですぐ読み出せる流れ。読み出して処理する役（Lambda や自作アプリ）は自分で用意する。Firehose は、データをためて（バッファリング）からまとめて S3・Redshift・OpenSearch などへ自動で届ける配送サービスで、設定だけで使えるが数十秒〜数分の遅れがある。" },
+    { "id": "xs26", "term": "Directory Service の3種類（Managed Microsoft AD・Simple AD・AD Connector）", "cat": "security",
+      "desc": "Managed Microsoft AD は、AWS 上に本物の Active Directory を作るマネージドサービスで、MFA・オンプレの AD との信頼関係・グループポリシーなどが使える。Simple AD は Samba ベースの小規模向けの簡易版で安いが、MFA や信頼関係には対応しない。AD Connector は AD を作らず、オンプレの AD に問い合わせを中継するだけ。" }
   ]
 }
