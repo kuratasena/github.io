@@ -2489,6 +2489,21 @@
       ],
       "cards": ["xs26", "sc07", "eu02", "eu01"],
       "tags": ["Managed Microsoft AD", "Simple AD", "AD Connector", "WorkSpaces", "MFA"]
+    },
+    {
+      "id": "p218", "field": "database", "service": "Aurora・RDS", "date": "2026-10-31",
+      "title": "形が決まったマスタは RDS、毎日書き換わるセッションは DynamoDB。DR はリードレプリカとグローバルテーブル",
+      "power": "台帳（マスタ）は几帳面な RDS、メモ帳（セッション）は身軽な DynamoDB",
+      "summary": "構造が厳密で参照されるマスタデータ → RDS ＋ 別リージョンにリードレプリカ。一時的なセッション・トランザクションデータ → DynamoDB グローバルテーブル。「分離」は別のデータベースに置くこと。Memcached にグローバルデータストアはない（Redis だけ）。",
+      "body": [
+        "データの性格でデータベースを分けます。部品番号・重量・寸法のように項目が決まっていて、ほかのデータから参照されるマスタデータは、形と整合性を DB で守れる RDS（リレーショナル）。毎日大量に書き換わる一時的なセッションやトランザクションのデータは DynamoDB。",
+        "「分離する」と書いてあれば、同じ RDS の中でスキーマを分けるだけでは不十分です。別々のデータベース（サービス）に置きます。",
+        "別リージョンへの DR は、RDS はクロスリージョンリードレプリカ（災害時に昇格）、DynamoDB はグローバルテーブル。どちらも複製の遅れは秒〜分なので、RPO 24時間・RTO 1時間を満たします。",
+        "ElastiCache のグローバルデータストアは Redis（Valkey）だけの機能で、Memcached にはありません。Memcached は複製もバックアップもなく、消えて困るデータの保存先には使えません。",
+        "DynamoDB グローバルテーブルはリージョン間の複製が結果整合性（数秒の遅れ）で、項目の形を DB で強制できないので、厳密な整合性が要るマスタデータには RDS の方が向いています。"
+      ],
+      "cards": ["db08", "xd16", "xd02", "xd17", "c01", "c02"],
+      "tags": ["RDS", "DynamoDB グローバルテーブル", "DR", "RPO", "RTO", "Memcached"]
     }
   ],
   "terms": [
@@ -2833,6 +2848,8 @@
     { "id": "xa05", "term": "Kinesis Data Streams と Data Firehose の違い", "cat": "analytics",
       "desc": "Data Streams は、届いたデータをミリ秒単位ですぐ読み出せる流れ。読み出して処理する役（Lambda や自作アプリ）は自分で用意する。Firehose は、データをためて（バッファリング）からまとめて S3・Redshift・OpenSearch などへ自動で届ける配送サービスで、設定だけで使えるが数十秒〜数分の遅れがある。" },
     { "id": "xs26", "term": "Directory Service の3種類（Managed Microsoft AD・Simple AD・AD Connector）", "cat": "security",
-      "desc": "Managed Microsoft AD は、AWS 上に本物の Active Directory を作るマネージドサービスで、MFA・オンプレの AD との信頼関係・グループポリシーなどが使える。Simple AD は Samba ベースの小規模向けの簡易版で安いが、MFA や信頼関係には対応しない。AD Connector は AD を作らず、オンプレの AD に問い合わせを中継するだけ。" }
+      "desc": "Managed Microsoft AD は、AWS 上に本物の Active Directory を作るマネージドサービスで、MFA・オンプレの AD との信頼関係・グループポリシーなどが使える。Simple AD は Samba ベースの小規模向けの簡易版で安いが、MFA や信頼関係には対応しない。AD Connector は AD を作らず、オンプレの AD に問い合わせを中継するだけ。" },
+    { "id": "xd17", "term": "ElastiCache の Redis と Memcached の違い", "cat": "database",
+      "desc": "どちらもメモリ上の超高速なキャッシュ。Redis（Valkey）は、レプリカ・自動フェイルオーバー・バックアップ・グローバルデータストア（別リージョンへの複製）・いろいろなデータ型に対応する。Memcached は、とにかくシンプルで速いが、複製もバックアップもなく、ノードが落ちるとデータが消える。消えて困るデータや DR が必要なら Redis。" }
   ]
 }
