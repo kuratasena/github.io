@@ -2460,6 +2460,21 @@
       ],
       "cards": ["db04", "xn04", "db03"],
       "tags": ["DynamoDB", "オンデマンドキャパシティ", "ゲートウェイ型 VPC エンドポイント", "DocumentDB"]
+    },
+    {
+      "id": "p216", "field": "migration", "service": "データベース移行（DMS）", "date": "2026-10-31",
+      "title": "Cassandra → Keyspaces は DMS では移せない。Glue の ETL で全量を移し、差分を追いかけて反映する",
+      "power": "DMS は万能の引っ越し業者やない。Cassandra 便はやってないから、Glue に頼む",
+      "summary": "オンプレの Cassandra を Amazon Keyspaces へダウンタイム最小で移す → DMS は Cassandra（移行元）も Keyspaces（移行先）も非対応。AWS Glue ETL で全量ロード ＋ 変更の継続的な反映。CSV 一括ロードや EC2 経由の2段階移行は不正解。",
+      "body": [
+        "DMS はたくさんのデータベースに対応していますが、Cassandra は移行元として、Amazon Keyspaces は移行先として対応していません。「DMS で Cassandra から Keyspaces へ」という選択肢は、技術的にできないので不正解です。",
+        "Cassandra から Keyspaces へ止めずに移すなら、AWS Glue の ETL ジョブ（Spark）でまず全データを移し、その後に起きた変更も追いかけて反映し続けます。少しずつの変更は、更新時刻を使って定期的に差分を取る方法や、CDC ツールで変更を Kinesis などに流して Glue のストリーミングジョブで反映する方法があります。",
+        "CSV に書き出して S3 経由で入れる方法（DSBulk など）は、一度にまとめて移すのは得意ですが、移している間の変更を追いかけられないので、ダウンタイムが大きくなります。",
+        "いったん EC2 に Cassandra を立てて2段階で移す方法は、管理の手間が増えるだけです。",
+        "DMS が使えるかどうかは、移行元と移行先の両方が対応しているかで決まります。迷ったら「その組み合わせは DMS の対応表にあるか？」を考えます。"
+      ],
+      "cards": ["db06", "a05", "mi03", "xg04"],
+      "tags": ["Keyspaces", "Cassandra", "Glue", "DMS", "移行"]
     }
   ],
   "terms": [
