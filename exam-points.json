@@ -2533,6 +2533,19 @@
       ],
       "cards": ["xm20", "mg01", "xt03"],
       "tags": ["CloudFormation", "カスタムリソース", "DependsOn", "S3", "DeletionPolicy"]
+    },
+    {
+      "id": "p221", "field": "network", "service": "API Gateway", "date": "2026-10-31",
+      "title": "「API キーで制限」「本番とテストを分ける」REST API の移行先は API Gateway（ALB や AppSync ではない）",
+      "power": "API キーとステージが出たら API Gateway。ALB には鍵の受付がなく、AppSync は GraphQL 専門",
+      "summary": "既存の REST API を変えずに移行 ＋ API キーでリクエスト制限 ＋ 本番とテストの区別 ＋ 負荷の変動・低遅延 → API Gateway（API キー・使用量プラン・ステージ）＋ Lambda ＋ DynamoDB オンデマンド。ALB は API キー非対応、AppSync は GraphQL、NLB は TCP/UDP 用。",
+      "body": [
+        "今の REST API が「API キーで回数を制限」「本番とテストを分ける」をやっているなら、移行先は API Gateway です。API キーと使用量プランで制限をかけられ、ステージ（prod・test など）で環境を分けられます。",
+        "ALB も Lambda を呼べますが、API キーや使用量プランの機能はありません。NLB は TCP/UDP 用で、REST API の入口には向きません。AppSync は GraphQL 用なので、「既存の REST API を変えずに」に合いません。",
+        "負荷が大きく変わるなら、API Gateway ＋ Lambda ＋ DynamoDB オンデマンドの、全部が自動で増減するサーバーレスの組み合わせが定番です。DynamoDB は1桁ミリ秒で読み書きできるので、低遅延の要件にも合います。"
+      ],
+      "cards": ["fr02", "xn19", "xn20", "i02", "db04"],
+      "tags": ["API Gateway", "API キー", "使用量プラン", "ステージ", "サーバーレス"]
     }
   ],
   "terms": [
