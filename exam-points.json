@@ -2602,6 +2602,21 @@
       ],
       "cards": ["xm13", "xm15", "sc10", "sc18", "xs27"],
       "tags": ["Control Tower", "IAM Identity Center", "AD FS", "Security Hub", "コンプライアンス"]
+    },
+    {
+      "id": "p226", "field": "database", "service": "Aurora・RDS", "date": "2026-11-01",
+      "title": "別の大陸にも広げて速くするなら：アプリ層を両リージョンに ＋ Aurora Global Database ＋ S3/CloudFront ＋ Route 53",
+      "power": "店（アプリ）は両方の大陸に建て、帳簿の写しは高速便（物理レプリケーション）で送り、チラシ（静的コンテンツ）はコンビニ（CloudFront）に置く",
+      "summary": "北米からヨーロッパにも展開し両方で速く → 予約・アプリ層を両リージョンの Auto Scaling に、DB は Aurora Global Database（物理レプリケーションで遅れ1秒未満）、静的コンテンツは S3 CRR ＋ CloudFront、振り分けは Route 53。論理レプリケーションは遅れやすい。動的な処理は S3 に置き換えられない。",
+      "body": [
+        "Web アプリを別の大陸にも広げて速くする定番セット：アプリ層を両リージョンの Auto Scaling で動かす、DB は Aurora Global Database、静的コンテンツは S3（クロスリージョンレプリケーション）＋ CloudFront、利用者の振り分けは Route 53。",
+        "Aurora Global Database はストレージの層で複製する「物理レプリケーション」で、遅れは通常1秒未満です。binlog を使う「論理レプリケーション」（クロスリージョンのリードレプリカ）は、DB のエンジンが SQL を再実行するので、遅れが大きくなりやすいです。",
+        "予約処理のようにサーバーで処理が必要な部分は、S3 に置き換えられません。S3 にできるのは、写真や HTML のような静的コンテンツだけです。",
+        "今うまく動いている Aurora を DynamoDB に作り替える選択肢は、要件にない大きな変更です。",
+        "Route 53 の地理的近接性ルーティングは「距離」で振り分け、バイアスで範囲を広げたり狭めたりもできます（Traffic Flow が必要）。位置情報（国・地域で決める）とは別物です。一番速さを重視するならレイテンシーベースです。"
+      ],
+      "cards": ["db01", "xn27", "nw01", "st06", "co06"],
+      "tags": ["Aurora Global Database", "マルチリージョン", "CloudFront", "S3 CRR", "Route 53"]
     }
   ],
   "terms": [
