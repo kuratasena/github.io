@@ -2632,6 +2632,21 @@
       ],
       "cards": ["st01", "xt23", "xt19", "c15"],
       "tags": ["AWS Backup", "Vault Lock", "クロスアカウントバックアップ", "SCP", "ランサムウェア"]
+    },
+    {
+      "id": "p228", "field": "analytics", "service": "ログ調査", "date": "2026-11-01",
+      "title": "複数アカウントの CloudWatch Logs を中央に集めるなら、サブスクリプションフィルター → 送信先（Destination）→ Kinesis",
+      "power": "各支店のログの蛇口（サブスクリプションフィルター）を、本部の受け口（Destination）につないで、本部の川（Kinesis）に流す",
+      "summary": "多数のアカウントの CloudWatch Logs を中央の監査アカウントに集約 ＋ リージョン内に留める ＋ 自動スケール → 中央アカウントに Kinesis Data Streams と CloudWatch Logs の送信先（IAM ロール付き）、各アカウントのロググループにサブスクリプションフィルター、中央の Lambda で正規化して SIEM へ。サブスクリプションフィルターは SQS に送れない。",
+      "body": [
+        "いくつものアカウントの CloudWatch Logs を中央のアカウントに集めるなら、CloudWatch Logs のサブスクリプションフィルターで、中央アカウントの Kinesis Data Streams に流します。",
+        "設定は3段階です。① 中央アカウントに Kinesis Data Streams を作る ② 中央アカウントに、CloudWatch Logs が Kinesis に書き込める IAM ロールと「送信先（Destination）」を作る（アクセスポリシーでメンバーアカウントを許可）③ 各メンバーアカウントのロググループに、その送信先へ送るサブスクリプションフィルターを付ける。",
+        "サブスクリプションフィルターの送り先は、Kinesis Data Streams・Data Firehose・Lambda・OpenSearch Service です。SQS には直接送れません。",
+        "送信先はロググループと同じリージョンに作る必要があります。だから「ログはリージョンの外に出さない」要件とも合い、リージョンごとに中央アカウントのストリームを用意します。",
+        "正規化や SIEM への送信は、中央アカウントの Lambda で Kinesis から読み出してまとめて行います。メンバーアカウントごとに Lambda を置くと、管理がバラバラになります。"
+      ],
+      "cards": ["mg04", "xm21", "a06", "xa05"],
+      "tags": ["CloudWatch Logs", "サブスクリプションフィルター", "Kinesis Data Streams", "クロスアカウント", "SIEM"]
     }
   ],
   "terms": [
@@ -2988,6 +3003,8 @@
     { "id": "xs27", "term": "Security Hub のセキュリティ基準", "cat": "security",
       "desc": "Security Hub に用意されている、チェック項目のセット。AWS 基礎セキュリティのベストプラクティス、CIS AWS Foundations、PCI DSS、NIST SP 800-53 などがあり、オンにするとアカウントの設定が基準を満たしているかを自動で採点する。Organizations と連携すれば、全アカウントの結果を1か所で見られる。" },
     { "id": "xt23", "term": "AWS Backup Vault Lock（コンプライアンスモードとガバナンスモード）", "cat": "storage",
-      "desc": "バックアップボールトに鍵をかけて、保持期間が終わるまでバックアップを削除・変更できなくする機能（WORM）。コンプライアンスモードは、ロックが確定すると、ルートユーザーも AWS も解除や削除ができない。ガバナンスモードは、特別な IAM 権限を持つ人なら解除できる。ランサムウェアや乗っ取り対策にはコンプライアンスモードを使う。" }
+      "desc": "バックアップボールトに鍵をかけて、保持期間が終わるまでバックアップを削除・変更できなくする機能（WORM）。コンプライアンスモードは、ロックが確定すると、ルートユーザーも AWS も解除や削除ができない。ガバナンスモードは、特別な IAM 権限を持つ人なら解除できる。ランサムウェアや乗っ取り対策にはコンプライアンスモードを使う。" },
+    { "id": "xm21", "term": "CloudWatch Logs のサブスクリプションフィルターと送信先（Destination）", "cat": "mgmt",
+      "desc": "サブスクリプションフィルターは、ロググループに届いたログ（条件に合うもの）を、リアルタイムでほかのサービスへ流す設定。送り先は Kinesis Data Streams・Data Firehose・Lambda・OpenSearch Service（SQS は不可）。別のアカウントへ流すときは、受け取る側のアカウントに「送信先（Destination）」を作り、そのアクセスポリシーで送る側のアカウントを許可する。送信先はロググループと同じリージョンに作る。" }
   ]
 }
