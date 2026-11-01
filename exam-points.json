@@ -2647,6 +2647,21 @@
       ],
       "cards": ["mg04", "xm21", "a06", "xa05"],
       "tags": ["CloudWatch Logs", "サブスクリプションフィルター", "Kinesis Data Streams", "クロスアカウント", "SIEM"]
+    },
+    {
+      "id": "p229", "field": "migration", "service": "リフト＆シフト", "date": "2026-11-01",
+      "title": "アプリサーバーは MGN、DB は DMS。どちらも継続レプリケーションで同期させて、最後に一瞬で切り替える",
+      "power": "家具（サーバー）は引っ越しトラック（MGN）、金庫の中身（DB）は専門の運び屋（DMS）",
+      "summary": "アプリサーバーと PostgreSQL をダウンタイム最小で移行 ＋ 太い Direct Connect がある → アプリサーバーの VM は MGN（継続レプリケーション）、DB は DMS で Aurora PostgreSQL へ（フルロード ＋ CDC）。VM Import/Export や Snowball は移行中の変更を反映できない。",
+      "body": [
+        "アプリサーバーと DB サーバーをダウンタイム最小で移すなら、役割で道具を分けます。アプリサーバー（VM）は MGN で OS ごと継続レプリケーション、DB は DMS でフルロード ＋ CDC（変更の継続的な反映）。どちらも同期させたまま、最後に短時間で切り替えます。",
+        "MGN でも DB サーバーの VM を丸ごと移すことはできますが、DB を Aurora などのマネージド DB に移す・データの整合性を保ったまま同期するなら DMS が向いています。",
+        "VM Import/Export は VM を書き出して取り込む手作業の1回きりの移行で、書き出し中の変更が反映されないので、ダウンタイムが大きくなります（「差分だけ転送」もできません）。",
+        "Snowball は運んでいる間（数日〜数週間）の変更を反映できないので、「最小のダウンタイム」には向きません。回線が太いなら、まず「データ量 ÷ 回線の速さ」を計算します。750TB を 20Gbps で送ると約3.5日で、継続レプリケーションなら十分に間に合います。",
+        "AWS Server Migration Service（SMS）は提供終了していて、後継が MGN です。"
+      ],
+      "cards": ["mi02", "mi03", "xg04", "xg05", "mi07"],
+      "tags": ["MGN", "DMS", "継続レプリケーション", "VM Import/Export", "Snowball"]
     }
   ],
   "terms": [
