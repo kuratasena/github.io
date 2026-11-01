@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "fields": [
     { "id": "network", "name": "ネットワーク" },
     { "id": "security", "name": "セキュリティ・権限" },
@@ -2560,6 +2560,20 @@
       ],
       "cards": ["mi04", "xg06", "st04", "xn04", "nw02"],
       "tags": ["DataSync", "EFS", "NFS", "Direct Connect", "PrivateLink"]
+    },
+    {
+      "id": "p223", "field": "network", "service": "CloudFront", "date": "2026-11-01",
+      "title": "ALB を CloudFront 経由だけにするなら、ALB のセキュリティグループで CloudFront のマネージドプレフィックスリストだけ許可",
+      "power": "CloudFront の住所録（プレフィックスリスト）は AWS が書き換えてくれる。自分で写さない",
+      "summary": "CloudFront の後ろの ALB に直接アクセスさせない ＋ 最小の労力 → ALB のセキュリティグループのインバウンドで com.amazonaws.global.cloudfront.origin-facing（AWS 管理のプレフィックスリスト）だけ許可。CloudFront にセキュリティグループは付けられない。ip-ranges.json の手作業は更新が大変。",
+      "body": [
+        "ALB へのアクセスを CloudFront 経由だけにするなら、ALB のセキュリティグループで、AWS が管理する CloudFront のプレフィックスリスト（com.amazonaws.global.cloudfront.origin-facing）からの通信だけを許可します。CloudFront の IP が変わっても AWS が自動で更新するので、手入れがいりません。",
+        "CloudFront にはセキュリティグループを付けられません。「CloudFront にセキュリティグループを関連付ける」という選択肢は、できないことなので不正解です。",
+        "ip-ranges.json から IP を抜き出してルールに書く方法は、IP が変わるたびに書き直す必要があり、手間がかかります。",
+        "さらに「自分の CloudFront だけ」に絞りたいときは、CloudFront からオリジンへ送るカスタムヘッダー（秘密の値）を設定し、ALB のリスナールールでそのヘッダーがあるときだけ通します（ほかの人の CloudFront からのアクセスも防げる）。"
+      ],
+      "cards": ["xn16", "nw01", "nw03"],
+      "tags": ["CloudFront", "ALB", "マネージドプレフィックスリスト", "セキュリティグループ"]
     }
   ],
   "terms": [
