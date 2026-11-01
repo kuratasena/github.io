@@ -2588,6 +2588,20 @@
       ],
       "cards": ["c03", "c01", "c02", "st01", "ct01", "xc16", "mg01"],
       "tags": ["DR", "バックアップと復元", "RTO", "RPO", "AWS Backup", "ECR"]
+    },
+    {
+      "id": "p225", "field": "org", "service": "Control Tower", "date": "2026-11-01",
+      "title": "マルチアカウントの土台は Control Tower ＋ IAM Identity Center（AD FS 連携）＋ Security Hub でコンプライアンスを一元監視",
+      "power": "建物は Control Tower、入館証は Identity Center、全フロアの点検表は Security Hub",
+      "summary": "一貫した管理とセキュリティのマルチアカウント基盤 ＋ AD FS 連携 ＋ プロジェクトごとの規制対応 ＋ 運用の手間を最小 → Organizations ＋ Control Tower、IAM Identity Center で AD FS と連携、Config ＋ Security Hub でコンプライアンスを集中管理、OU ごとにカスタム SCP。",
+      "body": [
+        "新しくマルチアカウントの土台を作るなら、Organizations ＋ Control Tower です。ランディングゾーン（ベストプラクティスどおりの初期構成）、ガードレール、ログの集約、新しいアカウントの自動作成（Account Factory）をまとめてやってくれます。",
+        "社内の AD FS などの SAML 2.0 の IdP とつなぐなら、IAM Identity Center です。各アカウントに個別に IAM のフェデレーションを設定する方法は、アカウントが増えるほど大変になります。",
+        "「プロジェクトごとに違う基準・規制に準拠」なら、Security Hub で組織全体のコンプライアンス状況をまとめて見ます。Security Hub には CIS・PCI DSS・NIST などのセキュリティ基準のチェックが用意されていて、AWS Config の評価結果も集約できます。Config だけだと、アカウントやルールごとに結果がバラバラになります。",
+        "OU ごとに違うルールが必要なら、OU ごとにカスタムの SCP（予防）を付けます。"
+      ],
+      "cards": ["xm13", "xm15", "sc10", "sc18", "xs27"],
+      "tags": ["Control Tower", "IAM Identity Center", "AD FS", "Security Hub", "コンプライアンス"]
     }
   ],
   "terms": [
@@ -2940,6 +2954,8 @@
     { "id": "xg06", "term": "DataSync エージェントとタスク", "cat": "migration",
       "desc": "DataSync エージェントは、オンプレ側に置く仮想マシンで、NFS・SMB などのファイルを読み取って AWS に送る役。タスクは「どこから（ソース）どこへ（宛先：S3・EFS・FSx）送るか」の設定で、スケジュールを付けると毎日などの決まった時間に、変わった分だけ自動で転送し、届いたデータが正しいかも確かめる。" },
     { "id": "xc16", "term": "ECR のクロスリージョンレプリケーション", "cat": "compute",
-      "desc": "ECR に置いたコンテナイメージを、別のリージョン（や別のアカウント）の ECR へ自動で複製する機能。元のリージョンが使えなくなっても、別リージョンでそのイメージを使ってコンテナを起動できる。DR やマルチリージョンの構成で使う。" }
+      "desc": "ECR に置いたコンテナイメージを、別のリージョン（や別のアカウント）の ECR へ自動で複製する機能。元のリージョンが使えなくなっても、別リージョンでそのイメージを使ってコンテナを起動できる。DR やマルチリージョンの構成で使う。" },
+    { "id": "xs27", "term": "Security Hub のセキュリティ基準", "cat": "security",
+      "desc": "Security Hub に用意されている、チェック項目のセット。AWS 基礎セキュリティのベストプラクティス、CIS AWS Foundations、PCI DSS、NIST SP 800-53 などがあり、オンにするとアカウントの設定が基準を満たしているかを自動で採点する。Organizations と連携すれば、全アカウントの結果を1か所で見られる。" }
   ]
 }
