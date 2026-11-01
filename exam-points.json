@@ -2676,6 +2676,21 @@
       ],
       "cards": ["nw07", "xn18", "xn36", "nw09"],
       "tags": ["Transit Gateway", "RAM", "ルートテーブル", "セグメント分け", "VPN"]
+    },
+    {
+      "id": "p231", "field": "database", "service": "Aurora・RDS", "date": "2026-11-01",
+      "title": "読めない急なピーク ＋ 書き込みが多い Aurora は Serverless v2。Lambda と Fargate は Compute Savings Plans",
+      "power": "お客さんの数に合わせて店員が自動で増える店（Serverless v2）。ヒマなときは少人数で安く",
+      "summary": "予測できない急なトラフィック ＋ 書き込みが多い ＋ 費用対効果 → Aurora Serverless v2（ACU が自動で増減、使った分だけ課金）＋ Lambda・Fargate に Compute Savings Plans。リードレプリカは書き込みに効かない、マルチマスターは提供終了、Global Database は大げさ、RI は変動に不向き。",
+      "body": [
+        "負荷がまったく読めない（長いヒマと急なピークをくり返す）Aurora は、Aurora Serverless v2 にします。ACU（容量の単位）が数秒で細かく増減し、使った分だけ払うので、ピークにも耐えつつヒマなときは安く済みます。書き込みが多くても対応できます。",
+        "リードレプリカは読み取りしか増やせないので、書き込みが多い負荷には効きません。リザーブドインスタンスは、使い方が安定しているときに安くなる仕組みで、変動が激しいなら向きません。",
+        "Aurora のマルチマスター（ライターが複数）は MySQL だけの機能で、すでに提供終了しています。PostgreSQL では使えません。",
+        "Aurora Global Database は複数リージョン用で、1つのリージョンの負荷の増減には大げさです。",
+        "Lambda と Fargate の割引は Compute Savings Plans です（EC2 Instance Savings Plans は EC2 だけ）。"
+      ],
+      "cards": ["db02", "db01", "xf06"],
+      "tags": ["Aurora Serverless v2", "Compute Savings Plans", "コスト最適化", "スケーリング"]
     }
   ],
   "terms": [
