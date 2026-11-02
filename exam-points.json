@@ -2733,6 +2733,34 @@
       ],
       "cards": ["xn07", "xn24", "xn37", "i07", "co08", "xp18", "st02", "xt10", "st04"],
       "tags": ["解き方", "ALB", "Step Functions", "Lambda", "EBS", "EFS"]
+    },
+    {
+      "id": "p235", "field": "network", "service": "API Gateway", "date": "2026-11-02",
+      "title": "「AWS のユーザー・ロールだけに API を使わせたい」なら、API Gateway の認可を AWS_IAM にして、execute-api:Invoke を付与、リクエストは SigV4 で署名",
+      "power": "IAM の社員証（execute-api:Invoke）を持ってる人だけ、署名（SigV4）つきで入館できる",
+      "summary": "API へのアクセスを IAM ユーザー・ロールに限定 → メソッドの認可を AWS_IAM ＋ IAM ポリシーで execute-api:Invoke を許可 ＋ クライアントは SigV4 で署名。CORS は認証ではない、Lambda オーソライザーは自作で手間が増える、クライアント証明書は API Gateway → バックエンドの確認用。",
+      "body": [
+        "「AWS のユーザーやロールだけ」と言われたら、AWS_IAM 認可が一番素直です。IAM ポリシーで execute-api:Invoke を許可した人だけが呼び出せ、クライアントは SigV4（AWS の署名方式）でリクエストに署名します。チェックは API Gateway が自動でやってくれます。",
+        "CORS は「どのサイトのブラウザから呼んでよいか」を伝えるヘッダーの設定で、認証ではありません。ブラウザ以外からは普通に呼べてしまいます。",
+        "Lambda オーソライザー（カスタムオーソライザー）は、独自のトークンや外部の認証を使うときのものです。IAM で済むのに自作すると、手間とリスクが増えます。",
+        "API Gateway のクライアント証明書は、バックエンドが「このリクエストは API Gateway から来た」と確かめるためのものです。利用者に配って認証に使うものではありません。"
+      ],
+      "cards": ["fr02", "sc11", "xs28", "xs29", "xn38"],
+      "tags": ["API Gateway", "AWS_IAM", "SigV4", "execute-api:Invoke", "CORS"]
+    },
+    {
+      "id": "p236", "field": "analytics", "service": "X-Ray（トレース）", "date": "2026-11-02",
+      "title": "「レイテンシーの詳しい分析」「サービスマップ」「エンドツーエンドの追跡」と出たら X-Ray。CloudWatch だけでは足りない",
+      "power": "CloudWatch は体温計（数値）、X-Ray は胃カメラ（リクエストの通り道を全部見る）",
+      "summary": "1つのリクエストがどのサービスをどの順で通り、どこで何ミリ秒かかったかを追う → AWS X-Ray（トレース・サービスマップ）。API Gateway はステージ設定で X-Ray トレースを有効にできる。CloudWatch はメトリクスとログで、サービス間の依存関係の地図は作らない。",
+      "body": [
+        "X-Ray は、1つのリクエストが API Gateway → Lambda → DB のようにサービスをまたいで進む様子を記録（トレース）し、どこで時間がかかったか、どこでエラーが出たかを見せてくれます。サービス同士のつながりは「サービスマップ」という図で表示されます。",
+        "API Gateway は、ステージの設定で X-Ray トレースをオンにするだけで使えます。",
+        "CloudWatch はメトリクス（件数・平均レイテンシーなど）やログを集める場所です。全体の数字は分かりますが、1件ごとの通り道やサービスマップは作りません。",
+        "問題文の「サービスマップ」「エンドツーエンド」「分散トレーシング」は X-Ray のサインです。"
+      ],
+      "cards": ["dv06", "mg03", "fr02"],
+      "tags": ["X-Ray", "トレース", "サービスマップ", "レイテンシー", "CloudWatch"]
     }
   ],
   "terms": [
@@ -3099,6 +3127,12 @@
     { "id": "xn37", "term": "ALB のターゲットタイプ（インスタンス / IP / Lambda）", "cat": "network",
       "desc": "ALB のターゲットグループに登録できる相手の種類。EC2 インスタンス、IP アドレス（ECS on Fargate のタスクやオンプレのサーバーなど）、Lambda 関数の3種類だけ。Step Functions や S3 を直接ターゲットにすることはできない。" },
     { "id": "xp18", "term": "Lambda で使えるファイル置き場（/tmp と EFS）", "cat": "compute",
-      "desc": "Lambda には、実行中だけ使える一時領域の /tmp（512MB〜10GB）がある。複数の関数やほかのサーバーとファイルを共有したり、大きなファイルを置いたりするなら、EFS をマウントする（Lambda を VPC に接続する必要がある）。EBS ボリュームはマウントできない。" }
+      "desc": "Lambda には、実行中だけ使える一時領域の /tmp（512MB〜10GB）がある。複数の関数やほかのサーバーとファイルを共有したり、大きなファイルを置いたりするなら、EFS をマウントする（Lambda を VPC に接続する必要がある）。EBS ボリュームはマウントできない。" },
+    { "id": "xs28", "term": "API Gateway の認可方式（IAM / Lambda オーソライザー / Cognito）", "cat": "security",
+      "desc": "API Gateway で「だれが呼べるか」を決める方法。AWS_IAM は、IAM ポリシーで execute-api:Invoke を許可されたユーザー・ロールだけが、SigV4 で署名したリクエストで呼べる。Lambda オーソライザーは、自分で書いた Lambda で独自のトークンなどを確かめる。Cognito オーソライザーは、Cognito ユーザープールでログインしたアプリの利用者向け。" },
+    { "id": "xs29", "term": "署名バージョン 4（SigV4）", "cat": "security",
+      "desc": "AWS の API を呼ぶときに、リクエストにアクセスキーで計算した署名をつける方式。受け取った側は署名を確かめて、だれが送ったか、途中で書き換えられていないかを判断する。AWS CLI や SDK は自動で署名する。API Gateway の AWS_IAM 認可でも使う。" },
+    { "id": "xn38", "term": "CORS（オリジン間リソース共有）", "cat": "network",
+      "desc": "ブラウザで開いているサイトとは別のドメインの API を、JavaScript から呼んでよいかを、API 側がヘッダー（Access-Control-Allow-Origin など）で伝える仕組み。ブラウザだけが守るルールで、認証やアクセス制御の代わりにはならない。" }
   ]
 }
