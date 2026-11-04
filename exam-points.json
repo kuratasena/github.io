@@ -2789,6 +2789,20 @@
       ],
       "cards": ["xn07", "xn02", "nw06", "xn27", "c19"],
       "tags": ["ALB", "Auto Scaling", "VPC ピアリング", "Route 53", "DR"]
+    },
+    {
+      "id": "p239", "field": "compute", "service": "ECS・コンテナ", "date": "2026-11-04",
+      "title": "「ホストやネットワークを完全に制御」なら ECS の EC2 起動タイプ。MSMQ は SQS、SQL Server は RDS for SQL Server に置き換え",
+      "power": "完全制御＝自分の車（EC2）、おまかせ＝タクシー（Fargate・App Runner・Beanstalk）",
+      "summary": "ホスト構成まで制御したいコンテナは ECS on EC2。キュー型の MSMQ は SQS、リレーショナル必須の SQL Server は RDS for SQL Server。",
+      "body": [
+        "Fargate・App Runner・Elastic Beanstalk はサーバーの面倒を AWS が見てくれる代わりに、ホストの設定やネットワークを細かくいじれません。「完全な制御」と言われたら EC2 起動タイプの ECS です。",
+        "MSMQ は「キュー（順番待ちの箱）」型の非同期通信なので、AWS では SQS が置き換え先です。SNS は一斉配信（Pub/Sub）、EventBridge はイベントの振り分け、MSK は大量ストリーミング用で、どれもキューの代わりとしてはズレます。",
+        "「強力なリレーショナルモデル」「SQL Server を使っている」「互換性を保ちたい」なら RDS for SQL Server。DynamoDB は NoSQL なので外します。",
+        "置き換え先は「今使っている技術に一番近いもの」を選ぶのが基本です。"
+      ],
+      "cards": ["ct02", "xp15", "co07", "co01", "co04", "i06", "a09", "db08"],
+      "tags": ["ECS", "EC2 起動タイプ", "SQS", "MSMQ", "RDS for SQL Server"]
     }
   ],
   "terms": [
