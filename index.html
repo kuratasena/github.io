@@ -798,6 +798,12 @@
     nav.tabs { overflow-x: auto; scrollbar-width: none; }
     nav.tabs::-webkit-scrollbar { display: none; }
   }
+  .ptdiag { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: -4px 0 16px; padding: 11px 14px;
+    background: var(--paper); color: var(--ink); border-radius: var(--radius-card); border: 1px solid rgba(0,0,0,0.12);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.28); font-weight: 700; font-size: 14px; text-decoration: none; }
+  .ptdiag span { font-family: var(--font-mono); color: var(--ink-soft); font-weight: 400; }
+  .ptdiag:active { transform: translateY(1px); }
+  .footlink { display: block; text-align: center; margin: 0 auto 12px; font-size: 13px; color: var(--amber, #E2A83F); text-decoration: underline; text-underline-offset: 3px; }
   .ptintro { font-size: 12.5px; color: var(--white-dim); line-height: 1.7; margin: 0 0 14px; }
   .ptchips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
   .ptchips .chip b { font-weight: 400; opacity: 0.75; margin-left: 4px; }
@@ -992,6 +998,7 @@
   <!-- EXAM POINTS -->
   <section class="panel" id="panel-points">
     <p class="ptintro">問題演習の解説から、試験に出るポイントとパワーワードを分野ごとにまとめています。新しい解説のたびに追加されます。</p>
+    <a class="ptdiag" href="https://claude.ai/artifact/F6tFRfEGuCJSiTqycNk676" target="_blank" rel="noopener">🗺️ SAP 構成図集を開く<span>↗</span></a>
     <div class="controls">
       <input type="text" id="ptSearch" placeholder="サービス名やキーワードで検索…" autocomplete="off">
     </div>
@@ -1001,6 +1008,7 @@
   </section>
 
   <footer class="foot">
+    <a class="footlink" href="https://claude.ai/artifact/F6tFRfEGuCJSiTqycNk676" target="_blank" rel="noopener">🗺️ SAP 構成図集 ↗</a>
     <button id="resetProgressBtn">学習の記録をリセット</button>
   </footer>
 </div>
