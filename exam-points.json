@@ -2900,7 +2900,7 @@
         "X-Ray は AWS 上のアプリのリクエストを追跡する道具、Inspector は AWS 上の EC2 やコンテナの脆弱性を調べる道具で、どちらも移行の計画用ではありません。オンプレのサーバー同士のつながりを調べるのは Discovery Service です。",
         "「ドキュメントが古い・不完全」は「まず実物を調べる（Discovery）」のサイン、「組織の準備」「移行戦略」は CAF のサインです。"
       ],
-      "cards": ["mi01", "mi05", "xg7", "xg01", "mi02", "dv06", "sc12"],
+      "cards": ["mi01", "mi05", "xg07", "xg01", "mi02", "dv06", "sc12"],
       "tags": ["移行計画", "Application Discovery Service", "Migration Hub", "CAF", "MGN"]
     }
   ],
@@ -3299,7 +3299,7 @@
       "desc": "AWS Organizations の機能で、組織内のアカウントでタグのキーや値の書き方（大文字・小文字や使ってよい値）をそろえるためのポリシー。リージョンやインスタンスタイプなどを制限する機能はない。「タグがないと作らせない」は SCP や IAM ポリシーの条件で行う。" },
     { "id": "xt24", "term": "S3 Replication Time Control（S3 RTC）", "cat": "storage",
       "desc": "S3 レプリケーションのオプション。新しいオブジェクトの 99.99% を15分以内にコピーすることを SLA で約束する。オンにすると、レプリケーションの遅れや未完了の量などのメトリクスが CloudWatch に出て、15分を超えたオブジェクトはイベントで知らせてくれる。追加料金がかかるので、必要なデータのルールだけに付ける。" },
-    { "id": "xg7", "term": "AWS Cloud Adoption Framework（AWS CAF）", "cat": "migration",
+    { "id": "xg07", "term": "AWS Cloud Adoption Framework（AWS CAF）", "cat": "migration",
       "desc": "AWS がまとめたクラウド導入の考え方と手引き。ビジネス・人・ガバナンス・プラットフォーム・セキュリティ・運用の6つの視点で、組織がクラウドに移る準備ができているかを評価し、足りないところと移行の作戦を整理する。ツールというより、計画づくりのための枠組み。" }
   ]
 }
