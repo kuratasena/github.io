@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-05",
+  "updated": "2026-11-07",
   "fields": [
     { "id": "network", "name": "ネットワーク" },
     { "id": "security", "name": "セキュリティ・権限" },
@@ -2831,6 +2831,20 @@
       ],
       "cards": ["co06", "xc19", "xc20", "xc21", "xm03", "xp03"],
       "tags": ["Auto Scaling", "AMI", "パッチ", "インスタンスリフレッシュ", "終了ポリシー"]
+    },
+    {
+      "id": "p242", "field": "network", "service": "VPC エンドポイント", "date": "2026-11-07",
+      "title": "インターネットから隔離した VPC で PyPI のパッケージを使うなら、CodeArtifact（public:pypi への外部接続）＋ VPC エンドポイント",
+      "power": "買い出しは代理店（CodeArtifact）に任せる。自分は店の外（インターネット）に出ない",
+      "summary": "インターネットに出られない VPC から PyPI などの公開パッケージを使う → CodeArtifact のリポジトリに public:pypi への外部接続を追加し、pip の参照先を CodeArtifact に、接続は CodeArtifact 用のインターフェース VPC エンドポイント経由。NAT（ゲートウェイ・インスタンス）は VPC がインターネットに出られてしまうので隔離の要件に反する。",
+      "body": [
+        "インターネットに出られない VPC で、PyPI・npm・Maven などの公開パッケージを使いたいときの定番です。① CodeArtifact のドメインとリポジトリを作る ② リポジトリに外部接続（public:pypi など）を追加する ③ pip などの参照先を CodeArtifact に切り替える ④ CodeArtifact 用のインターフェース VPC エンドポイントを作る。",
+        "VPC からは CodeArtifact に聞くだけで、PyPI から取ってくるのは CodeArtifact の仕事です。一度取ったパッケージはリポジトリに保存されるので、次からはそこから配られます。VPC はインターネットから切り離されたままです。",
+        "NAT ゲートウェイや NAT インスタンスを置くと、通信先を絞っても VPC がインターネットに出られる状態になり、「隔離したまま」という要件に反します。さらに NAT インスタンスは自分で管理する手間もかかります。",
+        "CodeCommit はソースコードを置く Git リポジトリ（新規受付も終了）で、パッケージの管理や PyPI との同期のためのものではありません。"
+      ],
+      "cards": ["dv01", "xc22", "xn04", "nw05", "xn01", "xn39", "ml08"],
+      "tags": ["CodeArtifact", "PyPI", "VPC エンドポイント", "インターネット隔離", "NAT"]
     }
   ],
   "terms": [
@@ -3215,6 +3229,10 @@
     { "id": "xc20", "term": "Auto Scaling の終了ポリシー（Termination Policy）", "cat": "compute",
       "desc": "スケールインするとき、どのインスタンスから消すかのルール。OldestLaunchConfiguration / OldestLaunchTemplate は古い設定で起動したインスタンスから、OldestInstance は一番古いインスタンスから消す。" },
     { "id": "xc21", "term": "EC2 の終了保護とスケールイン保護", "cat": "compute",
-      "desc": "終了保護は人が誤って消すのを防ぐ EC2 の設定で、Auto Scaling による終了は止められない。Auto Scaling に消させたくないインスタンスにはスケールイン保護を使う（ただしヘルスチェック失敗による置き換えは止められない）。" }
+      "desc": "終了保護は人が誤って消すのを防ぐ EC2 の設定で、Auto Scaling による終了は止められない。Auto Scaling に消させたくないインスタンスにはスケールイン保護を使う（ただしヘルスチェック失敗による置き換えは止められない）。" },
+    { "id": "xc22", "term": "CodeArtifact の外部接続（public:pypi・public:npmjs など）", "cat": "devtools",
+      "desc": "CodeArtifact のリポジトリを、PyPI や npm などの公開リポジトリにつなぐ設定。手元にないパッケージを頼まれると、CodeArtifact が公開リポジトリから取ってきて保存し、利用者に渡す。利用者の側はインターネットに出なくてよい。1つのリポジトリにつけられる外部接続は1つ。" },
+    { "id": "xn39", "term": "NAT インスタンス", "cat": "network",
+      "desc": "NAT（プライベートサブネットからインターネットへ出る中継）の役割を、自分で EC2 に設定して動かすもの。台数・パッチ・障害時の切り替えを自分で管理する必要があり、今はマネージドの NAT ゲートウェイを使うのが基本。どちらを使っても VPC はインターネットに出られる状態になる。" }
   ]
 }
