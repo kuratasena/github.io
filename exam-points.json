@@ -2860,6 +2860,20 @@
       ],
       "cards": ["xm11", "xt13", "st01", "xt19", "xc23"],
       "tags": ["DLM", "EBS スナップショット", "クロスリージョンコピー", "AWS Backup", "運用オーバーヘッド"]
+    },
+    {
+      "id": "p244", "field": "security", "service": "IAM・権限の設計", "date": "2026-11-07",
+      "title": "Organizations に入れないアカウントで「このリージョン・このサイズだけ」に制限するなら、SCP ではなく IAM ポリシーの条件（aws:RequestedRegion・ec2:InstanceType）",
+      "power": "SCP は会社（組織）の社則。会社に入ってない人には効かへん。そのアカウントの中のルール（IAM ポリシー）で縛る",
+      "summary": "組織外のアカウントで、開発者が起動できる EC2 をリージョンとインスタンスタイプで制限 → IAM ポリシーの条件 aws:RequestedRegion ＋ ec2:InstanceType で ec2:RunInstances を絞り、開発者の IAM グループ・ロールにアタッチ。SCP・タグポリシーは Organizations 専用、タグポリシーはそもそも制限機能なし、RI は割引で制限ではない。",
+      "body": [
+        "SCP は AWS Organizations の機能なので、組織に入っていないアカウントには使えません。問題文に「Organizations に含められない」「本社の管理外」とあったら、SCP・タグポリシー・Control Tower の選択肢はすべて落とします。",
+        "組織に入っていない1つのアカウントで制限するなら、IAM ポリシーです。条件（Condition）に aws:RequestedRegion（リージョン）と ec2:InstanceType（インスタンスタイプ）を書き、ec2:RunInstances を「東京で m5.medium のときだけ」許可して、開発者の IAM グループ・ロールにアタッチします。",
+        "タグポリシーはタグの付け方をそろえるためのもので、リージョンやインスタンスタイプを制限する機能はありません（しかもこれも Organizations の機能です）。",
+        "リザーブドインスタンスは料金の割引で、起動できるサイズを制限する仕組みではありません。"
+      ],
+      "cards": ["sc11", "xs30", "c15", "xs14", "xm22", "c13"],
+      "tags": ["IAM ポリシー", "条件キー", "aws:RequestedRegion", "ec2:InstanceType", "SCP", "Organizations"]
     }
   ],
   "terms": [
@@ -3250,6 +3264,10 @@
     { "id": "xn39", "term": "NAT インスタンス", "cat": "network",
       "desc": "NAT（プライベートサブネットからインターネットへ出る中継）の役割を、自分で EC2 に設定して動かすもの。台数・パッチ・障害時の切り替えを自分で管理する必要があり、今はマネージドの NAT ゲートウェイを使うのが基本。どちらを使っても VPC はインターネットに出られる状態になる。" },
     { "id": "xc23", "term": "EC2 Image Builder", "cat": "compute",
-      "desc": "AMI やコンテナイメージを、決まった手順（OS の更新・ソフトの導入・テスト）で自動的に作るパイプラインのサービス。パッチを当てた最新の AMI を定期的に作って、ほかのリージョンやアカウントに配るのに使う。バックアップやスナップショットのコピーが目的なら、DLM や AWS Backup を使う。" }
+      "desc": "AMI やコンテナイメージを、決まった手順（OS の更新・ソフトの導入・テスト）で自動的に作るパイプラインのサービス。パッチを当てた最新の AMI を定期的に作って、ほかのリージョンやアカウントに配るのに使う。バックアップやスナップショットのコピーが目的なら、DLM や AWS Backup を使う。" },
+    { "id": "xs30", "term": "条件キー aws:RequestedRegion と ec2:InstanceType", "cat": "security",
+      "desc": "IAM ポリシーや SCP の条件（Condition）に書けるキー。aws:RequestedRegion は、リクエストがどのリージョンに向けたものかを表し、「東京以外では作らせない」といった制限に使う。ec2:InstanceType は、起動しようとしている EC2 のインスタンスタイプを表し、「m5.medium だけ許可」といった制限に使う。" },
+    { "id": "xm22", "term": "タグポリシー（AWS Organizations）", "cat": "mgmt",
+      "desc": "AWS Organizations の機能で、組織内のアカウントでタグのキーや値の書き方（大文字・小文字や使ってよい値）をそろえるためのポリシー。リージョンやインスタンスタイプなどを制限する機能はない。「タグがないと作らせない」は SCP や IAM ポリシーの条件で行う。" }
   ]
 }
