@@ -2930,6 +2930,20 @@
       ],
       "cards": ["co07", "ct02", "st04", "st02", "st06", "ct04", "xp15"],
       "tags": ["Fargate", "EFS", "共有ストレージ", "コンテナ移行"]
+    },
+    {
+      "id": "p249", "field": "migration", "service": "移行計画（Discovery・Migration Hub）", "date": "2026-11-07",
+      "title": "物理も仮想も混在・インベントリ不明・依存関係が知りたい → Discovery Agent を入れて、Migration Hub Strategy Recommendations で戦略を作る",
+      "power": "調査員を各部屋に住まわせる（Agent）。外から窓をのぞく（Agentless）のは VMware だけ",
+      "summary": "物理サーバー混在や詳細な依存関係なら Discovery Agent。移行戦略の提案は Strategy Recommendations。インポートはデータが既にあるとき用。",
+      "body": [
+        "Discovery Agent は各サーバー（物理・仮想、Windows・Linux）に入れて、プロセスや通信相手・ポートまで細かく集めます。依存関係の把握にはこれです。",
+        "Agentless Collector は VMware vCenter の VM を外から調べる方式です。物理サーバーは調べられず、依存関係などの細かい情報も取れません。",
+        "Migration Hub Strategy Recommendations は、集めた情報からリホスト・リプラットフォームなどの移し方を提案します。",
+        "Migration Evaluator は費用（TCO）の見積もり用、MGN は移行の実行用、インポートは既にデータがあるとき用。「何があるか分からない」段階の答えにはなりません。"
+      ],
+      "cards": ["mi01", "xg03", "mi05", "xg08", "xg09", "xg01", "mi02"],
+      "tags": ["Discovery Agent", "Agentless Collector", "Strategy Recommendations", "依存関係"]
     }
   ],
   "terms": [
@@ -3330,6 +3344,10 @@
     { "id": "xg07", "term": "AWS Cloud Adoption Framework（AWS CAF）", "cat": "migration",
       "desc": "AWS がまとめたクラウド導入の考え方と手引き。ビジネス・人・ガバナンス・プラットフォーム・セキュリティ・運用の6つの視点で、組織がクラウドに移る準備ができているかを評価し、足りないところと移行の作戦を整理する。ツールというより、計画づくりのための枠組み。" },
     { "id": "xn50", "term": "仮想プライベートゲートウェイ（VGW）", "cat": "network",
-      "desc": "VPC 側に付ける VPN や Direct Connect の受け口。オンプレミスとつなぐためのもので、インターネットへ出る NAT ゲートウェイの代わりにはならない。" }
+      "desc": "VPC 側に付ける VPN や Direct Connect の受け口。オンプレミスとつなぐためのもので、インターネットへ出る NAT ゲートウェイの代わりにはならない。" },
+    { "id": "xg08", "term": "Migration Hub Strategy Recommendations", "cat": "migration",
+      "desc": "集めたサーバーやアプリの情報を分析して、「リホスト・リプラットフォーム・リファクタなど、どの移し方が良いか」を提案してくれる Migration Hub の機能。移行戦略の作成用。" },
+    { "id": "xg09", "term": "Migration Hub のインポート", "cat": "migration",
+      "desc": "CMDB や他ツールですでに集めてあるサーバー情報を、CSV で Migration Hub に取り込む機能。データがまだない（インベントリが分からない）状況では使えない。" }
   ]
 }
