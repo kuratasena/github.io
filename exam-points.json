@@ -3084,6 +3084,20 @@
       ],
       "cards": ["fr02", "xn23", "xn04", "xn54", "xn53", "nw05"],
       "tags": ["API Gateway", "プライベート API", "インターフェースエンドポイント", "プライベート DNS", "VPC リンク"]
+    },
+    {
+      "id": "p260", "field": "org", "service": "Organizations", "date": "2026-11-08",
+      "title": "招待で入れた既存アカウントには OrganizationAccountAccessRole が無い。メンバーアカウント側に作り、管理アカウントに AssumeRole を許可する",
+      "power": "合鍵は相手の家（メンバー）に置く。自分の家（管理）に置いても相手の家は開かない",
+      "summary": "新規作成アカウントには自動、招待アカウントには手動で、メンバー側に OrganizationAccountAccessRole を作る。信頼ポリシーで管理アカウントを許可し、管理アカウントがスイッチロールして管理する。",
+      "body": [
+        "Organizations からアカウントを新しく作ると、OrganizationAccountAccessRole がメンバーアカウントに自動で作られます。招待して入れた既存アカウントには無いので、手動で作ります。",
+        "ロールは「入られる側」に作ります。つまりメンバーアカウントの中です。信頼ポリシーで管理アカウントを許可し、AdministratorAccess を付けます。",
+        "管理アカウントの人は、このロールを AssumeRole（スイッチロール）してメンバーアカウントを操作します。",
+        "IAM グループはアカウントの中のユーザーをまとめるだけ、IAM ポリシーだけでは信頼関係が作れません。クロスアカウントの入口は必ず IAM ロールです。"
+      ],
+      "cards": ["xm24", "mg14", "xs03", "sc19", "sc11"],
+      "tags": ["Organizations", "OrganizationAccountAccessRole", "AssumeRole", "招待"]
     }
   ],
   "terms": [
@@ -3516,6 +3530,8 @@
     { "id": "xn53", "term": "API Gateway の VPC リンク（プライベート統合）", "cat": "network",
       "desc": "API Gateway が「後ろ側」にある VPC 内の NLB や ALB へプライベートにつなぐための仕組み。API Gateway → VPC の向き。VPC の中から API Gateway を呼ぶ（VPC → API Gateway）ためのものではない。" },
     { "id": "xn54", "term": "インターフェースエンドポイントのプライベート DNS", "cat": "network",
-      "desc": "有効にすると、サービスの普通の DNS 名（例: xxx.execute-api.region.amazonaws.com）を VPC の中で引いたときに、エンドポイントのプライベート IP が返る。アプリは URL を変えずにエンドポイント経由になる。無効だと vpce- から始まる長い専用の名前を使う必要がある。" }
+      "desc": "有効にすると、サービスの普通の DNS 名（例: xxx.execute-api.region.amazonaws.com）を VPC の中で引いたときに、エンドポイントのプライベート IP が返る。アプリは URL を変えずにエンドポイント経由になる。無効だと vpce- から始まる長い専用の名前を使う必要がある。" },
+    { "id": "xm24", "term": "OrganizationAccountAccessRole", "cat": "management",
+      "desc": "管理アカウントがメンバーアカウントに入って管理作業をするための IAM ロール。メンバーアカウントの中にあり、信頼ポリシーで管理アカウントからの AssumeRole を許可し、AdministratorAccess が付いている。Organizations から新しく作ったアカウントには自動でできるが、招待で入れた既存アカウントには手動で作る。" }
   ]
 }
