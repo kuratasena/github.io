@@ -3140,6 +3140,20 @@
       ],
       "cards": ["xt13", "st02", "xm13", "mg08", "xt22", "mg14"],
       "tags": ["EBS", "暗号化", "スナップショット", "Control Tower", "ガードレール"]
+    },
+    {
+      "id": "p264", "field": "security", "service": "Cognito・認証", "date": "2026-11-08",
+      "title": "ALB で Active Directory のユーザーにログインさせるなら「Cognito ユーザープール（AD を SAML でフェデレーション）＋ authenticate-cognito」",
+      "power": "ALB は OIDC と Cognito の言葉しか話せない。SAML の AD とは Cognito が通訳する",
+      "summary": "ALB の認証は Cognito か OIDC だけ。SAML の Active Directory は Cognito ユーザープールにフェデレーションし、ALB は authenticate-cognito で Cognito を見る。",
+      "body": [
+        "ALB のリスナールールで使える認証は、authenticate-cognito（Cognito ユーザープール）と authenticate-oidc（OIDC の IdP）の2つだけです。SAML は直接使えません。",
+        "Active Directory は SAML（AD FS など）で外とつながります。そこで、Cognito ユーザープールに AD を SAML の IdP として登録し、ALB は Cognito を相手にします。",
+        "IAM の SAML プロバイダーや IAM ロールは「AWS の操作の権限」を渡すもので、ALB の後ろのアプリにログインさせる仕組みではありません。",
+        "IAM Identity Center は AWS アカウントや対応アプリへの SSO 用で、ALB の authenticate-cognito とは組み合わせません。"
+      ],
+      "cards": ["xs35", "sc05", "xs36", "sc07", "xn07", "sc10"],
+      "tags": ["ALB", "Cognito", "SAML", "Active Directory", "認証"]
     }
   ],
   "terms": [
@@ -3574,6 +3588,10 @@
     { "id": "xn54", "term": "インターフェースエンドポイントのプライベート DNS", "cat": "network",
       "desc": "有効にすると、サービスの普通の DNS 名（例: xxx.execute-api.region.amazonaws.com）を VPC の中で引いたときに、エンドポイントのプライベート IP が返る。アプリは URL を変えずにエンドポイント経由になる。無効だと vpce- から始まる長い専用の名前を使う必要がある。" },
     { "id": "xm24", "term": "OrganizationAccountAccessRole", "cat": "management",
-      "desc": "管理アカウントがメンバーアカウントに入って管理作業をするための IAM ロール。メンバーアカウントの中にあり、信頼ポリシーで管理アカウントからの AssumeRole を許可し、AdministratorAccess が付いている。Organizations から新しく作ったアカウントには自動でできるが、招待で入れた既存アカウントには手動で作る。" }
+      "desc": "管理アカウントがメンバーアカウントに入って管理作業をするための IAM ロール。メンバーアカウントの中にあり、信頼ポリシーで管理アカウントからの AssumeRole を許可し、AdministratorAccess が付いている。Organizations から新しく作ったアカウントには自動でできるが、招待で入れた既存アカウントには手動で作る。" },
+    { "id": "xs35", "term": "ALB のユーザー認証（authenticate-cognito / authenticate-oidc）", "cat": "security",
+      "desc": "ALB のリスナールールで、アプリに届く前にログインさせる機能。使えるのは Cognito ユーザープール（authenticate-cognito）か、OIDC に対応した IdP（authenticate-oidc）の2つだけ。SAML や Active Directory には直接つなげないので、Cognito ユーザープールを間に入れる。" },
+    { "id": "xs36", "term": "Cognito ユーザープールのフェデレーション（SAML / OIDC / ソーシャル）", "cat": "security",
+      "desc": "Cognito ユーザープールが、外部の ID 基盤（SAML の AD FS や Entra ID、OIDC、Google など）でログインした人を受け入れる仕組み。ALB や API Gateway から見ると相手は Cognito だけなので、SAML しか話せない ID 基盤もつなげられる。" }
   ]
 }
