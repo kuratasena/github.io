@@ -3098,6 +3098,20 @@
       ],
       "cards": ["xm24", "mg14", "xs03", "sc19", "sc11"],
       "tags": ["Organizations", "OrganizationAccountAccessRole", "AssumeRole", "招待"]
+    },
+    {
+      "id": "p261", "field": "compute", "service": "コンテナ（ECS・EKS）", "date": "2026-11-08",
+      "title": "自前のコンテナ＋自前の Kafka を楽にするなら「EKS（または ECS）on Fargate ＋ MSK ＋ S3＋CloudFront」。Kafka の置き換えは Kinesis ではなく MSK",
+      "power": "今の道具のマネージド版に乗り換える。Kafka → MSK、自前 Kubernetes → EKS on Fargate",
+      "summary": "運用負荷を下げつつアクセス急増に備えるなら、コンテナは Fargate、Kafka は MSK、読み込みはリードレプリカ、配信は S3＋CloudFront。",
+      "body": [
+        "EC2 上の自前のコンテナや Kubernetes は、サーバーの管理が残ります。EKS（または ECS）on Fargate にすると、サーバーの管理が無くなり、自動スケーリングもできます。",
+        "Kafka を使っているなら、置き換え先は MSK（マネージド Kafka）です。Kinesis に変えるとアプリの書き換えが必要になります。",
+        "アクセスが増えたときの読み込みの負荷はリードレプリカで分けます。Multi-AZ は止まらないための仕組みで、負荷分散にはなりません。",
+        "世界中のプレイヤーにアセットを配るなら S3 ＋ CloudFront です。S3 から直接配るより速く、S3 の負荷も減ります。"
+      ],
+      "cards": ["ct04", "co07", "a09", "xd18", "nw01", "st06", "xn07"],
+      "tags": ["EKS", "Fargate", "MSK", "リードレプリカ", "CloudFront"]
     }
   ],
   "terms": [
