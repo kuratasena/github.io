@@ -3056,6 +3056,20 @@
       ],
       "cards": ["c15", "xs34", "xm22", "xm07", "xs14", "mg07"],
       "tags": ["SCP", "タグ", "aws:RequestTag", "Null", "タグポリシー"]
+    },
+    {
+      "id": "p258", "field": "network", "service": "VPC・NAT", "date": "2026-11-08",
+      "title": "IPv6 で「外には出られるが、外からは入れない」なら Egress-only インターネットゲートウェイ。NAT ゲートウェイは IPv6 の出口にならない",
+      "power": "IPv4 の裏口は NAT、IPv6 の裏口は Egress-only IGW",
+      "summary": "IPv6 のプライベートサブネットは ::/0 を Egress-only IGW へ。パブリックは ::/0 を通常の IGW へ。IPv6 には NAT がないので、普通の IGW に向けると外から丸見えになる。",
+      "body": [
+        "IPv6 アドレスは世界で1つだけの公開アドレスなので、IPv4 のような「プライベート IP ＋ NAT」の仕組みがありません。",
+        "プライベートサブネットの ::/0 を通常の IGW に向けると、外から直接届いてしまいます。Egress-only IGW に向けると、中から外への通信だけ通り、外から始まる通信は止まります。",
+        "NAT ゲートウェイは IPv6 の通信を外へ出す出口にはなりません（IPv6 から IPv4 へ変換する NAT64 はできますが、別の話です）。",
+        "IPv4 は「パブリック → IGW、プライベート → NAT」、IPv6 は「パブリック → IGW、プライベート → Egress-only IGW」とセットで覚えます。セキュリティグループだけで守る案は「ネットワークとして届かない」要件を満たしません。"
+      ],
+      "cards": ["xn22", "xn21", "xn01", "nw08"],
+      "tags": ["IPv6", "Egress-only IGW", "NAT ゲートウェイ", "ルートテーブル"]
     }
   ],
   "terms": [
