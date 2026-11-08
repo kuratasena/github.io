@@ -3168,6 +3168,20 @@
       ],
       "cards": ["xn14", "nw01", "nw06", "xn27", "c19"],
       "tags": ["CloudFront", "オリジングループ", "フェイルオーバー", "Route 53", "TTL"]
+    },
+    {
+      "id": "p266", "field": "org", "service": "SCP", "date": "2026-11-08",
+      "title": "「ほとんどは許可・一部のサービスだけ禁止」なら拒否リスト型 SCP を OU に付ける。アカウントは製品ラインや環境ごとの OU に分ける",
+      "power": "ブラックリストは「これだけダメ」、ホワイトリストは「これだけOK」。ほぼ自由なら前者",
+      "summary": "FullAWSAccess は残し、高コスト・高リスクのサービスだけ Deny する SCP を作って OU に付ける。アカウントは OU で分けて、OU 単位で管理する。",
+      "body": [
+        "拒否リスト戦略は、デフォルトの FullAWSAccess を残したまま、禁止したいサービスだけを Deny で書きます。新しいサービスも自動で使えるので、イノベーションを止めず、管理も楽です。",
+        "許可リスト戦略は FullAWSAccess を外して、使ってよいサービスだけを Allow で書きます。とても厳しく、新しいサービスを使うたびに SCP の更新が必要です。",
+        "アカウントは製品ライン・本番/開発などで OU に分け、SCP は OU に付けます。OU の中の全アカウントにまとめて効きます。",
+        "使われているサービスを調べるなら IAM の最終アクセス情報（Access Advisor）。Trusted Advisor はコストやセキュリティのベストプラクティスのチェックで、どのサービスを使っているかの一覧にはなりません。デフォルトの SCP は FullAWSAccess で、DenyAWSAccess という SCP はありません。"
+      ],
+      "cards": ["c15", "xm25", "xm26", "xm07", "xs37", "mg19", "mg14"],
+      "tags": ["SCP", "拒否リスト", "OU", "FullAWSAccess"]
     }
   ],
   "terms": [
@@ -3606,6 +3620,12 @@
     { "id": "xs35", "term": "ALB のユーザー認証（authenticate-cognito / authenticate-oidc）", "cat": "security",
       "desc": "ALB のリスナールールで、アプリに届く前にログインさせる機能。使えるのは Cognito ユーザープール（authenticate-cognito）か、OIDC に対応した IdP（authenticate-oidc）の2つだけ。SAML や Active Directory には直接つなげないので、Cognito ユーザープールを間に入れる。" },
     { "id": "xs36", "term": "Cognito ユーザープールのフェデレーション（SAML / OIDC / ソーシャル）", "cat": "security",
-      "desc": "Cognito ユーザープールが、外部の ID 基盤（SAML の AD FS や Entra ID、OIDC、Google など）でログインした人を受け入れる仕組み。ALB や API Gateway から見ると相手は Cognito だけなので、SAML しか話せない ID 基盤もつなげられる。" }
+      "desc": "Cognito ユーザープールが、外部の ID 基盤（SAML の AD FS や Entra ID、OIDC、Google など）でログインした人を受け入れる仕組み。ALB や API Gateway から見ると相手は Cognito だけなので、SAML しか話せない ID 基盤もつなげられる。" },
+    { "id": "xm25", "term": "SCP の拒否リスト戦略と許可リスト戦略", "cat": "management",
+      "desc": "拒否リスト：FullAWSAccess（全部OK）を残したまま、ダメなサービスだけを Deny で書く。新しいサービスも自動で使えるので管理が楽。許可リスト：FullAWSAccess を外し、使ってよいサービスだけを Allow で書く。厳しいが、新しいサービスを使うたびに追加が必要。" },
+    { "id": "xm26", "term": "組織単位（OU）", "cat": "management",
+      "desc": "Organizations の中でアカウントを入れるフォルダ。製品ライン・環境（本番/開発）・チームなどで分け、SCP を OU にまとめて付けると中のアカウント全部に効く。OU の中に OU を入れて階層にもできる。" },
+    { "id": "xs37", "term": "IAM の最終アクセス情報（Access Advisor）", "cat": "security",
+      "desc": "IAM ユーザー・ロール・ポリシーや、Organizations の OU・アカウントごとに、どのサービスを最後にいつ使ったかを見られる機能。使っていないサービスを見つけて、SCP や IAM ポリシーで外す判断に使う。" }
   ]
 }
