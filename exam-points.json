@@ -3112,6 +3112,20 @@
       ],
       "cards": ["ct04", "co07", "a09", "xd18", "nw01", "st06", "xn07"],
       "tags": ["EKS", "Fargate", "MSK", "リードレプリカ", "CloudFront"]
+    },
+    {
+      "id": "p262", "field": "network", "service": "VPN", "date": "2026-11-08",
+      "title": "在宅勤務でデータセンターの回線がパンク → ファイルを FSx for Windows に移し、入口を Client VPN に。データも入口も AWS 側へ",
+      "power": "混んでいる本店に客を集めない。倉庫（FSx）も受付（Client VPN）も AWS 支店へ移す",
+      "summary": "データセンターの帯域を減らすなら、ホームディレクトリを FSx for Windows に、リモートの入口を Client VPN に移して、通信がデータセンターを通らないようにする。",
+      "body": [
+        "回線がいっぱいになる原因は、全員がデータセンターの VPN を通ってファイルを取りに行くことです。データと入口の両方を AWS に移せば、データセンターを通らなくなります。",
+        "Windows のホームディレクトリ（SMB・AD 連携）の移行先は FSx for Windows File Server です。FSx for Lustre は HPC 向けで、Windows のファイル共有には向きません。",
+        "AWS Client VPN はマネージドで、利用者が増えても自動でスケールします。在宅の人は AWS に直接つながります。",
+        "Storage Gateway は「オンプレのサーバーはそのまま、裏で AWS に保存」する仕組みなので、利用者は相変わらずデータセンターにつなぎます。Direct Connect もデータセンターと AWS の間を太くするだけで、在宅の人の通り道は変わりません。"
+      ],
+      "cards": ["xn05", "xt08", "st08", "xt07", "nw02", "nw09"],
+      "tags": ["Client VPN", "FSx for Windows", "Storage Gateway", "帯域", "在宅勤務"]
     }
   ],
   "terms": [
