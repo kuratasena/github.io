@@ -3070,6 +3070,20 @@
       ],
       "cards": ["xn22", "xn21", "xn01", "nw08"],
       "tags": ["IPv6", "Egress-only IGW", "NAT ゲートウェイ", "ルートテーブル"]
+    },
+    {
+      "id": "p259", "field": "network", "service": "PrivateLink・VPC エンドポイント", "date": "2026-11-08",
+      "title": "VPC の中からプライベート API を呼ぶなら「execute-api のインターフェースエンドポイント＋プライベート DNS 有効＋リソースポリシー」。VPC リンクは逆向き",
+      "power": "VPC エンドポイントは「VPC → API」の入口、VPC リンクは「API → VPC」の裏口",
+      "summary": "呼ぶ側が VPC 内なら execute-api 用インターフェースエンドポイント。プライベート DNS を有効にすれば標準の URL のまま使え、ポリシーは Invoke だけで最小権限。",
+      "body": [
+        "プライベート API は、VPC の中に execute-api 用のインターフェース VPC エンドポイントを作り、そこを通って呼びます。API 側のリソースポリシーで、その VPC やエンドポイント（aws:SourceVpce）からだけ許可します。",
+        "プライベート DNS を有効にすると、標準の URL（{api-id}.execute-api.{region}.amazonaws.com）のまま、VPC の中ではエンドポイント経由で届きます。無効にすると vpce- から始まる長い名前を使う必要があります。",
+        "エンドポイントポリシーは、呼ぶだけなら execute-api:Invoke に絞ると最小権限です。execute-api:* は広すぎます。",
+        "VPC リンク（プライベート統合）は、API Gateway が後ろの NLB・ALB を呼ぶための仕組みです。向きが逆なので、VPC の中からの呼び出しには使いません。"
+      ],
+      "cards": ["fr02", "xn23", "xn04", "xn54", "xn53", "nw05"],
+      "tags": ["API Gateway", "プライベート API", "インターフェースエンドポイント", "プライベート DNS", "VPC リンク"]
     }
   ],
   "terms": [
@@ -3498,6 +3512,10 @@
     { "id": "xd31", "term": "CodeDeploy のインプレースとブルー/グリーン・自動ロールバック", "cat": "devtools",
       "desc": "インプレースは今動いているインスタンスの上でアプリを入れ替える方式で、更新中は止まる台が出て、戻すのも入れ直しになる。ブルー/グリーンは新しいインスタンス群を別に作ってから ALB の向き先を切り替える方式で、すぐ元に戻せる。自動ロールバックは、デプロイ失敗や CloudWatch アラームをきっかけに、前のバージョンへ自動で戻す設定。" },
     { "id": "xs34", "term": "条件キー aws:RequestTag と Null 条件演算子", "cat": "security",
-      "desc": "aws:RequestTag/キー名 は、リソースを作るリクエストに付いているタグの値。Null 条件演算子は「そのキーが無いか」を調べ、\"true\" はタグが付いていない、\"false\" はタグが付いている、という意味になる。Deny ＋ Null \"true\" で「タグなしの作成を拒否」になる。" }
+      "desc": "aws:RequestTag/キー名 は、リソースを作るリクエストに付いているタグの値。Null 条件演算子は「そのキーが無いか」を調べ、\"true\" はタグが付いていない、\"false\" はタグが付いている、という意味になる。Deny ＋ Null \"true\" で「タグなしの作成を拒否」になる。" },
+    { "id": "xn53", "term": "API Gateway の VPC リンク（プライベート統合）", "cat": "network",
+      "desc": "API Gateway が「後ろ側」にある VPC 内の NLB や ALB へプライベートにつなぐための仕組み。API Gateway → VPC の向き。VPC の中から API Gateway を呼ぶ（VPC → API Gateway）ためのものではない。" },
+    { "id": "xn54", "term": "インターフェースエンドポイントのプライベート DNS", "cat": "network",
+      "desc": "有効にすると、サービスの普通の DNS 名（例: xxx.execute-api.region.amazonaws.com）を VPC の中で引いたときに、エンドポイントのプライベート IP が返る。アプリは URL を変えずにエンドポイント経由になる。無効だと vpce- から始まる長い専用の名前を使う必要がある。" }
   ]
 }
