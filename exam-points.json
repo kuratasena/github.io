@@ -3309,6 +3309,37 @@
         "ステートレス",
         "Deployment"
       ]
+    },
+    {
+      "id": "p271",
+      "field": "migration",
+      "service": "DMS・DB 移行",
+      "date": "2026-11-11",
+      "title": "Oracle → RDS for Oracle をほぼ無停止で移すなら「Data Pump で初期ロード ＋ GoldenGate（または DMS の CDC）で差分を流し続けて切り替え」。S3 を経由すると切り替えの直前にロードが必要になり止まる",
+      "power": "無停止移行は「まとめて運ぶ ＋ 差分を流し続ける」の二段構え。寄り道（S3）はダウンタイム",
+      "summary": "同じ Oracle 同士なら、ネイティブの Data Pump で今あるデータを入れ、GoldenGate で変更を追いかけ続け、追いついた瞬間に切り替える。DMS を使うなら移行先を直接 RDS にして CDC。MGN はサーバー丸ごと用で DB の移行には使わない。",
+      "body": [
+        "ほぼゼロダウンタイムの DB 移行は、①今あるデータをまとめて入れる（初期ロード）②移行中の変更を流し続ける（CDC）③追いついたら接続先を切り替える、の三段階です。",
+        "同じ Oracle 同士なら、Oracle のネイティブ機能が使えます。Data Pump で初期ロードし、GoldenGate で変更を同期します。双方向にしておけば、問題が出たときに元へ戻すこともできます。AWS の DMS（フルロード＋CDC）を移行先 RDS に直接向けても同じ考え方で移せます。",
+        "移行先を S3 にすると、同期が終わってから S3 から RDS へ読み込む作業が残ります。その間アプリを止めることになり、無停止になりません。",
+        "Application Migration Service（MGN）はサーバーを丸ごと EC2 に移すもので、RDS への DB 移行には使いません。Oracle から Aurora PostgreSQL のように種類が変わる場合は、SCT でスキーマを変換し、DMS で移します。"
+      ],
+      "cards": [
+        "mi03",
+        "xg04",
+        "db08",
+        "mi02",
+        "xg12"
+      ],
+      "tags": [
+        "Oracle",
+        "RDS for Oracle",
+        "Data Pump",
+        "GoldenGate",
+        "DMS",
+        "CDC",
+        "ゼロダウンタイム"
+      ]
     }
   ],
   "terms": [
@@ -3763,6 +3794,8 @@
     { "id": "xc25", "term": "Kubernetes の Deployment と ReplicaSet", "cat": "containers",
       "desc": "ReplicaSet は「ポッドを◯個に保つ」だけの仕組み。Deployment はその上で、新しいバージョンへの入れ替え（ローリング更新）や巻き戻しまで面倒を見てくれる。普通は Deployment を使い、ReplicaSet は Deployment が裏で自動で作る。" },
     { "id": "xd33", "term": "外部セッションストア（ステートレス化）", "cat": "database",
-      "desc": "ログイン状態や視聴位置などのセッションを、サーバーの中ではなく DynamoDB や ElastiCache に置くこと。サーバーやコンテナが増えたり消えたりしても、どこからでも同じセッションを読めるので、セッションを保ったまま自由にスケールできる。" }
+      "desc": "ログイン状態や視聴位置などのセッションを、サーバーの中ではなく DynamoDB や ElastiCache に置くこと。サーバーやコンテナが増えたり消えたりしても、どこからでも同じセッションを読めるので、セッションを保ったまま自由にスケールできる。" },
+    { "id": "xg12", "term": "Oracle Data Pump と Oracle GoldenGate", "cat": "migration",
+      "desc": "どちらも Oracle 自身の道具。Data Pump はデータをまとめて書き出し・読み込みする（初期ロード向け）。GoldenGate は変更をリアルタイムで別の DB に流し続ける（CDC・双方向も可）。2つを組み合わせると、Oracle をほぼ止めずに RDS for Oracle へ移せる。" }
   ]
 }
