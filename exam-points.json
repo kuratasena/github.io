@@ -3431,6 +3431,36 @@
         "推移的ルーティング",
         "マルチリージョン"
       ]
+    },
+    {
+      "id": "p275",
+      "field": "migration",
+      "service": "Elastic Disaster Recovery",
+      "date": "2026-11-12",
+      "title": "数百台のサーバー＋共有 NFS を分単位の RPO/RTO で DR、AWS ネイティブのフェイルオーバー・フェイルバックも欲しい → サーバーは Elastic Disaster Recovery、NFS 共有は DataSync で EFS へ",
+      "power": "サーバーは DRS、共有フォルダは DataSync → EFS。戻り道（フェイルバック）まで DRS が面倒を見る",
+      "summary": "DRS はサーバー丸ごとを継続的に複製し、障害時に数分で AWS に起動、復旧後は元の場所（新しいサーバーや既存のサーバー）へ戻せる。共有の NFS は EFS に DataSync で RPO 以内の間隔で複製し、起動したサーバーにマウントする。6 時間ごとのバックアップや IaC からの作り直しは RPO/RTO に届かず、アクティブ-アクティブは高すぎる。",
+      "body": [
+        "Elastic Disaster Recovery（DRS）は、エージェントでサーバーを丸ごと（OS・アプリ・データ）継続的に複製します。RPO は秒単位、障害時は数分で AWS 上に起動できます。",
+        "DRS は「フェイルバック」も AWS の機能として持っています。復旧したら、AWS で動いていたサーバーの変更を、オンプレの新しいサーバーや元のサーバーへ戻せます。「AWS ネイティブのフェイルオーバーとフェイルバック」と書かれていたら DRS です。",
+        "全サーバーが使う NFS の共有は、EFS（NFS 対応の共有ファイルシステム）に置き、DataSync で RPO より短い間隔（10 分など）で複製します。起動した AWS 側のサーバーは EFS をマウントします。",
+        "6 時間ごとのバックアップは RPO 10 分に届きません。CloudFormation や CodePipeline で災害時に作り直す方法は時間がかかり RTO 20 分が危うく、15 分ごとの複製は RPO 10 分を超えます。アクティブ-アクティブのマルチサイトは要件に対して高すぎます。"
+      ],
+      "cards": [
+        "st03",
+        "xg11",
+        "st04",
+        "xt19"
+      ],
+      "tags": [
+        "Elastic Disaster Recovery",
+        "フェイルバック",
+        "DataSync",
+        "EFS",
+        "NFS",
+        "RPO",
+        "RTO"
+      ]
     }
   ],
   "terms": [
