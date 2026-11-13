@@ -3513,6 +3513,36 @@
         "Deny",
         "タグ付けの標準化"
       ]
+    },
+    {
+      "id": "p278",
+      "field": "ml",
+      "service": "IoT Core",
+      "date": "2026-11-13",
+      "title": "MQTT のセンサーと自前の RabbitMQ をやめて、高可用・スケーラブル・データを失わない構成にする → IoT Core ＋ Data Firehose（＋ Lambda で変換）→ S3",
+      "power": "センサーの玄関は IoT Core、S3 への運び屋は Firehose。ブローカーを自分で持たない",
+      "summary": "MQTT の大量のセンサーは IoT Core が直接受ける（マルチ AZ・自動スケール・フルマネージド）。IoT ルールで Data Firehose に流し、Lambda で CSV などに変換して S3 に届ける。EC2 で RabbitMQ を冗長化する案は管理が残り、Amazon MQ の RabbitMQ エンジンは MQTT ではなく AMQP 向けなので、そのままでは受けられない。",
+      "body": [
+        "IoT Core は MQTT を標準で受けられるマネージドの入口で、何万台の機器でも自動で伸び、複数の AZ で動きます。ブローカーのサーバーを自分で持たないので、「サーバーが落ちてデータが消える」が起きにくくなります。",
+        "IoT ルールでデータを Data Firehose に流せば、バッファしてまとめて S3 に届けてくれます。形を変えたいときは Firehose に組み込んだ Lambda で変換します（CSV にするなど）。",
+        "EC2 に RabbitMQ を 2 台置いてアクティブ/スタンバイにする案は、サーバーの管理と切り替えの面倒が残ります。IoT Core の後ろに EC2 の RabbitMQ を置く案も同じです。",
+        "Amazon MQ はマネージドのブローカーですが、RabbitMQ エンジンが話すのは AMQP で、MQTT のセンサーをそのままつなげません（MQTT が使えるのは ActiveMQ エンジン）。前に NLB を置く必要もありません。IoT 機器の入口は IoT Core が第一候補です。"
+      ],
+      "cards": [
+        "io01",
+        "xc12",
+        "a03",
+        "i04",
+        "xa05"
+      ],
+      "tags": [
+        "IoT Core",
+        "MQTT",
+        "Data Firehose",
+        "Amazon MQ",
+        "RabbitMQ",
+        "高可用性"
+      ]
     }
   ],
   "terms": [
