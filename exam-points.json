@@ -3667,6 +3667,35 @@
         "ファインチューニング",
         "人による承認"
       ]
+    },
+    {
+      "id": "p283",
+      "field": "analytics",
+      "service": "ログ連携",
+      "date": "2026-11-15",
+      "title": "「どの EC2 がどこと通信したか」をリアルタイムで Splunk に送る → VPC フローログ → CloudWatch Logs → サブスクリプションフィルター → Data Firehose（Lambda で整形）→ Splunk",
+      "power": "通信の記録は VPC フローログ、外部ツールへの蛇口はサブスクリプションフィルター、Splunk への配達は Firehose",
+      "summary": "誰がどこと通信したかは VPC フローログで分かる。CloudWatch Logs のサブスクリプションフィルターで、届いたログをすぐ Firehose に流す。Firehose は Splunk を届け先に直接指定でき、Lambda で 1 件ずつのイベントに分解・加工できる。S3 に出してから取りに来させる方法は遅く、Flink での異常検知は Splunk 側の役目とかぶって過剰。",
+      "body": [
+        "VPC フローログは、ネットワークインターフェイスごとの通信（送信元・宛先の IP とポート、許可/拒否）を記録します。「どの EC2 がどの DB にアクセスしたか」はこれで分かります。",
+        "CloudWatch Logs のサブスクリプションフィルターは、ロググループに届いたログを、届いたそばから別のサービス（Firehose・Kinesis・Lambda）へ流す蛇口です。定期エクスポートと違って、ほぼリアルタイムです。",
+        "Data Firehose は Splunk を届け先として直接指定できます。CloudWatch Logs から来るデータは圧縮されてまとまっているので、Firehose に付けた Lambda で 1 件ずつのログに分解したり、不要な情報を消したりします。",
+        "5 分ごとに S3 へエクスポートして Splunk に取りに来させる方法や、Athena で集計してから送る方法は、S3 を経由する分だけ遅れます。分析は Splunk が担当するので、途中に Managed Service for Apache Flink の異常検知を入れるのは余計です。"
+      ],
+      "cards": [
+        "xn03",
+        "mg04",
+        "xm21",
+        "a03"
+      ],
+      "tags": [
+        "VPC フローログ",
+        "CloudWatch Logs",
+        "サブスクリプションフィルター",
+        "Data Firehose",
+        "Splunk",
+        "リアルタイム"
+      ]
     }
   ],
   "terms": [
