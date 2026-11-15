@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-13",
+  "updated": "2026-11-15",
   "fields": [
     { "id": "network", "name": "ネットワーク" },
     { "id": "security", "name": "セキュリティ・権限" },
@@ -3542,6 +3542,37 @@
         "Amazon MQ",
         "RabbitMQ",
         "高可用性"
+      ]
+    },
+    {
+      "id": "p279",
+      "field": "storage",
+      "service": "AWS Backup",
+      "date": "2026-11-15",
+      "title": "EC2・EFS・RDS をまとめて「日次/週次/年次の保持・別リージョンへ暗号化コピー・一元監視・失敗時の通知と自動修復」→ AWS Backup のプラン（ルール＋クロスリージョンコピー）＋ EventBridge → SNS・Step Functions",
+      "power": "バックアップは AWS Backup に全部乗せ。自作するのは「失敗したあとの後始末」だけ",
+      "summary": "保持はバックアッププランのルールを要件ごとに作る。別リージョンへの複製はプランのコピー設定で。失敗の検知は EventBridge で「COMPLETED 以外で終わったジョブ」を拾い、SNS で通知、Step Functions で自動修復。複製や通知まで Lambda で自作するのは運用負荷が高い。DLM は EBS 専用、RDS スナップショット＋Lambda はサービスごとの手作り。",
+      "body": [
+        "AWS Backup は EC2・EBS・EFS・RDS などのバックアップを 1 つのプランでまとめて管理します。日次・週次・年次のように保持期間が違う要件は、プランの中にルールを分けて作ります。",
+        "別リージョンへの複製は、ルールの「コピー先」に別リージョンのボールトを指定するだけです。暗号化もボールトの KMS キーで行われます。複製用の Lambda を書く必要はありません。",
+        "AWS Backup のジョブの状態は EventBridge にイベントとして流れます。「BACKUP_JOB_COMPLETED 以外で終わったジョブ」をルールで拾い、SNS で即時通知、Step Functions で再実行などの修復を自動で動かします。",
+        "選び方のコツ：組み込みの機能でできること（保持・複製・暗号化・一元監視）は AWS Backup に任せ、組み込みにないこと（失敗時の自動修復）だけをイベント駆動で足します。全部を Lambda で作る選択肢は「運用負荷が最小」に反します。",
+        "Data Lifecycle Manager（DLM）は EBS スナップショットと AMI 用で、EFS や RDS はまとめられません。"
+      ],
+      "cards": [
+        "st01",
+        "xt19",
+        "i03",
+        "i05",
+        "i07"
+      ],
+      "tags": [
+        "AWS Backup",
+        "クロスリージョンコピー",
+        "EventBridge",
+        "SNS",
+        "Step Functions",
+        "自動修復"
       ]
     }
   ],
