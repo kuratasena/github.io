@@ -3526,14 +3526,16 @@
         "IoT Core は MQTT を標準で受けられるマネージドの入口で、何万台の機器でも自動で伸び、複数の AZ で動きます。ブローカーのサーバーを自分で持たないので、「サーバーが落ちてデータが消える」が起きにくくなります。",
         "IoT ルールでデータを Data Firehose に流せば、バッファしてまとめて S3 に届けてくれます。形を変えたいときは Firehose に組み込んだ Lambda で変換します（CSV にするなど）。",
         "EC2 に RabbitMQ を 2 台置いてアクティブ/スタンバイにする案は、サーバーの管理と切り替えの面倒が残ります。IoT Core の後ろに EC2 の RabbitMQ を置く案も同じです。",
-        "Amazon MQ はマネージドのブローカーですが、RabbitMQ エンジンが話すのは AMQP で、MQTT のセンサーをそのままつなげません（MQTT が使えるのは ActiveMQ エンジン）。前に NLB を置く必要もありません。IoT 機器の入口は IoT Core が第一候補です。"
+        "Amazon MQ はマネージドのブローカーですが、RabbitMQ エンジンが話すのは AMQP で、MQTT のセンサーをそのままつなげません（MQTT が使えるのは ActiveMQ エンジン）。前に NLB を置く必要もありません。IoT 機器の入口は IoT Core が第一候補です。",
+        "流れてくるデータから異常をリアルタイムで見つけたいときは、Managed Service for Apache Flink を足します（Firehose や Kinesis の流れを読みながら分析できるマネージドサービス）。車に Greengrass を載せて MSK に送る案や、Glue の機械学習変換（重複の検出用）で異常を探す案は、役割が違ううえに管理が増えます。"
       ],
       "cards": [
         "io01",
         "xc12",
         "a03",
         "i04",
-        "xa05"
+        "xa05",
+        "xa07"
       ],
       "tags": [
         "IoT Core",
@@ -4106,6 +4108,8 @@
     { "id": "xa06", "term": "Kinesis Client Library（KCL）", "cat": "analytics",
       "desc": "Kinesis Data Streams からデータを読むアプリを作るためのライブラリ。複数のワーカーでシャードを分担して並列に読み、どこまで読んだか（チェックポイント）を DynamoDB に記録する。ワーカーが落ちても、別のワーカーが続きから読み直せる。" },
     { "id": "xn59", "term": "DNS の TTL（Time to Live）", "cat": "network",
-      "desc": "DNS の答えを、利用者側が覚えておいてよい秒数。TTL が長いと問い合わせが減って安く速いが、切り替えが反映されるのが遅い。障害時にすばやく切り替えたいレコードは、TTL を短く（数十秒）しておく。DynamoDB の TTL（期限で自動削除）とは別物。" }
+      "desc": "DNS の答えを、利用者側が覚えておいてよい秒数。TTL が長いと問い合わせが減って安く速いが、切り替えが反映されるのが遅い。障害時にすばやく切り替えたいレコードは、TTL を短く（数十秒）しておく。DynamoDB の TTL（期限で自動削除）とは別物。" },
+    { "id": "xa07", "term": "Amazon Managed Service for Apache Flink", "cat": "analytics",
+      "desc": "流れ続けるデータ（Kinesis や Firehose、MSK）を、流れたまま SQL やプログラムで分析するマネージドサービス。直近◯分の平均を出す、異常な値をその場で見つける、といったリアルタイム分析に使う。旧名は Kinesis Data Analytics。" }
   ]
 }
