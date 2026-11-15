@@ -3535,7 +3535,7 @@
         "a03",
         "i04",
         "xa05",
-        "xa07"
+        "a08"
       ],
       "tags": [
         "IoT Core",
@@ -4108,8 +4108,6 @@
     { "id": "xa06", "term": "Kinesis Client Library（KCL）", "cat": "analytics",
       "desc": "Kinesis Data Streams からデータを読むアプリを作るためのライブラリ。複数のワーカーでシャードを分担して並列に読み、どこまで読んだか（チェックポイント）を DynamoDB に記録する。ワーカーが落ちても、別のワーカーが続きから読み直せる。" },
     { "id": "xn59", "term": "DNS の TTL（Time to Live）", "cat": "network",
-      "desc": "DNS の答えを、利用者側が覚えておいてよい秒数。TTL が長いと問い合わせが減って安く速いが、切り替えが反映されるのが遅い。障害時にすばやく切り替えたいレコードは、TTL を短く（数十秒）しておく。DynamoDB の TTL（期限で自動削除）とは別物。" },
-    { "id": "xa07", "term": "Amazon Managed Service for Apache Flink", "cat": "analytics",
-      "desc": "流れ続けるデータ（Kinesis や Firehose、MSK）を、流れたまま SQL やプログラムで分析するマネージドサービス。直近◯分の平均を出す、異常な値をその場で見つける、といったリアルタイム分析に使う。旧名は Kinesis Data Analytics。" }
+      "desc": "DNS の答えを、利用者側が覚えておいてよい秒数。TTL が長いと問い合わせが減って安く速いが、切り替えが反映されるのが遅い。障害時にすばやく切り替えたいレコードは、TTL を短く（数十秒）しておく。DynamoDB の TTL（期限で自動削除）とは別物。" }
   ]
 }
