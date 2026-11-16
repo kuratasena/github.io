@@ -1840,7 +1840,8 @@
         "受け取ったファイルは、直接 S3（または EFS）に保存されます。EC2 の cron でデータレイクに移す処理がいらなくなります。",
         "Route 53 の sftp.bankaccount.com を Transfer Family のエンドポイントに向ければ、取引先は今までと同じ名前で接続できます。",
         "ALB は HTTP/HTTPS 用なので、SFTP（TCP の 22 番ポート）は通せません。NLB なら通せますが、EC2 の SFTP サーバーの管理は残ります。",
-        "Storage Gateway のファイルゲートウェイは NFS や SMB でつなぐもので、SFTP には対応していません。"
+        "Storage Gateway のファイルゲートウェイは NFS や SMB でつなぐもので、SFTP には対応していません。",
+        "「顧客の許可リストにある今の IP を変えられない」なら、自社の IP ブロックを BYOIP で AWS に登録し、そこから作った Elastic IP を Transfer Family の VPC 型エンドポイントに付けます。IP を付けられるのは VPC 型エンドポイントで、ALB や S3 の VPC エンドポイントには Elastic IP を付けられません。保存先の S3 は KMS で暗号化します。"
       ],
       "cards": ["mi08", "xc11", "st06", "xn07", "xn08", "st08"],
       "tags": ["Transfer Family", "SFTP", "S3", "Route 53", "マネージドサービス"]
