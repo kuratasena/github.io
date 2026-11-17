@@ -5923,6 +5923,7 @@
     {"id": "xd38", "term": "Babelfish for Aurora PostgreSQL", "cat": "database", "desc": "Aurora PostgreSQL が SQL Server の言葉（T-SQL）とつなぎ方を理解できるようにする機能。SQL Server 用のアプリをほとんど書き換えずに Aurora に移せる。"},
     {"id": "xi09", "term": "EventBridge Scheduler", "cat": "integration", "desc": "決まった時刻や間隔で、Lambda・Fargate のタスク・Step Functions などを起動する予約の仕組み。「8時間ごとに20分の処理」のような定期実行で使う。Step Functions だけでは定期起動はできない。"},
     {"id": "xd39", "term": "ElastiCache の AUTH と転送中の暗号化", "cat": "database", "desc": "AUTH はパスワード（トークン）がないと Redis につなげないようにする設定。転送中の暗号化は通信を TLS で守る設定。試験では「新しいクラスターを作って有効にし、データを移す」が正解になることが多い。"},
-    {"id": "xs42", "term": "WAF のカウントモード", "cat": "security", "desc": "WAF のルールを、ブロックせずに「当てはまった数を数えるだけ」で動かすモード。新しいルールが正しい通信まで止めないかを本番で確かめてから、ブロックに切り替える。"}
+    {"id": "xs42", "term": "WAF のカウントモード", "cat": "security", "desc": "WAF のルールを、ブロックせずに「当てはまった数を数えるだけ」で動かすモード。新しいルールが正しい通信まで止めないかを本番で確かめてから、ブロックに切り替える。"},
+    {"id": "xl03", "term": "Amazon Bedrock", "cat": "ml", "desc": "いろいろな会社の基盤モデル（生成 AI）を API で呼び出せるサービス。Converse API で会話形式に生成できる。モデルを再学習せずに出力を良くするなら、プロンプトに例を入れる few-shot や、社内文書を検索して渡す RAG（ナレッジベース）を使う。"}
   ]
 }
