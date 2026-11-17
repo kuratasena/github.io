@@ -2084,7 +2084,10 @@
       "tags": ["Route 53", "フェイルオーバールーティング", "ヘルスチェック", "アクティブ-パッシブ", "災害対策"]
     },
     {
-      "id": "p153", "field": "org", "service": "IAM Identity Center", "date": "2026-10-25",
+      "id": "p153",
+      "field": "org",
+      "service": "IAM Identity Center",
+      "date": "2026-10-25",
       "title": "社内の AD でコンソールに入るのを一番安くするなら「Organizations すべての機能 ＋ IAM Identity Center ＋ AD Connector」",
       "power": "名簿は社内の AD のまま。受付（AD Connector）を置くだけなら安い。AWS に名簿の写し（Managed AD）は要らない",
       "summary": "IAM Identity Center を使うには Organizations の「すべての機能」が必要。社内の AD をそのまま使うなら、問い合わせを中継するだけの AD Connector が一番安い。AWS Managed Microsoft AD ＋ 信頼関係は、AWS 側にも AD が要るときの高い選択肢。",
@@ -2093,10 +2096,28 @@
         "AD Connector は、AWS からオンプレミスの AD へ「この人は本物？」と問い合わせを中継するだけの窓口です。AD そのものを AWS に作らないので、安く済みます。",
         "IAM Identity Center の ID ソースに AD Connector を選び、AD の既存のグループに権限セットを割り当てます。IT 担当者は、いつもの AD のアカウントでコンソールに入れます。IAM ユーザーは不要になります。",
         "AWS Managed Microsoft AD は、AWS の中に本物の AD を作るサービスで、AD Connector より高くなります。オンプレの AD と信頼関係を結ぶ手間もかかります。「コスト効果が高い」なら選びません。",
-        "AWS Managed Microsoft AD を選ぶのは、オンプレの AD が止まっても AWS で認証したい、AD に対応したアプリを AWS で動かしたい、など AWS 側にも AD が必要なときです。"
+        "AWS Managed Microsoft AD を選ぶのは、オンプレの AD が止まっても AWS で認証したい、AD に対応したアプリを AWS で動かしたい、など AWS 側にも AD が必要なときです。",
+        "【バラバラのアカウントをまとめる3ステップ（2026-11-17）】①新しい管理アカウントで Organizations を作り、既存のアカウントを招待（費用の一元管理） ②管理アカウントで IAM Identity Center を有効にして AD とつなぎ、ユーザーとグループを自動同期 ③権限セットを作って、グループとアカウントに割り当てる（最小権限）。",
+        "IAM Identity Center でログインすると、使うのは一時的な認証情報。長く使う IAM アクセスキーはいらなくなる。",
+        "ワナ：各アカウントの IAM を個別に設定する案は、アカウントが多いほど手間が増える。メールアドレスをそろえる案は、請求書の届き先が変わるだけで、費用の一元管理やログインには関係ない。Managed Microsoft AD を RAM で共有する案は、ログインの一元化には不要。"
       ],
-      "cards": ["sc10", "xs04", "xs15", "xm17", "xs09"],
-      "tags": ["IAM Identity Center", "AD Connector", "AWS Managed Microsoft AD", "Organizations", "コスト"]
+      "cards": [
+        "sc10",
+        "xs04",
+        "xs15",
+        "xm17",
+        "xs09",
+        "mg14"
+      ],
+      "tags": [
+        "IAM Identity Center",
+        "AD Connector",
+        "AWS Managed Microsoft AD",
+        "Organizations",
+        "コスト",
+        "フェデレーション",
+        "一時的な認証情報"
+      ]
     },
     {
       "id": "p190", "field": "storage", "service": "S3（静的サイト・配信）", "date": "2026-10-25",
