@@ -4234,6 +4234,34 @@
         "CodeDeploy エージェント",
         "CI/CD"
       ]
+    },
+    {
+      "id": "p297",
+      "field": "compute",
+      "service": "EC2・Auto Scaling",
+      "date": "2026-11-17",
+      "title": "手動で入れ替えている EC2 を止めずに自動復旧にするなら「Auto Scaling グループを作って既存の ALB にアタッチ → 既存の EC2 を Auto Scaling グループにアタッチ」。ALB や EC2 は消さない",
+      "power": "引っ越しせずに、管理人（Auto Scaling）を雇うだけ",
+      "summary": "Auto Scaling グループを作り、今の ALB にそのままつなぎ、今動いている EC2 もグループに登録する。ALB も EC2 も消さないので止まらない。以後、異常な EC2 は Auto Scaling が自動で入れ替える。既存の EC2 は ALB が勝手に登録してくれないので、自分でアタッチする。",
+      "body": [
+        "Auto Scaling グループは、ALB のヘルスチェックで異常になった EC2 を自動で終了し、新しい EC2 を起動して入れ替える。",
+        "今の ALB をそのまま使えば、利用者の入口（DNS 名）は変わらないので止まらない。",
+        "今動いている EC2 は、Auto Scaling グループにアタッチ（attach-instances）すれば、そのまま管理対象になる。",
+        "ワナ：ALB を削除して作り直す案。DNS 名が変わり、作り直している間はサービスが止まる。",
+        "ワナ：EC2 まで削除して、新しく起動するのを待つ案。待っている間にサービスが止まる。",
+        "ワナ：ALB が既存の EC2 を Auto Scaling グループに自動で登録してくれる、という案。そんな機能はない。"
+      ],
+      "cards": [
+        "co06",
+        "xn07",
+        "nw03"
+      ],
+      "tags": [
+        "Auto Scaling",
+        "ALB",
+        "自動復旧",
+        "無停止の移行"
+      ]
     }
   ],
   "terms": [
