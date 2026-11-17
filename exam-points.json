@@ -3356,7 +3356,10 @@
       "tags": ["CodeDeploy", "ブルー/グリーン", "ロールバック", "インプレース"]
     },
     {
-      "id": "p257", "field": "org", "service": "SCP", "date": "2026-11-08",
+      "id": "p257",
+      "field": "org",
+      "service": "SCP",
+      "date": "2026-11-08",
       "title": "タグを「必ず付けさせる」なら SCP の Deny ＋ Null 条件（aws:RequestTag/キー が \"true\"）を組織のルートに。タグポリシーは表記ゆれをそろえるだけ",
       "power": "SCP は門番（タグなしは通さない）、タグポリシーは書き方の先生（綴りを直す）",
       "summary": "タグなしの EC2 作成を止めるなら SCP で RunInstances を Deny、条件は Null aws:RequestTag/SecurityLevel = \"true\"、ルート（または OU）に付ける。",
@@ -3364,10 +3367,31 @@
         "Null 条件の \"true\" は「そのタグが無い」という意味です。Deny と組み合わせると「SecurityLevel タグが無い RunInstances を拒否」になります。\"false\" にすると逆に、タグを付けた人が拒否されます。",
         "SCP は組織のルートや OU に付けます。管理アカウントには SCP が効かないので、管理アカウントに付けても意味がありません。",
         "タグポリシーは、キーの大文字・小文字や使ってよい値をそろえるための仕組みです。タグそのものが付いていない作成は止められません。",
-        "すでに作られたリソースのタグ漏れを見つけるのは AWS Config（required-tags ルール）。止めるのは SCP、見つけるのは Config です。"
+        "すでに作られたリソースのタグ漏れを見つけるのは AWS Config（required-tags ルール）。止めるのは SCP、見つけるのは Config です。",
+        "【既存＋将来の両方にタグ（2026-11-17）】既存のリソース → Tag Editor で一括でタグ付け。将来のリソース → タグなしの作成を拒否する SCP。費用の集計 → コスト配分タグを有効化。守れているかの監視 → Config（required-tags ルール）。",
+        "ワナ：Config ＋ 自動修正や、毎日 Lambda でデフォルトのタグを付ける案。起きてから直す仕組みで、正しい部門コードも分からない。",
+        "ワナ：各 IAM ロールで制限する案。数が多いと管理しきれない。組織全体なら SCP。",
+        "ワナ：Budgets で「タグなし」を見つける案。Budgets にはそんな機能はない。"
       ],
-      "cards": ["c15", "xs34", "xm22", "xm07", "xs14", "mg07"],
-      "tags": ["SCP", "タグ", "aws:RequestTag", "Null", "タグポリシー"]
+      "cards": [
+        "c15",
+        "xs34",
+        "xm22",
+        "xm07",
+        "xs14",
+        "mg07",
+        "xf01",
+        "xm28"
+      ],
+      "tags": [
+        "SCP",
+        "タグ",
+        "aws:RequestTag",
+        "Null",
+        "タグポリシー",
+        "Tag Editor",
+        "既存リソース"
+      ]
     },
     {
       "id": "p258", "field": "network", "service": "VPC・NAT", "date": "2026-11-08",
@@ -5058,6 +5082,7 @@
     {"id": "xs40", "term": "S3 ブロックパブリックアクセス（4つの設定）", "cat": "storage", "desc": "S3 の公開を一括で止めるスイッチ。BlockPublicAcls（公開の ACL を新しく付けさせない）、IgnorePublicAcls（今ある公開の ACL を無視）、BlockPublicPolicy（公開のバケットポリシーを付けさせない）、RestrictPublicBuckets（公開のポリシーがあっても外部から使えなくする）。4つ全部オンで、今も今後も公開されない。アカウント単位でもかけられる。"},
     {"id": "xs41", "term": "S3 の署名付き URL", "cat": "storage", "desc": "URL を作った人の権限で、決まった時間だけファイルをダウンロード（またはアップロード）できる URL。認証付きのアクセスなので、ブロックパブリックアクセスをオンにしても使える。"},
     {"id": "xi06", "term": "Step Functions のエラー処理（Retry / Catch / States.ALL）", "cat": "integration", "desc": "Retry は失敗したステップを決めた回数やり直す設定。Catch は失敗したときに別のステップへ進ませる設定。ErrorEquals に States.ALL と書くと、どんな種類のエラーでもつかまえる。States.Runtime や States.Timeout など特定の名前だと、その種類だけ。"},
-    {"id": "xn63", "term": "Amazon VPC Lattice（サービスネットワーク・認証ポリシー）", "cat": "network", "desc": "アカウントや VPC をまたいだサービス同士の通信を、アプリの層（HTTP など）でつなぐサービス。サービスネットワークに VPC を関連付け、サービスを登録すると DNS 名で呼べる。CIDR が重なっていても通信でき、ルートテーブルやピアリングは不要。認証ポリシー（IAM と同じ書き方）で、どの IAM ロールが呼べるかを決められる。RAM で他のアカウントと共有する。"}
+    {"id": "xn63", "term": "Amazon VPC Lattice（サービスネットワーク・認証ポリシー）", "cat": "network", "desc": "アカウントや VPC をまたいだサービス同士の通信を、アプリの層（HTTP など）でつなぐサービス。サービスネットワークに VPC を関連付け、サービスを登録すると DNS 名で呼べる。CIDR が重なっていても通信でき、ルートテーブルやピアリングは不要。認証ポリシー（IAM と同じ書き方）で、どの IAM ロールが呼べるかを決められる。RAM で他のアカウントと共有する。"},
+    {"id": "xm28", "term": "Tag Editor（Resource Groups）", "cat": "mgmt", "desc": "複数のリージョンのリソースをまとめて検索して、タグを一括で付けたり変えたりできる画面。すでにあるリソースにあとからタグを付けるときに使う。"}
   ]
 }
