@@ -4311,6 +4311,40 @@
         "自動復旧",
         "無停止の移行"
       ]
+    },
+    {
+      "id": "p298",
+      "field": "database",
+      "service": "Aurora・RDS",
+      "date": "2026-11-17",
+      "title": "リレーショナル DB で「別リージョンへ、RPO は秒、RTO は数分」なら Aurora Global Database（RPO 約1秒、RTO 約1分）",
+      "power": "秒と分の DR なら、Aurora Global Database",
+      "summary": "Aurora Global Database は、ストレージの仕組みで別リージョンにほぼリアルタイム（約1秒）にコピーし、障害時はセカンダリを1分ほどでプライマリに昇格できる。RDS のクロスリージョンリードレプリカは遅れが出やすく昇格も手作業寄り、バックアップは間隔が長く、DataSync は DB の同期の道具ではない。",
+      "body": [
+        "Aurora Global Database は、プライマリのリージョンから別のリージョンへ、データベースのストレージの層でコピーする。遅れはふつう1秒未満。",
+        "障害時は、別リージョンのセカンダリをプライマリに昇格させる。数分以内（目安1分）で切り替えられる。",
+        "RTO＝止まってから復旧するまでの時間。RPO＝どこまでさかのぼってデータを失ってよいか。どちらも数秒〜数分なら Aurora Global Database。",
+        "ワナ：RDS のクロスリージョンリードレプリカ＋DMS。リードレプリカは自分でコピーするので DMS は不要。遅れが出やすく、昇格も手作業寄りで、秒・分の要件は保証しにくい。",
+        "ワナ：Multi-AZ ＋ AWS Backup。Multi-AZ は同じリージョンの中の対策。バックアップは間隔が長く、復元にも時間がかかる。",
+        "ワナ：EC2 の PostgreSQL ＋ DataSync。DataSync はファイルを運ぶ道具で、動いている DB の同期には使わない。「定期的」では秒の RPO は無理。",
+        "DynamoDB なら、同じ立場はグローバルテーブル（p042・p203）。"
+      ],
+      "cards": [
+        "xd05",
+        "db01",
+        "xd16",
+        "xd18",
+        "c03",
+        "st01",
+        "mi04"
+      ],
+      "tags": [
+        "Aurora Global Database",
+        "DR",
+        "RTO",
+        "RPO",
+        "クロスリージョン"
+      ]
     }
   ],
   "terms": [
