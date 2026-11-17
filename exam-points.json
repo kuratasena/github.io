@@ -3956,6 +3956,39 @@
         "送信元 IP",
         "トラブルシューティング"
       ]
+    },
+    {
+      "id": "p291",
+      "field": "migration",
+      "service": "Amplify（Web アプリの作り直し）",
+      "date": "2026-11-17",
+      "title": "「クラウドネイティブに作り直す」「開発を速く」「運用の手間を最小」の Web アプリなら、Amplify（Hosting ＋ Cognito ＋ S3）。EC2 への引っ越し（MGN）や AppSync ＋ Lambda で一から組む案は手間が多い",
+      "power": "作り直して早く出すなら、Amplify のセット売り",
+      "summary": "Amplify は、Web サイトの公開（CloudFront 経由）、ログイン（Cognito）、ファイル保存（S3）をまとめて用意できる。「作り直す」「開発を速く」「運用の手間を最小」がそろったら Amplify。MGN で EC2 に移すのは作り直しではなく、サーバーの管理も残る。",
+      "body": [
+        "Amplify Hosting は、Web サイトを CloudFront 経由で世界に配信する。サーバーの管理はいらない。",
+        "ログインは Cognito。Amplify とすぐにつながり、MFA（多要素認証）も有効にできる。",
+        "アップロードされたファイルは S3 に直接保存する。サーバーを通らないので、利用者が急に増えてもアップロードが失敗しにくい。",
+        "ワナ：MGN（Application Migration Service）で EC2 に移す案。サーバーをそのまま引っ越すだけなので「作り直し」にならず、EC2・Auto Scaling・ALB の管理も残る。",
+        "ワナ：IAM Identity Center は、社員が AWS アカウントや業務アプリにログインする仕組み。一般の利用者（学生など）が使う Web アプリのログインは Cognito。",
+        "ワナ：AppSync ＋ Lambda で自分で組む案。できなくはないが、Amplify より組み立てる部品が多い。ファイルを Lambda 経由で送ると、送れるサイズの上限にも当たりやすい。"
+      ],
+      "cards": [
+        "fr01",
+        "sc05",
+        "nw01",
+        "st06",
+        "i02",
+        "mi02",
+        "xs36"
+      ],
+      "tags": [
+        "Amplify",
+        "Cognito",
+        "モダナイズ",
+        "運用負荷",
+        "IAM Identity Center"
+      ]
     }
   ],
   "terms": [
