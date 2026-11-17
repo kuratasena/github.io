@@ -969,17 +969,28 @@
       "tags": ["Auto Scaling", "スケジュールスケーリング"]
     },
     {
-      "id": "p102", "field": "cost", "service": "移行のコスト比較", "date": "2026-10-13",
+      "id": "p102",
+      "field": "cost",
+      "service": "移行のコスト比較",
+      "date": "2026-10-13",
       "title": "移行前のコスト比較（TCO）は Migration Evaluator",
       "power": "引っ越し前の見積もり屋さん。今の費用と AWS の費用を並べてくれる",
       "summary": "移行前に今の費用と AWS の費用を比べる（TCO）なら Migration Evaluator。",
       "body": [
         "TCO（総所有コスト）は、機器・運用・電気代などをすべて足した、持ち続けるための総コストです。",
         "Migration Evaluator で今のサーバー情報を集め、Quick Insights レポートを出すと、オンプレミスと AWS の費用を比べられます。",
-        "Pricing Calculator は AWS の料金だけを見積もるもので、オンプレミスとの比較はしません。DMS や Application Migration Service は移行の実行用で、TCO は出ません。"
+        "Pricing Calculator は AWS の料金だけを見積もるもので、オンプレミスとの比較はしません。DMS や Application Migration Service は移行の実行用で、TCO は出ません。",
+        "【3周目 3-2（2026-11-18）】EKS＋RDS への移行前に TCO（オンプレとの比較）→ Migration Evaluator（Collector でデータを集めて Quick Insights レポート）。DMS・Pricing Calculator・MGN・Cost and Usage Report は TCO の比較をしない。"
       ],
-      "cards": ["xg01", "c10"],
-      "tags": ["Migration Evaluator", "TCO", "Quick Insights"]
+      "cards": [
+        "xg01",
+        "c10"
+      ],
+      "tags": [
+        "Migration Evaluator",
+        "TCO",
+        "Quick Insights"
+      ]
     },
     {
       "id": "p115", "field": "strategy", "service": "要件の読み方", "date": "2026-10-13",
