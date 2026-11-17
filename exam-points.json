@@ -4671,6 +4671,34 @@
         "プッシュ",
         "DynamoDB ストリーム"
       ]
+    },
+    {
+      "id": "p303",
+      "field": "compute",
+      "service": "CloudFormation・Elastic Beanstalk",
+      "date": "2026-11-17",
+      "title": "Elastic Beanstalk のブルー/グリーンは「新しい環境を作ってデプロイ → Swap Environment URLs」。DNS を自分で書き換えない",
+      "power": "Beanstalk の切り替えは、表札（URL）の掛け替えボタン",
+      "summary": "同じ環境をもう1つ作って新しいバージョンをデプロイし、確認できたら Swap Environment URLs で2つの環境の URL を入れ替える。ボタン1つで切り替わり、問題があればもう一度スワップで戻せる。Route 53 や CNAME を手で書き換える案は手作業が増える。",
+      "body": [
+        "ブルー/グリーン：今の環境（ブルー）はそのまま残し、新しい環境（グリーン）を横に作って確認してから切り替える。問題があればブルーに戻せる。",
+        "Elastic Beanstalk では、Swap Environment URLs で2つの環境の URL（CNAME）を入れ替えるだけで切り替えが終わる。",
+        "ワナ：Route 53 のレコードや CNAME を手で書き換える案。手作業になり、間違えるリスクもある。Beanstalk の機能で済むならそちらが正解。",
+        "ワナ：今の環境の Auto Scaling の設定を変えてインスタンスを入れ替える案。それはブルー/グリーンではなく、今の環境をその場で更新するやり方。",
+        "参考：DNS の切り替えなので、利用者側のキャッシュ（TTL）が切れるまでは少しの間、古い環境にもアクセスが来る。古い環境はすぐ消さずにしばらく残す。"
+      ],
+      "cards": [
+        "co04",
+        "xc26",
+        "xd31",
+        "nw06"
+      ],
+      "tags": [
+        "Elastic Beanstalk",
+        "ブルー/グリーン",
+        "CNAME スワップ",
+        "デプロイ"
+      ]
     }
   ],
   "terms": [
@@ -5165,6 +5193,7 @@
     {"id": "xn63", "term": "Amazon VPC Lattice（サービスネットワーク・認証ポリシー）", "cat": "network", "desc": "アカウントや VPC をまたいだサービス同士の通信を、アプリの層（HTTP など）でつなぐサービス。サービスネットワークに VPC を関連付け、サービスを登録すると DNS 名で呼べる。CIDR が重なっていても通信でき、ルートテーブルやピアリングは不要。認証ポリシー（IAM と同じ書き方）で、どの IAM ロールが呼べるかを決められる。RAM で他のアカウントと共有する。"},
     {"id": "xm28", "term": "Tag Editor（Resource Groups）", "cat": "mgmt", "desc": "複数のリージョンのリソースをまとめて検索して、タグを一括で付けたり変えたりできる画面。すでにあるリソースにあとからタグを付けるときに使う。"},
     {"id": "xi07", "term": "プッシュとポーリング（WebSocket）", "cat": "integration", "desc": "ポーリングは、クライアントが「新しいのある？」と何秒かごとに聞きに行く方式。新着がなくても通信が発生し、最大で聞く間隔の分だけ遅れる。プッシュは、つなぎっぱなしの接続（WebSocket）で、サーバーから新着をすぐ送る方式。リアルタイム表示はプッシュ。"},
-    {"id": "xi08", "term": "AppSync のサブスクリプション（リアルタイム）", "cat": "integration", "desc": "AppSync の GraphQL API で、データが変わったら WebSocket でクライアントに自動で送る機能。チャット、コメント、スコアなどのリアルタイム表示に使う。API Gateway の WebSocket API でも似たことができる。"}
+    {"id": "xi08", "term": "AppSync のサブスクリプション（リアルタイム）", "cat": "integration", "desc": "AppSync の GraphQL API で、データが変わったら WebSocket でクライアントに自動で送る機能。チャット、コメント、スコアなどのリアルタイム表示に使う。API Gateway の WebSocket API でも似たことができる。"},
+    {"id": "xc26", "term": "Elastic Beanstalk の環境 URL のスワップ（Swap Environment URLs）", "cat": "compute", "desc": "2つの Beanstalk 環境の URL（CNAME）をボタン1つで入れ替える機能。新しい環境（グリーン）を作って確認したあと、スワップすると利用者は新しい環境に切り替わる。問題があればもう一度スワップで戻せる。"}
   ]
 }
