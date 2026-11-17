@@ -526,17 +526,37 @@
       "tags": ["SES", "SNS"]
     },
     {
-      "id": "p080", "field": "analytics", "service": "ログ調査", "date": "2026-10-09",
+      "id": "p080",
+      "field": "analytics",
+      "service": "ログ調査",
+      "date": "2026-10-09",
       "title": "ログ調査の定番ルート",
       "power": "Insights は手軽、Athena は大量、Mirroring は中身",
-      "summary": "手軽にすぐ調べるなら CloudWatch Logs Insights、大量・長期なら S3 ＋ Athena、パケットの中身なら Traffic Mirroring。",
+      "summary": "手軽にすぐ調べるなら CloudWatch Logs Insights、大量・長期なら S3 ＋ Athena、パケットの中身なら Traffic Mirroring。 Auto Scaling で EC2 が消えるとログも消えるので、CloudWatch エージェントでログを外（CloudWatch Logs）に送っておく。",
       "body": [
         "手軽にすぐ調べたいなら CloudWatch Logs Insights です。準備はほとんどいりません。",
         "ログが大量で、長く保存し、費用も抑えたいなら、S3 に置いて Athena で検索します。",
-        "通信の中身（パケット）まで見たいなら Traffic Mirroring ですが、ほとんどの問題ではやりすぎです。"
+        "通信の中身（パケット）まで見たいなら Traffic Mirroring ですが、ほとんどの問題ではやりすぎです。",
+        "【スケールインでログが消える問題（2026-11-17）】Auto Scaling で EC2 が終了すると、EC2 の中に保存していたログも一緒に消える → CloudWatch エージェントで、ログを CloudWatch Logs に送り続ける。分析は Logs Insights。",
+        "ワナ：ALB のアクセスログは「ALB に来たリクエストの記録」だけ。EC2 の中でアプリが出すログは入らない。",
+        "ワナ：X-Ray は処理の流れや遅い場所を見る道具で、ログの保存先ではない。スケーリングの設定を変えても、ログが消える問題は直らない。"
       ],
-      "cards": ["xm02", "a01", "xn15"],
-      "tags": ["CloudWatch Logs Insights", "Athena", "Traffic Mirroring"]
+      "cards": [
+        "xm02",
+        "a01",
+        "xn15",
+        "xm05",
+        "mg04",
+        "dv06"
+      ],
+      "tags": [
+        "CloudWatch Logs Insights",
+        "Athena",
+        "Traffic Mirroring",
+        "CloudWatch エージェント",
+        "Auto Scaling",
+        "ALB アクセスログ"
+      ]
     },
     {
       "id": "p081", "field": "analytics", "service": "Athena", "date": "2026-10-09",
