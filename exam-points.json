@@ -2083,7 +2083,10 @@
         "Storage Gateway のファイルゲートウェイは NFS や SMB でつなぐもので、SFTP には対応していません。",
         "「顧客の許可リストにある今の IP を変えられない」なら、自社の IP ブロックを BYOIP で AWS に登録し、そこから作った Elastic IP を Transfer Family の VPC 型エンドポイントに付けます。IP を付けられるのは VPC 型エンドポイントで、ALB や S3 の VPC エンドポイントには Elastic IP を付けられません。保存先の S3 は KMS で暗号化します。",
         "【パブリック型と VPC 型の違い（2026-11-17）】Transfer Family のエンドポイントは2種類。パブリック型：AWS が用意した住所で公開。Elastic IP もセキュリティグループも付けられない。VPC 型（インターネット向け）：自分の VPC の中に置き、Elastic IP を付けられて、セキュリティグループで接続元の IP を絞れる。",
-        "「今の Elastic IP のまま」「取引先の IP だけ許可」の2つがあれば、必ず VPC 型（インターネット向け）。パブリック型を選ぶと、どちらもできない。"
+        "「今の Elastic IP のまま」「取引先の IP だけ許可」の2つがあれば、必ず VPC 型（インターネット向け）。パブリック型を選ぶと、どちらもできない。",
+        "【固定 IP ＋ 今の NFS 共有も置き換え（2026-11-17）】サプライヤーに固定のパブリック IP を渡す → Transfer Family の VPC 型（インターネット向け）エンドポイント＋各サブネット（AZ）に Elastic IP。保存先は、社内のシステムが NFS で読んでいるなら EFS（複数 AZ、NFS でマウントできる）。",
+        "ワナ：MGN で「Transfer Family に移行」。MGN はサーバーを EC2 に丸ごと移す道具で、Transfer Family には移せない。",
+        "ワナ：FSx for Lustre。HPC 向けで、今回の NFS 共有の置き換えにはやりすぎ。"
       ],
       "cards": [
         "mi08",
@@ -2091,7 +2094,8 @@
         "st06",
         "xn07",
         "xn08",
-        "st08"
+        "st08",
+        "st04"
       ],
       "tags": [
         "Transfer Family",
@@ -2101,7 +2105,9 @@
         "マネージドサービス",
         "パブリック型エンドポイント",
         "VPC 型エンドポイント",
-        "Elastic IP"
+        "Elastic IP",
+        "EFS",
+        "NFS"
       ]
     },
     {
