@@ -4593,7 +4593,10 @@
         "【RPO・RTO 1時間で Aurora と DynamoDB の両方（2026-11-17）】Aurora Global Database ＋ DynamoDB グローバルテーブルでデータを別リージョンへ、API Gateway を両リージョンに置き、Route 53 のフェイルオーバールーティングで切り替える。",
         "ワナ：AWS Backup で定期バックアップ。1時間ごとに取っても、復元に時間がかかり RTO 1時間を守れる保証がない。",
         "ワナ：DMS・EventBridge・Lambda で自作の複製。部品が多く、遅れも読めない。",
-        "ワナ：CloudFront のオリジンフェイルオーバー。切り替わるのは GET・HEAD・OPTIONS だけで、取引の POST などは切り替わらない。API の DR は Route 53 のフェイルオーバー。"
+        "ワナ：CloudFront のオリジンフェイルオーバー。切り替わるのは GET・HEAD・OPTIONS だけで、取引の POST などは切り替わらない。API の DR は Route 53 のフェイルオーバー。",
+        "【逆のパターン：RPO 1時間だけ・コスト重視（2026-11-17）】RTO の指定がなく、RPO 1時間だけ＋「最もコスト効率が高い」→ AWS Backup で1時間ごとにバックアップして、別リージョンへコピー。Global Database は秒単位の要件向けで、書き込みが多いと複製の I/O 料金がかさむ。",
+        "見分け方：RPO だけ1時間 → バックアップ（AWS Backup の1時間ごと＋クロスリージョンコピー）。RPO と RTO が両方1時間以内、または秒・分 → Global Database（＋ Route 53）。",
+        "ワナ：Backtrack は同じクラスターの中で過去に巻き戻す機能で、別リージョンの DR には使えない（しかも Aurora MySQL だけ）。DMS の CDC を S3 に流しても、そのまま DB として復元できない。"
       ],
       "cards": [
         "xd05",
@@ -4617,7 +4620,9 @@
         "書き込み転送",
         "マルチマスター",
         "Route 53 フェイルオーバー",
-        "DynamoDB グローバルテーブル"
+        "DynamoDB グローバルテーブル",
+        "AWS Backup",
+        "Backtrack"
       ]
     },
     {
