@@ -2999,7 +2999,10 @@
       "tags": ["DLM", "EBS スナップショット", "クロスリージョンコピー", "AWS Backup", "運用オーバーヘッド"]
     },
     {
-      "id": "p244", "field": "security", "service": "IAM・権限の設計", "date": "2026-11-07",
+      "id": "p244",
+      "field": "security",
+      "service": "IAM・権限の設計",
+      "date": "2026-11-07",
       "title": "Organizations に入れないアカウントで「このリージョン・このサイズだけ」に制限するなら、SCP ではなく IAM ポリシーの条件（aws:RequestedRegion・ec2:InstanceType）",
       "power": "SCP は会社（組織）の社則。会社に入ってない人には効かへん。そのアカウントの中のルール（IAM ポリシー）で縛る",
       "summary": "組織外のアカウントで、開発者が起動できる EC2 をリージョンとインスタンスタイプで制限 → IAM ポリシーの条件 aws:RequestedRegion ＋ ec2:InstanceType で ec2:RunInstances を絞り、開発者の IAM グループ・ロールにアタッチ。SCP・タグポリシーは Organizations 専用、タグポリシーはそもそも制限機能なし、RI は割引で制限ではない。",
@@ -3007,10 +3010,34 @@
         "SCP は AWS Organizations の機能なので、組織に入っていないアカウントには使えません。問題文に「Organizations に含められない」「本社の管理外」とあったら、SCP・タグポリシー・Control Tower の選択肢はすべて落とします。",
         "組織に入っていない1つのアカウントで制限するなら、IAM ポリシーです。条件（Condition）に aws:RequestedRegion（リージョン）と ec2:InstanceType（インスタンスタイプ）を書き、ec2:RunInstances を「東京で m5.medium のときだけ」許可して、開発者の IAM グループ・ロールにアタッチします。",
         "タグポリシーはタグの付け方をそろえるためのもので、リージョンやインスタンスタイプを制限する機能はありません（しかもこれも Organizations の機能です）。",
-        "リザーブドインスタンスは料金の割引で、起動できるサイズを制限する仕組みではありません。"
+        "リザーブドインスタンスは料金の割引で、起動できるサイズを制限する仕組みではありません。",
+        "【逆のパターン：組織の中の数百アカウント（2026-11-17）】Organizations（Control Tower）を使える会社で「承認したリージョン以外は全部拒否」→ OU を作って、aws:RequestedRegion で拒否する SCP を付ける。上の OU に1つ付ければ、下の全アカウントに効く。Control Tower にはリージョンを拒否するコントロールも最初から用意されている。",
+        "見分け方：組織の中で数が多い → SCP（または Control Tower）。組織の外の1アカウント → IAM ポリシーの条件。",
+        "ワナ：アカウントごとに IAM ロールや IAM ユーザーを作る案は、数百アカウントでは管理しきれない。Security Hub や Config は「起きたら見つける」仕組みで、事前に拒否はできない。",
+        "注意：IAM・CloudFront・Route 53 などのグローバルサービスは、リージョン拒否の SCP から除外しておかないと使えなくなる（NotAction で外す）。"
       ],
-      "cards": ["sc11", "xs30", "c15", "xs14", "xm22", "c13"],
-      "tags": ["IAM ポリシー", "条件キー", "aws:RequestedRegion", "ec2:InstanceType", "SCP", "Organizations"]
+      "cards": [
+        "sc11",
+        "xs30",
+        "c15",
+        "xs14",
+        "xm22",
+        "c13",
+        "mg08",
+        "mg14",
+        "xm26"
+      ],
+      "tags": [
+        "IAM ポリシー",
+        "条件キー",
+        "aws:RequestedRegion",
+        "ec2:InstanceType",
+        "SCP",
+        "Organizations",
+        "リージョン制限",
+        "Control Tower",
+        "データ主権"
+      ]
     },
     {
       "id": "p245", "field": "storage", "service": "S3（レプリケーション）", "date": "2026-11-07",
