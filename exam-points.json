@@ -4203,6 +4203,37 @@
         "CloudFront",
         "レイテンシ"
       ]
+    },
+    {
+      "id": "p296",
+      "field": "compute",
+      "service": "CI/CD・デプロイ",
+      "date": "2026-11-17",
+      "title": "Auto Scaling の EC2 に CodeDeploy で配るなら「CodeDeploy エージェント入りの AMI」＋「デプロイグループに Auto Scaling グループを指定」。増えた EC2 にも自動で配られる",
+      "power": "エージェントは AMI に入れておく。宛先は1台ずつではなくグループごと",
+      "summary": "CodeDeploy エージェントを入れた AMI を起動テンプレートに使い、CodeDeploy のデプロイグループに Auto Scaling グループそのものを指定する。新しく起動した EC2 にも、最新のアプリが自動でデプロイされる。毎回 AMI を作り直す方法は、CodeDeploy を使うという要件から外れる。",
+      "body": [
+        "CodeDeploy で EC2 にデプロイするには、各 EC2 に CodeDeploy エージェントが必要。AMI に最初から入れておけば、Auto Scaling で増えた EC2 にも必ず入っている。",
+        "デプロイグループに Auto Scaling グループを指定すると、そのグループの EC2 がまとめて対象になる。スケールアウトで起動した EC2 にも、最新のリビジョンが自動でデプロイされる。",
+        "既存の EC2 にはエージェントがないので、インスタンスリフレッシュなどで新しい AMI の EC2 に入れ替える。",
+        "ワナ：EventBridge ＋ Lambda で起動のたびにエージェントを入れて登録する案。動くが、自分で作る部品が多い。",
+        "ワナ：デプロイ中に Auto Scaling を止める案。手作業が増え、止めている間は需要の変化に対応できない。",
+        "ワナ：アプリ入りの AMI を毎回作ってインスタンスリフレッシュする案（イミュータブルデプロイ）。方法としてはありだが、問題が「CodeDeploy エージェントを入れてデプロイグループに関連付ける」前提なので外れる。"
+      ],
+      "cards": [
+        "dv03",
+        "dv05",
+        "dv02",
+        "xc19",
+        "xd31"
+      ],
+      "tags": [
+        "CodeDeploy",
+        "Auto Scaling",
+        "AMI",
+        "CodeDeploy エージェント",
+        "CI/CD"
+      ]
     }
   ],
   "terms": [
