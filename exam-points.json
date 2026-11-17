@@ -1601,7 +1601,10 @@
       "tags": ["S3 レプリケーション", "CRR", "CloudFront", "オリジングループ", "マルチリージョン"]
     },
     {
-      "id": "p068", "field": "compute", "service": "EC2・Auto Scaling", "date": "2026-10-18",
+      "id": "p068",
+      "field": "compute",
+      "service": "EC2・Auto Scaling",
+      "date": "2026-10-18",
       "title": "急なアクセス増に耐える3層 Web アプリの定番は「ALB ＋ 複数 AZ の Auto Scaling ＋ Aurora Multi-AZ」",
       "power": "入口は ALB、店員は Auto Scaling で増やし、金庫（DB）は Aurora で二重化",
       "summary": "3層 Web アプリの定番：ALB ＋ 複数 AZ の Auto Scaling ＋ Aurora Multi-AZ、入口は Route 53 のエイリアスレコード。",
@@ -1611,10 +1614,29 @@
         "データベース：MySQL なら Aurora MySQL を Multi-AZ で使います。別の AZ に控えがあり、障害時は自動で切り替わります。読み取りが多ければレプリカを足して負荷を分けられます。",
         "入口の名前：Route 53 のエイリアスレコードで、会社のドメインを ALB に向けます。",
         "CloudFormation でまとめて作ると、同じ構成を何度でも同じように作れます。DB には削除ポリシー（DeletionPolicy: Retain など）を付けて、スタックを消しても DB が一緒に消えないようにします。",
-        "スポットインスタンスだけで動かす、DB が1台だけ（Multi-AZ なし）といった構成は、高可用性の要件を満たしません。"
+        "スポットインスタンスだけで動かす、DB が1台だけ（Multi-AZ なし）といった構成は、高可用性の要件を満たしません。",
+        "【EC2 1台に アプリ＋MySQL が同居している（2026-11-17）】コードをほぼ変えずに高可用性・スケール・パッチの自動化 → SSM Agent 入りの AMI ＋ 小さめのインスタンスで Auto Scaling ＋ ALB、DB は同じ MySQL 系の Aurora MySQL へ。パッチは Systems Manager（Patch Manager）で自動化。",
+        "DB は「同じ種類」に移すのがコード変更最小：MySQL → Aurora MySQL / RDS for MySQL。DynamoDB（NoSQL）、DocumentDB（MongoDB 互換）、Neptune（グラフ）はアプリの作り直しが必要。",
+        "ワナ：Graviton（Arm）に替えて「既存の AMI」を使う案。今の AMI は x86 用なので Arm では起動できない。Lambda やコンテナに作り直す案も、開発の手間が大きい。"
       ],
-      "cards": ["xn07", "co06", "db01", "c04"],
-      "tags": ["ALB", "Auto Scaling", "Aurora", "Multi-AZ", "CloudFormation", "3層アーキテクチャ"]
+      "cards": [
+        "xn07",
+        "co06",
+        "db01",
+        "c04",
+        "mg18"
+      ],
+      "tags": [
+        "ALB",
+        "Auto Scaling",
+        "Aurora",
+        "Multi-AZ",
+        "CloudFormation",
+        "3層アーキテクチャ",
+        "リプラットフォーム",
+        "Aurora MySQL",
+        "Systems Manager"
+      ]
     },
     {
       "id": "p145", "field": "strategy", "service": "可用性・構成の見方", "date": "2026-10-18",
