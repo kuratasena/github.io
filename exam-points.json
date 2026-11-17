@@ -4438,6 +4438,37 @@
         "ACL",
         "情報漏えい"
       ]
+    },
+    {
+      "id": "p300",
+      "field": "integration",
+      "service": "Step Functions",
+      "date": "2026-11-17",
+      "title": "Step Functions のどこで失敗しても即通知するなら「全ステートに Catch（States.ALL）→ NotifyFailure タスク → SNS（メール・SMS）」",
+      "power": "どんな失敗も States.ALL で拾って、SNS で叫ぶ",
+      "summary": "各 Task・Map・Parallel ステートに Catch を付け、ErrorEquals を States.ALL にしてすべてのエラーをつかまえる。行き先を NotifyFailure タスクにして、エラーの詳細を SNS トピックに送り、メールや SMS でチームに届ける。States.Runtime だけでは一部のエラーしか拾えず、1日1回のレポートやログへの書き込みでは即時の通知にならない。",
+      "body": [
+        "Catch：ステップが失敗したら、指定した次のステップ（NotifyFailure）へ進ませる。全体が黙って止まるのを防ぐ。",
+        "States.ALL：どんな種類のエラーでもつかまえる。States.Runtime や States.Timeout は、その種類のエラーだけ。",
+        "NotifyFailure タスク：Step Functions から SNS に直接送れる（サービス統合）。Catch がエラー内容を入力として渡すので、詳細を通知に含められる。",
+        "SNS トピック：メール、SMS などのサブスクリプションで、チームに即時に届ける。",
+        "ワナ：EventBridge Scheduler で1日1回まとめて報告（即時ではない）。CloudWatch Logs に書くだけ（記録であって通知ではない）。States.Runtime だけ（すべてのエラーを拾えない）。",
+        "補足：一時的な失敗なら、Catch の前に Retry で何回かやり直す設定も入れられる。"
+      ],
+      "cards": [
+        "i07",
+        "xi06",
+        "i05",
+        "co08",
+        "mg04"
+      ],
+      "tags": [
+        "Step Functions",
+        "Catch",
+        "States.ALL",
+        "SNS",
+        "エラー通知"
+      ]
     }
   ],
   "terms": [
@@ -4927,6 +4958,7 @@
     {"id": "xm27", "term": "アカウントを別の組織に移す API（Remove / Invite / Accept）", "cat": "mgmt", "desc": "別の組織へは直接移せない。①元の組織の管理アカウントで RemoveAccountFromOrganization（メンバー側で LeaveOrganization も可） ②新しい組織の管理アカウントで InviteAccountToOrganization ③メンバーアカウントが招待を承諾。MoveAccount は同じ組織の中で OU を移すだけ。"},
     {"id": "xn62", "term": "Lambda@Edge の4つのタイミング（ビューア／オリジン × リクエスト／レスポンス）", "cat": "network", "desc": "ビューアリクエスト：利用者から CloudFront に届いた直後。オリジンリクエスト：キャッシュになくてオリジンへ取りに行く前。オリジンレスポンス：オリジンから返ってきてキャッシュに入れる前。ビューアレスポンス：利用者に返す直前。どれも「配るとき」に動くので、アップロード時のチェックには使わない。"},
     {"id": "xs40", "term": "S3 ブロックパブリックアクセス（4つの設定）", "cat": "storage", "desc": "S3 の公開を一括で止めるスイッチ。BlockPublicAcls（公開の ACL を新しく付けさせない）、IgnorePublicAcls（今ある公開の ACL を無視）、BlockPublicPolicy（公開のバケットポリシーを付けさせない）、RestrictPublicBuckets（公開のポリシーがあっても外部から使えなくする）。4つ全部オンで、今も今後も公開されない。アカウント単位でもかけられる。"},
-    {"id": "xs41", "term": "S3 の署名付き URL", "cat": "storage", "desc": "URL を作った人の権限で、決まった時間だけファイルをダウンロード（またはアップロード）できる URL。認証付きのアクセスなので、ブロックパブリックアクセスをオンにしても使える。"}
+    {"id": "xs41", "term": "S3 の署名付き URL", "cat": "storage", "desc": "URL を作った人の権限で、決まった時間だけファイルをダウンロード（またはアップロード）できる URL。認証付きのアクセスなので、ブロックパブリックアクセスをオンにしても使える。"},
+    {"id": "xi06", "term": "Step Functions のエラー処理（Retry / Catch / States.ALL）", "cat": "integration", "desc": "Retry は失敗したステップを決めた回数やり直す設定。Catch は失敗したときに別のステップへ進ませる設定。ErrorEquals に States.ALL と書くと、どんな種類のエラーでもつかまえる。States.Runtime や States.Timeout など特定の名前だと、その種類だけ。"}
   ]
 }
