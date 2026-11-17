@@ -1854,7 +1854,10 @@
       "tags": ["API Gateway", "Lambda", "Webhook", "Lambda 関数 URL", "App Runner", "サーバーレス"]
     },
     {
-      "id": "p161", "field": "migration", "service": "移行計画（Discovery・Migration Hub）", "date": "2026-10-20",
+      "id": "p161",
+      "field": "migration",
+      "service": "移行計画（Discovery・Migration Hub）",
+      "date": "2026-10-20",
       "title": "集めたサーバー情報を SQL で分析したいなら「Discovery Agent ＋ データ探索 ＋ Athena」",
       "power": "集めるのは Agent、ためるのは S3、SQL で聞くのは Athena",
       "summary": "移行前にプロセスやネットワークまで集めるなら Discovery Agent。Migration Hub でデータ探索をオンにすると S3 にたまり、Athena の SQL（事前定義クエリあり）でそのまま分析できる。",
@@ -1863,10 +1866,26 @@
         "Migration Hub で「データ探索」をオンにすると、エージェントが集めた情報が自動で S3 にたまり、Athena から SQL で検索できるようになります。よく使う検索は事前定義クエリとして最初から用意されています。",
         "Athena はサーバー不要で、標準の SQL が使えます。「慣れた SQL で分析したい」という要件にそのまま合います。",
         "Agentless Collector（エージェントなし）は入れる手間がない代わりに、実行中のプロセスなど、サーバーの中の細かい情報は取れません。S3 Select も1つのファイル用で、たくさんのデータの分析には向きません。",
-        "自作スクリプトで集めて CLI でアップロードする方法や、手で足りない情報を書き足す方法は、手間とミスが増えます。Migration Hub の画面は、SQL で自由に分析する場所ではありません。"
+        "自作スクリプトで集めて CLI でアップロードする方法や、手で足りない情報を書き足す方法は、手間とミスが増えます。Migration Hub の画面は、SQL で自由に分析する場所ではありません。",
+        "【もう一度出た：特定のポートでつながるサーバーを探す（2026-11-17）】Discovery Agent をすでに入れているなら、そのデータで Migration Hub のネットワーク依存関係グラフを見て、Athena（データ探索）でポート 8765 の通信をクエリ。結果から移行グループ（アプリケーション）を作り、まとめて移す。",
+        "ワナ：CloudWatch エージェントを追加で入れる。Discovery Agent がすでに通信（どのサーバーのどのポートとつながっているか）を集めているので、二度手間。",
+        "ワナ：Network Access Analyzer。AWS の VPC の中の「届く道があるか」を調べる道具で、オンプレのサーバー同士の実際の通信は分からない。",
+        "ワナ：MGN で先に AWS に複製してテストして確かめる。時間とお金がかかる。依存関係の調査は移す前に Discovery のデータで行う。"
       ],
-      "cards": ["xg02", "xg03", "mi01", "mi05", "a01"],
-      "tags": ["Application Discovery Service", "Discovery Agent", "Migration Hub", "Athena", "データ探索"]
+      "cards": [
+        "xg02",
+        "xg03",
+        "mi01",
+        "mi05",
+        "a01"
+      ],
+      "tags": [
+        "Application Discovery Service",
+        "Discovery Agent",
+        "Migration Hub",
+        "Athena",
+        "データ探索"
+      ]
     },
     {
       "id": "p162", "field": "network", "service": "VPC・NAT ゲートウェイ", "date": "2026-10-21",
