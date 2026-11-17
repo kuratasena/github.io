@@ -596,17 +596,38 @@
       ]
     },
     {
-      "id": "p081", "field": "analytics", "service": "Athena", "date": "2026-10-09",
+      "id": "p081",
+      "field": "analytics",
+      "service": "Athena",
+      "date": "2026-10-09",
       "title": "S3 のデータを検索するなら、まず Athena",
       "power": "Select は1ファイル用のピンセット",
-      "summary": "S3 のデータを横断して検索するなら Athena ＋ Glue Data Catalog。S3 Select は1ファイル用。",
+      "summary": "S3 のデータを横断して検索するなら Athena ＋ Glue Data Catalog。S3 Select は1ファイル用。 ずっと動いている EMR や Redshift でたまに分析しているなら、データを S3 に移して Athena にすると、クエリした分だけの料金で済む。",
       "body": [
         "Athena は、S3 に置いたデータを SQL で検索できるサービスです。Glue データカタログ（データの目次）と組み合わせて使います。サーバー不要で、使った分だけの料金です。",
         "S3 Select は、1つのファイルの中から必要な部分だけを取り出す機能です。たくさんのファイルをまとめて分析するのには向きません。",
-        "Redshift は大規模な分析用のデータベースで、常に料金がかかります。小さな要件にはやりすぎです。"
+        "Redshift は大規模な分析用のデータベースで、常に料金がかかります。小さな要件にはやりすぎです。",
+        "【ずっと動く EMR をやめる問題（2026-11-17）】データは数 MB〜数十 GB、1回15分未満、夜中だけ動く、コストを下げたい → データを S3 に移し、Glue データカタログ＋Athena。サーバーがないので、使っていない昼間は料金ゼロ。古いデータはライフサイクルで Glacier へ。",
+        "見分け方：「ずっと動かしている」＋「たまにしか使わない」＋「データは小〜中」→ サーバーレス（Athena）。「ペタバイト級」「複雑な ETL や ML」→ EMR。「毎日大量の BI・決まった集計」→ Redshift。",
+        "ワナ：EMR の動的スケーリング。ノードを増減しても、プライマリなどクラスターはずっと動いているので、使わない時間の料金が残る。",
+        "ワナ：Redshift（Spectrum を含む）。クラスターを持ち続けるので、夜中だけの分析にはコストが高い。",
+        "補足：Athena では Spark も動かせる（Athena for Apache Spark）。EMR Serverless も選択肢になる。"
       ],
-      "cards": ["a01", "a05", "xa02"],
-      "tags": ["Athena", "Glue", "S3 Select"]
+      "cards": [
+        "a01",
+        "a05",
+        "xa02",
+        "a04",
+        "db09"
+      ],
+      "tags": [
+        "Athena",
+        "Glue",
+        "S3 Select",
+        "サーバーレス分析",
+        "EMR からの移行",
+        "コスト"
+      ]
     },
     {
       "id": "p082", "field": "analytics", "service": "IoT", "date": "2026-10-09",
