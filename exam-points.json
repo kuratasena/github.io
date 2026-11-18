@@ -1745,7 +1745,10 @@
       "tags": ["ACM", "SSL/TLS 証明書", "SAN", "CloudFront", "us-east-1"]
     },
     {
-      "id": "p131", "field": "network", "service": "CloudFront", "date": "2026-10-15",
+      "id": "p131",
+      "field": "network",
+      "service": "CloudFront",
+      "date": "2026-10-15",
       "title": "複数ドメインのリダイレクトサービスは「入口・頭脳・鍵」の3点セット",
       "power": "入口は CloudFront、頭脳は Lambda、鍵は ACM",
       "summary": "複数ドメインのリダイレクトは、入口 CloudFront、頭脳 Lambda@Edge、鍵 ACM（SAN）の3点セット。",
@@ -1755,10 +1758,24 @@
         "頭脳（Lambda 関数）：JSON の対応表を見て、ドメインごとの行き先 URL を返します。CloudFront に Lambda@Edge としてくっつけて動かすので、入口とセットです。",
         "鍵（ACM の証明書）：SAN に全ドメインを書いた1枚の証明書で、すべてのドメインを HTTPS にします。無料で、自動で更新されます。",
         "3つのどれか1つでも欠けると、「ドメインごとのリダイレクト」「HTTP と HTTPS」「複数ドメイン」「最小の運用」のどれかが抜けます。",
-        "サーバーが1台もないので、OS の更新や台数の調整がいらず、アクセスがなければ料金もほぼかかりません。"
+        "サーバーが1台もないので、OS の更新や台数の調整がいらず、アクセスがなければ料金もほぼかかりません。",
+        "3-28 は3回とも✕で、2周目も3周目も ALB（B）を選んだ。ALB は入口だけで、後ろに動かす相手（EC2 や Lambda）を別に用意する必要があり、入口が CloudFront（E）と2つになってしまう。役目がかぶる選択肢は1つだけ。ALB のリスナールールでもリダイレクトはできるが、ドメインごとに手でルールを書くことになり、JSON の対応表は使えない。",
+        "E（CloudFront＋Lambda@Edge をデプロイ）と C（Lambda 関数を作る）は別の部品：C で「何をするか（JSON を見て行き先を返す）」を書いた関数を作り、E でそれを CloudFront に Lambda@Edge としてくっつける。API Gateway（D）は HTTPS しか受けられないので「HTTP と HTTPS」の要件で消える。"
       ],
-      "cards": ["xn12", "nw01", "sc03"],
-      "tags": ["CloudFront", "Lambda@Edge", "ACM", "Route 53", "リダイレクト"]
+      "cards": [
+        "xn12",
+        "nw01",
+        "sc03",
+        "xn07",
+        "xn20"
+      ],
+      "tags": [
+        "CloudFront",
+        "Lambda@Edge",
+        "ACM",
+        "Route 53",
+        "リダイレクト"
+      ]
     },
     {
       "id": "p105", "field": "cost", "service": "請求・コスト管理", "date": "2026-10-18",
