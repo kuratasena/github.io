@@ -3007,7 +3007,10 @@
       ]
     },
     {
-      "id": "p108", "field": "cost", "service": "Systems Manager", "date": "2026-10-25",
+      "id": "p108",
+      "field": "cost",
+      "service": "Systems Manager",
+      "date": "2026-10-25",
       "title": "SSH キーなしで、止めずに EC2 の中のデータを S3 に送るなら「IAM ロール ＋ Session Manager」",
       "power": "鍵（SSH キー）がなくても、管理人の通用口（Session Manager）から入れる",
       "summary": "SSH キーがなくても、IAM ロールと Session Manager があれば EC2 に入ってコマンドを実行できる。S3 書き込み権限のロールを付け、Session Manager から S3 にコピーすれば、止めずに自分の S3 バケットへバックアップできる。EBS スナップショットは自分の S3 バケットには入らない。",
@@ -3017,10 +3020,24 @@
         "Session Manager で入って、aws s3 cp などでデータをコピーすれば、アプリを止めずに自分の S3 バケットにバックアップできます。",
         "EBS スナップショット（DLM で自動化も可能）は、AWS が裏で S3 に保存していますが、自分の S3 バケットには入らず、ファイルとして取り出せません。「S3 バケットに保存」という要件には合いません。",
         "AMI を作るとき、ふつうは再起動が入ります。再起動なしにもできますが、新しいインスタンスを立てる必要があり、手順が多くなります。",
-        "注意：この問題は出典によって正解が C（DLM のスナップショット）とされていることもありますが、「S3 バケットにバックアップ」と書かれているなら、Session Manager でコピーする A の方が要件に合います。"
+        "注意：この問題は出典によって正解が C（DLM のスナップショット）とされていることもありますが、「S3 バケットにバックアップ」と書かれているなら、Session Manager でコピーする A の方が要件に合います。",
+        "3-62（2周目は C で○、3周目は A で問題集上は✕）：この問題集の正解は C のまま。本番で同じ形が出たら「S3 バケットに」「SSH キーなし」「止めない」がそろうなら A（IAM ロール＋Session Manager でコピー）を選ぶ。選択肢に Session Manager がなく、「バックアップを自動化」「スナップショット」と書かれていれば DLM。"
       ],
-      "cards": ["xm10", "mg18", "xt13", "xm11", "xp16", "xm16"],
-      "tags": ["Session Manager", "Systems Manager", "EBS スナップショット", "DLM", "IAM ロール"]
+      "cards": [
+        "xm10",
+        "mg18",
+        "xt13",
+        "xm11",
+        "xp16",
+        "xm16"
+      ],
+      "tags": [
+        "Session Manager",
+        "Systems Manager",
+        "EBS スナップショット",
+        "DLM",
+        "IAM ロール"
+      ]
     },
     {
       "id": "p180", "field": "security", "service": "IAM・クロスアカウント", "date": "2026-10-25",
