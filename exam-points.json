@@ -3055,7 +3055,10 @@
       "tags": ["S3", "クロスアカウント", "バケットポリシー", "IAM", "aws s3 sync"]
     },
     {
-      "id": "p152", "field": "org", "service": "Control Tower", "date": "2026-10-25",
+      "id": "p152",
+      "field": "org",
+      "service": "Control Tower",
+      "date": "2026-10-25",
       "title": "Control Tower で「暗号化されていない RDS を見つけたい」なら、強く推奨のガードレールを OU に有効化",
       "power": "見つけるのは Config 製の検出ガードレール。用意済みの棚（強く推奨）から選んで OU に貼る",
       "summary": "Control Tower のガードレールは、必須（自動でオン）、強く推奨、選択的に分かれる。RDS の保存時の暗号化を検出するものは強く推奨の検出ガードレールで、中身は AWS Config ルール。Control Tower から OU に有効化する。SCP は止める仕組みで、見つける仕組みではない。",
@@ -3067,10 +3070,24 @@
         "AWS Config で直接ルールを作っても、Control Tower の「必須ガードレール」にはなりません。ガードレールは Control Tower から管理します。",
         "SCP は操作を「止める」予防の仕組みで、すでにある暗号化されていない RDS を「見つける」ことはできません。",
         "Control Tower は最初の準備だけでなく、その後もずっと使う：新しいアカウントを決まった設定で作る（Account Factory）、ガードレールの追加・外し、ダッシュボードで違反の確認、誰かが勝手に設定を変えた「ずれ（ドリフト）」の検出、ランディングゾーンの更新など。",
-        "AWS Config との使い分け：Config は「設定の記録と、ルールでのチェック」をする部品。Control Tower の検出ガードレールの中身も Config。Control Tower を使っているなら、用意済みのルールは Control Tower のガードレールで OU ごとに付ける。用意されていない独自のルール、設定の変更履歴を見たいとき、違反を自動で直したいときは Config を直接使う。"
+        "AWS Config との使い分け：Config は「設定の記録と、ルールでのチェック」をする部品。Control Tower の検出ガードレールの中身も Config。Control Tower を使っているなら、用意済みのルールは Control Tower のガードレールで OU ごとに付ける。用意されていない独自のルール、設定の変更履歴を見たいとき、違反を自動で直したいときは Config を直接使う。",
+        "3-64 は1周目○のあと、2周目・3周目とも C（Config で新しい必須ガードレールを作る）を選んで✕。必須ガードレールは AWS が決めて最初から全部に付いているもので、自分で作ったり増やしたりはできない。Control Tower を使っているなら、まず用意済みのガードレール（強く推奨・選択可能）から探して OU で有効にする。「検出」は Config 由来の検出型、「防止」は SCP 由来の予防型。"
       ],
-      "cards": ["xm13", "mg08", "xm14", "mg07", "c15", "xm15"],
-      "tags": ["Control Tower", "ガードレール", "AWS Config", "RDS", "暗号化"]
+      "cards": [
+        "xm13",
+        "mg08",
+        "xm14",
+        "mg07",
+        "c15",
+        "xm15"
+      ],
+      "tags": [
+        "Control Tower",
+        "ガードレール",
+        "AWS Config",
+        "RDS",
+        "暗号化"
+      ]
     },
     {
       "id": "p109", "field": "cost", "service": "Systems Manager", "date": "2026-10-25",
