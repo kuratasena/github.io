@@ -1174,7 +1174,10 @@
       ]
     },
     {
-      "id": "p103", "field": "cost", "service": "Systems Manager", "date": "2026-10-13",
+      "id": "p103",
+      "field": "cost",
+      "service": "Systems Manager",
+      "date": "2026-10-13",
       "title": "パッチ管理とそのレポートは Systems Manager だけで完結する",
       "power": "サーバーのお世話は SSM におまかせ。オンプレも EC2 も同じ名簿に載る",
       "summary": "パッチ適用とそのレポートは Systems Manager（Patch Manager）だけで完結。オンプレも EC2 も同じように管理できる。",
@@ -1182,10 +1185,21 @@
         "Systems Manager（SSM）は、EC2 とオンプレミスのサーバーをまとめて管理するサービスです。サーバーに SSM エージェントを入れると、オンプレミスのサーバーも一緒に管理できます。",
         "パッチ（修正プログラム）の適用は、SSM の Patch Manager で自動化できます。どのサーバーにパッチが当たっているかは、SSM の Compliance 機能で1つのレポートにまとめて見られます。",
         "OpsWorks は Chef や Puppet を使う構成管理サービスで、パッチ管理用ではありません（現在は提供終了）。選択肢に出てきたら、まず外します。",
-        "Inspector は脆弱性（セキュリティの弱点）を見つけるサービスで、パッチ適用の状況をまとめるものではありません。X-Ray はアプリの処理の流れを追うサービスで、パッチとは関係ありません。"
+        "Inspector は脆弱性（セキュリティの弱点）を見つけるサービスで、パッチ適用の状況をまとめるものではありません。X-Ray はアプリの処理の流れを追うサービスで、パッチとは関係ありません。",
+        "役割の見分け方：Inspector は「健康診断（弱点を見つける）」、Patch Manager は「治療（パッチを当てる）と治療記録（コンプライアンス）」。「パッチを管理する」「パッチ状態のレポート」は Systems Manager（3-13。2周目は Inspector＋QuickSight を選んで✕）。",
+        "オンプレのサーバーは、ハイブリッドアクティベーションで登録すると SSM のマネージドノードになり、EC2 と同じ名簿でパッチ管理できる。"
       ],
-      "cards": ["xm03", "mg18", "xm10"],
-      "tags": ["Systems Manager", "Patch Manager", "パッチ管理"]
+      "cards": [
+        "xm03",
+        "mg18",
+        "xm10",
+        "xm31"
+      ],
+      "tags": [
+        "Systems Manager",
+        "Patch Manager",
+        "パッチ管理"
+      ]
     },
     {
       "id": "p065", "field": "compute", "service": "EC2・Auto Scaling", "date": "2026-10-13",
@@ -6125,6 +6139,7 @@
     {"id": "xd37", "term": "Aurora Backtrack", "cat": "database", "desc": "Aurora MySQL を、同じクラスターのまま数分〜数時間前の状態に巻き戻す機能。間違って消したデータを戻すためのもので、別リージョンへの DR には使えない。"},
     {"id": "xt27", "term": "S3 マルチリージョンアクセスポイント", "cat": "storage", "desc": "複数リージョンの S3 バケットを1つの入口にまとめ、利用者を一番近いバケットへ自動で振り分ける仕組み。バケット同士は双方向のクロスリージョンレプリケーションで同期する。"},
     {"id": "xm30", "term": "CloudFormation の DeletionPolicy とスタックポリシー", "cat": "mgmt", "desc": "DeletionPolicy はスタックを消したときにリソースを残すか（Retain）、スナップショットを取るか（Snapshot）を決める。スタックポリシーは「更新」で書き換えられないように守るもので、削除には効かない。"},
+    {"id": "xm31", "term": "Systems Manager のハイブリッドアクティベーション", "cat": "mgmt", "desc": "オンプレミスのサーバーや他社クラウドの VM を Systems Manager に登録する仕組み。アクティベーションコードと ID を発行し、サーバーに SSM エージェントを入れて登録すると、EC2 と同じように Patch Manager や Run Command、Session Manager で管理できる。"},
     {"id": "xa09", "term": "Kinesis の拡張ファンアウト（EFO）と KPL", "cat": "analytics", "desc": "拡張ファンアウトは、読む側（コンシューマー）ごとに専用の読み取り枠を用意する機能。読む側が多くて詰まるときに使う。KPL は書く側（プロデューサー）のライブラリなので、読む側の詰まりには効かない。"},
     {"id": "xn68", "term": "API Gateway のゲートウェイレスポンス", "cat": "frontend", "desc": "認証失敗（401/403）やスロットリング（429）など、Lambda に届く前に API Gateway 自身が返すエラーの中身やヘッダーを変える機能。正常なレスポンスを書き換えたり、条件で分岐したりはできない。"},
     {"id": "xn69", "term": "ALB の 5xx エラー（502 / 503 / 504）", "cat": "network", "desc": "502 Bad Gateway：サーバーから返事は来たが壊れていた、または途中で接続を切られた（アプリが落ちた、サーバーのキープアライブ時間が ALB のアイドルタイムアウトより短い、Lambda の返し方が違う）。503 Service Unavailable：振り分け先の正常なサーバーが1台もない。504 Gateway Timeout：サーバーが時間内に返事をしない。ALB 自身のエラーは HTTPCode_ELB_5XX_Count、サーバーが返したエラーは HTTPCode_Target_5XX_Count で数える。"},
