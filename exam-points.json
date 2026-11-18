@@ -1544,7 +1544,10 @@
       "tags": ["解き方", "Storage Gateway"]
     },
     {
-      "id": "p126", "field": "network", "service": "ロードバランサー（ELB）", "date": "2026-10-13",
+      "id": "p126",
+      "field": "network",
+      "service": "ロードバランサー（ELB）",
+      "date": "2026-10-13",
       "title": "固定 IP ＋ TCP ＋ 複数 AZ なら「NLB に AZ ごとの Elastic IP」",
       "power": "固定の住所は、サーバーではなく受付（NLB）に付ける",
       "summary": "固定 IP ＋ TCP ＋ 複数 AZ なら、NLB に AZ ごとの Elastic IP を付ける。ALB は固定 IP を付けられない。",
@@ -1554,10 +1557,23 @@
         "Elastic IP をサーバー（EC2）に直接付けると、そのサーバーが壊れたときに IP アドレスごと使えなくなります。高可用性になりません。",
         "ALB（アプリケーションロードバランサー）は HTTP / HTTPS 用で、固定 IP アドレスも付けられません。TCP や固定 IP が出てきたら NLB です。",
         "ECS のタスクやクラスターの IP アドレスは、起動するたびに変わるので、許可リストには使えません。",
-        "独自のドメイン名（xx.salesplan.com など）は、Route 53 の A レコード（エイリアス）で NLB の DNS 名を指します。"
+        "独自のドメイン名（xx.salesplan.com など）は、Route 53 の A レコード（エイリアス）で NLB の DNS 名を指します。",
+        "A と C で迷ったら「EIP をどこに付けるか」と「お客さんが入ってくる道」を見る。A は EIP をサーバーに付けて、その IP を DNS と許可リストに渡すので、お客さんは NLB を通らずサーバーに直接行く。NLB を作っても使われず、サーバーが落ちると止まる（3-24。2周目は B、3周目は A を選んで✕）。",
+        "A の「ネームサーバー（NS）レコード」は、ドメインの管理を別のネームサーバーに任せるためのレコードで、IP アドレスは入れられない。IP を返すのは A レコード、AWS のリソースを指すなら A レコードのエイリアス。"
       ],
-      "cards": ["xn08", "xn09", "nw03"],
-      "tags": ["NLB", "Elastic IP", "固定 IP", "許可リスト", "Route 53"]
+      "cards": [
+        "xn08",
+        "xn09",
+        "nw03",
+        "xn10"
+      ],
+      "tags": [
+        "NLB",
+        "Elastic IP",
+        "固定 IP",
+        "許可リスト",
+        "Route 53"
+      ]
     },
     {
       "id": "p127", "field": "network", "service": "Route 53", "date": "2026-10-13",
