@@ -2827,7 +2827,10 @@
       ]
     },
     {
-      "id": "p168", "field": "compute", "service": "Lambda・サーバーレス", "date": "2026-10-24",
+      "id": "p168",
+      "field": "compute",
+      "service": "Lambda・サーバーレス",
+      "date": "2026-10-24",
       "title": "Lambda のカナリアリリースは「新しいバージョンを発行 ＋ エイリアスの割合指定（routing-config）」",
       "power": "名札（エイリアス）の先を、新旧2つに割り振る",
       "summary": "Lambda のカナリアリリースは、新しいバージョンを発行し、エイリアスを update-alias の routing-config で「新しい版に10%」のように割り振る。割合の指定は関数の設定ではなくエイリアス。CodeDeploy の OneAtATime は EC2 向けでカナリアではない。",
@@ -2836,10 +2839,23 @@
         "新しいバージョンを発行し、エイリアスを update-alias の routing-config で「旧バージョン 90%、新バージョン 10%」のように設定すると、一部の利用者にだけ新しい版を出せます（カナリアリリース）。問題があっても影響は一部で済み、割合を戻せばすぐ元に戻せます。",
         "割合を指定できるのはエイリアスです。update-function-configuration（関数の設定変更）に routing-config というパラメータはありません。",
         "CodeDeploy の OneAtATime は、EC2 などのサーバーに1台ずつ入れていく設定で、Lambda のカナリアではありません。Lambda を CodeDeploy で段階的に出すなら、LambdaCanary10Percent5Minutes のような Lambda 用の設定を使います。",
-        "CloudFormation のスタックを丸ごと2つ作って Route 53 の重み付きルーティングで分ける方法も、似たことはできますが、管理するものが増えて手間がかかります。"
+        "CloudFormation のスタックを丸ごと2つ作って Route 53 の重み付きルーティングで分ける方法も、似たことはできますが、管理するものが増えて手間がかかります。",
+        "3-57 は1周目○のあと、2周目・3周目とも D（CodeDeploy の OneAtATime）を選んで✕。「CodeDeploy＝安全なリリース」の連想で選びやすい。OneAtATime は EC2・オンプレ向けの「1台ずつ入れ替える」設定で、Lambda には使えないし、割合で流すカナリアでもない。CodeDeploy で Lambda のカナリアをするなら LambdaCanary10Percent5Minutes のような名前になる。選択肢に「OneAtATime」と出たら、その時点で Lambda のカナリアではない。"
       ],
-      "cards": ["xp13", "xc07", "xp14", "dv03", "co08"],
-      "tags": ["Lambda", "エイリアス", "カナリアリリース", "CodeDeploy", "routing-config"]
+      "cards": [
+        "xp13",
+        "xc07",
+        "xp14",
+        "dv03",
+        "co08"
+      ],
+      "tags": [
+        "Lambda",
+        "エイリアス",
+        "カナリアリリース",
+        "CodeDeploy",
+        "routing-config"
+      ]
     },
     {
       "id": "p169",
