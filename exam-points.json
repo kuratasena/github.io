@@ -2916,7 +2916,7 @@
         "DataSync や Storage Gateway はファイルを運ぶ・共有する道具で、VM そのもの（OS や設定）を EC2 にはしてくれません。",
         "Systems Manager の登録や AWS Backup は、オンプレミスのサーバーを管理・バックアップするためのもので、VM を AMI に変換する手順にはなりません。",
         "台数が多い本格的な移行で、止める時間を短くしたいなら、Application Migration Service（MGN）で動かしたまま複製し続け、最後に切り替える方法がよく使われます。",
-        "3-59（3回連続○）の読み方：「ソフトウェアと設定を維持して VM を EC2 に」＝ VM を丸ごと（OS・アプリ・設定ごと）コピーしたい。ファイルだけ運ぶ道具（DataSync・Storage Gateway）や、バックアップの道具（Systems Manager＋AWS Backup はオンプレの VM のスナップショットを AMI にできない）は外れる。台数が多い・止める時間を最小に、なら MGN（p193）。"
+        "3-59（3回連続○）の読み方：「ソフトウェアと設定を維持して VM を EC2 に」＝ VM を丸ごと（OS・アプリ・設定ごと）コピーしたい。ファイルだけ運ぶ道具（DataSync・Storage Gateway）や、運用の道具（Systems Manager に登録しても VM を丸ごと EC2 にする機能はない）は外れる。台数が多い・止める時間を最小に、なら MGN（p193）。"
       ],
       "cards": [
         "xg05",
