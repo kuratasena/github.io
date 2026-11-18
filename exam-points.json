@@ -3090,7 +3090,10 @@
       ]
     },
     {
-      "id": "p109", "field": "cost", "service": "Systems Manager", "date": "2026-10-25",
+      "id": "p109",
+      "field": "cost",
+      "service": "Systems Manager",
+      "date": "2026-10-25",
       "title": "SSH をやめて、実行したコマンドも記録したいなら「Session Manager ＋ 22番ポートを閉じる」",
       "power": "玄関（22番）は閉めて、通用口（Session Manager）だけ使う。出入りは全部記録",
       "summary": "EC2 に AmazonSSMManagedInstanceCore 入りの IAM ロールを付け、セキュリティグループの22番を全部閉じて、Session Manager で入る。ポートも SSH キーもいらず、誰が何を実行したかを CloudWatch Logs や S3 に残せる。IP で絞る、Instance Connect にする、だけでは監査にならない。",
@@ -3100,10 +3103,23 @@
         "エンジニアは Session Manager のプラグインを入れ、start-session で EC2 に入ります。誰がいつ入ったかは IAM と CloudTrail で管理できます。",
         "セッションのログを CloudWatch Logs や S3 に送る設定をすれば、実行したコマンドを記録して監査できます。",
         "プライベートサブネットの EC2 が Systems Manager とやり取りするには、NAT ゲートウェイか、Systems Manager 用の VPC エンドポイントが必要です（今回は NAT ゲートウェイがあるので使えます）。",
-        "22番を開けたまま IP で絞る方法や、Config・Firewall Manager でルールを守らせる方法では、実行したコマンドの記録は残りません。EC2 Instance Connect は SSH キーの管理が楽になるだけで、22番は使うしコマンドの記録も残りません。"
+        "22番を開けたまま IP で絞る方法や、Config・Firewall Manager でルールを守らせる方法では、実行したコマンドの記録は残りません。EC2 Instance Connect は SSH キーの管理が楽になるだけで、22番は使うしコマンドの記録も残りません。",
+        "3-65 は3回とも✕（3周目は C の Firewall Manager）。要件は2つ：①SSH のセキュリティを強める ②実行したコマンドを監査する。②を満たせるのは Session Manager（セッションログを CloudWatch Logs・S3 へ）だけ。Firewall Manager や Config は「セキュリティグループのルール」を守らせる道具で、誰が何を打ったかは残らない。3-44 で覚えた Firewall Manager に引っぱられやすいので、要件の2つ目を必ず確かめる。"
       ],
-      "cards": ["xm10", "xm16", "xp17", "mg18", "sc08"],
-      "tags": ["Session Manager", "SSH", "監査", "IAM ロール", "セキュリティグループ"]
+      "cards": [
+        "xm10",
+        "xm16",
+        "xp17",
+        "mg18",
+        "sc08"
+      ],
+      "tags": [
+        "Session Manager",
+        "SSH",
+        "監査",
+        "IAM ロール",
+        "セキュリティグループ"
+      ]
     },
     {
       "id": "p185", "field": "cost", "service": "請求・コスト管理", "date": "2026-10-25",
