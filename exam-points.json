@@ -1604,7 +1604,10 @@
       "tags": ["Secrets Manager", "ローテーション", "Parameter Store", "CloudFormation", "RDS"]
     },
     {
-      "id": "p128", "field": "network", "service": "API Gateway", "date": "2026-10-15",
+      "id": "p128",
+      "field": "network",
+      "service": "API Gateway",
+      "date": "2026-10-15",
       "title": "API Gateway の REST API と HTTP API の違い",
       "power": "多機能の REST、安くて速い HTTP。DynamoDB に直結できるのは REST だけ",
       "summary": "DynamoDB に直結できるのは REST API。HTTP API は安くて速いが、直結できるサービスが限られる。",
@@ -1613,10 +1616,21 @@
         "REST API は機能が多い方です。DynamoDB など、ほぼすべての AWS サービスに Lambda を挟まず直接つなげます（AWS 統合）。API キーや使用量プラン、キャッシュも使えます。",
         "HTTP API は、機能を絞った代わりに安くて速い方です。直接つなげる AWS サービスは SQS、Step Functions、Kinesis、EventBridge などの一部だけで、DynamoDB には直接つなげません。",
         "HTTP API から DynamoDB を使うなら、間に Lambda を置いて、Lambda から DynamoDB を読み書きします。",
-        "「API Gateway → DynamoDB 直結」は REST、「API Gateway → Lambda → DynamoDB」は REST でも HTTP でも OK、と覚えます。"
+        "「API Gateway → DynamoDB 直結」は REST、「API Gateway → Lambda → DynamoDB」は REST でも HTTP でも OK、と覚えます。",
+        "スロットリングは REST API も HTTP API もできる（アカウント全体：既定で1秒1万回・バースト5千、ステージやルート・メソッドごとにも設定可）。REST API だけにあるのは「API キーごと（お客さんごと）」の上限で、使用量プランで決める。"
       ],
-      "cards": ["xn20", "fr02", "db04"],
-      "tags": ["API Gateway", "REST API", "HTTP API", "DynamoDB", "サーバーレス"]
+      "cards": [
+        "xn20",
+        "fr02",
+        "db04"
+      ],
+      "tags": [
+        "API Gateway",
+        "REST API",
+        "HTTP API",
+        "DynamoDB",
+        "サーバーレス"
+      ]
     },
     {
       "id": "p129", "field": "network", "service": "ロードバランサー（ELB）", "date": "2026-10-15",
