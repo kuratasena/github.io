@@ -2212,7 +2212,10 @@
       "tags": ["CloudFormation", "スタック", "スタックセット", "スタックインスタンス"]
     },
     {
-      "id": "p054", "field": "migration", "service": "移行計画（Discovery・Migration Hub）", "date": "2026-10-18",
+      "id": "p054",
+      "field": "migration",
+      "service": "移行計画（Discovery・Migration Hub）",
+      "date": "2026-10-18",
       "title": "移行前の調査は「Discovery Agent で集める → Migration Hub でまとめる・グループ分け・EC2 の推奨」",
       "power": "調べるのは Discovery、まとめて見積もるのは Migration Hub。Trusted Advisor は AWS に来てから",
       "summary": "移行前の調査は Discovery Agent で構成・性能・プロセス・通信先を集め、Migration Hub でグループ分けと EC2 の推奨。",
@@ -2222,10 +2225,22 @@
         "集めた情報は Migration Hub に集まります。Migration Hub では、サーバーを「このアプリに使っているサーバーたち」とグループにまとめて、移行の単位を決められます。",
         "Migration Hub は、集めた使用状況をもとに、ちょうどいい EC2 のインスタンスタイプと、その費用の見積もりも出してくれます（EC2 インスタンスの推奨）。",
         "Systems Manager Agent や Application Manager は、AWS に来た後のサーバーやアプリの運用・管理のためのもので、移行前の調査やグループ分けには使いません。",
-        "Trusted Advisor は、すでに AWS で動いているリソースを見てアドバイスするサービスです。オンプレミスのサーバーの情報を取り込んで、移行先を推奨する機能はありません。"
+        "Trusted Advisor は、すでに AWS で動いているリソースを見てアドバイスするサービスです。オンプレミスのサーバーの情報を取り込んで、移行先を推奨する機能はありません。",
+        "3-39 は3回とも✕で、2周目も3周目も A・D・F（Trusted Advisor）を選んだ。役目は「集める（A/B）・まとめる（C/D）・推奨する（E/F）」で1つずつ。推奨の2択は「まだオンプレにあるサーバー」が相手なので、AWS にあるものしか見ない Trusted Advisor は使えない。Migration Hub の EC2 推奨が正解。合言葉：移行の話は最初から最後まで Migration Hub。"
       ],
-      "cards": ["mi01", "mi05", "mg19", "xg03"],
-      "tags": ["Application Discovery Service", "Discovery Agent", "Migration Hub", "EC2 インスタンスの推奨", "移行計画"]
+      "cards": [
+        "mi01",
+        "mi05",
+        "mg19",
+        "xg03"
+      ],
+      "tags": [
+        "Application Discovery Service",
+        "Discovery Agent",
+        "Migration Hub",
+        "EC2 インスタンスの推奨",
+        "移行計画"
+      ]
     },
     {
       "id": "p055", "field": "migration", "service": "移行計画（Discovery・Migration Hub）", "date": "2026-10-18",
