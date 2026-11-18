@@ -862,17 +862,35 @@
       "tags": ["S3", "VPC エンドポイント", "NAT ゲートウェイ"]
     },
     {
-      "id": "p009", "field": "network", "service": "CloudFront", "date": "2026-10-13",
+      "id": "p009",
+      "field": "network",
+      "service": "CloudFront",
+      "date": "2026-10-13",
       "title": "ヘッダーを少し書き換えるだけなら CloudFront Functions",
       "power": "メモ書きの修正は CloudFront Functions、本格的な処理は Lambda@Edge",
-      "summary": "ヘッダーの書き換えなど軽い処理は CloudFront Functions、本格的な処理は Lambda@Edge。",
+      "summary": "ヘッダーの追加・削除・書き換えなど軽い処理は CloudFront Functions、外部への通信や本文の書き換えなど本格的な処理は Lambda@Edge。どちらでもできるなら軽くて安い CloudFront Functions が正解。",
       "body": [
         "CloudFront の入口と出口で、ヘッダーを足す・消す、URL を書き換える程度の軽い処理は CloudFront Functions で十分です。軽くて安く、設定も簡単です。",
         "Lambda@Edge は外部への通信や重い処理もできますが、そのぶん高く、設定も増えます。軽い処理には大げさです。",
-        "API Gateway の機能では、User-Agent（アクセスしてきた端末の種類）を見て処理を分けることはできません。"
+        "API Gateway の機能では、User-Agent（アクセスしてきた端末の種類）を見て処理を分けることはできません。",
+        "見分け方：CloudFront Functions が動くのはビューアリクエストとビューアレスポンスの2か所だけで、外部への通信はできず、1ミリ秒以内で終わる軽い処理向け。Lambda@Edge は4か所（ビューア／オリジン × リクエスト／レスポンス）で動き、外部 API・S3 の呼び出しやレスポンス本文の書き換えもできる。",
+        "ビューアレスポンスの関数には、元のリクエスト（User-Agent を含む）も渡される。だから「User-Agent を見てレスポンスのヘッダーを消す」は CloudFront Functions 1つでできる（3-7）。",
+        "「Lambda@Edge でもできる」選択肢は動くけれど、要件がヘッダー操作だけなら大げさ。両方動くときは、軽くて安い方を選ぶ（3-7 で Lambda@Edge を選んで✕）。",
+        "API Gateway のゲートウェイレスポンスは、認証エラーやスロットリングなど API Gateway 自身が返すエラーの見た目を変える機能で、正常なレスポンスには効かない。HTTP API のパラメータマッピングは決まったヘッダーを足す・消すだけで、User-Agent による条件分岐はできない。"
       ],
-      "cards": ["xn13", "xn12", "nw01"],
-      "tags": ["CloudFront Functions", "Lambda@Edge"]
+      "cards": [
+        "xn13",
+        "xn12",
+        "nw01",
+        "xn62",
+        "xa10"
+      ],
+      "tags": [
+        "CloudFront Functions",
+        "Lambda@Edge",
+        "User-Agent",
+        "API Gateway"
+      ]
     },
     {
       "id": "p120", "field": "network", "service": "Route 53", "date": "2026-10-13",
@@ -5978,6 +5996,7 @@
     {"id": "xt27", "term": "S3 マルチリージョンアクセスポイント", "cat": "storage", "desc": "複数リージョンの S3 バケットを1つの入口にまとめ、利用者を一番近いバケットへ自動で振り分ける仕組み。バケット同士は双方向のクロスリージョンレプリケーションで同期する。"},
     {"id": "xm30", "term": "CloudFormation の DeletionPolicy とスタックポリシー", "cat": "mgmt", "desc": "DeletionPolicy はスタックを消したときにリソースを残すか（Retain）、スナップショットを取るか（Snapshot）を決める。スタックポリシーは「更新」で書き換えられないように守るもので、削除には効かない。"},
     {"id": "xa09", "term": "Kinesis の拡張ファンアウト（EFO）と KPL", "cat": "analytics", "desc": "拡張ファンアウトは、読む側（コンシューマー）ごとに専用の読み取り枠を用意する機能。読む側が多くて詰まるときに使う。KPL は書く側（プロデューサー）のライブラリなので、読む側の詰まりには効かない。"},
+    {"id": "xa10", "term": "API Gateway のゲートウェイレスポンス", "cat": "analytics", "desc": "認証失敗（401/403）やスロットリング（429）など、Lambda に届く前に API Gateway 自身が返すエラーの中身やヘッダーを変える機能。正常なレスポンスを書き換えたり、条件で分岐したりはできない。"},
     {"id": "xd38", "term": "Babelfish for Aurora PostgreSQL", "cat": "database", "desc": "Aurora PostgreSQL が SQL Server の言葉（T-SQL）とつなぎ方を理解できるようにする機能。SQL Server 用のアプリをほとんど書き換えずに Aurora に移せる。"},
     {"id": "xi09", "term": "EventBridge Scheduler", "cat": "integration", "desc": "決まった時刻や間隔で、Lambda・Fargate のタスク・Step Functions などを起動する予約の仕組み。「8時間ごとに20分の処理」のような定期実行で使う。Step Functions だけでは定期起動はできない。"},
     {"id": "xd39", "term": "ElastiCache の AUTH と転送中の暗号化", "cat": "database", "desc": "AUTH はパスワード（トークン）がないと Redis につなげないようにする設定。転送中の暗号化は通信を TLS で守る設定。試験では「新しいクラスターを作って有効にし、データを移す」が正解になることが多い。"},
