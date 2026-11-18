@@ -1677,7 +1677,8 @@
         "HTTP API は、機能を絞った代わりに安くて速い方です。直接つなげる AWS サービスは SQS、Step Functions、Kinesis、EventBridge などの一部だけで、DynamoDB には直接つなげません。",
         "HTTP API から DynamoDB を使うなら、間に Lambda を置いて、Lambda から DynamoDB を読み書きします。",
         "「API Gateway → DynamoDB 直結」は REST、「API Gateway → Lambda → DynamoDB」は REST でも HTTP でも OK、と覚えます。",
-        "スロットリングは REST API も HTTP API もできる（アカウント全体：既定で1秒1万回・バースト5千、ステージやルート・メソッドごとにも設定可）。REST API だけにあるのは「API キーごと（お客さんごと）」の上限で、使用量プランで決める。"
+        "スロットリングは REST API も HTTP API もできる（アカウント全体：既定で1秒1万回・バースト5千、ステージやルート・メソッドごとにも設定可）。REST API だけにあるのは「API キーごと（お客さんごと）」の上限で、使用量プランで決める。",
+        "HTTP API が Lambda なしで直接つなげる AWS サービスは決まっていて（SQS、EventBridge、Kinesis Data Streams、Step Functions、AppConfig）、DynamoDB は入っていない。DynamoDB に直接つなぐなら REST API の AWS 統合、HTTP API なら間に Lambda（3-27。2周目・3周目とも✕。D の Global Accelerator も2回選んでいる。GA は DynamoDB や Lambda@Edge の前には置けない）。"
       ],
       "cards": [
         "xn20",
@@ -5716,6 +5717,7 @@
       "power": "最後の1つは、ほかの選択肢と役目がかぶっていないか確かめる",
       "summary": "複数選択の正答率は2周目でも36%。間違えた45問のうち32問は、1つだけ違う惜しいミス。最後の1つの選び方で大きく点が変わる。",
       "body": [
+        "複数選択には2種類ある。①「ステップの組み合わせはどれ？」→ 部品を並べて1つの仕組みを作る。②「要件を満たすソリューションはどれ？（2つ選択）」→ それぞれが1つで完結した答え（どちらを選んでも正解）。②では、選択肢同士が同じ役目でもよく、片方ずつ「これ1つで要件を全部満たす？」と確かめる（3-27：REST API → DynamoDB 直接 と HTTP API → Lambda → DynamoDB の2つが別々の正解）。",
         "流れの部品を順番に並べる：つかまえる → 渡す → 届ける（1-51 の Step Functions → SNS）、まとめる → つなぐ → 権限を配る（1-35）、外す → 招待 → 承諾（1-39）。足りない部品を探す。",
         "同じ役目の選択肢は、どちらか1つしか正解にならない。2つ選んでいないか確かめる。",
         "門と玄関のように、2か所に同じ設定が要るものがある：NACL とセキュリティグループ（1-29）、バケットポリシーと IAM（3-6）、キーポリシー（4-61）。",
