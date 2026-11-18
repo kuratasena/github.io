@@ -1647,7 +1647,8 @@
         "RDS などのデータベースには AWS が用意したローテーション用の Lambda があるので、自分で一から書く必要はありません。",
         "Systems Manager Parameter Store の SecureString も暗号化して保管できますが、自動ローテーションの機能はありません。「Parameter Store の RotationSchedule」というリソースは存在しません。",
         "EventBridge で Lambda を定期的に起動してローテーションする方法も動きますが、Secrets Manager の標準機能があるのに自作するので、運用の手間が増えます。",
-        "CloudFormation で書くときの部品（3-26、2周目・3周目○）：AWS::SecretsManager::Secret（GenerateSecretString でランダムなパスワードを作る）＋ AWS::SecretsManager::RotationSchedule（ローテーションの間隔と Lambda を指定）。EventBridge で Lambda を定期実行するのは、組み込みのスケジュールがあるのに手作りする選択肢なので✕。「Parameter Store の RotationSchedule」は存在しない。"
+        "CloudFormation で書くときの部品（3-26、2周目・3周目○）：AWS::SecretsManager::Secret（GenerateSecretString でランダムなパスワードを作る）＋ AWS::SecretsManager::RotationSchedule（ローテーションの間隔と Lambda を指定）。EventBridge で Lambda を定期実行するのは、組み込みのスケジュールがあるのに手作りする選択肢なので✕。「Parameter Store の RotationSchedule」は存在しない。",
+        "「自動ローテーションなのに Lambda？」：Secrets Manager が受け持つのは「いつ変えるか」（スケジュール）で、実際に変える作業（新しいパスワードを作る → DB 側を書き換える → 試しにログイン → 切り替える）は Lambda がする。RDS 用の Lambda は AWS が用意してくれる（CloudFormation なら HostedRotationLambda で自動作成）。A と C はどちらも Lambda を作るので、違いは「きっかけ」だけ。"
       ],
       "cards": [
         "sc17",
