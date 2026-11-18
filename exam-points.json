@@ -2429,7 +2429,10 @@
       ]
     },
     {
-      "id": "p160", "field": "compute", "service": "Lambda・サーバーレス", "date": "2026-10-20",
+      "id": "p160",
+      "field": "compute",
+      "service": "Lambda・サーバーレス",
+      "date": "2026-10-20",
       "title": "Webhook の受け口をサーバーレスにするなら「API Gateway ＋ 処理ごとの Lambda」",
       "power": "受付は1つ（API Gateway）、担当者はパスごとに分ける（Lambda）",
       "summary": "Webhook のように HTTP で呼ばれる小さな処理は、API Gateway の1つの入口から処理ごとの Lambda へ振り分けるのが運用最小。App Runner は ALB のターゲットにできず、Fargate はコンテナの管理が残る。",
@@ -2438,10 +2441,26 @@
         "Lambda も API Gateway もサーバーがなく、呼ばれた分だけ動いて自動でスケールします。EC2、ALB、Auto Scaling の管理が全部なくなります。",
         "Lambda 関数 URL でも呼び出せますが、Webhook が増えるほど URL がバラバラに増え、認証や流量制限、ログをまとめて管理しにくくなります。",
         "App Runner は自分で HTTPS の URL を持つサービスで、ALB のターゲットにはできません。ALB を前に置くこと自体が余計な構成です。",
-        "ECS on Fargate はサーバーの管理はいりませんが、コンテナのイメージ作りや更新が必要です。また API Gateway から Fargate へは直接つなげず、VPC リンクとロードバランサーを間に挟む必要があり、部品が増えます。"
+        "ECS on Fargate はサーバーの管理はいりませんが、コンテナのイメージ作りや更新が必要です。また API Gateway から Fargate へは直接つなげず、VPC リンクとロードバランサーを間に挟む必要があり、部品が増えます。",
+        "3-45 は3回とも✕（2周目 C、3周目 D）。Fargate を選んでしまう。見分け方：Webhook の処理は「呼ばれたら短く動いて終わる」ので Lambda で足りる。コンテナ（Fargate）はイメージ作りとサービスの管理が残る。D は REST API → Fargate で、間に VPC リンクとロードバランサーが要る分さらに部品が多い。「サーバーレス」「運用最小」で Lambda と Fargate が並んだら、処理時間の条件（15分超え）がない限り Lambda。"
       ],
-      "cards": ["co08", "fr02", "xn20", "xp09", "xc09", "co01", "co07"],
-      "tags": ["API Gateway", "Lambda", "Webhook", "Lambda 関数 URL", "App Runner", "サーバーレス"]
+      "cards": [
+        "co08",
+        "fr02",
+        "xn20",
+        "xp09",
+        "xc09",
+        "co01",
+        "co07"
+      ],
+      "tags": [
+        "API Gateway",
+        "Lambda",
+        "Webhook",
+        "Lambda 関数 URL",
+        "App Runner",
+        "サーバーレス"
+      ]
     },
     {
       "id": "p161",
