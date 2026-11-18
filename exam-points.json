@@ -474,17 +474,35 @@
       "tags": ["Amazon MQ", "EKS", "リフト＆シフト"]
     },
     {
-      "id": "p060", "field": "compute", "service": "コンテナ（ECS・EKS）", "date": "2026-10-09",
+      "id": "p060",
+      "field": "compute",
+      "service": "コンテナ（ECS・EKS）",
+      "date": "2026-10-09",
       "title": "コンテナを動かす場所の選び方",
       "power": "迷ったら ECS on Fargate",
       "summary": "コンテナは、Kubernetes 指定なら EKS、なければ ECS。特に条件がなければ ECS on Fargate が運用最小。",
       "body": [
         "Kubernetes を使うよう指定されている、またはすでに Kubernetes の資産があるなら EKS です。そうでなければ ECS です。",
         "GPU を使う、サーバーの細かい設定が必要、常にフル稼働させてコストを下げたい。こうした場合は EC2 上で動かします。それ以外は Fargate（サーバーの管理がいらない方式）です。",
-        "特に条件がなければ、ECS on Fargate が一番運用の手間が少ない組み合わせです。"
+        "特に条件がなければ、ECS on Fargate が一番運用の手間が少ない組み合わせです。",
+        "消し方の順番：①処理が15分を超えるなら Lambda を消す ②Kubernetes の指定がなければ EKS を消す ③「サーバー管理不要」なら EC2 が裏で動く Elastic Beanstalk や EC2 起動タイプを消す → ECS on Fargate が残る（3-7）。",
+        "Elastic Beanstalk は設定は楽でも、裏では EC2 が動くのでサーバーレスではない。「インフラ管理を不要に」「サーバーレス」と言われたら Fargate を選ぶ（3-7）。"
       ],
-      "cards": ["ct02", "ct04", "co07", "xp15"],
-      "tags": ["ECS", "EKS", "Fargate"]
+      "cards": [
+        "ct02",
+        "ct04",
+        "co07",
+        "xp15",
+        "co08",
+        "xc26"
+      ],
+      "tags": [
+        "ECS",
+        "EKS",
+        "Fargate",
+        "Lambda",
+        "Elastic Beanstalk"
+      ]
     },
     {
       "id": "p061", "field": "compute", "service": "Lambda・サーバーレス", "date": "2026-10-10",
