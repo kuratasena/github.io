@@ -3246,7 +3246,7 @@
         "【バラバラのアカウントをまとめる3ステップ（2026-11-17）】①新しい管理アカウントで Organizations を作り、既存のアカウントを招待（費用の一元管理） ②管理アカウントで IAM Identity Center を有効にして AD とつなぎ、ユーザーとグループを自動同期 ③権限セットを作って、グループとアカウントに割り当てる（最小権限）。",
         "IAM Identity Center でログインすると、使うのは一時的な認証情報。長く使う IAM アクセスキーはいらなくなる。",
         "ワナ：各アカウントの IAM を個別に設定する案は、アカウントが多いほど手間が増える。メールアドレスをそろえる案は、請求書の届き先が変わるだけで、費用の一元管理やログインには関係ない。Managed Microsoft AD を RAM で共有する案は、ログインの一元化には不要。",
-        "3-70（3周目は C で✕）：2つの分かれ道で選ぶ。①AD のつなぎ方：AD Connector（問い合わせを中継するだけで安い）か Managed Microsoft AD（AWS に AD を1つ丸ごと建てる・高い）。「最もコスト効果」「既存の AD をそのまま」なら AD Connector。②Organizations：「すべての機能」を有効にするか。Identity Center は Organizations の「すべての機能」が前提。①で A・C、②で B が消えて D。今朝の 3-21 と同じ組み合わせ。"
+        "3-70（2周目・3周目○）：2つの分かれ道で選ぶ。①AD のつなぎ方：AD Connector（問い合わせを中継するだけで安い）か Managed Microsoft AD（AWS に AD を1つ丸ごと建てる・高い）。「最もコスト効果」「既存の AD をそのまま」なら AD Connector。②Organizations：「すべての機能」を有効にするか。Identity Center は Organizations の「すべての機能」が前提。①で A・C、②で B が消えて D。今朝の 3-21 と同じ組み合わせ。"
       ],
       "cards": [
         "sc10",
