@@ -1634,7 +1634,10 @@
       "tags": ["解き方", "マルチ AZ", "高可用性"]
     },
     {
-      "id": "p018", "field": "security", "service": "Secrets Manager", "date": "2026-10-13",
+      "id": "p018",
+      "field": "security",
+      "service": "Secrets Manager",
+      "date": "2026-10-13",
       "title": "パスワードの自動ローテーションなら Secrets Manager（Parameter Store ではない）",
       "power": "パスワードの定期交換まで任せるなら Secrets Manager。Parameter Store はただの金庫",
       "summary": "パスワードの自動ローテーションは Secrets Manager（CloudFormation なら RotationSchedule）。Parameter Store には自動ローテーションがない。",
@@ -1643,10 +1646,21 @@
         "CloudFormation では、シークレットのリソースでパスワードを自動生成し、RotationSchedule リソースで「何日ごとに変えるか」を指定します。実際の変更は Lambda 関数が行います。",
         "RDS などのデータベースには AWS が用意したローテーション用の Lambda があるので、自分で一から書く必要はありません。",
         "Systems Manager Parameter Store の SecureString も暗号化して保管できますが、自動ローテーションの機能はありません。「Parameter Store の RotationSchedule」というリソースは存在しません。",
-        "EventBridge で Lambda を定期的に起動してローテーションする方法も動きますが、Secrets Manager の標準機能があるのに自作するので、運用の手間が増えます。"
+        "EventBridge で Lambda を定期的に起動してローテーションする方法も動きますが、Secrets Manager の標準機能があるのに自作するので、運用の手間が増えます。",
+        "CloudFormation で書くときの部品（3-26、2周目・3周目○）：AWS::SecretsManager::Secret（GenerateSecretString でランダムなパスワードを作る）＋ AWS::SecretsManager::RotationSchedule（ローテーションの間隔と Lambda を指定）。EventBridge で Lambda を定期実行するのは、組み込みのスケジュールがあるのに手作りする選択肢なので✕。「Parameter Store の RotationSchedule」は存在しない。"
       ],
-      "cards": ["sc17", "xs05", "mg01"],
-      "tags": ["Secrets Manager", "ローテーション", "Parameter Store", "CloudFormation", "RDS"]
+      "cards": [
+        "sc17",
+        "xs05",
+        "mg01"
+      ],
+      "tags": [
+        "Secrets Manager",
+        "ローテーション",
+        "Parameter Store",
+        "CloudFormation",
+        "RDS"
+      ]
     },
     {
       "id": "p128",
