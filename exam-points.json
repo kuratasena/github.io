@@ -1872,7 +1872,10 @@
       "tags": ["Transit Gateway", "VPC アタッチメント", "ピアリングアタッチメント"]
     },
     {
-      "id": "p026", "field": "org", "service": "SCP", "date": "2026-10-18",
+      "id": "p026",
+      "field": "org",
+      "service": "SCP",
+      "date": "2026-10-18",
       "title": "「この役割の人だけ OK、他は全員禁止」は SCP の例外指定 ＋ 同じ名前のロールを作らせない SCP",
       "power": "門番（SCP）に「この名札の人だけ通して」と頼み、名札の偽造も禁止する",
       "summary": "「このロールだけ OK」は、ルートの SCP で aws:PrincipalArn を例外にし、同じ名前のロールを作ることも SCP で禁止する。",
@@ -1882,10 +1885,22 @@
         "ルートに付けるのは、組織の全アカウント・全ユーザーに漏れなく効かせるためです。一部の OU やアカウントにだけ付けると、付いていない所から管理できてしまいます。",
         "さらに、「procurement-role という名前のロールを作ることを禁止」する SCP も付けます。これがないと、誰かが自分のアカウントで同じ名前のロールを作り、例外をすり抜けられてしまいます（名札の偽造）。",
         "全員にインラインポリシーで禁止を付けたり、全員に権限境界を付けたりする方法は、人が増えるたびに作業が必要で、付け忘れも起きます。SCP なら組織に1回付けるだけで、新しい人やアカウントにも自動で効きます。",
-        "AdministratorAccess や PowerUserAccess を付けるのは、必要以上に強い権限を渡すことになるので不正解です。"
+        "AdministratorAccess や PowerUserAccess を付けるのは、必要以上に強い権限を渡すことになるので不正解です。",
+        "権限境界の取り違え（3-31 で B を選んで✕。2周目は○）：権限境界は「これ以上は許さない上限」で、AWSPrivateMarketplaceAdminFullAccess を境界にすると、従業員はむしろ Private Marketplace の管理“だけ”できる上限になり、禁止にはならない。しかも全員に1人ずつ付ける必要がある。「組織全体で、1つのロール以外を禁止」なら SCP。"
       ],
-      "cards": ["c15", "xm06", "xc02"],
-      "tags": ["SCP", "aws:PrincipalArn", "Private Marketplace", "AWS Organizations", "最小権限"]
+      "cards": [
+        "c15",
+        "xm06",
+        "xc02",
+        "xs08"
+      ],
+      "tags": [
+        "SCP",
+        "aws:PrincipalArn",
+        "Private Marketplace",
+        "AWS Organizations",
+        "最小権限"
+      ]
     },
     {
       "id": "p141", "field": "strategy", "service": "権限・組織の見方", "date": "2026-10-18",
