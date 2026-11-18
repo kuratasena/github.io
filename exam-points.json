@@ -2722,7 +2722,10 @@
       "tags": ["CloudFront", "オリジングループ", "ALB", "マルチリージョン", "Global Accelerator"]
     },
     {
-      "id": "p106", "field": "cost", "service": "サイズ最適化", "date": "2026-10-24",
+      "id": "p106",
+      "field": "cost",
+      "service": "サイズ最適化",
+      "date": "2026-10-24",
       "title": "Lambda のメモリの推奨を毎週 CSV で出すなら「Compute Optimizer ＋ エクスポート API を EventBridge で定期実行」",
       "power": "分析はおまかせ（Compute Optimizer）、毎週の配達だけ自分で予約（EventBridge）",
       "summary": "Lambda の推奨メモリやコストの差は Compute Optimizer が出してくれる。CSV の書き出しは ExportLambdaFunctionRecommendations を呼ぶ Lambda を、EventBridge で毎週動かす。コンソールに定期エクスポートはなく、Trusted Advisor やログの自前集計は遠回り。",
@@ -2732,10 +2735,23 @@
         "この API を呼ぶ小さな Lambda を作り、EventBridge のスケジュールで1週間ごとに動かせば、毎週のレポートが自動でそろいます。",
         "Compute Optimizer のコンソールからのエクスポートは、その場で1回ずつ行うもので、定期実行の設定はありません。強化されたインフラストラクチャメトリクスは、EC2 などの分析期間を延ばす有料オプションで、今回の要件とは関係ありません。",
         "CloudWatch Logs から自分でデータを集めて計算する方法は、推奨やコストの計算を自作することになり、開発に時間がかかります。",
-        "Trusted Advisor のためにサポートプランを買う方法は、費用がかかるうえ、Lambda のメモリの細かい推奨には向きません。"
+        "Trusted Advisor のためにサポートプランを買う方法は、費用がかかるうえ、Lambda のメモリの細かい推奨には向きません。",
+        "3-54 は3回とも✕で、2周目も3周目も C（コンソールでスケジュール）を選んだ。Compute Optimizer のコンソールにはエクスポートを定期実行する設定がない（その機能はない）。組み込みのスケジュールがないときは、EventBridge＋Lambda で公式の API を呼ぶのが一番短い。手作りでダメなのは A のように「分析そのもの」を自作する場合。B は API を1回呼ぶだけ。強化されたインフラストラクチャメトリクスは EC2 などの見る期間を延ばす有料オプションで、Lambda には関係ない。"
       ],
-      "cards": ["mg06", "xm08", "xm09", "i03", "mg19"],
-      "tags": ["Compute Optimizer", "Lambda", "EventBridge", "CSV", "コスト最適化"]
+      "cards": [
+        "mg06",
+        "xm08",
+        "xm09",
+        "i03",
+        "mg19"
+      ],
+      "tags": [
+        "Compute Optimizer",
+        "Lambda",
+        "EventBridge",
+        "CSV",
+        "コスト最適化"
+      ]
     },
     {
       "id": "p107", "field": "cost", "service": "請求・コスト管理", "date": "2026-10-24",
