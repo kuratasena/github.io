@@ -5679,6 +5679,35 @@
         "EFS",
         "静的コンテンツ"
       ]
+    },
+    {
+      "id": "p321",
+      "field": "ml",
+      "service": "Bedrock AgentCore",
+      "date": "2026-11-18",
+      "title": "たくさんの社内 API を、どのフレームワークのエージェントからもツールとして使わせるなら AgentCore Gateway（OpenAPI を登録 → MCP のツールに変換）",
+      "power": "API の翻訳窓口（Gateway）を1つ置けば、鍵の管理もツール探しもそこで済む",
+      "summary": "多数の REST API を MCP サーバーを自作せずにエージェントのツールにするなら、AgentCore Gateway に OpenAPI 仕様を登録する。API キーや OAuth はアウトバウンド認証で1か所にまとめ、セマンティック検索で用件に合うツールを探せる。",
+      "body": [
+        "AgentCore Gateway は、既存の API や Lambda を MCP のツールとしてエージェントに公開するマネージドの窓口。ターゲットに Lambda、OpenAPI 仕様、Smithy モデル、既存の MCP サーバーを登録できる。",
+        "認証は2方向。インバウンド認証は「エージェント → Gateway」、アウトバウンド認証は「Gateway → 各 API」。API キーや OAuth の認証情報は AgentCore Identity が持ち、呼び出し時に Gateway が付ける。",
+        "MCP に対応したフレームワーク（Strands Agents、LangGraph など）ならどれからでも同じツールを使える。ツールが多くても、セマンティック検索（言葉の意味で探す）で用件に合うものを見つけられる。",
+        "Bedrock Agents（Classic）のアクショングループも OpenAPI からツールを作れるが、使えるのはそのエージェントの中だけ。Strands や LangGraph のエージェントと共有できない（3-17 で D を選んで✕）。",
+        "API ごとに MCP サーバーを ECS で自作するのは運用が重い。Converse API の toolConfig に全部書いて配るのは、認証情報が各チームに散らばり、ツール検索もない。",
+        "見分け方：「MCP」「複数のフレームワーク」「API が多い」「認証情報を1か所に」→ AgentCore Gateway。"
+      ],
+      "cards": [
+        "xl03",
+        "xl04",
+        "xl05",
+        "xl06"
+      ],
+      "tags": [
+        "Bedrock",
+        "AgentCore",
+        "MCP",
+        "生成 AI"
+      ]
     }
   ],
   "terms": [
@@ -6201,6 +6230,9 @@
     {"id": "xd39", "term": "ElastiCache の AUTH と転送中の暗号化", "cat": "database", "desc": "AUTH はパスワード（トークン）がないと Redis につなげないようにする設定。転送中の暗号化は通信を TLS で守る設定。試験では「新しいクラスターを作って有効にし、データを移す」が正解になることが多い。"},
     {"id": "xs42", "term": "WAF のカウントモード", "cat": "security", "desc": "WAF のルールを、ブロックせずに「当てはまった数を数えるだけ」で動かすモード。新しいルールが正しい通信まで止めないかを本番で確かめてから、ブロックに切り替える。"},
     {"id": "xs43", "term": "Principal（ポリシーの「誰に」）", "cat": "security", "desc": "ポリシーで「誰に許可するか」を書く欄。S3 バケットポリシーや KMS キーポリシーなど、リソースに付けるポリシーには必須。IAM ユーザーやロールに付ける IAM ポリシーには書かない（付けた本人が主語になるため）。"},
-    {"id": "xl03", "term": "Amazon Bedrock", "cat": "ml", "desc": "いろいろな会社の基盤モデル（生成 AI）を API で呼び出せるサービス。Converse API で会話形式に生成できる。モデルを再学習せずに出力を良くするなら、プロンプトに例を入れる few-shot や、社内文書を検索して渡す RAG（ナレッジベース）を使う。"}
+    {"id": "xl03", "term": "Amazon Bedrock", "cat": "ml", "desc": "いろいろな会社の基盤モデル（生成 AI）を API で呼び出せるサービス。Converse API で会話形式に生成できる。モデルを再学習せずに出力を良くするなら、プロンプトに例を入れる few-shot や、社内文書を検索して渡す RAG（ナレッジベース）を使う。"},
+    {"id": "xl04", "term": "MCP（Model Context Protocol）", "cat": "ml", "desc": "AI エージェントが外部のツールやデータを呼び出すための共通の約束事。MCP サーバーがツールを公開し、エージェント側（MCP クライアント）はフレームワークが違っても同じ方法で使える。"},
+    {"id": "xl05", "term": "Amazon Bedrock AgentCore Gateway", "cat": "ml", "desc": "既存の API（OpenAPI、Smithy）や Lambda、MCP サーバーを、MCP のツールとしてまとめて公開するマネージドの窓口。インバウンド認証とアウトバウンド認証を受け持ち、セマンティック検索で多数のツールから合うものを探せる。MCP サーバーを自作しなくてよい。"},
+    {"id": "xl06", "term": "Amazon Bedrock AgentCore Identity", "cat": "ml", "desc": "エージェントが外部の API やサービスを使うときの認証情報（API キー、OAuth のトークン）を預かって管理する機能。AgentCore Gateway のアウトバウンド認証で使われ、鍵の管理を1か所にまとめられる。"}
   ]
 }
