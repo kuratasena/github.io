@@ -2902,7 +2902,10 @@
       ]
     },
     {
-      "id": "p170", "field": "migration", "service": "リフト＆シフト", "date": "2026-10-24",
+      "id": "p170",
+      "field": "migration",
+      "service": "リフト＆シフト",
+      "date": "2026-10-24",
       "title": "VMware の VM を中身そのままで EC2 にするなら「OVF で書き出し → S3 → VM Import」",
       "power": "家具ごと箱詰め（OVF）して、AWS で荷ほどき（VM Import）",
       "summary": "VM のソフトと設定を保ったまま EC2 にするなら、vSphere で OVF/OVA に書き出して S3 に置き、vmimport ロールを用意して CLI の EC2 import で AMI にする。DataSync や Storage Gateway はファイルを運ぶだけで、VM の中身ごとは移せない。",
@@ -2912,10 +2915,23 @@
         "VM Import が S3 を読むための IAM サービスロール（vmimport）を作り、AWS CLI の EC2 import コマンド（import-image）で取り込むと、AMI ができます。OS、インストール済みのソフト、設定がそのまま残ります。",
         "DataSync や Storage Gateway はファイルを運ぶ・共有する道具で、VM そのもの（OS や設定）を EC2 にはしてくれません。",
         "Systems Manager の登録や AWS Backup は、オンプレミスのサーバーを管理・バックアップするためのもので、VM を AMI に変換する手順にはなりません。",
-        "台数が多い本格的な移行で、止める時間を短くしたいなら、Application Migration Service（MGN）で動かしたまま複製し続け、最後に切り替える方法がよく使われます。"
+        "台数が多い本格的な移行で、止める時間を短くしたいなら、Application Migration Service（MGN）で動かしたまま複製し続け、最後に切り替える方法がよく使われます。",
+        "3-59（3回連続○）の読み方：「ソフトウェアと設定を維持して VM を EC2 に」＝ VM を丸ごと（OS・アプリ・設定ごと）コピーしたい。ファイルだけ運ぶ道具（DataSync・Storage Gateway）や、バックアップの道具（Systems Manager＋AWS Backup はオンプレの VM のスナップショットを AMI にできない）は外れる。台数が多い・止める時間を最小に、なら MGN（p193）。"
       ],
-      "cards": ["xg05", "mi02", "co05", "mi04", "st08"],
-      "tags": ["VM Import/Export", "VMware", "OVF", "AMI", "リフト＆シフト"]
+      "cards": [
+        "xg05",
+        "mi02",
+        "co05",
+        "mi04",
+        "st08"
+      ],
+      "tags": [
+        "VM Import/Export",
+        "VMware",
+        "OVF",
+        "AMI",
+        "リフト＆シフト"
+      ]
     },
     {
       "id": "p171",
