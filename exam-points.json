@@ -1039,7 +1039,10 @@
       ]
     },
     {
-      "id": "p045", "field": "database", "service": "Aurora・RDS", "date": "2026-10-13",
+      "id": "p045",
+      "field": "database",
+      "service": "Aurora・RDS",
+      "date": "2026-10-13",
       "title": "可用性を上げるときは、層ごとに冗長化する",
       "power": "層ごとにスペアを用意する。EC2 は ASG、RDS は Multi-AZ、Redis はレプリカ",
       "summary": "可用性は層ごとに冗長化する：EC2 は Auto Scaling、RDS は Multi-AZ、Redis はレプリカ。",
@@ -1047,10 +1050,22 @@
         "EC2 は ELB と、最小台数2の Auto Scaling グループ（ASG）で冗長化します。",
         "RDS は Multi-AZ にします。AZ が落ちても、自動で待機側に切り替わります。",
         "ElastiCache for Redis は、レプリケーショングループを作り、Multi-AZ を有効にします。",
-        "ElastiCache には ASG を使えません。同じ AZ に置いたリードレプリカは、AZ 障害に備えられないので選びません。"
+        "ElastiCache には ASG を使えません。同じ AZ に置いたリードレプリカは、AZ 障害に備えられないので選びません。",
+        "見分け方：Auto Scaling グループ（ASG）が使えるのは EC2 だけ。マネージドサービス（RDS、ElastiCache）の冗長化は、そのサービス自身の「Multi-AZ」スイッチで行う。「ElastiCache ＋ ASG」「RDS ＋ ASG」は存在しない組み合わせ（3-9 で ElastiCache に ASG を選んで✕。1周目・2周目も✕）。",
+        "3つ選ぶ問題は「EC2 層・DB 層・キャッシュ層から1つずつ」。各層で「AZ をまたいで、自動で切り替わる」ものを選ぶ。アンリミテッドモード（T 系インスタンスの CPU を使い放題にする設定）は性能の話で、冗長化とは関係ない。"
       ],
-      "cards": ["c04", "db05", "co06"],
-      "tags": ["Multi-AZ", "ElastiCache", "Auto Scaling"]
+      "cards": [
+        "c04",
+        "db05",
+        "co06",
+        "xd18",
+        "xp22"
+      ],
+      "tags": [
+        "Multi-AZ",
+        "ElastiCache",
+        "Auto Scaling"
+      ]
     },
     {
       "id": "p064",
@@ -6011,6 +6026,7 @@
       "desc": "HPC や大規模な機械学習のための、EC2 に付ける特別なネットワークインターフェイス。OS を通さずに直接通信できる（OS バイパス）ので、ノード同士の通信の遅延がとても小さい。対応したインスタンスタイプでだけ使え、クラスタープレイスメントグループと組み合わせるのが定番。" },
     { "id": "xp21", "term": "密結合（tightly coupled）と疎結合のワークロード", "cat": "compute",
       "desc": "密結合はノード同士が計算の途中で頻繁にやり取りする処理（流体計算や遺伝子解析など）で、通信の遅延が速さを左右するので、単一 AZ・クラスタープレイスメントグループ・EFA を使う。疎結合は各ノードが独立して動く処理で、スポットや複数 AZ に広げやすい。" },
+    {"id": "xp22", "term": "Auto Scaling グループ（ASG）が使える範囲", "cat": "compute", "desc": "EC2 Auto Scaling グループに入れられるのは EC2 インスタンスだけ。RDS や ElastiCache は ASG に入れられず、それぞれの Multi-AZ やレプリカ、Application Auto Scaling（ElastiCache のシャードやレプリカ数、Aurora のレプリカ数など）で増減や冗長化をする。"},
     { "id": "xa06", "term": "Kinesis Client Library（KCL）", "cat": "analytics",
       "desc": "Kinesis Data Streams からデータを読むアプリを作るためのライブラリ。複数のワーカーでシャードを分担して並列に読み、どこまで読んだか（チェックポイント）を DynamoDB に記録する。ワーカーが落ちても、別のワーカーが続きから読み直せる。" },
     { "id": "xn59", "term": "DNS の TTL（Time to Live）", "cat": "network",
