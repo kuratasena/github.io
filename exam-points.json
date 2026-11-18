@@ -1202,7 +1202,10 @@
       ]
     },
     {
-      "id": "p065", "field": "compute", "service": "EC2・Auto Scaling", "date": "2026-10-13",
+      "id": "p065",
+      "field": "compute",
+      "service": "EC2・Auto Scaling",
+      "date": "2026-10-13",
       "title": "インスタンスが終了する前の後片付けはライフサイクルフック",
       "power": "退室前に「ちょっと待った」。片付けが済んだら CONTINUE で退室",
       "summary": "インスタンス終了前の後片付けは、Auto Scaling のライフサイクルフック。終わったら CONTINUE。",
@@ -1211,10 +1214,20 @@
         "ライフサイクルフックを使うと、終了の直前でインスタンスを一時停止（待機状態）にできます。この間に、ログのコピーなどの後片付けをします。",
         "定番の流れは、ライフサイクルフック → EventBridge で検知 → Lambda → Systems Manager の Run Command（SendCommand）でコピー → 最後に CONTINUE を送って終了、です。",
         "終了処理のときは、CONTINUE を送っても ABANDON を送っても、インスタンスは終了します。「ABANDON で終了を止める」という選択肢は間違いです。後片付けが終わったら CONTINUE を送ると覚えます。",
-        "SNS は SendCommand を直接呼び出せません。間に Lambda が必要です。コピーの間隔を短くするだけの選択肢も、取りこぼしが残るので不正解です。"
+        "SNS は SendCommand を直接呼び出せません。間に Lambda が必要です。コピーの間隔を短くするだけの選択肢も、取りこぼしが残るので不正解です。",
+        "SNS が直接届けられる先は Lambda・SQS・HTTP/HTTPS・メール・SMS・Firehose・モバイル通知だけ。「SNS から SendCommand を呼ぶ」「SNS から Step Functions を始める」は間に Lambda がないので✕（3-14 で D を選んで✕。2周目は正解）。見分け方：B と D は「EventBridge → Lambda」か「SNS 直接」か、「CONTINUE」か「ABANDON」かの2か所が違う。"
       ],
-      "cards": ["xp03", "co06", "mg18"],
-      "tags": ["Auto Scaling", "ライフサイクルフック", "Systems Manager"]
+      "cards": [
+        "xp03",
+        "co06",
+        "mg18",
+        "xm08"
+      ],
+      "tags": [
+        "Auto Scaling",
+        "ライフサイクルフック",
+        "Systems Manager"
+      ]
     },
     {
       "id": "p122", "field": "network", "service": "Route 53", "date": "2026-10-13",
