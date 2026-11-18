@@ -2036,7 +2036,10 @@
       "tags": ["CUR", "QuickSight", "Athena", "コストカテゴリー", "AWS Organizations"]
     },
     {
-      "id": "p053", "field": "migration", "service": "データ転送（Snow・DataSync）", "date": "2026-10-18",
+      "id": "p053",
+      "field": "migration",
+      "service": "データ転送（Snow・DataSync）",
+      "date": "2026-10-18",
       "title": "オンプレの Windows ファイルサーバーを毎日 AWS にコピーするなら DataSync → FSx for Windows",
       "power": "運ぶのは DataSync、置き場所は Windows 仕様の FSx",
       "summary": "オンプレの Windows ファイルサーバーを毎日 AWS にコピーするなら DataSync → FSx for Windows。EFS は Linux 向け。",
@@ -2046,10 +2049,21 @@
         "コピー先は FSx for Windows File Server にします。Windows のファイル共有（SMB）や、Windows のアクセス権（ACL）をそのまま使えるので、AWS に移した Windows のワークロードから、オンプレミスと同じようにファイルを使えます。",
         "EFS は Linux 向け（NFS）のファイルシステムで、Windows からは使えません。コピーする道具が DataSync でも、行き先が EFS なら不正解です。",
         "Storage Gateway のファイルゲートウェイは、オンプレミスから AWS のストレージを使い続けるための「橋」です。今のファイルサーバーを置き換える話になり、AWS 側のワークロードが使うファイルシステムを用意することにはなりません。",
-        "Data Pipeline はデータの加工や処理の流れを組むためのサービスで、ファイルサーバーのコピーには使いません。"
+        "Data Pipeline はデータの加工や処理の流れを組むためのサービスで、ファイルサーバーのコピーには使いません。",
+        "3-35 は3回とも✕で、2周目も3周目も Storage Gateway（A）を選んだ。決め手は「AWS に移行したワークロードが、クラウド上のファイルシステムでデータを使う」。使うのは AWS 側のサーバーなので、データを AWS に運ぶ DataSync。Storage Gateway のファイルゲートウェイは、オンプレの人が S3 をファイル共有として使い続けるための窓口で、置き場所は S3（Windows の FSx ではない）。"
       ],
-      "cards": ["mi04", "xt08", "st08"],
-      "tags": ["DataSync", "FSx for Windows File Server", "Direct Connect", "SMB", "EFS"]
+      "cards": [
+        "mi04",
+        "xt08",
+        "st08"
+      ],
+      "tags": [
+        "DataSync",
+        "FSx for Windows File Server",
+        "Direct Connect",
+        "SMB",
+        "EFS"
+      ]
     },
     {
       "id": "p144", "field": "strategy", "service": "要件の読み方", "date": "2026-10-18",
