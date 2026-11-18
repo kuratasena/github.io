@@ -2876,7 +2876,8 @@
         "「今の Elastic IP のまま」「取引先の IP だけ許可」の2つがあれば、必ず VPC 型（インターネット向け）。パブリック型を選ぶと、どちらもできない。",
         "【固定 IP ＋ 今の NFS 共有も置き換え（2026-11-17）】サプライヤーに固定のパブリック IP を渡す → Transfer Family の VPC 型（インターネット向け）エンドポイント＋各サブネット（AZ）に Elastic IP。保存先は、社内のシステムが NFS で読んでいるなら EFS（複数 AZ、NFS でマウントできる）。",
         "ワナ：MGN で「Transfer Family に移行」。MGN はサーバーを EC2 に丸ごと移す道具で、Transfer Family には移せない。",
-        "ワナ：FSx for Lustre。HPC 向けで、今回の NFS 共有の置き換えにはやりすぎ。"
+        "ワナ：FSx for Lustre。HPC 向けで、今回の NFS 共有の置き換えにはやりすぎ。",
+        "3-58（3周目○）：今は「EC2 1台の自前 SFTP サーバー → cron で S3 に移す」。Transfer Family なら受け取ったファイルが直接 S3 に入るので、cron も EC2 もいらなくなり、AWS が冗長化とスケールをしてくれる。DNS 名は Route 53 で Transfer のエンドポイントに向けるので取引先は何も変えなくてよい。ALB は SFTP（TCP）を扱えない、Storage Gateway は SFTP を話さない、NLB だけでは 1台の EC2 の弱さが残る。"
       ],
       "cards": [
         "mi08",
