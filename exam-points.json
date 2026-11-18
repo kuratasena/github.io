@@ -2498,7 +2498,10 @@
       ]
     },
     {
-      "id": "p162", "field": "network", "service": "VPC・NAT ゲートウェイ", "date": "2026-10-21",
+      "id": "p162",
+      "field": "network",
+      "service": "VPC・NAT ゲートウェイ",
+      "date": "2026-10-21",
       "title": "VPC の Lambda から固定のパブリック IP で外に出るなら「NAT ゲートウェイ ＋ Elastic IP」",
       "power": "Lambda は裏口しか持たない。外に出るときは NAT の看板（Elastic IP）を借りる",
       "summary": "VPC に接続した Lambda はプライベート IP しか持たない。プライベートサブネットに置き、Elastic IP を付けた NAT ゲートウェイ経由で出せば、相手から見える送信元は常にその1つの IP になる。IGW や Egress-only IGW には Elastic IP を付けられない。",
@@ -2508,10 +2511,25 @@
         "NAT ゲートウェイを通った通信は、送信元が NAT ゲートウェイの Elastic IP に置き換わります。外部の会社から見ると、いつも同じ1つの IP アドレスから来るので、許可リストに登録できます。",
         "インターネットゲートウェイは VPC の出入口で、IP アドレスを持ちません。Elastic IP を付けることはできません。",
         "Egress-only インターネットゲートウェイは IPv6 専用です。IPv4 の許可リストの話には使えず、Elastic IP も付けられません。",
-        "Lambda の同時実行数が増えても、送信元の IP は NAT ゲートウェイの Elastic IP のままです。"
+        "Lambda の同時実行数が増えても、送信元の IP は NAT ゲートウェイの Elastic IP のままです。",
+        "3-47 は3回とも✕（2周目 C、3周目 D）。C も D も「IGW に Elastic IP を関連付ける」と書いてあるが、IGW には EIP を付けられない（IGW は出入口の門で、住所を持たない）。この1語で C・D は消える。B の Egress-only IGW は IPv6 専用で、これも EIP は付かない。EIP を付けられるのは EC2（ENI）・NAT ゲートウェイ・NLB。"
       ],
-      "cards": ["xp10", "xn01", "xn09", "xn21", "xn22", "co08", "xn26"],
-      "tags": ["NAT ゲートウェイ", "Elastic IP", "Lambda", "インターネットゲートウェイ", "許可リスト"]
+      "cards": [
+        "xp10",
+        "xn01",
+        "xn09",
+        "xn21",
+        "xn22",
+        "co08",
+        "xn26"
+      ],
+      "tags": [
+        "NAT ゲートウェイ",
+        "Elastic IP",
+        "Lambda",
+        "インターネットゲートウェイ",
+        "許可リスト"
+      ]
     },
     {
       "id": "p163", "field": "compute", "service": "Lambda・サーバーレス", "date": "2026-10-21",
