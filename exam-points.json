@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "fields": [
     {"id": "review", "name": "2周目の弱点まとめ"},
     { "id": "network", "name": "ネットワーク" },
@@ -6523,6 +6523,33 @@
         "生成 AI",
         "API Gateway"
       ]
+    },
+    {
+      "id": "p325",
+      "field": "ml",
+      "service": "Bedrock Guardrails",
+      "date": "2026-11-19",
+      "title": "Bedrock の外（SageMaker など）でホストしたモデルにも同じガードレールを使うなら ApplyGuardrail API",
+      "power": "関所（ガードレール）だけを呼び出して、どのモデルの前後にも置ける",
+      "summary": "Bedrock のモデル呼び出しは guardrailConfig でガードレールを指定。SageMaker AI など Bedrock 以外のモデルは、呼び出しの前後で ApplyGuardrail API に入力・出力を渡して同じガードレールで評価する。ポリシーは1か所、改定は新しいバージョンを発行するだけ。",
+      "body": [
+        "ApplyGuardrail API は、基盤モデルを呼ばずにガードレールだけを実行する API。source に INPUT か OUTPUT を指定してテキストを渡すと、ブロックするか・マスクした結果・どのポリシーに当たったかが返る。",
+        "Bedrock の呼び出し（Converse API）は guardrailConfig、InvokeModel は guardrailIdentifier と guardrailVersion でガードレールを指定するだけで入出力に自動で効く。",
+        "参照するバージョン番号を Parameter Store などの設定値にしておけば、ポリシーを改定しても新しいバージョンを発行して設定値を変えるだけで、アプリの再デプロイは要らない。",
+        "ワナ（4-3、新しい問題で D を選んで✕）：SageMaker 側に同じ判定をする分類モデルを足すと、ポリシーの置き場所が2か所になり、改定のたびに再学習やエンドポイント更新が要る。モデルを Bedrock に移す（カスタムモデルインポート）は「ホスティング構成を変えない」に反する。Parameter Store の正規表現と Lambda では、言い換えた話題や形の決まっていない個人情報（氏名・住所）を見分けられない。",
+        "見分け方：「1か所で管理」「Bedrock 以外のモデルにも」「構成は変えない」→ ガードレールは1つ、Bedrock 以外は ApplyGuardrail で通す。3-73（共通の呼び出し API 層）と同じ「関所は1つ」の考え方。"
+      ],
+      "cards": [
+        "xl07",
+        "xl08"
+      ],
+      "tags": [
+        "Bedrock",
+        "ガードレール",
+        "ApplyGuardrail",
+        "SageMaker AI",
+        "生成 AI"
+      ]
     }
   ],
   "terms": [
@@ -7056,6 +7083,7 @@
     {"id": "xl04", "term": "MCP（Model Context Protocol）", "cat": "ml", "desc": "AI エージェントが外部のツールやデータを呼び出すための共通の約束事。MCP サーバーがツールを公開し、エージェント側（MCP クライアント）はフレームワークが違っても同じ方法で使える。"},
     {"id": "xl05", "term": "Amazon Bedrock AgentCore Gateway", "cat": "ml", "desc": "既存の API（OpenAPI、Smithy）や Lambda、MCP サーバーを、MCP のツールとしてまとめて公開するマネージドの窓口。インバウンド認証とアウトバウンド認証を受け持ち、セマンティック検索で多数のツールから合うものを探せる。MCP サーバーを自作しなくてよい。"},
     {"id": "xl06", "term": "Amazon Bedrock AgentCore Identity", "cat": "ml", "desc": "エージェントが外部の API やサービスを使うときの認証情報（API キー、OAuth のトークン）を預かって管理する機能。AgentCore Gateway のアウトバウンド認証で使われ、鍵の管理を1か所にまとめられる。"},
-    {"id": "xl07", "term": "Amazon Bedrock ガードレール", "cat": "ml", "desc": "生成 AI の入力と出力を検査して、有害な内容の遮断（コンテンツフィルター）、個人情報のマスキング（機密情報フィルター）、話題の禁止（拒否トピック）などを行う設定。バージョンを発行して複数のアプリから同じ識別子で使える。Control Tower の「ガードレール」とは別物。"}
+    {"id": "xl07", "term": "Amazon Bedrock ガードレール", "cat": "ml", "desc": "生成 AI の入力と出力を検査して、有害な内容の遮断（コンテンツフィルター）、個人情報のマスキング（機密情報フィルター）、話題の禁止（拒否トピック）などを行う設定。バージョンを発行して複数のアプリから同じ識別子で使える。Control Tower の「ガードレール」とは別物。"},
+    {"id": "xl08", "term": "ApplyGuardrail API", "cat": "ml", "desc": "モデルを呼ばずに Bedrock ガードレールだけを実行する API。入力（INPUT）や出力（OUTPUT）のテキストを渡すと、ブロックするか・マスクした結果を返す。SageMaker AI や自社のモデルなど、Bedrock の外のモデルにも同じガードレールを使える。"}
   ]
 }
