@@ -486,7 +486,10 @@
       "tags": ["FSx for Windows", "EFS", "FSx for Lustre"]
     },
     {
-      "id": "p040", "field": "database", "service": "Aurora・RDS", "date": "2026-10-09",
+      "id": "p040",
+      "field": "database",
+      "service": "Aurora・RDS",
+      "date": "2026-10-09",
       "title": "データベースの切り替え時間を短くする",
       "power": "控えの選手を常にベンチ入り、接続は受付係が引き継ぐ",
       "summary": "DB の切り替えを速くするなら Aurora ＋ Aurora レプリカ、アプリの再接続を速くするなら RDS Proxy。",
@@ -494,10 +497,20 @@
         "データベース側の切り替えを速くするなら、Aurora と Aurora レプリカ（控えのコピー）をセットで使います。",
         "アプリ側の再接続を速くするなら、RDS Proxy を間に挟みます。データベースへの接続を代わりに管理してくれます。",
         "ElastiCache は読み取りを速くするキャッシュです。切り替え時間は短くなりません。",
-        "RDS のリードレプリカと Aurora レプリカは別物です。控えを本番に昇格させる速さは Aurora の方が上です。"
+        "RDS のリードレプリカと Aurora レプリカは別物です。控えを本番に昇格させる速さは Aurora の方が上です。",
+        "4-49（1周目✕ → 2周目○ → 3周目○）：RDS for MySQL マルチ AZ のフェイルオーバーで60秒止まる → 15秒未満にする3点セット：① Aurora MySQL に移行（ストレージ共有で切り替えが速い）② Aurora レプリカを作る（切り替え先の候補。レプリカがないと新しく作り直すので遅い）③ RDS Proxy（接続を持ったまま新しいライターにつなぎ替える）。ElastiCache（Memcached・Redis）は読み取りを速くするだけで、切り替え時間は縮まらない。RDS for MySQL のリードレプリカは手動で昇格させる必要があり、切り替えは速くならない。"
       ],
-      "cards": ["db01", "xd04", "xd03", "xd09"],
-      "tags": ["Aurora", "RDS Proxy", "マルチ AZ"]
+      "cards": [
+        "db01",
+        "xd04",
+        "xd03",
+        "xd09"
+      ],
+      "tags": [
+        "Aurora",
+        "RDS Proxy",
+        "マルチ AZ"
+      ]
     },
     {
       "id": "p041", "field": "database", "service": "互換データベース", "date": "2026-10-10",
