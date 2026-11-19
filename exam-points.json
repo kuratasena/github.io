@@ -718,7 +718,10 @@
       "tags": ["SQS", "SNS", "EventBridge", "Step Functions"]
     },
     {
-      "id": "p072", "field": "integration", "service": "SNS・EventBridge・Step Functions", "date": "2026-10-09",
+      "id": "p072",
+      "field": "integration",
+      "service": "SNS・EventBridge・Step Functions",
+      "date": "2026-10-09",
       "title": "SNS と SQS の向き",
       "power": "SNS が送り、SQS が受け、Lambda が取りに行く",
       "summary": "SNS が送り、SQS が購読して受け、Lambda が SQS から取りに行く。逆向きはできない。",
@@ -727,10 +730,19 @@
         "SNS を購読（サブスクライブ）できるのは SQS の方です。逆に、SNS が SQS を購読することはできません。",
         "SQS から SNS にメッセージを送ることもできません。",
         "SNS は1つのまま、各リージョンの SQS に購読させることができます（リージョンをまたいでも大丈夫です）。",
-        "SQS と Lambda はリージョンごとのサービスなので、処理したいリージョンに置きます。"
+        "SQS と Lambda はリージョンごとのサービスなので、処理したいリージョンに置きます。",
+        "4-57（1周目・2周目・3周目とも✕。2周目は B・E、3周目は A・B）：URL は既存のリージョンの SNS から出し、結果は既存の S3 へ。処理だけ他のリージョンでも → 各リージョンに SQS と Lambda を置き（A）、各リージョンの SQS を既存の SNS トピックにサブスクライブ（C）。B は向きが逆（SNS が SQS をサブスクライブすることはできない）。覚え方：「サブスクライブする＝受け取る側になる」。受け取るのは SQS、配るのは SNS なので「SQS を SNS にサブスクライブ」。2回とも B を選んでいるので、選択肢の文の主語（何を・何に）を矢印で書いて、「SNS → SQS」になっているか確かめる。"
       ],
-      "cards": ["i05", "i06", "co08"],
-      "tags": ["SNS", "SQS", "ファンアウト"]
+      "cards": [
+        "i05",
+        "i06",
+        "co08"
+      ],
+      "tags": [
+        "SNS",
+        "SQS",
+        "ファンアウト"
+      ]
     },
     {
       "id": "p073",
