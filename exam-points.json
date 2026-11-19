@@ -494,17 +494,27 @@
       "tags": ["DynamoDB グローバルテーブル", "S3 CRR", "マルチリージョン"]
     },
     {
-      "id": "p050", "field": "migration", "service": "データ転送（Snow・DataSync）", "date": "2026-10-09",
+      "id": "p050",
+      "field": "migration",
+      "service": "データ転送（Snow・DataSync）",
+      "date": "2026-10-09",
       "title": "大量データの移行は、まず「データ量 ÷ 回線の速さ」を計算",
       "power": "回線で運べないなら、トラックで運べ",
       "summary": "大量データの移行は、まず「データ量 ÷ 回線速度」を計算。回線で間に合わないなら Snowball Edge で運ぶ。",
       "body": [
         "例えば 200TB を 100Mbps の回線で送ると、約185日かかります。期限を大きく超えるなら、ネットワークで送る選択肢はすぐに消せます。",
         "回線が細い、データが大きい、期限が短い。この3つがそろったら Snowball Edge（データを運ぶ専用の機械）です。運ぶ途中の暗号化も標準で付いています。",
-        "Direct Connect は使えるようになるまで時間がかかるので、「すぐに」移したい問題では不正解になりやすいです。"
+        "Direct Connect は使えるようになるまで時間がかかるので、「すぐに」移したい問題では不正解になりやすいです。",
+        "4-17（1周目✕ → 2周目○ → 3周目は B を選んで✕）：200TB・3週間・回線 100Mbps（共有）。100Mbps だと 200TB は約185日で無理。B の Direct Connect 1Gbps も、全力で流し続けて約18〜19日でギリギリのうえ、DX の開通自体に数週間〜数か月かかるので3週間に間に合わない。しかも一度きりの移行のために専用線を引くのは高い。「回線が細い・期限が短い・一度きり」→ Snowball Edge（Storage Optimized を複数台）。デバイスの中は暗号化されるので「転送中も暗号化」も満たす。"
       ],
-      "cards": ["mi07", "nw02"],
-      "tags": ["Snowball Edge", "Direct Connect"]
+      "cards": [
+        "mi07",
+        "nw02"
+      ],
+      "tags": [
+        "Snowball Edge",
+        "Direct Connect"
+      ]
     },
     {
       "id": "p051", "field": "migration", "service": "データ転送（Snow・DataSync）", "date": "2026-10-10",
