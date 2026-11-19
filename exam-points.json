@@ -540,17 +540,27 @@
       ]
     },
     {
-      "id": "p041", "field": "database", "service": "互換データベース", "date": "2026-10-10",
+      "id": "p041",
+      "field": "database",
+      "service": "互換データベース",
+      "date": "2026-10-10",
       "title": "既存のデータベースの引っ越し先",
       "power": "Mongo は Document、Cassandra は Keyspaces",
       "summary": "コードを変えずに移すなら互換サービス：MongoDB は DocumentDB、Cassandra は Keyspaces。",
       "body": [
         "MongoDB なら DocumentDB、Cassandra なら Keyspaces、MySQL や PostgreSQL なら RDS か Aurora に移します。",
         "「コードを変えられない」とあれば、同じ使い方ができる互換サービスを選びます。表形式の Aurora に、NoSQL のデータベースはそのまま移せません。",
-        "「オンデマンドキャパシティモード」は DynamoDB の機能です。他のサービスの選択肢に出てきたら引っかけです。"
+        "「オンデマンドキャパシティモード」は DynamoDB の機能です。他のサービスの選択肢に出てきたら引っかけです。",
+        "4-60（1周目・2周目○ → 3周目は D を選んで✕）：Java ＋ MongoDB をコードを変えずに高可用で移す → DocumentDB（MongoDB 互換）を複数 AZ に適切なサイズのインスタンスで置き、アプリは複数 AZ の Auto Scaling。C と D の違いは「オンデマンド容量モード」だけ。これは DynamoDB の言葉で、DocumentDB の設定ではない（DocumentDB はインスタンスのサイズを選ぶ）。ほかのサービスの設定名が混ざった選択肢は疑う。Aurora（A）はリレーショナルで MongoDB のコードがそのまま動かない。単一 AZ（B）は高可用でない。"
       ],
-      "cards": ["db03", "db06"],
-      "tags": ["DocumentDB", "互換サービス"]
+      "cards": [
+        "db03",
+        "db06"
+      ],
+      "tags": [
+        "DocumentDB",
+        "互換サービス"
+      ]
     },
     {
       "id": "p042",
