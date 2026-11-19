@@ -6922,6 +6922,34 @@
         "ヘルスチェック",
         "Session Manager"
       ]
+    },
+    {
+      "id": "p333",
+      "field": "security",
+      "service": "Firewall Manager",
+      "date": "2026-11-19",
+      "title": "組織の複数アカウントに WAF ルールをまとめて配り、ずれたら自動で直すなら AWS Firewall Manager",
+      "power": "WAF・SG・Shield の“組織の配り係”は Firewall Manager",
+      "summary": "Firewall Manager は、Organizations の中の複数アカウント・OU に、WAF のルール、セキュリティグループ、Shield Advanced、Network Firewall などのポリシーをまとめて配る。対象のアカウントや OU を指定でき、新しいアカウントにも自動で付き、ルールに合わないリソースは自動で修正（自動修復）できる。前提は Organizations、Firewall Manager の管理者アカウント、各アカウントで AWS Config が有効。",
+      "body": [
+        "「複数アカウント」「WAF ルール」「自動で修正」がそろったら Firewall Manager。対象は OU やアカウントで含める・外すを指定できる。",
+        "Config ルール＋Lambda の自動修正＋StackSets で WAF を配る（B）は、Firewall Manager が1つでやることを3つの部品で手作りしている。",
+        "Lambda の環境変数にアカウントを書いて、STS でロールを引き受けて各アカウントの WAF を作る（C）も手作り。Control Tower（D）は環境の土台とガードレールの話で、WAF ルールは配らない。KMS はアカウントの一覧を置く場所ではなく、メンバーアカウントに IAM ユーザーとアクセスキーを作るのもよくない。",
+        "3-44（Firewall Manager の SG ポリシー）、3-65（SSH の制限は Firewall Manager ではなく Session Manager）も合わせて覚える。",
+        "4-34 は1周目○ → 2周目は B（Config＋Lambda＋StackSets）で✕ → 3周目○。"
+      ],
+      "cards": [
+        "sc08",
+        "xs45",
+        "sc21"
+      ],
+      "tags": [
+        "Firewall Manager",
+        "WAF",
+        "Organizations",
+        "自動修復",
+        "Config"
+      ]
     }
   ],
   "terms": [
