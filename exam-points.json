@@ -531,7 +531,10 @@
       "tags": ["DataSync", "Storage Gateway", "Snowball"]
     },
     {
-      "id": "p052", "field": "migration", "service": "リフト＆シフト", "date": "2026-10-09",
+      "id": "p052",
+      "field": "migration",
+      "service": "リフト＆シフト",
+      "date": "2026-10-09",
       "title": "アプリを変えずに移行する（リフト＆シフト）",
       "power": "引っ越しは家具そのまま、管理は管理会社におまかせ",
       "summary": "アプリを変えずに移すなら、RabbitMQ/ActiveMQ は Amazon MQ、Kubernetes は EKS。Lambda への作り替えは大幅な改修。",
@@ -539,10 +542,20 @@
         "仮想マシンは、AMI（サーバーのひな形）にして、Auto Scaling と ALB で動かします。",
         "RabbitMQ や ActiveMQ は Amazon MQ に移します。SQS に変えるとプログラムの修正が必要になります。",
         "Kubernetes は EKS に移します。EC2 に自分で入れて動かすと、運用の手間が大きくなります。",
-        "Lambda や SQS に作り替える選択肢は「大幅な作り直し」になるので、アプリを変えたくない問題では不正解です。"
+        "Lambda や SQS に作り替える選択肢は「大幅な作り直し」になるので、アプリを変えたくない問題では不正解です。",
+        "4-19（1〜3周目すべて○）：VM の Web ＋ RabbitMQ ＋ Kubernetes のバックエンドを「アプリはほぼ変えず」「運用は最小」で移す → Web は AMI ＋ ASG ＋ ALB、RabbitMQ は Amazon MQ（RabbitMQ のまま使える）、Kubernetes は EKS（マネージド）。SQS は RabbitMQ と使い方が違うのでコードの書き換えが要る。EC2 に自分で Kubernetes を入れるのは運用が重い。Lambda のカスタムランタイムと API Gateway に置き換えるのは作り直し。"
       ],
-      "cards": ["i04", "ct04", "mi02", "xg05"],
-      "tags": ["Amazon MQ", "EKS", "リフト＆シフト"]
+      "cards": [
+        "i04",
+        "ct04",
+        "mi02",
+        "xg05"
+      ],
+      "tags": [
+        "Amazon MQ",
+        "EKS",
+        "リフト＆シフト"
+      ]
     },
     {
       "id": "p060",
