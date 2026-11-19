@@ -6860,6 +6860,38 @@
         "ロードバランス環境",
         "単一インスタンス"
       ]
+    },
+    {
+      "id": "p331",
+      "field": "migration",
+      "service": "App2Container・ECS",
+      "date": "2026-11-19",
+      "title": "VM の Java アプリを「コードはほぼ変えず」「サーバーの保守は最小」でコンテナにするなら App2Container → ECS on Fargate ＋ ALB。もとが Kubernetes でなければ EKS は選ばない",
+      "power": "今 Kubernetes がないなら、ECS＋Fargate で十分",
+      "summary": "App2Container は、VM で動いている Java（や .NET）のアプリを、コードを変えずにコンテナイメージにして ECR に置き、ECS や EKS で動かす設定まで作るツール。サーバーの保守を最小にしたいなら、置き先は ECS on Fargate（サーバーを持たない）。EKS の管理ノードグループはノード（EC2）の更新や Kubernetes のバージョンアップが残る。Lambda に載せ替えるのは作り直し。",
+      "body": [
+        "App2Container（A2C）は、動いているアプリを調べて、コンテナイメージ・ECS のタスク定義や EKS のマニフェスト・CloudFormation テンプレートを作ってくれる。アプリのコードは変えない。",
+        "置き先の比べ方：ECS on Fargate はサーバー（EC2）を持たないので、OS の更新やノードの管理が要らない。EKS の管理ノードグループは、ノードは AWS がまとめて作ってくれるが EC2 なので、AMI の更新やクラスターのバージョンアップは自分で進める。Kubernetes の知識も要る。",
+        "4-19 との違い：4-19 はもとから Kubernetes で動いていたので、そのまま移すなら EKS。4-30 はもとは VM なので、新しく Kubernetes を覚えて運用するより、ECS on Fargate のほうが手間が少ない。",
+        "Lambda に載せる案（B・D）は、複雑な依存関係のある Java アプリを Lambda の形（15分以内のイベント処理）に作り直すことになり、コードの変更が大きい。",
+        "入口は ALB が素直。EKS の前に API Gateway を置くには VPC リンクと NLB などの追加の設定が要る。",
+        "4-30 は1周目○ → 2周目・3周目とも C（EKS 管理ノードグループ）を選んで✕。"
+      ],
+      "cards": [
+        "xg13",
+        "co07",
+        "ct02",
+        "ct04",
+        "xp15"
+      ],
+      "tags": [
+        "App2Container",
+        "ECS",
+        "Fargate",
+        "EKS",
+        "コンテナ",
+        "リプラットフォーム"
+      ]
     }
   ],
   "terms": [
