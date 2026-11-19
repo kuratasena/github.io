@@ -2057,7 +2057,10 @@
       "tags": ["解き方", "運用オーバーヘッド"]
     },
     {
-      "id": "p083", "field": "analytics", "service": "CUR・QuickSight", "date": "2026-10-18",
+      "id": "p083",
+      "field": "analytics",
+      "service": "CUR・QuickSight",
+      "date": "2026-10-18",
       "title": "組織全体の費用を部門ごとにグラフで見せるなら「管理アカウントの CUR ＋ QuickSight」",
       "power": "請求書の束（CUR）は本社で1冊にまとめ、グラフ係（QuickSight）が部門ごとに見せる",
       "summary": "組織全体の費用を部門ごとにグラフで見せるなら、管理アカウントの CUR ＋ QuickSight。部門分けには Cost Categories。",
@@ -2067,10 +2070,21 @@
         "CUR は S3 に出力されます。それを Athena で検索し、QuickSight でグラフや表のダッシュボードにすると、役員など専門外の人でも一目で分かる形になります。",
         "QuickSight のダッシュボードは、部門ごとに見せる範囲を絞って共有することもできます。",
         "メンバーアカウントごとに CUR を作ると、数百のレポートがバラバラにでき、まとめて見るのが大変です。",
-        "RAM はリソースを共有するサービス、Systems Manager OpsCenter は運用上のトラブルを管理する画面で、どちらも CUR を作ったり費用をグラフにしたりする機能はありません。"
+        "RAM はリソースを共有するサービス、Systems Manager OpsCenter は運用上のトラブルを管理する画面で、どちらも CUR を作ったり費用をグラフにしたりする機能はありません。",
+        "4-4（1周目✕ → 2周目○ → 3周目は B を選んで✕）：「自己管理型のアプリケーションで集約・分析し、役員に報告」「柔軟かつ詳細」→ CUR（タグ＋コストカテゴリ）→ Athena でテーブル → QuickSight でダッシュボード。Cost Explorer は AWS のコンソールの中で見る道具で、自由にレポートを組む「特別なテンプレート」は作れず、柔軟さも足りない。Price List Query API は「定価表」を調べる API で、実際に使ったお金（支出）は出てこない。"
       ],
-      "cards": ["f02", "a11", "xf02"],
-      "tags": ["CUR", "QuickSight", "Athena", "コストカテゴリー", "AWS Organizations"]
+      "cards": [
+        "f02",
+        "a11",
+        "xf02"
+      ],
+      "tags": [
+        "CUR",
+        "QuickSight",
+        "Athena",
+        "コストカテゴリー",
+        "AWS Organizations"
+      ]
     },
     {
       "id": "p053",
