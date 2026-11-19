@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-19",
+  "updated": "2026-11-20",
   "fields": [
     {"id": "review", "name": "2周目の弱点まとめ"},
     { "id": "network", "name": "ネットワーク" },
@@ -3830,18 +3830,35 @@
       "tags": ["Storage Gateway", "ファイルゲートウェイ", "SMB", "Glacier Deep Archive"]
     },
     {
-      "id": "p202", "field": "cost", "service": "購入オプション（スポット・予約）", "date": "2026-10-30",
+      "id": "p202",
+      "field": "cost",
+      "service": "購入オプション（スポット・予約）",
+      "date": "2026-10-30",
       "title": "Savings Plans が効くのは EC2・Fargate・Lambda まで。MemoryDB や RDS は予約ノード・リザーブドインスタンス",
       "power": "Savings Plans はコンピューティング専用の回数券。データベースやキャッシュには、それぞれの定期券（予約ノード）を買う",
-      "summary": "一定負荷の EC2 → EC2 Instance Savings Plans。変動する Lambda → 最小使用量を Compute Savings Plans。MemoryDB・ElastiCache・RDS → 予約ノード／リザーブドインスタンス（Compute Savings Plans の対象外）。Lambda の予約同時実行は割引ではない。",
+      "summary": "一定負荷の EC2 → EC2 Instance Savings Plans。変動する Lambda → 最小使用量を Compute Savings Plans。MemoryDB・ElastiCache・RDS → 予約ノード／リザーブドインスタンス（Compute Savings Plans の対象外）。Lambda の予約同時実行は割引ではない。 EC2 と Fargate を両方使うなら Compute Savings Plans。RI は全額前払いが一番安い。",
       "body": [
         "Savings Plans には主に2種類あり、割引が効く範囲が違います。EC2 Instance Savings Plans は EC2 だけ（同じリージョン・同じインスタンスファミリー）で、割引率が一番大きいです。Compute Savings Plans は EC2・Fargate・Lambda に効き、リージョンやインスタンスの種類を変えても割引が続きます。",
         "MemoryDB・ElastiCache・RDS・Redshift・OpenSearch などのデータ系のサービスは、Savings Plans の対象外です。これらは、それぞれの予約ノードやリザーブドインスタンスで安くします。",
         "Lambda の「予約同時実行」は、同時に動ける数を確保する設定で、割引ではありません。Lambda を安くするなら Compute Savings Plans です。",
-        "負荷が一定の EC2 は EC2 Instance Savings Plans、変動する Lambda は「最低限使う分」だけ Compute Savings Plans、キャッシュは予約ノード、のようにサービスごとに一番合う割引を組み合わせます。"
+        "負荷が一定の EC2 は EC2 Instance Savings Plans、変動する Lambda は「最低限使う分」だけ Compute Savings Plans、キャッシュは予約ノード、のようにサービスごとに一番合う割引を組み合わせます。",
+        "5-1：EKS を EC2 で動かし、これから Fargate も使う → EC2 だけに効く EC2 Instance Savings Plans やスタンダード RI ではなく Compute Savings Plans。急なピークは EKS をスポットで増やす（Pod は別のノードに自動で移るので中断に強い）。RDS は1年の全額前払い RI が一番安く、ピークだけ手動でスケールアップ。オンデマンドキャパシティ予約は席を取るだけで割引にならない。"
       ],
-      "cards": ["xf06", "xf07", "f04", "c13"],
-      "tags": ["Savings Plans", "予約ノード", "Lambda 予約同時実行", "MemoryDB", "コスト最適化"]
+      "cards": [
+        "xf06",
+        "xf07",
+        "f04",
+        "c13"
+      ],
+      "tags": [
+        "Savings Plans",
+        "予約ノード",
+        "Lambda 予約同時実行",
+        "MemoryDB",
+        "コスト最適化",
+        "全額前払い",
+        "EKS スポット"
+      ]
     },
     {
       "id": "p203", "field": "database", "service": "DynamoDB", "date": "2026-10-30",
