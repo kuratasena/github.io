@@ -5997,7 +5997,8 @@
         "【逆のパターン：RPO 1時間だけ・コスト重視（2026-11-17）】RTO の指定がなく、RPO 1時間だけ＋「最もコスト効率が高い」→ AWS Backup で1時間ごとにバックアップして、別リージョンへコピー。Global Database は秒単位の要件向けで、書き込みが多いと複製の I/O 料金がかさむ。",
         "見分け方：RPO だけ1時間 → バックアップ（AWS Backup の1時間ごと＋クロスリージョンコピー）。RPO と RTO が両方1時間以内、または秒・分 → Global Database（＋ Route 53）。",
         "ワナ：Backtrack は同じクラスターの中で過去に巻き戻す機能で、別リージョンの DR には使えない（しかも Aurora MySQL だけ）。DMS の CDC を S3 に流しても、そのまま DB として復元できない。",
-        "4-70（1周目○ → 2周目○ → 3周目○）：ECS on Fargate＋Aurora MySQL を別リージョンでも復旧でき、データ損失は少なく、運用は最小 → 別リージョンに Aurora レプリカ（Global Database のセカンダリ。遅れは1秒未満、昇格は数分）。DataSync はファイル用で動いている DB の複製には使えない。DMS は遅れが大きく、レプリケーションインスタンスの運用も増える。DLM は EBS のスナップショット用で、5分おきでもその間のデータは失う。"
+        "4-70（1周目○ → 2周目○ → 3周目○）：ECS on Fargate＋Aurora MySQL を別リージョンでも復旧でき、データ損失は少なく、運用は最小 → 別リージョンに Aurora レプリカ（Global Database のセカンダリ。遅れは1秒未満、昇格は数分）。DataSync はファイル用で動いている DB の複製には使えない。DMS は遅れが大きく、レプリケーションインスタンスの運用も増える。DLM は EBS のスナップショット用で、5分おきでもその間のデータは失う。",
+        "5-9（2周目○ → 3周目○）：Aurora MySQL と DynamoDB の両方を別リージョンへ、RTO・RPO は数分 → Aurora はグローバルデータベースにしてクラスターに別のリージョンを追加、DynamoDB はグローバルテーブルにして別のリージョンを追加。✕：Aurora の「テーブルごとに」リージョンを追加（追加はクラスター単位）、定期のクロスリージョンバックアップ（RPO が数時間になる）、Application Recovery Controller でバックアップと復旧（ARC は切り替えの管理役で、データの複製はしない。DynamoDB の対策も抜けている）。"
       ],
       "cards": [
         "xd05",
@@ -6023,7 +6024,9 @@
         "Route 53 フェイルオーバー",
         "DynamoDB グローバルテーブル",
         "AWS Backup",
-        "Backtrack"
+        "Backtrack",
+        "DynamoDB グローバルテーブル",
+        "Application Recovery Controller"
       ]
     },
     {
