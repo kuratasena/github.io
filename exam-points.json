@@ -7199,6 +7199,31 @@
         "ポリシー生成",
         "Lambda"
       ]
+    },
+    {
+      "id": "p340",
+      "field": "compute",
+      "service": "EKS Pod Identity",
+      "date": "2026-11-19",
+      "title": "たくさんの EKS クラスターで同じ IAM ロールを使い回し、クラスターを足しても IAM をいじらないなら EKS Pod Identity。IRSA はクラスターごとに OIDC プロバイダーと信頼ポリシーの更新が要る",
+      "power": "IAM 側は「EKS なら OK」の1行だけ。どのアプリに貸すかは EKS 側で結ぶ",
+      "summary": "EKS Pod Identity は、Pod（の Kubernetes サービスアカウント）に IAM ロールを渡す仕組み。IAM ロールの信頼ポリシーには pods.eks.amazonaws.com を許可する共通の1文だけを書き、どのクラスターのどの名前空間・サービスアカウントに渡すかは EKS 側の「Pod Identity 関連付け」で決める。クラスターを増やしても IAM の変更は要らず、1つのロールを何十ものクラスターで使い回せる。各クラスターには Pod Identity エージェントのアドオンを入れる。",
+      "body": [
+        "IRSA（IAM Roles for Service Accounts）は、クラスターごとに OIDC ID プロバイダーを IAM に登録し、ロールの信頼ポリシーにそのプロバイダーと条件（名前空間・サービスアカウント）を足す必要がある。クラスターが増えるほど信頼ポリシーが長くなり、更新漏れが起きる。",
+        "Pod Identity なら、IAM 側は「pods.eks.amazonaws.com なら AssumeRole と TagSession を許可」で固定。クラスター側で関連付けを作るだけ。",
+        "ワナ：ノードのインスタンスプロファイルに権限を付ける（C）。そのノードの全部の Pod が同じ権限を持つので、アプリごとの最小権限にならない。IRSA の Condition を消す（B）は、プロバイダーごとの指定は残るうえ、どのサービスアカウントでも引き受けられる危ない状態。StackSets で自動化（D）しても、クラスターごとに OIDC とロールを作ることは変わらない。",
+        "4-54 は3周目で新しくなった問題。C を選んで✕。"
+      ],
+      "cards": [
+        "xp23"
+      ],
+      "tags": [
+        "EKS",
+        "Pod Identity",
+        "IRSA",
+        "IAM ロール",
+        "最小権限"
+      ]
     }
   ],
   "terms": [
@@ -7669,6 +7694,7 @@
     { "id": "xp21", "term": "密結合（tightly coupled）と疎結合のワークロード", "cat": "compute",
       "desc": "密結合はノード同士が計算の途中で頻繁にやり取りする処理（流体計算や遺伝子解析など）で、通信の遅延が速さを左右するので、単一 AZ・クラスタープレイスメントグループ・EFA を使う。疎結合は各ノードが独立して動く処理で、スポットや複数 AZ に広げやすい。" },
     {"id": "xp22", "term": "Auto Scaling グループ（ASG）が使える範囲", "cat": "compute", "desc": "EC2 Auto Scaling グループに入れられるのは EC2 インスタンスだけ。RDS や ElastiCache は ASG に入れられず、それぞれの Multi-AZ やレプリカ、Application Auto Scaling（ElastiCache のシャードやレプリカ数、Aurora のレプリカ数など）で増減や冗長化をする。"},
+    {"id": "xp23", "term": "EKS Pod Identity と IRSA", "cat": "compute", "desc": "どちらも EKS の Pod に IAM ロールを渡す仕組み。IRSA はクラスターごとに OIDC プロバイダーを IAM に登録し、ロールの信頼ポリシーにそのクラスターを書き足す。Pod Identity は信頼ポリシーに pods.eks.amazonaws.com を1回書くだけで、どの Pod に渡すかは EKS 側の関連付けで決めるので、クラスターが増えても IAM を変えなくてよい。"},
     { "id": "xa06", "term": "Kinesis Client Library（KCL）", "cat": "analytics",
       "desc": "Kinesis Data Streams からデータを読むアプリを作るためのライブラリ。複数のワーカーでシャードを分担して並列に読み、どこまで読んだか（チェックポイント）を DynamoDB に記録する。ワーカーが落ちても、別のワーカーが続きから読み直せる。" },
     { "id": "xn59", "term": "DNS の TTL（Time to Live）", "cat": "network",
