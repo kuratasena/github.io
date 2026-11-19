@@ -4396,7 +4396,8 @@
         "【逆のパターン：組織の中の数百アカウント（2026-11-17）】Organizations（Control Tower）を使える会社で「承認したリージョン以外は全部拒否」→ OU を作って、aws:RequestedRegion で拒否する SCP を付ける。上の OU に1つ付ければ、下の全アカウントに効く。Control Tower にはリージョンを拒否するコントロールも最初から用意されている。",
         "見分け方：組織の中で数が多い → SCP（または Control Tower）。組織の外の1アカウント → IAM ポリシーの条件。",
         "ワナ：アカウントごとに IAM ロールや IAM ユーザーを作る案は、数百アカウントでは管理しきれない。Security Hub や Config は「起きたら見つける」仕組みで、事前に拒否はできない。",
-        "注意：IAM・CloudFront・Route 53 などのグローバルサービスは、リージョン拒否の SCP から除外しておかないと使えなくなる（NotAction で外す）。"
+        "注意：IAM・CloudFront・Route 53 などのグローバルサービスは、リージョン拒否の SCP から除外しておかないと使えなくなる（NotAction で外す）。",
+        "4-36（1周目・2周目・3周目とも✕。2周目は A の Config、3周目は D の Image Builder）：開発者が起動できるインスタンスタイプを「制限する（止める）」→ IAM ポリシーの条件 ec2:InstanceType で許可するタイプだけを書き、開発者の IAM グループに付ける。Config の desired-instance-type は「違うタイプを見つけて知らせる」検出で、起動は止められない。起動テンプレートは「使えば決まったタイプになる」だけで、使わずに起動されたら止まらない。EC2 Image Builder は AMI（OS の中身）を作る道具で、インスタンスタイプとは関係ない。単一アカウントの話なので SCP は出てこない（Organizations なら SCP でもよい）。"
       ],
       "cards": [
         "sc11",
