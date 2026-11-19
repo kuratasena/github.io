@@ -84,7 +84,10 @@
       "tags": ["Transit Gateway", "VPC ピアリング"]
     },
     {
-      "id": "p004", "field": "network", "service": "VPN・Direct Connect", "date": "2026-10-09",
+      "id": "p004",
+      "field": "network",
+      "service": "VPN・Direct Connect",
+      "date": "2026-10-09",
       "title": "Client VPN と Site-to-Site VPN の違い",
       "power": "個人は Client、拠点は Site-to-Site",
       "summary": "個人の端末から AWS につなぐのは Client VPN、拠点ごとつなぐのは Site-to-Site VPN。",
@@ -92,10 +95,17 @@
         "Client VPN は、在宅勤務の PC など「1人ひとりの端末」から AWS につなぐ VPN です。",
         "Site-to-Site VPN は、オフィスやデータセンターなど「拠点のネットワーク丸ごと」を AWS につなぐ VPN です。",
         "Client VPN の接続口（エンドポイント）を VPC B に置くと、利用者の通信は VPC B の中から出ていく扱いになります。そのため、B とピアリングしている VPC A にも届きます。",
-        "問題文に「すでにピアリング済み」とあれば大きなヒントです。接続口を増やさず、1つで足りないかを考えます。"
+        "問題文に「すでにピアリング済み」とあれば大きなヒントです。接続口を増やさず、1つで足りないかを考えます。",
+        "4-23（1周目・2周目・3周目とも✕、2周目・3周目とも C の Transit Gateway）：在宅の社員が、ピアリングでつながった別アカウントの VPC A のアプリに入る → メインアカウントの VPC B に Client VPN エンドポイントを1つ作り、ルートと認可ルールで VPC A の CIDR を通すだけ。Client VPN は社員の通信の送信元を VPC B 内のエンドポイントの IP に変える（NAT する）ので、VPC A からは「VPC B からの通信」に見え、既存のピアリングをそのまま通れる（AWS の公式の構成例「ピアリングされた VPC へのアクセス」）。4-2 の「オンプレ → Site-to-Site VPN → VPC A → ピアリング → VPC B は通れない」とは別の話。すでにピアリングがあるのに Transit Gateway を足すのはやりすぎでコストが増える。"
       ],
-      "cards": ["xn05", "nw09"],
-      "tags": ["Client VPN", "Site-to-Site VPN"]
+      "cards": [
+        "xn05",
+        "nw09"
+      ],
+      "tags": [
+        "Client VPN",
+        "Site-to-Site VPN"
+      ]
     },
     {
       "id": "p005", "field": "network", "service": "VPN・Direct Connect", "date": "2026-10-09",
