@@ -3113,7 +3113,8 @@
         "【固定 IP ＋ 今の NFS 共有も置き換え（2026-11-17）】サプライヤーに固定のパブリック IP を渡す → Transfer Family の VPC 型（インターネット向け）エンドポイント＋各サブネット（AZ）に Elastic IP。保存先は、社内のシステムが NFS で読んでいるなら EFS（複数 AZ、NFS でマウントできる）。",
         "ワナ：MGN で「Transfer Family に移行」。MGN はサーバーを EC2 に丸ごと移す道具で、Transfer Family には移せない。",
         "ワナ：FSx for Lustre。HPC 向けで、今回の NFS 共有の置き換えにはやりすぎ。",
-        "3-58（3周目○）：今は「EC2 1台の自前 SFTP サーバー → cron で S3 に移す」。Transfer Family なら受け取ったファイルが直接 S3 に入るので、cron も EC2 もいらなくなり、AWS が冗長化とスケールをしてくれる。DNS 名は Route 53 で Transfer のエンドポイントに向けるので取引先は何も変えなくてよい。ALB は SFTP（TCP）を扱えない、Storage Gateway は SFTP を話さない、NLB だけでは 1台の EC2 の弱さが残る。"
+        "3-58（3周目○）：今は「EC2 1台の自前 SFTP サーバー → cron で S3 に移す」。Transfer Family なら受け取ったファイルが直接 S3 に入るので、cron も EC2 もいらなくなり、AWS が冗長化とスケールをしてくれる。DNS 名は Route 53 で Transfer のエンドポイントに向けるので取引先は何も変えなくてよい。ALB は SFTP（TCP）を扱えない、Storage Gateway は SFTP を話さない、NLB だけでは 1台の EC2 の弱さが残る。",
+        "4-69（1周目✕ → 2周目・3周目○）：倉庫の中央サーバーから FTP で EC2 に上げて RDS を更新している。スキャナーやラベルは変えられない。スケーラビリティを最大に → Transfer Family の FTP サーバーで S3 に直接置き、S3 イベント通知（SNS 経由）で Lambda を動かして在庫を更新。FTP のまま受けられるので送る側は変えなくてよい。EFS に置いて既存の EC2 で処理（B）は処理役が EC2 1台のまま。EC2 を Auto Scaling（A）は FTP の受け口が増えても根本が同じ。スキャナーを直す（D）は「変更できない」に反する。"
       ],
       "cards": [
         "mi08",
