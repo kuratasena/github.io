@@ -1863,19 +1863,34 @@
       ]
     },
     {
-      "id": "p127", "field": "network", "service": "Route 53", "date": "2026-10-13",
-      "title": "Route 53 のレコードの種類：A・エイリアス・CNAME・NS",
+      "id": "p127",
+      "field": "network",
+      "service": "Route 53",
+      "date": "2026-10-13",
+      "title": "Route 53 のレコードの種類：A・エイリアス・CNAME・NS（ドメインの一番上＝APEX に CNAME は置けない）",
       "power": "IP なら A、AWS の名前ならエイリアス、他の名前なら CNAME、NS は電話帳の置き場所",
-      "summary": "IP なら A、AWS リソースならエイリアス、他の名前なら CNAME（IP は書けない）、NS はドメイン情報の置き場所。",
+      "summary": "IP なら A、AWS リソースならエイリアス、他の名前なら CNAME（IP は書けない）、NS はドメイン情報の置き場所。 APEX（example.com そのもの）に CNAME は置けない。自前の DNS のまま APEX を複数リージョンに向けるなら、Global Accelerator の固定 IP を A レコードに書く。",
       "body": [
         "A レコードは、名前を IP アドレスに結びつけます。",
         "エイリアスレコードは Route 53 独自の機能で、名前を ELB や CloudFront などの AWS のリソースに結びつけます。リソースの IP アドレスが変わっても自動で追いかけてくれます。",
         "CNAME レコードは、名前を「別の名前」に結びつけます。IP アドレスを直接書くことはできません。また、ドメインの一番上（salesplan.com そのもの）には使えません。",
         "NS（ネームサーバー）レコードは、「このドメインの情報はどのサーバーにあるか」を示すものです。サービスの入口を指すのには使いません。",
-        "選択肢に「CNAME に IP アドレスを関連付ける」「NS レコードに IP アドレスを割り当てる」とあれば、その時点で不正解です。"
+        "選択肢に「CNAME に IP アドレスを関連付ける」「NS レコードに IP アドレスを割り当てる」とあれば、その時点で不正解です。",
+        "5-4：自社でパブリック DNS を管理、複数リージョンの ALB を APEX ドメインで公開したい（最も少ない労力）→ Global Accelerator（リージョンごとのエンドポイントグループ）を作り、その固定 IP 2つを APEX の A レコードに書く。近いリージョンへの振り分けと故障時の切り替えも GA がやってくれる。✕：APEX に CNAME（A・B・D 全部これ。そもそも置けない）、CNAME で IP を指す（CNAME は名前しか書けない）、NLB を ALB の前に足す・DNS を Route 53 へ移す（手間が増える）。"
       ],
-      "cards": ["xn10", "nw06"],
-      "tags": ["Route 53", "A レコード", "エイリアスレコード", "CNAME"]
+      "cards": [
+        "xn10",
+        "nw06"
+      ],
+      "tags": [
+        "Route 53",
+        "A レコード",
+        "エイリアスレコード",
+        "CNAME",
+        "APEX ドメイン",
+        "Global Accelerator",
+        "固定 IP"
+      ]
     },
     {
       "id": "p104",
