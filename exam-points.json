@@ -6597,6 +6597,38 @@
         "リードレプリカ",
         "書き込み"
       ]
+    },
+    {
+      "id": "p327",
+      "field": "network",
+      "service": "CloudFront・API Gateway・S3",
+      "date": "2026-11-19",
+      "title": "サーバーレスのアプリを世界中から速くするなら、部品ごとに「エッジ」を使う：S3 は Transfer Acceleration、API Gateway はエッジ最適化。Global Accelerator は CloudFront に付けられない",
+      "power": "部品ごとに近道を付ける。CloudFront にはもう近道がある",
+      "summary": "CloudFront（画面）＋ API Gateway（API）＋ S3（ファイルのアップロード）の構成を、アジア以外のユーザーにも速くする → S3 は Transfer Acceleration、API Gateway はリージョナルからエッジ最適化エンドポイントへ。CloudFront はもとから世界のエッジで配っている。Global Accelerator の行き先は ALB・NLB・EC2・EIP で、CloudFront にはアタッチできない。",
+      "body": [
+        "まず構成を部品に分ける。① 画面（CloudFront → S3）、② API（API Gateway リージョナル → Lambda → Aurora）、③ 文書のアップロード（S3）。それぞれ遠くのユーザーから速くする方法を1つずつ当てる。",
+        "① 画面はすでに CloudFront で世界中のエッジから配っているので、追加の工事はいらない。",
+        "② API Gateway のリージョナルエンドポイントは、そのリージョンに直接つなぐ。エッジ最適化エンドポイントにすると、CloudFront のエッジを入口にして AWS のネットワークを通るので、遠くのユーザーの遅延が減る。",
+        "③ ユーザーが S3 に直接アップロード・ダウンロードするところは、S3 Transfer Acceleration（エッジロケーション経由で AWS のネットワークを通る）で速くする。署名付き URL も Transfer Acceleration 用のエンドポイントで作る。",
+        "ワナ：Global Accelerator を CloudFront にアタッチ（できないし、CloudFront はもとからエッジで配っている）、全体を3リージョンに作って Aurora Global Database（やりすぎ。コストと管理が増える）、RDS Proxy（DB の接続を整理するだけで、距離の遅延は変わらない）。",
+        "4-6 は1周目・2周目・3周目とも✕。2周目は A と B、3周目は B と C を選んだ。毎回 B（Global Accelerator）を選び、正解の2つを1つずつ取りこぼしている。Global Accelerator の行き先に CloudFront は入らないと覚えれば、B を消して A と C が残る。"
+      ],
+      "cards": [
+        "xt16",
+        "xn23",
+        "nw04",
+        "nw01",
+        "fr02"
+      ],
+      "tags": [
+        "S3 Transfer Acceleration",
+        "API Gateway",
+        "エッジ最適化",
+        "Global Accelerator",
+        "CloudFront",
+        "レイテンシー"
+      ]
     }
   ],
   "terms": [
