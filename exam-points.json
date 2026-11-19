@@ -6894,6 +6894,34 @@
         "コンテナ",
         "リプラットフォーム"
       ]
+    },
+    {
+      "id": "p332",
+      "field": "compute",
+      "service": "EC2 Auto Scaling",
+      "date": "2026-11-19",
+      "title": "ヘルスチェックに失敗した Auto Scaling のインスタンスを消される前に調べるなら、Terminate プロセスを一時停止。EC2 の終了保護は Auto Scaling には効かない",
+      "power": "“消す係”を休ませる。終了保護は人の手から守るだけ",
+      "summary": "Auto Scaling は、異常（Unhealthy）になったインスタンスを自動で終了して入れ替える。調べたいなら、Auto Scaling グループの Terminate プロセスを一時停止して、終了させずに残してから Session Manager で入る。EC2 の終了保護は人が手で消すのを止めるだけで、Auto Scaling による終了は止めない。",
+      "body": [
+        "Auto Scaling のプロセスは種類ごとに一時停止できる（Launch、Terminate、HealthCheck、ReplaceUnhealthy、AZRebalance など）。Terminate を止めると、Auto Scaling はインスタンスを終了しなくなる。",
+        "HealthCheck を止めると、これから先の異常の判定が止まるだけで、すでに異常と判定されたインスタンスは終了されてしまう。",
+        "終了ポリシー（OldestInstance など）は、スケールインのときにどれから消すかの順番を決めるだけで、異常なインスタンスの終了は止めない。",
+        "EC2 の終了保護は、人が手で（コンソールや API で）終了するのを防ぐもの。Auto Scaling による終了は防げない（Auto Scaling 側で守るのはスケールイン保護だが、これも異常による入れ替えは止めない）。",
+        "別の手として、ライフサイクルフック（終了の前に待機させる）で、終了前にログを集める方法もある。",
+        "4-33 は1周目✕ → 2周目○ → 3周目は B（EC2 の終了保護）を選んで✕。"
+      ],
+      "cards": [
+        "xc21",
+        "co06"
+      ],
+      "tags": [
+        "Auto Scaling",
+        "プロセスの一時停止",
+        "終了保護",
+        "ヘルスチェック",
+        "Session Manager"
+      ]
     }
   ],
   "terms": [
