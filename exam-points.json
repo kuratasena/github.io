@@ -7026,6 +7026,36 @@
         "エンドポイントポリシー",
         "Kinesis"
       ]
+    },
+    {
+      "id": "p336",
+      "field": "security",
+      "service": "EventBridge・CloudTrail",
+      "date": "2026-11-19",
+      "title": "「API が呼ばれたら（例：IAM ユーザーが作られたら）すぐ自動で対処＋人に通知」→ EventBridge ルール（AWS API Call via CloudTrail）→ Step Functions / Lambda で修正、SNS で通知",
+      "power": "CloudTrail は記録係、EventBridge は見張り番",
+      "summary": "CloudTrail が記録した API の呼び出し（CreateUser など）は EventBridge に流れてくるので、detail-type「AWS API Call via CloudTrail」と eventName でルールを作れば、その瞬間に Lambda や Step Functions で自動修正し、SNS で担当者に知らせられる。CloudTrail 自体の SNS 通知は「ログファイルを S3 に置いた」ことを知らせるだけで、特定の API を選んで知らせたり、修正を動かしたりはできない。",
+      "body": [
+        "流れ：IAM ユーザー作成（CreateUser）→ CloudTrail が記録 → EventBridge のルールに一致 → ① Step Functions（中で Lambda がアクセス権を外す）② SNS でセキュリティチームに通知。",
+        "CloudTrail の SNS 通知は、ログファイルが S3 に届くたびに来る「配達のお知らせ」。どの API かで絞れないし、修正の処理も動かせない（B のワナ）。",
+        "アクセス権を外すような短い処理は Lambda（＋流れをまとめるなら Step Functions）。ECS on Fargate でコンテナを起動するのはやりすぎ（C）。",
+        "CloudWatch ダッシュボードは人が見に行くもので、「通知を受ける」にならない（F）。",
+        "4-41 は1周目✕ → 2周目○ → 3周目は A・B・E を選んで✕（D を取りこぼし）。"
+      ],
+      "cards": [
+        "i03",
+        "mg02",
+        "i07",
+        "i05"
+      ],
+      "tags": [
+        "EventBridge",
+        "CloudTrail",
+        "Step Functions",
+        "Lambda",
+        "SNS",
+        "自動修復"
+      ]
     }
   ],
   "terms": [
