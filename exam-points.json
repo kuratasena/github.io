@@ -7300,6 +7300,32 @@
         "JSONL",
         "生成 AI"
       ]
+    },
+    {
+      "id": "p342",
+      "field": "storage",
+      "service": "FSx for Windows File Server",
+      "date": "2026-11-19",
+      "title": "Windows の EC2 を複数 AZ に並べ、同じ中身を共有し、AD 参加と Windows ACL で守るなら FSx for Windows File Server（マルチ AZ）。EFS は Linux 用、FSx for Lustre は HPC 用",
+      "power": "Windows の共有フォルダーは FSx for Windows。EFS と Lustre は Linux の仲間",
+      "summary": "複数の Windows の EC2 が同じファイルを見る共有ストレージは、FSx for Windows File Server（SMB）。Active Directory に参加でき、Windows の ACL（NTFS のアクセス権）でファイルごとに守れる。マルチ AZ にすれば高可用で耐久性も高い。EC2 はシームレスなドメイン参加で AD に入れ、Auto Scaling で複数 AZ に3台以上。",
+      "body": [
+        "共有ファイルシステムの選び分け：Windows（SMB・AD・ACL）→ FSx for Windows File Server。Linux（NFS）→ EFS。HPC・機械学習の高速な一時領域（S3 と連携）→ FSx for Lustre。NetApp の機能や NFS と SMB の両方 → FSx for NetApp ONTAP。",
+        "EBS は基本1台の EC2 にしか付けられない（マルチアタッチは同じ AZ の一部の io1/io2 だけ）ので、「全部のインスタンスで同じ中身」には使えない。",
+        "シームレスなドメイン参加：EC2 の起動時に、AWS Managed Microsoft AD などに自動で参加させる設定。ユーザーデータで自分で参加の処理を書くより手間が少ない。",
+        "4-63 は1〜3周目すべて○。"
+      ],
+      "cards": [
+        "st04"
+      ],
+      "tags": [
+        "FSx for Windows File Server",
+        "EFS",
+        "FSx for Lustre",
+        "Active Directory",
+        "Windows ACL",
+        "共有ストレージ"
+      ]
     }
   ],
   "terms": [
