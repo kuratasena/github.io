@@ -388,7 +388,10 @@
       ]
     },
     {
-      "id": "p032", "field": "storage", "service": "S3（ストレージクラス・コスト）", "date": "2026-10-09",
+      "id": "p032",
+      "field": "storage",
+      "service": "S3（ストレージクラス・コスト）",
+      "date": "2026-10-09",
       "title": "アクセスが減る時期が分かっているならライフサイクルポリシー",
       "power": "分析は身軽に、保管は冷凍庫に",
       "summary": "アクセスが減る時期が分かっているならライフサイクルポリシーで移す。使われ方が読めないときだけ Intelligent-Tiering。",
@@ -396,10 +399,19 @@
         "ライフサイクルポリシーは、「作ってから〇日たったら、安い保存場所へ移す」と自動で設定できる機能です。",
         "半年以上ほとんど使わず、ずっと保管するデータなら、一番安い Glacier Deep Archive に移します。",
         "いつ使われるか予想できないときだけ、Intelligent-Tiering（使われ方に合わせて自動で置き場所を変える保存クラス）を使います。",
-        "Glacier Deep Archive に移したデータは、Athena で直接検索できません。先に取り出す（復元する）必要があります。"
+        "Glacier Deep Archive に移したデータは、Athena で直接検索できません。先に取り出す（復元する）必要があります。",
+        "逆に「多くは30日で読まれなくなるが、人気のものは30日後もよく読まれる」のように、オブジェクトごとに読まれ方がバラバラで予測できないなら S3 Intelligent-Tiering（4-7、1〜3周目すべて○）。読まれ方に合わせて自動で層を移し、どの層でもミリ秒で取り出せる。30日で一律に Glacier Deep Archive に移すと、人気の動画も取り出しに数時間かかる。Cache-Control ヘッダーは CloudFront のキャッシュの話で、S3 の保存料金は下がらない。"
       ],
-      "cards": ["xt03", "xt02", "xt01"],
-      "tags": ["S3 ライフサイクル", "Glacier Deep Archive", "Intelligent-Tiering"]
+      "cards": [
+        "xt03",
+        "xt02",
+        "xt01"
+      ],
+      "tags": [
+        "S3 ライフサイクル",
+        "Glacier Deep Archive",
+        "Intelligent-Tiering"
+      ]
     },
     {
       "id": "p033", "field": "storage", "service": "FSx・EFS", "date": "2026-10-10",
