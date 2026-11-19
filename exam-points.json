@@ -734,7 +734,8 @@
         "見分け方：「ずっと動かしている」＋「たまにしか使わない」＋「データは小〜中」→ サーバーレス（Athena）。「ペタバイト級」「複雑な ETL や ML」→ EMR。「毎日大量の BI・決まった集計」→ Redshift。",
         "ワナ：EMR の動的スケーリング。ノードを増減しても、プライマリなどクラスターはずっと動いているので、使わない時間の料金が残る。",
         "ワナ：Redshift（Spectrum を含む）。クラスターを持ち続けるので、夜中だけの分析にはコストが高い。",
-        "補足：Athena では Spark も動かせる（Athena for Apache Spark）。EMR Serverless も選択肢になる。"
+        "補足：Athena では Spark も動かせる（Athena for Apache Spark）。EMR Serverless も選択肢になる。",
+        "4-16（1周目・2周目○ → 3周目は B を選んで✕）：S3 のデータを「最もコスト効率よく」クエリするなら、Glue Data Catalog ＋ Athena（使った分だけ、サーバーなし）。Redshift Spectrum は S3 を直接読めるが、Redshift クラスター（またはサーバーレスのワークグループ）が前提で、まだ Redshift を持っていない会社には高くつく。OpenSearch は常に動くドメインにデータを入れるので、ほとんど読まれないデータには高い。後半の保存先は、半年以上読まれず・無期限に保持なら Glacier Deep Archive（Intelligent-Tiering は「時期がわからない」とき）。"
       ],
       "cards": [
         "a01",
