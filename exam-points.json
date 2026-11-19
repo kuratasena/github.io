@@ -777,7 +777,10 @@
       "tags": ["IoT Core", "Athena", "QuickSight"]
     },
     {
-      "id": "p090", "field": "ml", "service": "AI サービス", "date": "2026-10-09",
+      "id": "p090",
+      "field": "ml",
+      "service": "AI サービス",
+      "date": "2026-10-09",
       "title": "AI は自作せず既製品を使う",
       "power": "読むなら Textract、理解するなら Comprehend、見るなら Rekognition",
       "summary": "AI は自作せず既製品：読むなら Textract、文章を理解するなら Comprehend、画像・動画を見るなら Rekognition。",
@@ -785,10 +788,21 @@
         "手書きの文字、スキャンした書類、申込用紙などを読み取るなら Textract です。",
         "文章から感情（ポジティブかネガティブか）や重要な言葉を取り出すなら Comprehend です。",
         "画像や動画に写っている物や人を見分けるなら Rekognition です。",
-        "SageMaker、EC2、EKS で自分でモデルを作る選択肢は、運用の手間が大きいので不正解になりやすいです。"
+        "SageMaker、EC2、EKS で自分でモデルを作る選択肢は、運用の手間が大きいので不正解になりやすいです。",
+        "4-18（1周目✕ → 2周目○ → 3周目○。3周目で選択肢が新しくなり、Textract＋Comprehend の代わりに Bedrock Data Automation になった）：手書きの作文のスキャン画像から文字を取り出して項目ごとに整理し、別システムの API に送る作業を自動化、運用は最小 → Bedrock Data Automation（文書・画像・音声・動画から文字や項目を取り出すマネージド機能。モデルの学習もホストも不要）＋ 流れは Step Functions。OCR のライブラリを自作して EKS に載せる、EC2 や SageMaker AI で OCR モデルを学習・ホストする、はどれも自作で運用が重い。ElastiCache は結果の保存先に向かない（一時的なキャッシュ）。"
       ],
-      "cards": ["ml09", "ml01", "ml07"],
-      "tags": ["Textract", "Comprehend", "Rekognition"]
+      "cards": [
+        "ml09",
+        "ml01",
+        "ml07",
+        "xl09",
+        "i07"
+      ],
+      "tags": [
+        "Textract",
+        "Comprehend",
+        "Rekognition"
+      ]
     },
     {
       "id": "p100", "field": "cost", "service": "サイズ最適化", "date": "2026-10-09",
@@ -7283,6 +7297,7 @@
     {"id": "xl05", "term": "Amazon Bedrock AgentCore Gateway", "cat": "ml", "desc": "既存の API（OpenAPI、Smithy）や Lambda、MCP サーバーを、MCP のツールとしてまとめて公開するマネージドの窓口。インバウンド認証とアウトバウンド認証を受け持ち、セマンティック検索で多数のツールから合うものを探せる。MCP サーバーを自作しなくてよい。"},
     {"id": "xl06", "term": "Amazon Bedrock AgentCore Identity", "cat": "ml", "desc": "エージェントが外部の API やサービスを使うときの認証情報（API キー、OAuth のトークン）を預かって管理する機能。AgentCore Gateway のアウトバウンド認証で使われ、鍵の管理を1か所にまとめられる。"},
     {"id": "xl07", "term": "Amazon Bedrock ガードレール", "cat": "ml", "desc": "生成 AI の入力と出力を検査して、有害な内容の遮断（コンテンツフィルター）、個人情報のマスキング（機密情報フィルター）、話題の禁止（拒否トピック）などを行う設定。バージョンを発行して複数のアプリから同じ識別子で使える。Control Tower の「ガードレール」とは別物。"},
-    {"id": "xl08", "term": "ApplyGuardrail API", "cat": "ml", "desc": "モデルを呼ばずに Bedrock ガードレールだけを実行する API。入力（INPUT）や出力（OUTPUT）のテキストを渡すと、ブロックするか・マスクした結果を返す。SageMaker AI や自社のモデルなど、Bedrock の外のモデルにも同じガードレールを使える。"}
+    {"id": "xl08", "term": "ApplyGuardrail API", "cat": "ml", "desc": "モデルを呼ばずに Bedrock ガードレールだけを実行する API。入力（INPUT）や出力（OUTPUT）のテキストを渡すと、ブロックするか・マスクした結果を返す。SageMaker AI や自社のモデルなど、Bedrock の外のモデルにも同じガードレールを使える。"},
+    {"id": "xl09", "term": "Amazon Bedrock Data Automation", "cat": "ml", "desc": "文書・画像・音声・動画などの形の決まっていないデータから、文字や決めた項目（氏名・ID・本文など）を取り出して、構造化された形で返すマネージド機能。モデルを学習させたり置いたりする必要がない。手書きのスキャン画像の読み取り（OCR）にも使える。"}
   ]
 }
