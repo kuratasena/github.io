@@ -553,17 +553,29 @@
       "tags": ["DocumentDB", "互換サービス"]
     },
     {
-      "id": "p042", "field": "database", "service": "DynamoDB", "date": "2026-10-09",
+      "id": "p042",
+      "field": "database",
+      "service": "DynamoDB",
+      "date": "2026-10-09",
       "title": "複数リージョンに広げるときの定番セット",
       "power": "S3 は CRR、DynamoDB はグローバル、入口は CloudFront",
       "summary": "マルチリージョンの定番：S3 は CRR、DynamoDB はグローバルテーブル、Aurora は Global Database。",
       "body": [
         "別のリージョンにデータを複製するには、S3 はクロスリージョンレプリケーション（CRR）、DynamoDB はグローバルテーブル、Aurora は Global Database を使います。",
         "同じリージョンの中で複製しても、複数リージョン化にはなりません。",
-        "DynamoDB の複製に DMS（データベース移行サービス）を使う方法は、手間が多いので不正解になりやすいです。"
+        "DynamoDB の複製に DMS（データベース移行サービス）を使う方法は、手間が多いので不正解になりやすいです。",
+        "4-59（1周目○ → 2周目○ → 3周目○）：世界中のゲームで S3 のアセットと DynamoDB のプレイヤー情報を複数リージョンに＋信頼性 → 新しいリージョンに S3 バケットを作って CRR、CloudFront にその2つのバケットをオリジングループ（オリジンフェイルオーバー）で登録、DynamoDB はグローバルテーブルにレプリカを追加。「同じリージョン内のレプリケーション（SRR）」ではリージョン障害に効かない。DynamoDB を DMS でつなぐのは手作り（グローバルテーブルがある）。"
       ],
-      "cards": ["xd02", "xt04", "xd05"],
-      "tags": ["DynamoDB グローバルテーブル", "S3 CRR", "マルチリージョン"]
+      "cards": [
+        "xd02",
+        "xt04",
+        "xd05"
+      ],
+      "tags": [
+        "DynamoDB グローバルテーブル",
+        "S3 CRR",
+        "マルチリージョン"
+      ]
     },
     {
       "id": "p050",
