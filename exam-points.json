@@ -3896,7 +3896,10 @@
       ]
     },
     {
-      "id": "p214", "field": "analytics", "service": "Kinesis", "date": "2026-10-30",
+      "id": "p214",
+      "field": "analytics",
+      "service": "Kinesis",
+      "date": "2026-10-30",
       "title": "「ミリ秒で遅延なく」なら Kinesis Data Streams。Firehose はためてから届けるので即時には向かない",
       "power": "Data Streams は流れるそうめん（すぐ取れる）。Firehose は宅配便（ある程度たまったらまとめて配達）",
       "summary": "IoT データをミリ秒単位で処理して即可視化 → IoT Core → Kinesis Data Streams →（Lambda など）→ OpenSearch Service ＋ Dashboards。Firehose はバッファリング（OpenSearch 宛ては初期値300秒）するので「数ミリ秒以内」には不向き。",
@@ -3904,10 +3907,23 @@
         "「リアルタイム」「ミリ秒」「遅延なく」と出たら Kinesis Data Streams です。データが届いたらすぐ（ミリ秒単位で）読み出せます。読み出して OpenSearch などに書き込むのは、Lambda などの受け取り役（コンシューマー）です。",
         "Amazon Data Firehose は、データをためてからまとめて届ける配送サービスです。OpenSearch に送る場合、初期設定では最大300秒ためてから送ります。サーバー管理なしで S3・Redshift・OpenSearch へ届けられて楽ですが、「数ミリ秒以内」には向きません。",
         "「近いうちに届けば OK」「設定だけで S3 や Redshift に保存したい」なら Firehose、「すぐ処理したい」「自分で処理を書きたい」なら Data Streams、と使い分けます。",
-        "IoT のデータの入口は IoT Core、検索と可視化は OpenSearch Service ＋ OpenSearch Dashboards が定番の組み合わせです。Neptune（つながりを扱うグラフ DB）や DocumentDB は、センサーデータの即時の可視化には合いません。"
+        "IoT のデータの入口は IoT Core、検索と可視化は OpenSearch Service ＋ OpenSearch Dashboards が定番の組み合わせです。Neptune（つながりを扱うグラフ DB）や DocumentDB は、センサーデータの即時の可視化には合いません。",
+        "逆パターン 4-38（1周目・2周目・3周目とも✕。3周目は B（Kinesis Data Streams＋Lambda）と D を選んだ）：JSON のログを「ほぼリアルタイム」に監視・分析・可視化、しかも「運用オーバーヘッドを抑える」→ Data Firehose（組み込みの Lambda で変換）→ OpenSearch Service ＋ Dashboards。Firehose はバッファを0秒から設定できるので数秒以内の配信ができ、シャードの管理も要らない。Kinesis Data Streams＋Lambda はシャードの数を決めて管理するうえ、OpenSearch へ書き込む処理も Lambda に自分で書くことになる。見分け方：「ミリ秒」「即時」→ Kinesis Data Streams、「ほぼリアルタイム」「運用を抑える」「届け先が S3・Redshift・OpenSearch」→ Firehose。Aurora＋QuickSight、Neptune（グラフ DB）＋QuickSight はログの監視に向かない。"
       ],
-      "cards": ["xa05", "a06", "a03", "a10", "io01"],
-      "tags": ["Kinesis Data Streams", "Data Firehose", "OpenSearch", "IoT Core", "リアルタイム"]
+      "cards": [
+        "xa05",
+        "a06",
+        "a03",
+        "a10",
+        "io01"
+      ],
+      "tags": [
+        "Kinesis Data Streams",
+        "Data Firehose",
+        "OpenSearch",
+        "IoT Core",
+        "リアルタイム"
+      ]
     },
     {
       "id": "p215", "field": "database", "service": "DynamoDB", "date": "2026-10-31",
