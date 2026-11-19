@@ -7325,7 +7325,8 @@
         "共有ファイルシステムの選び分け：Windows（SMB・AD・ACL）→ FSx for Windows File Server。Linux（NFS）→ EFS。HPC・機械学習の高速な一時領域（S3 と連携）→ FSx for Lustre。NetApp の機能や NFS と SMB の両方 → FSx for NetApp ONTAP。",
         "EBS は基本1台の EC2 にしか付けられない（マルチアタッチは同じ AZ の一部の io1/io2 だけ）ので、「全部のインスタンスで同じ中身」には使えない。",
         "シームレスなドメイン参加：EC2 の起動時に、AWS Managed Microsoft AD などに自動で参加させる設定。ユーザーデータで自分で参加の処理を書くより手間が少ない。",
-        "4-63 は1〜3周目すべて○。"
+        "4-63 は1〜3周目すべて○。",
+        "4-68（1周目○ → 2周目○ → 3周目○）：WorkSpaces のユーザープロファイルを置いた FSx for Windows（1TiB）がいっぱいで新しいセッションが張れない。今を直して再発も防ぐ → update-file-system --storage-capacity で容量を増やし、CloudWatch の FreeStorageCapacity を見張って、減ったら EventBridge → Lambda で自動で増やす。FSx for Windows の容量は止めずに増やせる（減らすことはできない。増やしたあと次に増やせるまで6時間ほど空ける必要がある）。古いプロファイルを消す（A・D）は一時しのぎ。FSx for Lustre（A）は Windows のプロファイル置き場に向かない。Step Functions（C）は1回の容量アップにはおおげさ。"
       ],
       "cards": [
         "st04"
