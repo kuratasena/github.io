@@ -7502,6 +7502,35 @@
         "ECR",
         "カスタムランタイム"
       ]
+    },
+    {
+      "id": "p346",
+      "field": "compute",
+      "service": "Outposts・Wavelength・Local Zones",
+      "date": "2026-11-20",
+      "title": "「データは院内（自社の建物）から出せない」＋「AWS と同じ API・ツールで VPC と一体運用」なら AWS Outposts。Bedrock はリージョンの VPC インターフェイスエンドポイントへサービスリンク経由で閉域に呼ぶ",
+      "power": "Outposts は AWS の出張所を自社の建物の中に置くもの。Wavelength は通信会社の建物、Local Zones は AWS の小さな支店",
+      "summary": "Outposts は AWS のラック（EC2・EBS・S3 on Outposts など）を自社のデータセンターに置き、親リージョンの VPC のサブネットとして使う。データは建物から出さず、Bedrock などリージョンのサービスはインターフェイスエンドポイント（PrivateLink）経由でインターネットを通らずに呼べる。Wavelength・Local Zones は自社の外、TLS でパブリックエンドポイントは閉域ではない、S3 に移すのは持ち出し。",
+      "body": [
+        "AWS Outposts：AWS が自社のデータセンターにラックを設置して運用してくれる。中の EC2・EBS・S3 on Outposts は、リージョンと同じ API・コンソール・ツールで使える。Outposts のサブネットは親リージョンの VPC の一部になる。",
+        "Outposts と親リージョンは「サービスリンク」という専用の接続（Direct Connect や VPN）でつながる。リージョンの VPC にある Bedrock のインターフェイスエンドポイントにも、この経路で届くので、インターネットを通らない。",
+        "似たもの：Wavelength ゾーン＝通信会社の 5G の拠点（スマホ向けの超低遅延）。Local Zones＝大都市にある AWS の小さな拠点（近くのユーザー向けの低遅延）。どちらも自社の建物の外なので「データを院内・社内に置く」は満たさない。",
+        "5-6（新しい問題）：大学病院、患者データは院内から出せない、推論だけ Bedrock へ閉域で、院内アプリを AWS と同じ API で VPC と一体運用 → Outposts にストレージとアプリを置き、親リージョンの VPC の Bedrock インターフェイスエンドポイント経由で推論。✕：Wavelength（通信会社の施設＝院外）、パブリックエンドポイントに TLS（暗号化してもインターネット経由）、S3 に転送（院外に保管）。",
+        "見分け方：「データを社内（院内・工場内）に置く」「AWS と同じ API・ツール」「VPC と一体」→ Outposts。「5G」「モバイル端末に超低遅延」→ Wavelength。「特定の都市のユーザーに低遅延」→ Local Zones。"
+      ],
+      "cards": [
+        "co10",
+        "co11",
+        "nw05"
+      ],
+      "tags": [
+        "Outposts",
+        "Wavelength",
+        "Bedrock",
+        "インターフェイスエンドポイント",
+        "閉域",
+        "データの所在"
+      ]
     }
   ],
   "terms": [
