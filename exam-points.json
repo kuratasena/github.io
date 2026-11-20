@@ -1415,7 +1415,8 @@
         "Migration Evaluator で今のサーバー情報を集め、Quick Insights レポートを出すと、オンプレミスと AWS の費用を比べられます。",
         "Pricing Calculator は AWS の料金だけを見積もるもので、オンプレミスとの比較はしません。DMS や Application Migration Service は移行の実行用で、TCO は出ません。",
         "【3周目 3-2（2026-11-18）】EKS＋RDS への移行前に TCO（オンプレとの比較）→ Migration Evaluator（Collector でデータを集めて Quick Insights レポート）。DMS・Pricing Calculator・MGN・Cost and Usage Report は TCO の比較をしない。",
-        "【3周目 5-7（2026-11-20）】初めての AWS、CMDB のエクスポートからリソースとコストを予測して一番安い移行方法を提案 → Migration Evaluator（データインポートテンプレートで CMDB を取り込む）。Well-Architected Tool は AWS 上のワークロードのレビュー、Price List Bulk API は値段表を手で突き合わせる手作業、Application Discovery Service はサーバーの依存関係の調査で、コスト予測まではしない。"
+        "【3周目 5-7（2026-11-20）】初めての AWS、CMDB のエクスポートからリソースとコストを予測して一番安い移行方法を提案 → Migration Evaluator（データインポートテンプレートで CMDB を取り込む）。Well-Architected Tool は AWS 上のワークロードのレビュー、Price List Bulk API は値段表を手で突き合わせる手作業、Application Discovery Service はサーバーの依存関係の調査で、コスト予測まではしない。",
+        "【3周目 5-23（2026-11-20）】買収した会社のサーバーの一覧や資料がなく、全体像がつかめない → まず調べる3点セット：Migration Evaluator（サーバーの一覧とコスト）、Migration Hub（ポートフォリオをまとめて見る）、Application Discovery Service（アプリの依存関係）。✕：MGN・DMS（実際に移す道具で、調べる段階ではない）、AWS Config で依存関係（Config は AWS 上のリソースの設定を記録するもので、オンプレは見ない）、Storage Gateway で評価（ハイブリッドのストレージで評価はしない）、Control Tower でポートフォリオ（アカウントの土台作りで、移行の評価はしない）。"
       ],
       "cards": [
         "xg01",
@@ -1425,7 +1426,9 @@
         "Migration Evaluator",
         "TCO",
         "Quick Insights",
-        "CMDB"
+        "CMDB",
+        "Migration Hub",
+        "Application Discovery Service"
       ]
     },
     {
