@@ -6691,7 +6691,8 @@
         "S3 Transfer Acceleration はレプリケーションの時間を保証しない。15分以内の保証は S3 RTC（2-51）。",
         "DeletionPolicy: Delete でも中身の残ったバケットは消せない。中身を空にするカスタムリソース（Lambda）を使う（2-28）。",
         "Compute Optimizer に「毎週エクスポート」の設定はない。EventBridge のスケジュール＋Lambda で API を呼ぶ（3-54）。",
-        "ALB のリダイレクトは1つずつのルール。大量のドメインを一覧で振り分けるなら CloudFront＋Lambda@Edge（3-28）。"
+        "ALB のリダイレクトは1つずつのルール。大量のドメインを一覧で振り分けるなら CloudFront＋Lambda@Edge（3-28）。",
+        "5-69（2周目 A・B・F、3周目 C・E・F で✕。正解は A・C・E）：たくさんのアプリが同じ Kinesis Data Streams を読み、ReadProvisionedThroughputExceeded（読み取りの枠オーバー）→ シャードを増やす（A、ストリーム全体の枠が増える）、拡張ファンアウト（C、読む側ごとに専用の枠）、読む側に再試行＋指数バックオフ（E）。✕：KPL（書く側のライブラリ）、シャードを減らす（悪化）、動的パーティショニング（Data Firehose の S3 出力の機能で、Kinesis Data Streams にはない）。2回とも F を選んだ。"
       ],
       "cards": [
         "co08",
@@ -6713,7 +6714,9 @@
         "2周目の弱点",
         "できないこと",
         "サーバーレス",
-        "データ"
+        "データ",
+        "ReadProvisionedThroughputExceeded",
+        "動的パーティショニング"
       ]
     },
     {
