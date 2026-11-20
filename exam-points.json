@@ -7297,7 +7297,8 @@
         "Config ルール＋Lambda の自動修正＋StackSets で WAF を配る（B）は、Firewall Manager が1つでやることを3つの部品で手作りしている。",
         "Lambda の環境変数にアカウントを書いて、STS でロールを引き受けて各アカウントの WAF を作る（C）も手作り。Control Tower（D）は環境の土台とガードレールの話で、WAF ルールは配らない。KMS はアカウントの一覧を置く場所ではなく、メンバーアカウントに IAM ユーザーとアクセスキーを作るのもよくない。",
         "3-44（Firewall Manager の SG ポリシー）、3-65（SSH の制限は Firewall Manager ではなく Session Manager）も合わせて覚える。",
-        "4-34 は1周目○ → 2周目は B（Config＋Lambda＋StackSets）で✕ → 3周目○。"
+        "4-34 は1周目○ → 2周目は B（Config＋Lambda＋StackSets）で✕ → 3周目○。",
+        "5-48（3周目 A・D・E を選んで✕、正解は A・C・D）：組織の既存・新規の全 CloudFront に OWASP トップ10の対策を一元的に → Firewall Manager で WAF ルールを配る（D）＋その前提の2つ：Organizations の「すべての機能」を有効（C）、全アカウントで AWS Config を有効（A）。Firewall Manager の前提は「Organizations のすべての機能」「Config」「管理者アカウントの指定」の3つ。✕：Shield Advanced（DDoS 対策で OWASP の脆弱性は対象外）、CloudWatch Logs（記録と分析で、防がない）、Security Hub で WAF ルールを配る（Security Hub は状態をまとめて見るだけで配れない）。"
       ],
       "cards": [
         "sc08",
@@ -7309,7 +7310,9 @@
         "WAF",
         "Organizations",
         "自動修復",
-        "Config"
+        "Config",
+        "Firewall Manager の前提",
+        "OWASP"
       ]
     },
     {
