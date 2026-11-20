@@ -8058,7 +8058,9 @@
         "5-56（2周目○ → 3周目○）：.NET＋SQL Server を再設計せずに AWS へ、マネージド、スケール時のライセンス費用を最小 → Web・アプリ層は EC2 の ASG＋ALB、DB は Babelfish の Aurora PostgreSQL（A）。✕：DMS でサーバーのイメージ（DMS は DB の移行用）＋DynamoDB（作り直し）＋NLB、EKS（Kubernetes の運用）＋RDS for SQL Server（ライセンス代が残る）、Lambda＋S3＋Athena（作り直し、Athena は業務の DB の代わりにならない）。",
         "見分け方：「SQL Server」＋「ライセンス費用を下げる」＋「アプリを変えない」→ Babelfish。"
       ],
-      "cards": [],
+      "cards": [
+        "xd38"
+      ],
       "tags": [
         "Babelfish",
         "Aurora PostgreSQL",
