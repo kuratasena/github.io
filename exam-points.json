@@ -8043,6 +8043,29 @@
         "信頼ポリシー",
         "トラブルシューティング"
       ]
+    },
+    {
+      "id": "p359",
+      "field": "database",
+      "service": "Aurora・RDS",
+      "date": "2026-11-20",
+      "title": "SQL Server のアプリを作り直さずに、ライセンス費用を下げたい → Babelfish を有効にした Aurora PostgreSQL（SQL Server の言葉のまま話せる）",
+      "power": "Babelfish は通訳。アプリは SQL Server のつもりで話し、中身は安い PostgreSQL",
+      "summary": "Babelfish for Aurora PostgreSQL は、SQL Server の通信方式（TDS）と SQL の書き方（T-SQL）を理解する互換レイヤー。アプリをほとんど変えずに SQL Server から Aurora PostgreSQL へ移れ、SQL Server のライセンス代がなくなる。RDS for SQL Server はマネージドだがライセンス代は残る。DynamoDB や S3＋Athena に変えるのは作り直し。",
+      "body": [
+        "Babelfish：Aurora PostgreSQL に SQL Server 用の入口を足す機能。アプリの接続先を変えるだけで、多くのクエリはそのまま動く。",
+        "ライセンス：SQL Server はコア数に応じてライセンス代がかかるので、台数・サイズが増えるほど高くなる。PostgreSQL はライセンス代がない。",
+        "5-56（2周目○ → 3周目○）：.NET＋SQL Server を再設計せずに AWS へ、マネージド、スケール時のライセンス費用を最小 → Web・アプリ層は EC2 の ASG＋ALB、DB は Babelfish の Aurora PostgreSQL（A）。✕：DMS でサーバーのイメージ（DMS は DB の移行用）＋DynamoDB（作り直し）＋NLB、EKS（Kubernetes の運用）＋RDS for SQL Server（ライセンス代が残る）、Lambda＋S3＋Athena（作り直し、Athena は業務の DB の代わりにならない）。",
+        "見分け方：「SQL Server」＋「ライセンス費用を下げる」＋「アプリを変えない」→ Babelfish。"
+      ],
+      "cards": [],
+      "tags": [
+        "Babelfish",
+        "Aurora PostgreSQL",
+        "SQL Server",
+        "ライセンス",
+        "リプラットフォーム"
+      ]
     }
   ],
   "terms": [
