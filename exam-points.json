@@ -1447,7 +1447,10 @@
       ]
     },
     {
-      "id": "p115", "field": "strategy", "service": "要件の読み方", "date": "2026-10-13",
+      "id": "p115",
+      "field": "strategy",
+      "service": "要件の読み方",
+      "date": "2026-10-13",
       "title": "サービス名のすり替えに注意",
       "power": "名前は似ていても、使える相手が決まっている",
       "summary": "名前が似ていても、使える相手が決まっている。サービス名のすり替えに注意。",
@@ -1456,10 +1459,16 @@
         "Cluster Autoscaler は EKS 専用の機能です。ECS には使えません。",
         "RDS Proxy は RDS と Aurora 用です。オンプレミスのデータベースにはつなげません。",
         "ElastiCache には Auto Scaling グループを使えません。",
-        "選択肢のサービス名を見たら、「それは問題文の相手に使えるか？」を必ず確かめます。"
+        "選択肢のサービス名を見たら、「それは問題文の相手に使えるか？」を必ず確かめます。",
+        "5-72（2周目 A・3周目 C で✕）：ECS on Fargate の HTTPS サービス、ブルー/グリーン、CloudWatch アラームでタスク数を自動調整 → ブルー/グリーン＋ALB＋ECS の Service Auto Scaling（D）。Fargate にはノード（EC2）がないので Auto Scaling グループも Cluster Autoscaler（Kubernetes 用）も出番がない。増やすのは「タスクの数」＝ Service Auto Scaling。✕：NLB（HTTPS の中身を見て振り分ける ALB が向く）、クォータの引き上げ（自動で増減しない）、Cluster Autoscaler で ASG（EKS の EC2 ノード用）。"
       ],
       "cards": [],
-      "tags": ["解き方", "引っかけ"]
+      "tags": [
+        "解き方",
+        "引っかけ",
+        "Service Auto Scaling",
+        "ブルー/グリーン"
+      ]
     },
     {
       "id": "p023",
