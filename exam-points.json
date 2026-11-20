@@ -7574,7 +7574,9 @@
         "見分け方：保存場所（Parameter Store か Secrets Manager か）では決まらない。「AUTH か証明書か」と「新しいクラスターか既存か」の2点で選ぶ。"
       ],
       "cards": [
-        "xd39"
+        "xd39",
+        "db05",
+        "sc17"
       ],
       "tags": [
         "ElastiCache",
