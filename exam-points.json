@@ -7622,7 +7622,7 @@
         "似たもの：Wavelength ゾーン＝通信会社の 5G の拠点（スマホ向けの超低遅延）。Local Zones＝大都市にある AWS の小さな拠点（近くのユーザー向けの低遅延）。どちらも自社の建物の外なので「データを院内・社内に置く」は満たさない。",
         "5-6（新しい問題）：大学病院、患者データは院内から出せない、推論だけ Bedrock へ閉域で、院内アプリを AWS と同じ API で VPC と一体運用 → Outposts にストレージとアプリを置き、親リージョンの VPC の Bedrock インターフェイスエンドポイント経由で推論。✕：Wavelength（通信会社の施設＝院外）、パブリックエンドポイントに TLS（暗号化してもインターネット経由）、S3 に転送（院外に保管）。",
         "見分け方：「データを社内（院内・工場内）に置く」「AWS と同じ API・ツール」「VPC と一体」→ Outposts。「5G」「モバイル端末に超低遅延」→ Wavelength。「特定の都市のユーザーに低遅延」→ Local Zones。",
-        "5-37：データは自社の DC に・1桁ミリ秒の低遅延 → Outposts。ネットがつながりにくい遠くの工場で現地処理 → Snowball Edge Compute Optimized（ネットなしでも EC2 などが動く）。✕：近くのリージョン＋Direct Connect（データが社外へ出る・遅延も足りない）、Snowball Edge Storage Optimized（大量データの運搬用で計算向きではない）、Local Zones（AWS の拠点で自社の工場の中には置けない）、リージョンの EC2（工場のネットが不安定）。見分け方の追加：ネットが不安定・切れる現場で動かす → Snowball Edge（Compute Optimized）。"
+        "5-37（2周目○ → 3周目○）：データは自社の DC に・1桁ミリ秒の低遅延 → Outposts。ネットがつながりにくい遠くの工場で現地処理 → Snowball Edge Compute Optimized（ネットなしでも EC2 などが動く）。✕：近くのリージョン＋Direct Connect（データが社外へ出る・遅延も足りない）、Snowball Edge Storage Optimized（大量データの運搬用で計算向きではない）、Local Zones（AWS の拠点で自社の工場の中には置けない）、リージョンの EC2（工場のネットが不安定）。見分け方の追加：ネットが不安定・切れる現場で動かす → Snowball Edge（Compute Optimized）。"
       ],
       "cards": [
         "co10",
