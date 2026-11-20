@@ -953,7 +953,8 @@
         "Compute Optimizer は、EC2、EBS、Lambda などの使われ方を分析して、ちょうどいいサイズを提案してくれるサービスです。",
         "メモリの使用率も分析に使うなら、サーバーに CloudWatch エージェントを入れる必要があります。",
         "エンタープライズサポートに加入する選択肢は費用が高いので、コスト重視の問題では不正解になりやすいです。",
-        "5-19（2周目○ → 3周目○）：CPU・メモリ・ネットワークの使われ方から EC2 を適切なサイズに、多すぎ・足りないも自動で見つけたい → CloudWatch エージェントを入れてメモリを集め、Compute Optimizer で推奨を受け取る。メモリは標準では集まらない（CPU とネットワークは集まる）。✕：Enterprise Support（相談できるだけで自動で見つけない）、Trusted Advisor（使用率の低いインスタンスを知らせるだけでメモリを見ない・サイズの推奨も粗い）、EC2 Instance Savings Plans（割引で、サイズは変わらない）。"
+        "5-19（2周目○ → 3周目○）：CPU・メモリ・ネットワークの使われ方から EC2 を適切なサイズに、多すぎ・足りないも自動で見つけたい → CloudWatch エージェントを入れてメモリを集め、Compute Optimizer で推奨を受け取る。メモリは標準では集まらない（CPU とネットワークは集まる）。✕：Enterprise Support（相談できるだけで自動で見つけない）、Trusted Advisor（使用率の低いインスタンスを知らせるだけでメモリを見ない・サイズの推奨も粗い）、EC2 Instance Savings Plans（割引で、サイズは変わらない）。",
+        "5-70（2周目○ → 3周目○）：Organizations の数百アカウントで CPU・メモリの低い EC2 の一覧とダウンサイジングの推奨、最小の労力 → Systems Manager で全 EC2 に CloudWatch エージェント（メモリ用）、管理アカウントの Cost Explorer の「リソース最適化の推奨事項」（中身は Compute Optimizer と同じ）で組織全体をまとめて見る。✕：各アカウントで見る（手間）、Marketplace のツール＋Python、Lambda＋S3＋Athena（手作り）。お金・推奨の一覧は管理アカウントで（p140 と同じ）。"
       ],
       "cards": [
         "mg06",
@@ -964,7 +965,9 @@
         "Compute Optimizer",
         "CloudWatch エージェント",
         "CloudWatch エージェント",
-        "メモリ"
+        "メモリ",
+        "Cost Explorer",
+        "管理アカウント"
       ]
     },
     {
