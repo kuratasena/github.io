@@ -1561,7 +1561,10 @@
       ]
     },
     {
-      "id": "p123", "field": "network", "service": "VPN・Direct Connect", "date": "2026-10-13",
+      "id": "p123",
+      "field": "network",
+      "service": "VPN・Direct Connect",
+      "date": "2026-10-13",
       "title": "Direct Connect でほかのリージョンにも行くなら Direct Connect ゲートウェイ",
       "power": "DX ゲートウェイは全国（全リージョン）行きの乗り換え駅。線路（回線）を2本引けば冗長化",
       "summary": "Direct Connect で複数リージョンへ行くなら Direct Connect ゲートウェイ。冗長化するなら回線を2本。",
@@ -1570,10 +1573,20 @@
         "冗長化するときは、2本目の Direct Connect を用意し、それぞれにプライベート VIF を作って、両方を同じ DXGW につなぎます。1本が切れても、もう1本で通信が続きます。",
         "プライベート VIF を VPC（の仮想プライベートゲートウェイ）に直接つなぐと、その VPC と同じリージョンにしか行けません。",
         "Transit Gateway にプライベート VIF は直接つなげません。DXGW をはさんで、トランジット VIF でつなぎます。",
-        "パブリック VIF は S3 など AWS の公開サービス用で、VPC の中にはつながりません。"
+        "パブリック VIF は S3 など AWS の公開サービス用で、VPC の中にはつながりません。",
+        "5-47（2周目○ → 3周目○）：アジアの DC から1本の Direct Connect で3リージョンの EC2 へ、AWS のパブリックサービスにも → DX ゲートウェイで他リージョンの VPC へ（A）＋パブリック VIF を作り、その上で VPN（D）。パブリック VIF は S3 などの公開の入口（パブリック IP）に届く道で、VPN の入口もパブリック IP なのでパブリック VIF の上に VPN を張れる。✕：リージョンごとに Direct Connect を追加（高い）、プライベート VIF の上に VPN（プライベート VIF では AWS のパブリックサービスに届かない）、リージョン間ピアリング＋プライベート VIF（ピアリングは推移しないのでオンプレからピアリング先へは行けない）。"
       ],
-      "cards": ["xn06", "nw02"],
-      "tags": ["Direct Connect", "Direct Connect ゲートウェイ", "冗長化"]
+      "cards": [
+        "xn06",
+        "nw02"
+      ],
+      "tags": [
+        "Direct Connect",
+        "Direct Connect ゲートウェイ",
+        "冗長化",
+        "パブリック VIF",
+        "プライベート VIF"
+      ]
     },
     {
       "id": "p075",
