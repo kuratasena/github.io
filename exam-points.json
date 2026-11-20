@@ -3961,7 +3961,7 @@
         "Lambda の「予約同時実行」は、同時に動ける数を確保する設定で、割引ではありません。Lambda を安くするなら Compute Savings Plans です。",
         "負荷が一定の EC2 は EC2 Instance Savings Plans、変動する Lambda は「最低限使う分」だけ Compute Savings Plans、キャッシュは予約ノード、のようにサービスごとに一番合う割引を組み合わせます。",
         "5-1：EKS を EC2 で動かし、これから Fargate も使う → EC2 だけに効く EC2 Instance Savings Plans やスタンダード RI ではなく Compute Savings Plans。急なピークは EKS をスポットで増やす（Pod は別のノードに自動で移るので中断に強い）。RDS は1年の全額前払い RI が一番安く、ピークだけ手動でスケールアップ。オンデマンドキャパシティ予約は席を取るだけで割引にならない。",
-        "5-74：Organizations で EC2・Fargate・Lambda、予測できない需要、組織全体で節約を最大、管理は最小 → 管理アカウントで組織全体の Compute Savings Plans を、管理アカウントの推奨に従って買う（割引は組織内で共有される）。✕：RI（タイプに縛られる・EC2 だけ）、アカウントごとに RI（管理が大変）、EC2 Instance Savings Plans（Fargate・Lambda に効かない）。"
+        "5-74（2周目○ → 3周目○）：Organizations で EC2・Fargate・Lambda、予測できない需要、組織全体で節約を最大、管理は最小 → 管理アカウントで組織全体の Compute Savings Plans を、管理アカウントの推奨に従って買う（割引は組織内で共有される）。✕：RI（タイプに縛られる・EC2 だけ）、アカウントごとに RI（管理が大変）、EC2 Instance Savings Plans（Fargate・Lambda に効かない）。"
       ],
       "cards": [
         "xf06",
