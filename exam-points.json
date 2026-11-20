@@ -5147,7 +5147,8 @@
         "SNS と SQS の違い：SNS は「一斉に知らせる」（ためておけない、ファンアウト向け）。SQS は「列に並べて順番に処理」（ためておける、再試行できる）。処理の依頼をためるなら SQS。",
         "ワナ：EFS や EBS に動画を置き、EC2・ECS・ALB から配信する案。サーバーの管理が増え、EBS は1つの EC2 にしかつけられず広がらない。配信は CloudFront ＋ S3 が定番。",
         "注意：SQS の標準キューは「少なくとも1回」届ける（まれに2回届く）。「必ず1回だけ」は FIFO キュー。",
-        "4-24（1〜3周目すべて○）：遅い外部 SaaS の呼び出しを「疎結合・非同期にして、すべての呼び出しが最終的に完了することを保証」→ SQS にイベントをためて Lambda で処理（失敗したらキューに戻って再試行、何度もダメなら DLQ）。Step Functions は1回の呼び出しのリトライには大げさ（複数ステップの流れ向き）。EventBridge と SNS は「配る」役で、ためておく場所ではない。"
+        "4-24（1〜3周目すべて○）：遅い外部 SaaS の呼び出しを「疎結合・非同期にして、すべての呼び出しが最終的に完了することを保証」→ SQS にイベントをためて Lambda で処理（失敗したらキューに戻って再試行、何度もダメなら DLQ）。Step Functions は1回の呼び出しのリトライには大げさ（複数ステップの流れ向き）。EventBridge と SNS は「配る」役で、ためておく場所ではない。",
+        "5-29（2周目○ → 3周目 D で✕）：数百万の IoT デバイスが REST API でデータを送る、急なバースト、データを失わない → API Gateway（HTTP API）→ SQS（サービス統合）→ Lambda。API Gateway は受付、SQS はためて失わない、Lambda は自動で増える。✕：CloudFront のオリジンに Kinesis Data Streams（CloudFront のオリジンは HTTP のサーバーや S3 で、KDS は置けない）、ALB のターゲットに SQS（ALB のターゲットは EC2・IP・Lambda で、SQS は置けない）、API Gateway → EC2 の Auto Scaling（サーバー管理があり、ためる場所がないので急増で取りこぼす）。"
       ],
       "cards": [
         "i06",
@@ -5173,7 +5174,10 @@
         "DynamoDB WCU",
         "Lambda 同時実行",
         "SNS と SQS",
-        "CloudFront ＋ S3"
+        "CloudFront ＋ S3",
+        "API Gateway",
+        "サービス統合",
+        "IoT"
       ]
     },
     {
