@@ -2904,7 +2904,7 @@
         "5-50（2周目○ → 3周目○）：セール中に Aurora MySQL への同時接続が多すぎて遅い（ほとんどが挿入）、認証情報は設定ファイルに平文、自動ローテーションしたい → RDS Proxy＋Secrets Manager。✕：Parameter Store（安全に置けるが自動ローテーションの機能はない）、Aurora レプリカ（読み取り用で、書き込みと接続の多さには効かない）。",
         "5-55（2周目 B で✕ → 3周目○。ただし本人いわく「なんとなく」）：Lambda から RDS SQL Server、本番の認証情報は KMS のカスタマー管理キーで暗号化、定期ローテーション必須、アクセスはセキュリティチームだけ → Secrets Manager にシークレット（カスタマー管理キーで暗号化）、Lambda にはシークレットを読むロール。DB の認証情報＋ローテーション＝Secrets Manager。✕：Parameter Store の SecureString（暗号化はできるが自動ローテーションがない）、Lambda の環境変数（関数の設定を見られる人に漏れやすく、ローテーションのたびに全関数を更新）。",
         "5-59（2周目○ → 3周目 C で✕）：EC2 の SSH キーペアを自動でローテーション、暗号化して保管、ダウンタイム1分未満、いつでも手動でも → Secrets Manager に秘密鍵を保存し、ローテーションのスケジュールで Lambda を呼び、新しいキーペアを作って EC2 の公開鍵を差し替え、Secrets Manager の秘密鍵を更新（A）。Secrets Manager はパスワード以外の秘密（SSH キー・API キー）も、Lambda を使えば何でもローテーションできる。「今すぐローテーション」もできる。✕：KMS にキーペアをインポート（KMS はデータを暗号化する鍵の管理で、SSH のキーペアは扱えない。KMS の自動ローテーションは KMS 自身の鍵の話）、Parameter Store に文字列で（暗号化されず、ローテーション機能もない）、Fleet Manager（インスタンスを画面で管理する道具で、キーの保管場所ではない）。",
-        "5-63：オンプレの Oracle を AWS へ、DB のパスワードを毎年ローテーション、運用最小 → RDS for Oracle＋Secrets Manager の自動ローテーション（スケジュールを1年に）。✕：SCT で DynamoDB・Neptune に変換（作り直しで、Oracle のアプリに合わない）、EC2 に Oracle＋Parameter Store＋Lambda（サーバー管理とローテーションの手作り）、CloudWatch アラームで年1回 Lambda（アラームは時間で動かす仕組みではない。定期実行なら EventBridge のスケジュール）。"
+        "5-63（2周目○ → 3周目○）：オンプレの Oracle を AWS へ、DB のパスワードを毎年ローテーション、運用最小 → RDS for Oracle＋Secrets Manager の自動ローテーション（スケジュールを1年に）。✕：SCT で DynamoDB・Neptune に変換（作り直しで、Oracle のアプリに合わない）、EC2 に Oracle＋Parameter Store＋Lambda（サーバー管理とローテーションの手作り）、CloudWatch アラームで年1回 Lambda（アラームは時間で動かす仕組みではない。定期実行なら EventBridge のスケジュール）。"
       ],
       "cards": [
         "xd03",
