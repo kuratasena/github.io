@@ -5311,9 +5311,16 @@
         "Elastic Disaster Recovery（DRS）は、エージェントでサーバーを丸ごと（OS・アプリ・データ）継続的に複製します。RPO は秒単位、障害時は数分で AWS 上に起動できます。",
         "DRS は「フェイルバック」も AWS の機能として持っています。復旧したら、AWS で動いていたサーバーの変更を、オンプレの新しいサーバーや元のサーバーへ戻せます。「AWS ネイティブのフェイルオーバーとフェイルバック」と書かれていたら DRS です。",
         "全サーバーが使う NFS の共有は、EFS（NFS 対応の共有ファイルシステム）に置き、DataSync で RPO より短い間隔（10 分など）で複製します。起動した AWS 側のサーバーは EFS をマウントします。",
-        "6 時間ごとのバックアップは RPO 10 分に届きません。CloudFormation や CodePipeline で災害時に作り直す方法は時間がかかり RTO 20 分が危うく、15 分ごとの複製は RPO 10 分を超えます。アクティブ-アクティブのマルチサイトは要件に対して高すぎます。"
+        "6 時間ごとのバックアップは RPO 10 分に届きません。CloudFormation や CodePipeline で災害時に作り直す方法は時間がかかり RTO 20 分が危うく、15 分ごとの複製は RPO 10 分を超えます。アクティブ-アクティブのマルチサイトは要件に対して高すぎます。",
+        "5-18（2周目 D で✕ → 3周目○）：EC2＋ALB＋RDS MySQL を別リージョンに DR、アプリ層 RPO 2分・RTO 30分、DB 層 RPO 5分・RTO 30分、切り替え後も低遅延、構成は大きく変えない → EC2 は Elastic Disaster Recovery（秒単位で複製し続ける）、RDS はクロスリージョンリードレプリカ（障害時に昇格）、2番目のリージョンに ALB、Global Accelerator に両方の ALB を登録して DNS を GA に向ける。✕：DLM の EBS スナップショット（定期取得なので RPO 2分は無理）、RDS 自動バックアップや AWS Backup（復元に時間がかかる）、CloudFront（DR の切り替え役ではない）、DNS を GA に向けない（D は手順が抜けている）。"
       ],
-      "cards": ["st03", "xg11", "st04", "mi04", "xg06"],
+      "cards": [
+        "st03",
+        "xg11",
+        "st04",
+        "mi04",
+        "xg06"
+      ],
       "tags": [
         "Elastic Disaster Recovery",
         "フェイルバック",
@@ -5321,7 +5328,9 @@
         "EFS",
         "NFS",
         "RPO",
-        "RTO"
+        "RTO",
+        "クロスリージョンリードレプリカ",
+        "Global Accelerator"
       ]
     },
     {
