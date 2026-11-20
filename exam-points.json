@@ -4244,7 +4244,10 @@
       "tags": ["DataSync", "EFS", "NFS", "Direct Connect", "PrivateLink"]
     },
     {
-      "id": "p223", "field": "network", "service": "CloudFront", "date": "2026-11-01",
+      "id": "p223",
+      "field": "network",
+      "service": "CloudFront",
+      "date": "2026-11-01",
       "title": "ALB を CloudFront 経由だけにするなら、ALB のセキュリティグループで CloudFront のマネージドプレフィックスリストだけ許可",
       "power": "CloudFront の住所録（プレフィックスリスト）は AWS が書き換えてくれる。自分で写さない",
       "summary": "CloudFront の後ろの ALB に直接アクセスさせない ＋ 最小の労力 → ALB のセキュリティグループのインバウンドで com.amazonaws.global.cloudfront.origin-facing（AWS 管理のプレフィックスリスト）だけ許可。CloudFront にセキュリティグループは付けられない。ip-ranges.json の手作業は更新が大変。",
@@ -4252,10 +4255,21 @@
         "ALB へのアクセスを CloudFront 経由だけにするなら、ALB のセキュリティグループで、AWS が管理する CloudFront のプレフィックスリスト（com.amazonaws.global.cloudfront.origin-facing）からの通信だけを許可します。CloudFront の IP が変わっても AWS が自動で更新するので、手入れがいりません。",
         "CloudFront にはセキュリティグループを付けられません。「CloudFront にセキュリティグループを関連付ける」という選択肢は、できないことなので不正解です。",
         "ip-ranges.json から IP を抜き出してルールに書く方法は、IP が変わるたびに書き直す必要があり、手間がかかります。",
-        "さらに「自分の CloudFront だけ」に絞りたいときは、CloudFront からオリジンへ送るカスタムヘッダー（秘密の値）を設定し、ALB のリスナールールでそのヘッダーがあるときだけ通します（ほかの人の CloudFront からのアクセスも防げる）。"
+        "さらに「自分の CloudFront だけ」に絞りたいときは、CloudFront からオリジンへ送るカスタムヘッダー（秘密の値）を設定し、ALB のリスナールールでそのヘッダーがあるときだけ通します（ほかの人の CloudFront からのアクセスも防げる）。",
+        "5-11（2周目 B で✕ → 3周目○）：CloudFront に WAF のウェブ ACL がある構成で、インターネットから ALB への直接アクセスを防ぐ → ALB のセキュリティグループで CloudFront の AWS 管理プレフィックスリストだけ許可。✕：同じルールのウェブ ACL を ALB にも付ける・既存のウェブ ACL を ALB に付ける（WAF は中身を検査するだけで「CloudFront 経由か」は見ていない。しかも CloudFront 用のウェブ ACL はグローバル用なので、リージョンの ALB には付けられない）、CloudFront の IP 範囲を手で書く（変わるたびに更新が要る）。"
       ],
-      "cards": ["xn16", "nw01", "nw03"],
-      "tags": ["CloudFront", "ALB", "マネージドプレフィックスリスト", "セキュリティグループ"]
+      "cards": [
+        "xn16",
+        "nw01",
+        "nw03"
+      ],
+      "tags": [
+        "CloudFront",
+        "ALB",
+        "マネージドプレフィックスリスト",
+        "セキュリティグループ",
+        "WAF ウェブ ACL のスコープ"
+      ]
     },
     {
       "id": "p224", "field": "strategy", "service": "要件の読み方", "date": "2026-11-01",
