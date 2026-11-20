@@ -8101,6 +8101,27 @@
         "指数バックオフ",
         "DLQ"
       ]
+    },
+    {
+      "id": "p361",
+      "field": "strategy",
+      "service": "Amazon Managed Grafana",
+      "date": "2026-11-20",
+      "title": "EC2 1台の自前 Grafana を、ダッシュボードはそのままで高可用・メンテ最小に → Amazon Managed Grafana のワークスペースを作り、ダッシュボードをエクスポート → インポート、CloudWatch をデータソースに",
+      "power": "Grafana のまま、お守りは AWS に任せる（Managed Grafana）",
+      "summary": "Amazon Managed Grafana は Grafana を AWS が運用してくれるサービス（高可用・パッチ・スケールはおまかせ）。既存のダッシュボードは JSON でエクスポートしてインポートすれば使える。CloudWatch ダッシュボードに作り直すのは手間、EC2＋ASG＋EFS＋ALB で自前の高可用は運用が重い、毎時バックアップから復元はダウンタイム10分を超えうる。",
+      "body": [
+        "Amazon Managed Grafana：AWS が Grafana を動かし、可用性・更新・スケールを面倒みる。CloudWatch・Prometheus・X-Ray などをデータソースにできる。",
+        "Amazon Managed Service for Prometheus とセットで出ることも多い（メトリクスをためる側）。",
+        "5-62（2周目○ → 3周目○）：EC2 1台の Grafana が落ちた、既存のダッシュボードを残す、ダウンタイム10分以内、メンテ最小 → Managed Grafana にダッシュボードをインポート（B）。✕：CloudWatch ダッシュボードに作り直し（手間・同じ見た目にできない）、AMI＋EFS＋ASG（1台）＋ALB（自分で全部管理）、AWS Backup の毎時バックアップから復元（遅い）。",
+        "見分け方：「今の道具（Grafana・Kafka・MongoDB・Redis など）はそのまま」「運用は最小」→ その道具の AWS のマネージド版を選ぶ。"
+      ],
+      "cards": [],
+      "tags": [
+        "Managed Grafana",
+        "監視",
+        "マネージドサービス"
+      ]
     }
   ],
   "terms": [
