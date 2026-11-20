@@ -936,17 +936,30 @@
       ]
     },
     {
-      "id": "p100", "field": "cost", "service": "サイズ最適化", "date": "2026-10-09",
+      "id": "p100",
+      "field": "cost",
+      "service": "サイズ最適化",
+      "date": "2026-10-09",
       "title": "サイズ選びに迷ったら Compute Optimizer",
       "power": "サイズ選びは AI 仕立て屋におまかせ",
       "summary": "インスタンスのサイズ選びは Compute Optimizer。メモリも見るなら CloudWatch エージェントがセット。",
       "body": [
         "Compute Optimizer は、EC2、EBS、Lambda などの使われ方を分析して、ちょうどいいサイズを提案してくれるサービスです。",
         "メモリの使用率も分析に使うなら、サーバーに CloudWatch エージェントを入れる必要があります。",
-        "エンタープライズサポートに加入する選択肢は費用が高いので、コスト重視の問題では不正解になりやすいです。"
+        "エンタープライズサポートに加入する選択肢は費用が高いので、コスト重視の問題では不正解になりやすいです。",
+        "5-19（2周目○ → 3周目○）：CPU・メモリ・ネットワークの使われ方から EC2 を適切なサイズに、多すぎ・足りないも自動で見つけたい → CloudWatch エージェントを入れてメモリを集め、Compute Optimizer で推奨を受け取る。メモリは標準では集まらない（CPU とネットワークは集まる）。✕：Enterprise Support（相談できるだけで自動で見つけない）、Trusted Advisor（使用率の低いインスタンスを知らせるだけでメモリを見ない・サイズの推奨も粗い）、EC2 Instance Savings Plans（割引で、サイズは変わらない）。"
       ],
-      "cards": ["mg06", "xm05", "xm08"],
-      "tags": ["Compute Optimizer", "CloudWatch エージェント"]
+      "cards": [
+        "mg06",
+        "xm05",
+        "xm08"
+      ],
+      "tags": [
+        "Compute Optimizer",
+        "CloudWatch エージェント",
+        "CloudWatch エージェント",
+        "メモリ"
+      ]
     },
     {
       "id": "p110", "field": "strategy", "service": "要件の読み方", "date": "2026-10-09",
