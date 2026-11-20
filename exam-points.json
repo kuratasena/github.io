@@ -7679,6 +7679,34 @@
         "IAM ロール",
         "暴走防止"
       ]
+    },
+    {
+      "id": "p350",
+      "field": "security",
+      "service": "IAM Access Analyzer",
+      "date": "2026-11-20",
+      "title": "S3 バケットが公開されたらすぐ通知 → IAM Access Analyzer の検出結果を EventBridge（isPublic: true）で拾って SNS へ",
+      "power": "外に開いた扉を見つける警備員（Access Analyzer）、見つけたら館内放送（EventBridge → SNS）",
+      "summary": "IAM Access Analyzer は、S3 バケットや KMS キー・IAM ロールなどのポリシーをずっと分析し、外部や一般公開に開いているものを「検出結果」として出す。EventBridge で「Access Analyzer Finding」かつ isPublic: true のイベントを拾い、SNS に送れば、公開された瞬間に知らせられる。S3 イベント通知に isPublic はない、PutBucketPolicy だけ見ると ACL などほかの公開の仕方を見逃す。",
+      "body": [
+        "IAM Access Analyzer（外部アクセスのアナライザー）：リソースのポリシーを分析して、「自分の組織やアカウントの外から使える」「誰でも使える（公開）」ものを見つける。新しいバケットも既存のバケットも対象。",
+        "EventBridge のイベントパターン：source が aws.access-analyzer、detail-type が Access Analyzer Finding、detail の isPublic が true。ターゲットに SNS トピックを指定する。",
+        "5-22（2周目○ → 3周目 C で✕）：新規・既存の S3 バケットが公開されたらすぐ SNS で通知 → Access Analyzer＋EventBridge（isPublic: true）→ SNS。",
+        "✕：S3 イベント通知の isPublic（S3 イベント通知はオブジェクトの作成・削除など。isPublic というイベントはない）、CloudTrail の PutBucketPolicy だけを拾う（バケットポリシー以外の ACL・ブロックパブリックアクセスの解除などを見逃す。ポリシーが変わっても公開になったとは限らない）、Config の cloudtrail-s3-dataevents-enabled（CloudTrail が S3 のデータイベントを記録しているかを見るルールで、公開かどうかは見ない。Config でやるなら s3-bucket-public-read-prohibited など）。",
+        "見分け方：「公開された」「外部と共有された」を見つける → Access Analyzer。「何の操作をしたか」→ CloudTrail。「設定がルールどおりか」→ Config。"
+      ],
+      "cards": [
+        "xs01",
+        "i03",
+        "mg07"
+      ],
+      "tags": [
+        "IAM Access Analyzer",
+        "EventBridge",
+        "S3 公開",
+        "SNS",
+        "検出"
+      ]
     }
   ],
   "terms": [
