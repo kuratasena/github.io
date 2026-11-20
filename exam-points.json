@@ -5782,7 +5782,7 @@
         "Web ACL は ALB（や CloudFront、API Gateway）に付けます。CloudWatch のメトリクスでブロックの数を見張れます。",
         "5-8（2周目 C・3周目 A で✕）：ALB＋WAF のサイトに、毎回ちがう IP からアプリ層の急激な大量アクセス → WAF に加えて Shield Advanced を入れ、ALB を保護対象に追加。Shield Advanced はアプリ層の DDoS を検知すると WAF のルールを自動で作って止め、24時間の DDoS 対応チーム（SRT）にも頼れる。✕：CloudWatch アラームで IP ごとに数えて拒否リストに足す（毎回ちがう IP なので追いつかず、仕組みも手作り）、ルートテーブルで拒否（ルートテーブルには拒否ルールがない）、Route 53 の位置情報で国ごと拒否（正しい利用者まで止める）。",
         "5-32（2周目○ → 3周目○）：ECS on Fargate の API が大量の SQL インジェクションでスケールアウトしきった、正常な通信は止めない、運用最小 → WAF のウェブ ACL に SQL データベースのマネージドルールグループ（一致したらブロック、ほかは許可）を入れて ALB に付ける。✕：監視だけ（防げない）、Bot Control（ボット対策で SQL インジェクションは対象外）、ログから IP を Lambda で IP セットに足す（手作りで、IP が変われば効かない）。",
-        "5-66（3周目 C で✕）：今は1つの AZ の EC2、よくある攻撃を止め、拒否したリクエストを他社の監査アプリへ送り、単一障害点をなくす → マルチ AZ の Auto Scaling グループ＋ALB＋WAF（マネージドルール）＋WAF のログを Data Firehose で他社の監査アプリへ（D）。C は D から「マルチ AZ の ASG」だけ抜けていて、1つの AZ のままなので単一障害点が残る。✕：Amazon Inspector で通信を見張る（Inspector は脆弱性の検査で、通信は見ない）、CloudWatch Logs＋Lambda で送る（手作り・しかも1つの AZ のまま）。"
+        "5-66（2周目 A・3周目 C で✕）：今は1つの AZ の EC2、よくある攻撃を止め、拒否したリクエストを他社の監査アプリへ送り、単一障害点をなくす → マルチ AZ の Auto Scaling グループ＋ALB＋WAF（マネージドルール）＋WAF のログを Data Firehose で他社の監査アプリへ（D）。C は D から「マルチ AZ の ASG」だけ抜けていて、1つの AZ のままなので単一障害点が残る。✕：Amazon Inspector で通信を見張る（Inspector は脆弱性の検査で、通信は見ない）、CloudWatch Logs＋Lambda で送る（手作り・しかも1つの AZ のまま）。"
       ],
       "cards": [
         "xs38",
