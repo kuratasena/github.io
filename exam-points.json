@@ -7194,7 +7194,8 @@
         "③ ユーザーが S3 に直接アップロード・ダウンロードするところは、S3 Transfer Acceleration（エッジロケーション経由で AWS のネットワークを通る）で速くする。署名付き URL も Transfer Acceleration 用のエンドポイントで作る。",
         "ワナ：Global Accelerator を CloudFront にアタッチ（できないし、CloudFront はもとからエッジで配っている）、全体を3リージョンに作って Aurora Global Database（やりすぎ。コストと管理が増える）、RDS Proxy（DB の接続を整理するだけで、距離の遅延は変わらない）。",
         "4-6 は1周目・2周目・3周目とも✕。2周目は A と B、3周目は B と C を選んだ。毎回 B（Global Accelerator）を選び、正解の2つを1つずつ取りこぼしている。Global Accelerator の行き先に CloudFront は入らないと覚えれば、B を消して A と C が残る。",
-        "4-67（1周目○ → 2周目✕ → 3周目は B・E を選んで✕）：CloudFront で配っている東京の S3 のブログが、us-east-1 のユーザーには遅い（よく更新されるのでキャッシュが効きにくい）→ us-east-1 に S3 を作って CRR（B）、Lambda@Edge で北米からのリクエストのオリジンを us-east-1 のバケットに切り替える（D）。また Global Accelerator を選んで✕：GA の行き先は ALB・NLB・EC2・EIP で、S3 や CloudFront のオリジンにはならない（4-6 と同じワナ）。Transfer Acceleration（C）は遠くの S3 を速くするもので、近くのバケットには要らない。"
+        "4-67（1周目○ → 2周目✕ → 3周目は B・E を選んで✕）：CloudFront で配っている東京の S3 のブログが、us-east-1 のユーザーには遅い（よく更新されるのでキャッシュが効きにくい）→ us-east-1 に S3 を作って CRR（B）、Lambda@Edge で北米からのリクエストのオリジンを us-east-1 のバケットに切り替える（D）。また Global Accelerator を選んで✕：GA の行き先は ALB・NLB・EC2・EIP で、S3 や CloudFront のオリジンにはならない（4-6 と同じワナ）。Transfer Acceleration（C）は遠くの S3 を速くするもので、近くのバケットには要らない。",
+        "1-1：シンガポールの S3 に南米から 2GB の動画をアップロード、遅い → S3 Transfer Acceleration（近くのエッジで受けて AWS の回線で運ぶ）。マルチパートは並列化で速くなるが距離の遅さは解決しない、CloudFront＋OAI は配信（ダウンロード）用、ECS の Auto Scaling はアップロード先と関係ない。"
       ],
       "cards": [
         "xt16",
