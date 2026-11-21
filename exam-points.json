@@ -5605,7 +5605,8 @@
         "別リージョンへの複製は、ルールの「コピー先」に別リージョンのボールトを指定するだけです。暗号化もボールトの KMS キーで行われます。複製用の Lambda を書く必要はありません。",
         "AWS Backup のジョブの状態は EventBridge にイベントとして流れます。「BACKUP_JOB_COMPLETED 以外で終わったジョブ」をルールで拾い、SNS で即時通知、Step Functions で再実行などの修復を自動で動かします。",
         "選び方のコツ：組み込みの機能でできること（保持・複製・暗号化・一元監視）は AWS Backup に任せ、組み込みにないこと（失敗時の自動修復）だけをイベント駆動で足します。全部を Lambda で作る選択肢は「運用負荷が最小」に反します。",
-        "Data Lifecycle Manager（DLM）は EBS スナップショットと AMI 用で、EFS や RDS はまとめられません。"
+        "Data Lifecycle Manager（DLM）は EBS スナップショットと AMI 用で、EFS や RDS はまとめられません。",
+        "1-12（1周目✕ → 2周目 A・B・C で✕ → 3周目 B・C・F で✕／正解 A・B・D）：3回とも Lambda の手作り（C・F）に引っかかった。正解の型は「AWS Backup のプラン（保持ルール＋暗号化）＋プランのクロスリージョンコピー＋EventBridge で失敗を拾って SNS 通知・Step Functions で修復」。見分け方：「通知と自動修復」を Lambda 1本で全部やる選択肢は手作りで✕。EventBridge→SNS→Step Functions のようにマネージドをつなぐ方が○。RDS スナップショット＋Lambda（F）は RDS だけで EC2・EFS が漏れる。DLM（E）は EBS 専用。"
       ],
       "cards": [
         "st01",
