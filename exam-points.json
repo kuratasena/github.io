@@ -6616,7 +6616,7 @@
         "S3 と DynamoDB：毎分大量の小さなレコードを低遅延で読むなら DynamoDB（古いデータは TTL で削除）（3-75）。",
         "CodeDeploy の OneAtATime とカナリア：OneAtATime は1台ずつのインプレース。少しずつ切り替えるのはカナリア（3-57）。",
         "スタックポリシーと DeletionPolicy：スタックを消してもリソースを残すのは DeletionPolicy: Retain。スタックポリシーは更新を防ぐだけ（4-13）。",
-        "1-3：Oracle を AWS へ、ほぼゼロダウンタイム → Oracle Data Pump で最初に入れて、GoldenGate で RDS for Oracle と同期し続け、追いついたら切り替え（DMS の全ロード＋CDC で RDS for Oracle に直接でも同じ考え方）。✕：MGN でサーバーごと移して DB を「デタッチして RDS に移す」（そんな操作はない）、DMS のターゲットを S3 にしてから RDS へロード（最後のロードで止まる）、MGN＋SCT で PostgreSQL へ（MGN は DB 移行用ではない）。ゼロダウンタイムの鍵は「同期し続けて最後に切り替える」こと。"
+        "1-3（1周目✕ → 2周目 B で✕ → 3周目○）：Oracle を AWS へ、ほぼゼロダウンタイム → Oracle Data Pump で最初に入れて、GoldenGate で RDS for Oracle と同期し続け、追いついたら切り替え（DMS の全ロード＋CDC で RDS for Oracle に直接でも同じ考え方）。✕：MGN でサーバーごと移して DB を「デタッチして RDS に移す」（そんな操作はない）、DMS のターゲットを S3 にしてから RDS へロード（最後のロードで止まる）、MGN＋SCT で PostgreSQL へ（MGN は DB 移行用ではない）。ゼロダウンタイムの鍵は「同期し続けて最後に切り替える」こと。"
       ],
       "cards": [
         "st08",
