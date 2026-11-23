@@ -5266,7 +5266,8 @@
         "ワナ：EFS や EBS に動画を置き、EC2・ECS・ALB から配信する案。サーバーの管理が増え、EBS は1つの EC2 にしかつけられず広がらない。配信は CloudFront ＋ S3 が定番。",
         "注意：SQS の標準キューは「少なくとも1回」届ける（まれに2回届く）。「必ず1回だけ」は FIFO キュー。",
         "4-24（1〜3周目すべて○）：遅い外部 SaaS の呼び出しを「疎結合・非同期にして、すべての呼び出しが最終的に完了することを保証」→ SQS にイベントをためて Lambda で処理（失敗したらキューに戻って再試行、何度もダメなら DLQ）。Step Functions は1回の呼び出しのリトライには大げさ（複数ステップの流れ向き）。EventBridge と SNS は「配る」役で、ためておく場所ではない。",
-        "5-29（2周目○ → 3周目 D で✕）：数百万の IoT デバイスが REST API でデータを送る、急なバースト、データを失わない → API Gateway（HTTP API）→ SQS（サービス統合）→ Lambda。API Gateway は受付、SQS はためて失わない、Lambda は自動で増える。✕：CloudFront のオリジンに Kinesis Data Streams（CloudFront のオリジンは HTTP のサーバーや S3 で、KDS は置けない）、ALB のターゲットに SQS（ALB のターゲットは EC2・IP・Lambda で、SQS は置けない）、API Gateway → EC2 の Auto Scaling（サーバー管理があり、ためる場所がないので急増で取りこぼす）。"
+        "5-29（2周目○ → 3周目 D で✕）：数百万の IoT デバイスが REST API でデータを送る、急なバースト、データを失わない → API Gateway（HTTP API）→ SQS（サービス統合）→ Lambda。API Gateway は受付、SQS はためて失わない、Lambda は自動で増える。✕：CloudFront のオリジンに Kinesis Data Streams（CloudFront のオリジンは HTTP のサーバーや S3 で、KDS は置けない）、ALB のターゲットに SQS（ALB のターゲットは EC2・IP・Lambda で、SQS は置けない）、API Gateway → EC2 の Auto Scaling（サーバー管理があり、ためる場所がないので急増で取りこぼす）。",
+        "1-31（1周目○ → 2周目 B・C で✕ → 3周目○ B・D）：ピーク時に写真が殺到して Lambda の同時実行の上限と DynamoDB の書き込みが詰まる → S3 と Lambda の間に SQS（ためて少しずつ流す・失敗は再処理）＋Step Functions で流れを管理（D）＋DynamoDB の書き込みキャパシティ（WCU）を見直してプロビジョンド＋自動スケーリング（B）。✕：読み取り（RCU）の見直し（困っているのは書き込み）、ElastiCache（読み取りを速くするもので、同時実行や書き込みの詰まりは直らない）、Transfer Acceleration＋CloudFront（アップロードや配信の速さの話）。原因の言葉（同時実行・書き込み）にそのまま効く部品を選ぶ。"
       ],
       "cards": [
         "i06",
