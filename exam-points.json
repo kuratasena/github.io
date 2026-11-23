@@ -6024,7 +6024,8 @@
         "POST などのときは、本番の前に OPTIONS で「送っていい？」と確認する（プリフライト）。API Gateway で CORS を有効にすると、この OPTIONS に答える設定（モック統合）も作られる。",
         "直す場所は、呼ばれる側の API Gateway。サイトを置いている S3 や CloudFront の CORS 設定を変えても、API の返事には関係ない。",
         "ワナ：WAF は通信を通すか止めるかを決めるだけで、CORS のヘッダーを付ける機能はない。",
-        "ワナ：Lambda でヘッダーを返す案。できるが、まず API Gateway で設定するのが標準。（実務では、Lambda プロキシ統合なら本番の返事のヘッダーは Lambda が付ける必要がある）"
+        "ワナ：Lambda でヘッダーを返す案。できるが、まず API Gateway で設定するのが標準。（実務では、Lambda プロキシ統合なら本番の返事のヘッダーは Lambda が付ける必要がある）",
+        "1-34（3回とも○ C。ただし3周目は「なんとなく」）：CORS はブラウザの決まり。ページのドメイン（www.learnanywhere.edu）と違うドメイン（API Gateway）を呼ぶと、ブラウザが「呼ばれる側が OK と言ってるか」を Access-Control-Allow-Origin ヘッダーで確かめる。だから OK の返事を出すのは呼ばれる側＝API Gateway。POST などは先に OPTIONS で下見（プリフライト）が来るので、OPTIONS にはモック統合で返事だけ返す。✕：S3 の CORS（S3 は呼ぶ側のページ置き場で、呼ばれていない）、WAF（止めるか通すかだけでヘッダーは返さない）、Lambda でヘッダーを付ける（できるが、標準は API Gateway でまとめて設定）。"
       ],
       "cards": [
         "xn38",
