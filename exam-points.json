@@ -6332,7 +6332,8 @@
         "NotifyFailure タスク：Step Functions から SNS に直接送れる（サービス統合）。Catch がエラー内容を入力として渡すので、詳細を通知に含められる。",
         "SNS トピック：メール、SMS などのサブスクリプションで、チームに即時に届ける。",
         "ワナ：EventBridge Scheduler で1日1回まとめて報告（即時ではない）。CloudWatch Logs に書くだけ（記録であって通知ではない）。States.Runtime だけ（すべてのエラーを拾えない）。",
-        "補足：一時的な失敗なら、Catch の前に Retry で何回かやり直す設定も入れられる。"
+        "補足：一時的な失敗なら、Catch の前に Retry で何回かやり直す設定も入れられる。",
+        "1-51（1周目✕ → 2周目 A・C・D で✕ → 3周目○ A・B・C）：前回の D（EventBridge Scheduler で1日1回集計）を卒業。「即時に通知」に1日1回は間に合わない。3点セット＝受け口（SNS トピック＋メール・SMS）、通知するタスク（NotifyFailure で失敗の中身を SNS へ）、拾う網（全ステートに Catch の States.ALL）。✕：States.Runtime（実行時エラーだけで、タスクの失敗やタイムアウトは拾えない）、CloudWatch Logs に書くだけ（記録で、人には届かない）。"
       ],
       "cards": [
         "i07",
