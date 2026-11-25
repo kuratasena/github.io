@@ -885,7 +885,8 @@
         "ワナ：Redshift（Spectrum を含む）。クラスターを持ち続けるので、夜中だけの分析にはコストが高い。",
         "補足：Athena では Spark も動かせる（Athena for Apache Spark）。EMR Serverless も選択肢になる。",
         "4-16（1周目・2周目○ → 3周目は B を選んで✕）：S3 のデータを「最もコスト効率よく」クエリするなら、Glue Data Catalog ＋ Athena（使った分だけ、サーバーなし）。Redshift Spectrum は S3 を直接読めるが、Redshift クラスター（またはサーバーレスのワークグループ）が前提で、まだ Redshift を持っていない会社には高くつく。OpenSearch は常に動くドメインにデータを入れるので、ほとんど読まれないデータには高い。後半の保存先は、半年以上読まれず・無期限に保持なら Glacier Deep Archive（Intelligent-Tiering は「時期がわからない」とき）。",
-        "5-45（2周目 A・E、3周目 B・C で✕。正解は C・E）：倉庫作業者がモバイルで作業記録を入力、金曜にピーク、月次レポート、運用最小 → アプリは S3＋CloudFront（画面）＋API Gateway＋Lambda（裏側）、レポートは S3＋Athena＋QuickSight。選択肢は「アプリの置き場所（A・B・C）」と「レポート（D・E）」の2グループに分かれているので、それぞれから1つずつ選ぶ。✕：EC2 の Auto Scaling（サーバー管理）、ECS＋スケジュールの Service Auto Scaling（コンテナの管理が残る）、Redshift＋QuickSight（月次の小さなレポートには過剰で高い）。"
+        "5-45（2周目 A・E、3周目 B・C で✕。正解は C・E）：倉庫作業者がモバイルで作業記録を入力、金曜にピーク、月次レポート、運用最小 → アプリは S3＋CloudFront（画面）＋API Gateway＋Lambda（裏側）、レポートは S3＋Athena＋QuickSight。選択肢は「アプリの置き場所（A・B・C）」と「レポート（D・E）」の2グループに分かれているので、それぞれから1つずつ選ぶ。✕：EC2 の Auto Scaling（サーバー管理）、ECS＋スケジュールの Service Auto Scaling（コンテナの管理が残る）、Redshift＋QuickSight（月次の小さなレポートには過剰で高い）。",
+        "1-55（3周目○ B）：ずっと動いている EMR の HDFS に Parquet、夜だけ15分未満のアドホック分析、数 MB〜数十 GB、コストを下げたい → S3 に移して Glue データカタログ＋Athena（クエリした分だけ払う・サーバーレス）、古いデータはライフサイクルで Glacier Deep Archive。✕：Redshift Spectrum＋Redshift クラスター（クラスターの維持費がかかる）、EMRFS＋EMR の動的スケーリング（EMR は残るので維持費がかかる。数十 GB に EMR はやりすぎ）、Redshift に保存（同じく維持費）。決め手：「たまにだけ」「数十 GB まで」「Parquet が S3 にある」→ Athena。"
       ],
       "cards": [
         "a01",
