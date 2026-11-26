@@ -8352,6 +8352,31 @@
         "部門別",
         "Cost Explorer"
       ]
+    },
+    {
+      "id": "p366",
+      "field": "review",
+      "service": "CloudWatch Logs のログクラス",
+      "date": "2026-11-26",
+      "title": "CloudWatch Logs の取り込み費用を下げつつ、Logs Insights の調査とメトリクスフィルターのアラームは残す → たまにしか見ないログは Infrequent Access クラスの別ロググループへ、アラームに使うログは Standard のまま",
+      "power": "ログの置き場を2つに分ける：たまに見る倉庫（Infrequent Access・取り込み半額・検索はできる）と、見張りが付いた事務所（Standard・アラームが使える）",
+      "summary": "CloudWatch Logs のロググループには Standard と Infrequent Access の2つのログクラスがある。Infrequent Access は取り込み料金が Standard の約半分で、Logs Insights の検索はできるが、メトリクスフィルター・サブスクリプションフィルター・Live Tail などは使えない。ログクラスは作るときにだけ決められ、あとから変えられないので、新しいロググループを作って送り先を分ける。",
+      "body": [
+        "1-65（3周目 C で✕／正解 B。差し替わった新しい問題）：全部を Firehose で S3 に送って Athena＋Lambda で集計（C）を選んだ。安くはなるが、調査の手順が Logs Insights から Athena に変わり、エラー率もメトリクスフィルターから Lambda の定期集計に変わるので「手順とアラームを維持」に反する。",
+        "✕：デバッグログを10%だけ送る（残り90%が消えて調査できない）、保持期間を7日に短縮して S3 へエクスポート（費用の大半は取り込み料金なので保持期間を縮めても減らない）。",
+        "見分け方：「今の手順を変えずに安く」→ 同じサービスの中の安いクラスに分ける（S3 のストレージクラスと同じ発想）。費用の中身（取り込みか保存か）を見る。"
+      ],
+      "cards": [
+        "mg04",
+        "mg03"
+      ],
+      "tags": [
+        "CloudWatch Logs",
+        "ログクラス",
+        "Infrequent Access",
+        "コスト削減",
+        "メトリクスフィルター"
+      ]
     }
   ],
   "terms": [
