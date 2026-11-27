@@ -2522,7 +2522,8 @@
         "【EC2 1台に アプリ＋MySQL が同居している（2026-11-17）】コードをほぼ変えずに高可用性・スケール・パッチの自動化 → SSM Agent 入りの AMI ＋ 小さめのインスタンスで Auto Scaling ＋ ALB、DB は同じ MySQL 系の Aurora MySQL へ。パッチは Systems Manager（Patch Manager）で自動化。",
         "DB は「同じ種類」に移すのがコード変更最小：MySQL → Aurora MySQL / RDS for MySQL。DynamoDB（NoSQL）、DocumentDB（MongoDB 互換）、Neptune（グラフ）はアプリの作り直しが必要。",
         "ワナ：Graviton（Arm）に替えて「既存の AMI」を使う案。今の AMI は x86 用なので Arm では起動できない。Lambda やコンテナに作り直す案も、開発の手間が大きい。",
-        "3-37（1周目○→2周目✕→3周目○）の消し方：NLB（Web アプリなら ALB）→ A 消し。要件にないマルチリージョン（やりすぎ）→ C 消し。スポットインスタンス（中断される）と単一 AZ の RDS → D 消し。残るのは ALB＋3つの AZ の Auto Scaling＋Aurora Multi-AZ（削除保護つき）の B。"
+        "3-37（1周目○→2周目✕→3周目○）の消し方：NLB（Web アプリなら ALB）→ A 消し。要件にないマルチリージョン（やりすぎ）→ C 消し。スポットインスタンス（中断される）と単一 AZ の RDS → D 消し。残るのは ALB＋3つの AZ の Auto Scaling＋Aurora Multi-AZ（削除保護つき）の B。",
+        "1-73（3周目○ D）：EC2 1台にアプリと MySQL、手作業のパッチ、CPU 100% → SSM Agent 入りの AMI＋ASG（小さめのインスタンス）＋ALB＋CPU でスケール、DB は Aurora MySQL（MySQL のままなのでコード変更なし）。パッチは SSM（Patch Manager）で自動化。見分け：DB の行き先が MySQL 互換かどうか。DocumentDB（MongoDB）・DynamoDB（NoSQL）・Neptune（グラフ）はアプリの作り直しが要るので「コード変更最小」に反する。Lambda やコンテナ化も作り直し。"
       ],
       "cards": [
         "xn07",
