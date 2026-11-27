@@ -2865,7 +2865,8 @@
         "ワナ：CloudWatch エージェントを追加で入れる。Discovery Agent がすでに通信（どのサーバーのどのポートとつながっているか）を集めているので、二度手間。",
         "ワナ：Network Access Analyzer。AWS の VPC の中の「届く道があるか」を調べる道具で、オンプレのサーバー同士の実際の通信は分からない。",
         "ワナ：MGN で先に AWS に複製してテストして確かめる。時間とお金がかかる。依存関係の調査は移す前に Discovery のデータで行う。",
-        "3-46（1周目・2周目✕ → 3周目○）：「プロセス・ネットワーク・ログまで詳しく」→ エージェント版（Agentless は中の細かい情報が取れない）。「慣れた SQL」→ データ探索 → S3 → Athena（Glue＋Redshift は大げさ、QuickSight はグラフ、Migration Hub の画面は SQL を書く場所ではない）。"
+        "3-46（1周目・2周目✕ → 3周目○）：「プロセス・ネットワーク・ログまで詳しく」→ エージェント版（Agentless は中の細かい情報が取れない）。「慣れた SQL」→ データ探索 → S3 → Athena（Glue＋Redshift は大げさ、QuickSight はグラフ、Migration Hub の画面は SQL を書く場所ではない）。",
+        "1-74（3周目○ A）：Discovery Agent のデータはもうある → Migration Hub でサーバーを特定・ネットワーク依存関係グラフで相手を把握・Athena（データ探索）でポート 8765 の通信を SQL で絞る → Migration Hub で移行グループを作る。✕：MGN で複製してテスト（MGN は移行の実行の道具。計画の段階で全部複製は時間とお金がかかる）、Network Access Analyzer（AWS の VPC の到達できる経路を調べる道具で、オンプレのサーバー同士の通信は分からない）、CloudWatch エージェントを追加（Discovery Agent がもう通信を集めているので二度手間）。"
       ],
       "cards": [
         "xg02",
