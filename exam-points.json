@@ -4417,7 +4417,7 @@
         "Aurora Global Database や常に待機させる構成は、RPO 1秒・RTO 数分のような厳しい要件用で、この要件にはお金がかかりすぎます。DataSync は RDS のバックアップには使えません。",
         "5-53（2周目 B・3周目 B で✕）：EC2 10台＋複数の EBS、us-west-2 にバックアップ、RPO 24時間・RTO 12時間、運用最小、CloudFormation テンプレートはある → AWS Backup の毎日のプランで、別リージョンのボールトにコピー、障害時は CloudFormation を起動してボールトから復元（C）。✕：DLM でスナップショット（選択肢に別リージョンへのコピーがなく、DLM には「復元する」機能もない）、SSM Automation のランブックで毎日スナップショット（手作り）、別リージョンに同じ EC2 を常に置いて DataSync（高い、DataSync はファイル転送でボリュームのバックアップではない）。",
         "1-70（3周目○ D）：RPO・RTO 1時間、Aurora と DynamoDB → Aurora Global Database＋DynamoDB グローバルテーブル＋両リージョンにリージョナルの API Gateway＋Route 53 フェイルオーバー。バックアップと復元（C）は RPO 1時間なら毎時バックアップが要り、戻すのに時間がかかって RTO 1時間が危うい。DMS＋EventBridge＋Lambda（B）は手作り。CloudFront のオリジンフェイルオーバー（A）は API の切り替えには遠回り。ECS（アプリ層）はどの選択肢にも書いていない＝比べる材料ではない。実際は CloudFormation と CodePipeline で DR リージョンにも作る（最小台数で置いておく、または災害時に CloudFormation で立ち上げる）。",
-        "1-72（3周目 A で✕／正解 D）：Aurora Global Database（A）を選んだ。1-70 との違い：1-70 は RPO 1時間＋RTO 1時間＋アプリの切り替えまで → Global Database。1-72 は RPO 1時間だけ（RTO の指定なし）＋「最もコスト効率」＋読み書きが多い → AWS Backup で1時間ごと＋別リージョンにコピー。Global Database は秒の RPO 向けで、書き込みのたびに複製の I/O 料金がかかる（書き込みが多いと高い）。要件ギリギリが正解（p315）。✕：Backtrack＋Lambda（Backtrack は同じクラスターの巻き戻しで DR ではない・Lambda は手作り）、DMS で S3 へ（DB として戻せない）。"
+        "1-72（1周目✕ → 2周目 A で✕ → 3周目 A で✕／正解 D）：2回とも Aurora Global Database（A）を選んだ。1-70 との違い：1-70 は RPO 1時間＋RTO 1時間＋アプリの切り替えまで → Global Database。1-72 は RPO 1時間だけ（RTO の指定なし）＋「最もコスト効率」＋読み書きが多い → AWS Backup で1時間ごと＋別リージョンにコピー。Global Database は秒の RPO 向けで、書き込みのたびに複製の I/O 料金がかかる（書き込みが多いと高い）。要件ギリギリが正解（p315）。✕：Backtrack＋Lambda（Backtrack は同じクラスターの巻き戻しで DR ではない・Lambda は手作り）、DMS で S3 へ（DB として戻せない）。"
       ],
       "cards": [
         "c03",
