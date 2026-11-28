@@ -4505,12 +4505,12 @@
       "power": "DMS は万能の引っ越し業者やない。Cassandra 便はやってないから、Glue に頼む",
       "summary": "オンプレの Cassandra を Amazon Keyspaces へダウンタイム最小で移す → DMS は Cassandra（移行元）も Keyspaces（移行先）も非対応。AWS Glue ETL で全量ロード ＋ 変更の継続的な反映。CSV 一括ロードや EC2 経由の2段階移行は不正解。",
       "body": [
-        "DMS はたくさんのデータベースに対応していますが、Cassandra は移行元として、Amazon Keyspaces は移行先として対応していません。「DMS で Cassandra から Keyspaces へ」という選択肢は、技術的にできないので不正解です。",
+        "DMS はたくさんのデータベースに対応していますが、Amazon Keyspaces は移行先として対応していません。「DMS で Cassandra から Keyspaces へ」という選択肢は、技術的にできないので不正解です。なお Cassandra を移行元にすること自体は、SCT のデータ抽出エージェント＋DMS で DynamoDB へ移す形ならできます（Keyspaces 行きは Glue、DynamoDB 行きは DMS）。",
         "Cassandra から Keyspaces へ止めずに移すなら、AWS Glue の ETL ジョブ（Spark）でまず全データを移し、その後に起きた変更も追いかけて反映し続けます。少しずつの変更は、更新時刻を使って定期的に差分を取る方法や、CDC ツールで変更を Kinesis などに流して Glue のストリーミングジョブで反映する方法があります。",
         "CSV に書き出して S3 経由で入れる方法（DSBulk など）は、一度にまとめて移すのは得意ですが、移している間の変更を追いかけられないので、ダウンタイムが大きくなります。",
         "いったん EC2 に Cassandra を立てて2段階で移す方法は、管理の手間が増えるだけです。",
         "DMS が使えるかどうかは、移行元と移行先の両方が対応しているかで決まります。迷ったら「その組み合わせは DMS の対応表にあるか？」を考えます。",
-        "2-24（1周目✕ → 2周目○ → 3周目 B で✕／正解 C）：DMS＋CDC（B）を選んだ。「DB の移行＝DMS」の反射で選びやすいが、DMS は Cassandra をソースに、Keyspaces をターゲットにできない（できない）。Cassandra → Keyspaces は Glue の ETL で全量を移して、差分を追いかけて反映。✕：EC2 に Cassandra を立てて二段階（手間が倍）、CSV で S3 → Step Functions（バッチだけで差分を追えない）。DMS を選ぶ前に「ソースとターゲットが DMS の対応表に載っているか」を確認：Cassandra・Keyspaces・Neptune などは載っていない。"
+        "2-24（1周目✕ → 2周目○ → 3周目 B で✕／正解 C）：DMS＋CDC（B）を選んだ。「DB の移行＝DMS」の反射で選びやすいが、DMS は Keyspaces をターゲットにできない（できない）。Cassandra → Keyspaces は Glue の ETL で全量を移して、差分を追いかけて反映。✕：EC2 に Cassandra を立てて二段階（手間が倍）、CSV で S3 → Step Functions（バッチだけで差分を追えない）。DMS を選ぶ前に「ソースとターゲットが DMS の対応表に載っているか」を確認：Keyspaces は移行先として載っていない。"
       ],
       "cards": [
         "db06",
@@ -4527,7 +4527,10 @@
       ]
     },
     {
-      "id": "p217", "field": "security", "service": "Directory Service（AD）", "date": "2026-10-31",
+      "id": "p217",
+      "field": "security",
+      "service": "Directory Service（AD）",
+      "date": "2026-10-31",
       "title": "AWS 上に本格的な AD ＋ MFA → AWS Managed Microsoft AD。Simple AD は MFA 非対応の簡易版",
       "power": "本格派は Managed AD、お手軽版は Simple AD、取り次ぎだけなら AD Connector",
       "summary": "AWS 上で中央管理する AD に Windows EC2 を参加させる ＋ MFA などの高度なセキュリティ ＋ マネージド → AWS Managed Microsoft AD。管理作業は WorkSpaces から。Simple AD は MFA や信頼関係に非対応。AD Connector は AD を AWS に作らない。",
@@ -4535,10 +4538,22 @@
         "AWS Directory Service には主に3種類あります。AWS Managed Microsoft AD は、AWS 上に本物の Active Directory を作るマネージドサービスで、MFA（RADIUS 連携）、オンプレの AD との信頼関係、グループポリシーなど、ほぼすべての機能が使えます。",
         "Simple AD は、Samba を使った小規模向けの簡易版で安価ですが、MFA や信頼関係などには対応していません。「MFA」「高度なセキュリティ」「本格的な AD」と出たら Simple AD は外します。",
         "AD Connector は、AWS に AD を作らず、オンプレの AD に問い合わせを中継するだけの窓口です。「AWS 上に中央管理の AD を置く」が要件なら、AD Connector ではなく Managed Microsoft AD です。",
-        "AD の管理作業をする場所は、Amazon WorkSpaces（マネージドの仮想デスクトップ）を使えば、管理用の EC2 を自分で立ててパッチを当てる必要がありません。AppStream 2.0 はアプリ1つだけを配信する仕組みで、デスクトップ全体で管理作業をする用途には向きません。"
+        "AD の管理作業をする場所は、Amazon WorkSpaces（マネージドの仮想デスクトップ）を使えば、管理用の EC2 を自分で立ててパッチを当てる必要がありません。AppStream 2.0 はアプリ1つだけを配信する仕組みで、デスクトップ全体で管理作業をする用途には向きません。",
+        "2-25（1周目✕ → 2周目○ → 3周目○ 撃破継続）：Windows EC2 を中央の AD に参加させ、MFA も必要、管理の手間は最小 → AWS Managed Microsoft AD ＋ AWS Directory Service Data（コンソールや API からユーザーとグループを直接管理）＋ RADIUS 連携の MFA。✕：管理用 EC2 を立ててリモートサーバー管理ツールで管理（できるが EC2 の運用が増える）、Simple AD（MFA 非対応。Directory Service Data も Managed Microsoft AD 専用）。"
       ],
-      "cards": ["xs26", "sc07", "eu02", "eu01"],
-      "tags": ["Managed Microsoft AD", "Simple AD", "AD Connector", "WorkSpaces", "MFA"]
+      "cards": [
+        "xs26",
+        "sc07",
+        "eu02",
+        "eu01"
+      ],
+      "tags": [
+        "Managed Microsoft AD",
+        "Simple AD",
+        "AD Connector",
+        "WorkSpaces",
+        "MFA"
+      ]
     },
     {
       "id": "p218",
