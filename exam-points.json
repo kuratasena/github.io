@@ -4317,7 +4317,10 @@
       "tags": ["解き方", "消去法", "マルチリージョン", "セッション管理"]
     },
     {
-      "id": "p210", "field": "cost", "service": "Systems Manager", "date": "2026-10-30",
+      "id": "p210",
+      "field": "cost",
+      "service": "Systems Manager",
+      "date": "2026-10-30",
       "title": "Windows の EC2 に安全・安く RDP するなら Fleet Manager。ログインは IAM Identity Center ＋ AD Connector",
       "power": "裏口（ポート 3389）も門番小屋（踏み台）もいらない。管理会社（SSM）の窓口から部屋に入る",
       "summary": "インターネットから Windows EC2 に RDP ＋ 社内 AD で認証 ＋ 低コスト → IAM Identity Center ＋ AD Connector で認証し、Systems Manager Fleet Manager で RDP。踏み台・RD ゲートウェイ・Managed AD・新規 Direct Connect はコストと手間が増える。",
@@ -4325,10 +4328,22 @@
         "Windows の EC2 にリモートデスクトップ（RDP）でつなぐなら、Systems Manager の Fleet Manager が使えます。ブラウザの AWS コンソールから RDP 接続でき、RDP のポート（3389）をインターネットに開けたり、踏み台サーバーを置いたりする必要がありません。",
         "社内の Active Directory でログインさせるなら、IAM Identity Center と AD Connector を組み合わせます。AD を AWS に新しく作る（AWS Managed Microsoft AD）より安く済みます。AD Connector はオンプレの AD と通信するので VPN か Direct Connect が必要ですが、「VPN の機器はもうある」と書いてあればそれを使います。",
         "踏み台サーバー（EC2）や、Marketplace のリモートデスクトップゲートウェイは、自分でパッチ当てや台数の管理をする必要があり、料金も追加でかかります。",
-        "在宅のエンジニアがインターネットからつなぐ要件に、会社と AWS を結ぶ Direct Connect を新しく引く選択肢は、目的が違ううえに高額です。"
+        "在宅のエンジニアがインターネットからつなぐ要件に、会社と AWS を結ぶ Direct Connect を新しく引く選択肢は、目的が違ううえに高額です。",
+        "2-18（3回とも○ B）：エンジニアがインターネット経由で Windows の EC2 に RDP、認証はオンプレの AD、一番安く → IAM Identity Center＋AD Connector＋Systems Manager の Fleet Manager。踏み台や RD ゲートウェイの EC2 が要らず、3389 番も開けない。✕：AWS Managed Microsoft AD＋踏み台（AD の月額＋踏み台の EC2）、Direct Connect（新しく専用線・しかもリモートの社員はオフィスにいない）、Managed AD＋Marketplace の RD ゲートウェイ（自分で管理・高い）。"
       ],
-      "cards": ["xm19", "mg18", "sc10", "sc07"],
-      "tags": ["Fleet Manager", "RDP", "AD Connector", "IAM Identity Center", "踏み台なし"]
+      "cards": [
+        "xm19",
+        "mg18",
+        "sc10",
+        "sc07"
+      ],
+      "tags": [
+        "Fleet Manager",
+        "RDP",
+        "AD Connector",
+        "IAM Identity Center",
+        "踏み台なし"
+      ]
     },
     {
       "id": "p211", "field": "storage", "service": "EBS", "date": "2026-10-30",
