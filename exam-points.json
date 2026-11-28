@@ -4001,7 +4001,10 @@
       ]
     },
     {
-      "id": "p199", "field": "storage", "service": "AWS Backup", "date": "2026-10-29",
+      "id": "p199",
+      "field": "storage",
+      "service": "AWS Backup",
+      "date": "2026-10-29",
       "title": "全アカウントのバックアップを1か所で管理・監視するなら AWS Backup のクロスアカウント管理",
       "power": "バックアップの本部は AWS Backup。予定表（プラン）を1枚作って、タグの付いた荷物を全部預かる",
       "summary": "バックアップの頻度・保持期間の変更 ＋ 全アカウントの状態を一元監視 ＋ 運用の手間を最小 → AWS Backup のバックアッププラン（タグで対象を指定）＋ クロスアカウント管理。報告は Backup Audit Manager。DLM は EBS 専用で RDS には使えない。",
@@ -4010,10 +4013,21 @@
         "バックアッププランに「4時間ごとに取る」「90日残す」と書き、対象はタグで指定します。タグを付けたリソースは、後から増えても自動で対象になります。",
         "Organizations と連携する「クロスアカウント管理」をオンにすると、管理アカウントから全アカウントのバックアップの状態を1つの画面で見られます。バックアップポリシーで、全アカウントに同じプランを配ることもできます。",
         "実行状況や成功率の報告は、AWS Backup の中にある Backup Audit Manager（レポート機能）で作れます。Lambda や QuickSight で自作する必要はありません。",
-        "Data Lifecycle Manager（DLM）は EBS のスナップショットと AMI 専用で、RDS には使えません。カスタムスクリプトや、アカウントごとに別々に設定する方法も、手間が大きいので不正解です。"
+        "Data Lifecycle Manager（DLM）は EBS のスナップショットと AMI 専用で、RDS には使えません。カスタムスクリプトや、アカウントごとに別々に設定する方法も、手間が大きいので不正解です。",
+        "2-7（3回とも○ A）：RDS のスナップショットを4時間ごと・90日保持・全アカウントを一元監視・報告 → AWS Backup のクロスアカウント管理＋プラン（頻度・保持）＋タグで対象を選ぶ＋AWS Backup のコンソールで全アカウントを見る（報告は Backup Audit Manager でも可）。✕：スクリプトを SSM で配る（手作り）、StackSets＋Lambda＋QuickSight（集計を自作）、DLM（EBS・AMI 用で RDS はできない・アカウントごとに見る）。"
       ],
-      "cards": ["st01", "xt19", "xt20", "xm11"],
-      "tags": ["AWS Backup", "クロスアカウント管理", "RDS", "Organizations"]
+      "cards": [
+        "st01",
+        "xt19",
+        "xt20",
+        "xm11"
+      ],
+      "tags": [
+        "AWS Backup",
+        "クロスアカウント管理",
+        "RDS",
+        "Organizations"
+      ]
     },
     {
       "id": "p200", "field": "security", "service": "IAM・クロスアカウント", "date": "2026-10-29",
