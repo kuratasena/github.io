@@ -4677,7 +4677,10 @@
       ]
     },
     {
-      "id": "p222", "field": "migration", "service": "データ転送（Snow・DataSync）", "date": "2026-10-31",
+      "id": "p222",
+      "field": "migration",
+      "service": "データ転送（Snow・DataSync）",
+      "date": "2026-10-31",
       "title": "オンプレの NFS → EFS へ毎日複製するなら DataSync で直接 EFS へ（Direct Connect はプライベート VIF ＋ PrivateLink）",
       "power": "引っ越し屋（DataSync）は新居（EFS）に直接運ぶ。倉庫（S3）を経由させない",
       "summary": "オンプレの NFS で作られるファイルを切り替え前に EFS へ継続的に複製 → オンプレに DataSync エージェント、スケジュールタスクで EFS に直接転送。Direct Connect ならプライベート VIF ＋ DataSync のインターフェース VPC エンドポイント。S3 経由＋Lambda や Storage Gateway は遠回り。",
@@ -4685,10 +4688,23 @@
         "オンプレの NFS のファイルを EFS に毎日コピーするなら、DataSync で直接 EFS に送ります。オンプレに DataSync エージェント（仮想マシン）を置き、タスクにスケジュールを付ければ、差分だけを自動で転送して、届いた後に中身が正しいかも確かめてくれます。",
         "Direct Connect がある場合は、プライベート VIF で VPC につなぎ、DataSync 用のインターフェース VPC エンドポイント（PrivateLink）経由で通信させると、インターネットを通らずに済みます。",
         "いったん S3 に送ってから Lambda で EFS にコピーする方法は、2段階になって手間が増えます。DataSync は EFS・FSx・S3 のどれにも直接送れます。",
-        "Storage Gateway のファイルゲートウェイは、裏の保存先が S3 で、EFS には入りません。オンプレから使い続けるための橋渡し役で、移行のための複製には DataSync を使います。"
+        "Storage Gateway のファイルゲートウェイは、裏の保存先が S3 で、EFS には入りません。オンプレから使い続けるための橋渡し役で、移行のための複製には DataSync を使います。",
+        "2-30（1周目○ → 2周目○ → 3周目○ 3連続正解）：オンプレの NFS で毎日増える設計図を、切り替え前に EFS へ複製 → DataSync エージェント＋スケジュールタスクで直接 EFS のマウントターゲットへ。Direct Connect はプライベート VIF ＋ DataSync のインターフェイス VPC エンドポイント（PrivateLink）。✕：aws s3 sync → S3 → Lambda で EFS（2段階で自作の手間）、ファイルゲートウェイ（行き先は S3 で EFS ではない。手動コピーも残る）、DataSync でパブリック VIF → S3 → Lambda で EFS（DataSync は EFS に直接送れるのに中継が増える）。"
       ],
-      "cards": ["mi04", "xg06", "st04", "xn04", "nw02"],
-      "tags": ["DataSync", "EFS", "NFS", "Direct Connect", "PrivateLink"]
+      "cards": [
+        "mi04",
+        "xg06",
+        "st04",
+        "xn04",
+        "nw02"
+      ],
+      "tags": [
+        "DataSync",
+        "EFS",
+        "NFS",
+        "Direct Connect",
+        "PrivateLink"
+      ]
     },
     {
       "id": "p223",
