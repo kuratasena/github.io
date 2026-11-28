@@ -4510,7 +4510,7 @@
         "CSV に書き出して S3 経由で入れる方法（DSBulk など）は、一度にまとめて移すのは得意ですが、移している間の変更を追いかけられないので、ダウンタイムが大きくなります。",
         "いったん EC2 に Cassandra を立てて2段階で移す方法は、管理の手間が増えるだけです。",
         "DMS が使えるかどうかは、移行元と移行先の両方が対応しているかで決まります。迷ったら「その組み合わせは DMS の対応表にあるか？」を考えます。",
-        "2-24（3周目 B で✕／正解 C）：DMS＋CDC（B）を選んだ。「DB の移行＝DMS」の反射で選びやすいが、DMS は Cassandra をソースに、Keyspaces をターゲットにできない（できない）。Cassandra → Keyspaces は Glue の ETL で全量を移して、差分を追いかけて反映。✕：EC2 に Cassandra を立てて二段階（手間が倍）、CSV で S3 → Step Functions（バッチだけで差分を追えない）。DMS を選ぶ前に「ソースとターゲットが DMS の対応表に載っているか」を確認：Cassandra・Keyspaces・Neptune などは載っていない。"
+        "2-24（1周目✕ → 2周目○ → 3周目 B で✕／正解 C）：DMS＋CDC（B）を選んだ。「DB の移行＝DMS」の反射で選びやすいが、DMS は Cassandra をソースに、Keyspaces をターゲットにできない（できない）。Cassandra → Keyspaces は Glue の ETL で全量を移して、差分を追いかけて反映。✕：EC2 に Cassandra を立てて二段階（手間が倍）、CSV で S3 → Step Functions（バッチだけで差分を追えない）。DMS を選ぶ前に「ソースとターゲットが DMS の対応表に載っているか」を確認：Cassandra・Keyspaces・Neptune などは載っていない。"
       ],
       "cards": [
         "db06",
