@@ -4374,7 +4374,10 @@
       ]
     },
     {
-      "id": "p212", "field": "compute", "service": "EC2・Auto Scaling", "date": "2026-10-30",
+      "id": "p212",
+      "field": "compute",
+      "service": "EC2・Auto Scaling",
+      "date": "2026-10-30",
       "title": "SSH で入るたびに違う認証情報 ＋ CloudTrail に記録 → EC2 Instance Connect",
       "power": "毎回使い捨ての鍵（60秒で失効）を発行。合鍵を配らないから、なくす心配もない",
       "summary": "SSH 接続ごとに一意の認証情報 ＋ CloudTrail で記録 ＋ 管理の手間を最小 → EC2 Instance Connect（接続のたびに一時的な公開鍵を送り、60秒で失効。権限は IAM）。Secrets Manager にキーを保管・Lambda で毎日更新は自作が多く、接続ごとに一意にもならない。コマンドの記録や22番を閉じたいなら Session Manager。",
@@ -4383,10 +4386,21 @@
         "誰がいつ鍵を送り込んだか（SendSSHPublicKey）は CloudTrail に記録されます。使ってよい人は IAM ポリシーで決めます。",
         "Ubuntu 20.04 以降や Amazon Linux 2 以降の AMI には、最初から Instance Connect が入っています。AWS コンソールからブラウザで SSH できます。",
         "Secrets Manager に SSH キーを保管する方法や、Lambda で毎日キーを作り直す方法は、自作の仕組みが必要なうえ、1日の間は同じキーを使い回すので「接続ごとに一意」になりません。",
-        "使い分け：SSH で入る前提で、接続ごとの認証と CloudTrail の記録が必要なら Instance Connect。22番ポートを閉じたい、実行したコマンドまで記録したいなら Session Manager。"
+        "使い分け：SSH で入る前提で、接続ごとの認証と CloudTrail の記録が必要なら Instance Connect。22番ポートを閉じたい、実行したコマンドまで記録したいなら Session Manager。",
+        "2-20（3周目○ C）：Ubuntu の EC2 50台に SSH、接続ごとに違う認証情報、CloudTrail に記録、運用最小 → EC2 Instance Connect（接続のたびに使い捨ての公開鍵を60秒だけ送り込む・IAM で許可・CloudTrail に残る）。✕：インスタンスごとの SSH キーを Secrets Manager に（鍵の管理が重い・接続ごとに一意ではない）、Run Command で一時キーを配る（手作り）、Lambda＋Secrets Manager で毎日ローテーション（手作り・接続ごとではない）。"
       ],
-      "cards": ["xp17", "xm10", "sc17", "mg02"],
-      "tags": ["EC2 Instance Connect", "SSH", "CloudTrail", "Session Manager"]
+      "cards": [
+        "xp17",
+        "xm10",
+        "sc17",
+        "mg02"
+      ],
+      "tags": [
+        "EC2 Instance Connect",
+        "SSH",
+        "CloudTrail",
+        "Session Manager"
+      ]
     },
     {
       "id": "p213",
